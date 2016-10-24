@@ -14,6 +14,25 @@
 <body>
     <form id="selfregistration" runat="server">
         <div id="maincontainer" class="container-fluid" runat="server">
+            <nav class="navbar navbar-default navbar-fixed-top">
+                    <div class="container-fluid">
+
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-W1LfPbp4DDBf1">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand"><b>Thye Hua Kwan Hospital</b></a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="navbar">
+                            <ul class="nav navbar-nav " id="navigatePage">
+                                
+                            </ul>
+                    </div>
+                        </div>
+                </nav><br /><br />
+            <img src="../../Assets/hospitalLogo.png" class="img img-rounded center-block"/><br />
             <a data-controls-modal="myModal" data-backdrop="static" data-keyboard="false" href="#">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Choose User</button>
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
