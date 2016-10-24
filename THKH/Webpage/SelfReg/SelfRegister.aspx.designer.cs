@@ -49,15 +49,6 @@ namespace THKH.Webpage.SelfReg {
         protected global::System.Web.UI.WebControls.LinkButton ExistingVisitorButton;
         
         /// <summary>
-        /// staticinfocontainer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl staticinfocontainer;
-        
-        /// <summary>
         /// newusercontent control.
         /// </summary>
         /// <remarks>
@@ -130,6 +121,33 @@ namespace THKH.Webpage.SelfReg {
         protected global::System.Web.UI.WebControls.TextBox addressinput;
         
         /// <summary>
+        /// postalinput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox postalinput;
+        
+        /// <summary>
+        /// nationalinput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox nationalinput;
+        
+        /// <summary>
+        /// daterange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox daterange;
+        
+        /// <summary>
         /// existingusercontent control.
         /// </summary>
         /// <remarks>
@@ -148,12 +166,93 @@ namespace THKH.Webpage.SelfReg {
         protected global::System.Web.UI.WebControls.TextBox existnric;
         
         /// <summary>
-        /// submitExistNricButton control.
+        /// staticinfocontainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton submitExistNricButton;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl staticinfocontainer;
+        
+        /// <summary>
+        /// wardno control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox wardno;
+        
+        /// <summary>
+        /// wingno control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox wingno;
+        
+        /// <summary>
+        /// cubno control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox cubno;
+        
+        /// <summary>
+        /// bedno control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox bedno;
+        
+        /// <summary>
+        /// healthcheck control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox healthcheck;
+        
+        /// <summary>
+        /// submitExist control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl submitExist;
+        
+        /// <summary>
+        /// submitNricButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton submitNricButton;
+        
+        /// <summary>
+        /// submitNew control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl submitNew;
+        
+        /// <summary>
+        /// submitNewEntryButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton submitNewEntryButton;
     }
 }
