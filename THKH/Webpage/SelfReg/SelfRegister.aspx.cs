@@ -18,16 +18,25 @@ namespace THKH.Webpage.SelfReg
 
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
+            PopulateNewUserForm();
             staticinfocontainer.Visible = true;
             newusercontent.Visible = true;
-            //ScriptManager.RegisterStartupScript(this, GetType(), "Close Modal Popup", "hideModal();", true);
         }
 
         protected void LinkButton2_Click(object sender, EventArgs e)
         {
             staticinfocontainer.Visible = true;
             existingusercontent.Visible = true;
-            //ScriptManager.RegisterStartupScript(this, GetType(), "Close Modal Popup", "hideModal();", true);
+        }
+
+        protected void PopulateNewUserForm()
+        {
+            //lblname = "Shahid;
+        }
+
+        protected void SubmitExistNRIC(object sender, EventArgs e)
+        {
+            
         }
     }
 }
