@@ -62,7 +62,7 @@
        
                 <div class="container">
 
-                    <div class="tab-content maxHeight">
+                    <div class="tab-content maxHeight" id="generalContent">
 
                         <div class="tab-pane maxHeight" id="registration">
                            <div class="jumbotron maxHeight">
@@ -71,18 +71,18 @@
                                     
                                     <ul class="nav navbar-nav contentNav" style="margin-bottom:0;" id="regPageNavigation">
                                       
-                                      <li class="active"><a href="#checkIn">Check-In Visitor</a></li>
-                                      <li><a href="#regVisit">Register Visitor</a></li> 
+                                      <li><a href="#checkIn"  rel="checkIn""#checkIn">Check-In Visitor</a></li>
+                                      <li><a href="#regVisit" data-target="#regVisit">Register Visitor</a></li> 
                                       
                                     </ul>
                                   </div>
                                 </nav>
-                               <div class="tab-content maxHeight" >
+                               <div class="tab-content maxHeight" id="regContent">
                                    <div class="tab-pane maxHeight" id="checkIn">
-                                       Test
+                                       <div class="jumbotron maxHeight">Test</div>
                                    </div>
                                    <div class="tab-pane maxHeight" id="regVisit">
-                                       Test2
+                                         <div class="jumbotron maxHeight">Test2</div>
                                    </div>
                                </div>
                            </div>

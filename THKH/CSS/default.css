@@ -1,6 +1,7 @@
 ﻿html,body {
     text-align:center;
     height:100%;
+    width:100%;
     display:flex;
     justify-content: center
 }
@@ -23,11 +24,19 @@ body{
 
 .container{
     height: calc(100% - 25px);
-   
+   width:100%;
 }
 .maxHeight{
     height:100%;
      margin-bottom:0;
+}
+
+.navbar-default{
+    margin-bottom:0;
+}
+
+#regContent{
+    height:95%;
 }
 
 .contentNav {
@@ -35,6 +44,12 @@ body{
   float: none;
   vertical-align: top;
    text-align: center;
+   margin-bottom:0;
+}
+.tab-content {
+    border: 1px solid #ddd;
+    width:100%;
+   
 }
 
 .contentCollapse {
