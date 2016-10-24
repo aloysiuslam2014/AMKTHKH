@@ -1,0 +1,25 @@
+﻿html,body {
+    text-align:center;
+    height:100%;
+    display:flex;
+    justify-content: center
+}
+
+table.center{
+    
+     margin-left:auto; 
+    margin-right:auto;
+    
+}
+
+section{
+    position: absolute;
+        top: 35%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+}
+
+.btn{
+    padding:5px;
+}
