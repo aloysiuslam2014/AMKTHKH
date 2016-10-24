@@ -67,12 +67,12 @@
                         <div class="tab-pane maxHeight" id="registration">
                            <div class="jumbotron maxHeight">
                                <nav class="navbar navbar-default">
-                                  <div class="container-fluid ">
+                                  <div class="container-fluid " style="margin-top: 8px;">
                                     
-                                    <ul class="nav navbar-nav contentNav" style="margin-bottom:0;" id="regPageNavigation">
+                                    <ul class="nav nav-pills contentNav" style="margin-bottom:0;" id="regPageNavigation">
                                       
-                                      <li><a href="#checkIn"  rel="checkIn""#checkIn">Check-In Visitor</a></li>
-                                      <li><a href="#regVisit" data-target="#regVisit">Register Visitor</a></li> 
+                                      <li><a href="#checkIn" data-toggle='tab'>Check-In Visitor</a></li>
+                                      <li><a href="#regVisit" data-toggle='tab'>Register Visitor</a></li> 
                                       
                                     </ul>
                                   </div>
