@@ -9,13 +9,12 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
+    <link href="~/CSS/default.css" rel="stylesheet" />
 
 
 
-    <script type="text/javascript">
 
-        $('#navigatePage a:first').tab('show');
-    </script>
+   
 </head>
 <body>
    
@@ -32,7 +31,7 @@
                         </div>
                         <div class="collapse navbar-collapse" id="navbar">
                             <ul class="nav navbar-nav " id="navigatePage">
-                                <li>
+                                <li >
                                     <a href="#registration" data-toggle="tab">Registration
                                     </a>
                                 </li>
@@ -47,10 +46,10 @@
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="#">
-                                    <form id="form1" runat="server">
+                                <li><a id="logAnchor" href="#">
+                                    <form id="logbtn" runat="server">
                                         <div>
-                                            <asp:Button ID="logout" CssClass="btn" Text="logout" OnClick="logout_Click" runat="server" />
+                                           <label>Welcome, user</label>   <asp:Button ID="logout" CssClass="btn" Text="logout" OnClick="logout_Click" runat="server" />
                                         </div>
                                     </form>
                         
@@ -63,23 +62,49 @@
        
                 <div class="container">
 
-                    <div class="tab-content">
+                    <div class="tab-content maxHeight">
 
-                        <div class="tab-pane" id="registration">
-                            <p>isadosdoasjd</p>
+                        <div class="tab-pane maxHeight" id="registration">
+                           <div class="jumbotron maxHeight">
+                               <nav class="navbar navbar-default">
+                                  <div class="container-fluid ">
+                                    
+                                    <ul class="nav navbar-nav contentNav" style="margin-bottom:0;" id="regPageNavigation">
+                                      
+                                      <li class="active"><a href="#checkIn">Check-In Visitor</a></li>
+                                      <li><a href="#regVisit">Register Visitor</a></li> 
+                                      
+                                    </ul>
+                                  </div>
+                                </nav>
+                               <div class="tab-content maxHeight" >
+                                   <div class="tab-pane maxHeight" id="checkIn">
+                                       Test
+                                   </div>
+                                   <div class="tab-pane maxHeight" id="regVisit">
+                                       Test2
+                                   </div>
+                               </div>
+                           </div>
+                            <br />
+
                         </div>
 
                         <div class="tab-pane" id="formManagement">
-                            <p>isadosdoasjdakdadsdasjadslsdk</p>
+                            <p><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />isadosdoasjdakdadsdasjadslsdk</p>
                         </div>
 
                         <div class="tab-pane" id="userManagement">
-                            <p>oiafosdoiadsoadsij</p>
+                            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><p>oiafosdoiadsoadsij</p>
                         </div>
                     </div>
 
                 </div>
-            
-    </table>
+
+     <script type="text/javascript">
+
+         $('#navigatePage a:first').tab('show');
+         $('#regPageNavigation a:first').tab('show');
+    </script>   
 </body>
 </html>

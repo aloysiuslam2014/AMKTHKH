@@ -1,0 +1,42 @@
+﻿html,body {
+    text-align:center;
+    height:100%;
+    display:flex;
+    justify-content: center
+}
+
+body{
+    padding-top: 70px;
+}
+
+#logbtn{
+    margin-top: -5px;
+}
+#logout{
+    /*Adjust the button abit to be inline to the text welcome*/
+    margin-top: -3px;
+}
+
+#logAnchor{
+    height:50px;
+}
+
+.container{
+    height: calc(100% - 25px);
+   
+}
+.maxHeight{
+    height:100%;
+     margin-bottom:0;
+}
+
+.contentNav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+   text-align: center;
+}
+
+.contentCollapse {
+  text-align: center;
+}
