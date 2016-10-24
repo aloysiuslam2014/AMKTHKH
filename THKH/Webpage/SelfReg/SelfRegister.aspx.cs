@@ -14,6 +14,8 @@ namespace THKH.Webpage.SelfReg
             staticinfocontainer.Visible = false;
             newusercontent.Visible = false;
             existingusercontent.Visible = false;
+            submitNew.Visible = false;
+            submitExist.Visible = false;
         }
 
         protected void LinkButton1_Click(object sender, EventArgs e)
@@ -21,12 +23,14 @@ namespace THKH.Webpage.SelfReg
             PopulateNewUserForm();
             staticinfocontainer.Visible = true;
             newusercontent.Visible = true;
+            submitNew.Visible = true;
         }
 
         protected void LinkButton2_Click(object sender, EventArgs e)
         {
             staticinfocontainer.Visible = true;
             existingusercontent.Visible = true;
+            submitExist.Visible = true;
         }
 
         protected void PopulateNewUserForm()
@@ -37,6 +41,11 @@ namespace THKH.Webpage.SelfReg
         protected void SubmitExistNRIC(object sender, EventArgs e)
         {
             
+        }
+
+        protected void SubmitNewReg(object sender, EventArgs e)
+        {
+
         }
     }
 }

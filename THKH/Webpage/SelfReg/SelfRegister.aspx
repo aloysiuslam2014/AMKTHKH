@@ -16,18 +16,8 @@
         <div id="maincontainer" class="container-fluid" runat="server">
             <nav class="navbar navbar-default navbar-fixed-top">
                 <div class="container-fluid">
-
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-W1LfPbp4DDBf1">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
                         <a class="navbar-brand"><b>Thye Hua Kwan Hospital</b></a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="navbar">
-                        <ul class="nav navbar-nav " id="navigatePage">
-                        </ul>
                     </div>
                 </div>
             </nav>
@@ -35,7 +25,7 @@
             <br />
             <br />
             <a data-controls-modal="myModal" data-backdrop="static" data-keyboard="false" href="#">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Choose User</button>
+                <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#myModal">Choose User</button>
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -58,51 +48,121 @@
                         </div>
                     </div>
                 </div>
-                <div id="staticinfocontainer" class="container-fluid" runat="server">
-                    <div class="jumbotron">
-                        <h3>Static Questions</h3>
-                        <div id="newusercontent" class="container-fluid" runat="server">
-                            <div class="jumbotron">
-                                <h3>Personal Details</h3>
-                                <div class="form-group">
-                                    <asp:Label ID="lblname" Text="Name:" runat="server"></asp:Label>
-                                    <asp:TextBox runat="server" CssClass="form-control" ID="nameinput"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label for="emailinput">Email address:</label>
-                                    <asp:TextBox runat="server" CssClass="form-control" ID="emailinput"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nricinput">NRIC:</label>
-                                    <asp:TextBox runat="server" CssClass="form-control" ID="nricinput"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label for="mobileinput">Mobile Number:</label>
-                                    <asp:TextBox runat="server" CssClass="form-control" ID="mobileinput"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label for="homeinput">Home Number:</label>
-                                    <asp:TextBox runat="server" CssClass="form-control" ID="homeinput"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label for="addressinput">Address:</label>
-                                    <asp:TextBox runat="server" CssClass="form-control" ID="addressinput"></asp:TextBox>
-                                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div id="newusercontent" class="col-sm-6" runat="server">
+                            <h3>Personal Details</h3>
+                            <div class="form-group">
+                                <asp:Label ID="lblname" Text="Name:" runat="server"></asp:Label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="nameinput"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="emailinput">Email address:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="emailinput"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="nricinput">NRIC:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="nricinput"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="mobileinput">Mobile Number:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="mobileinput"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="homeinput">Home Number:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="homeinput"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="addressinput">Address:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="addressinput"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="postalinput">Postal Code:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="postalinput"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="sexinput">Gender:</label>
+                                <select class="form-control" id="sexinput">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nationalinput">Nationality:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="nationalinput"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="daterange">Date of Birth:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="daterange">01/01/2015 - 01/31/2015</asp:TextBox>
                             </div>
                         </div>
-                        <div id="existingusercontent" class="container-fluid" runat="server">
-                            <div class="jumbotron">
-                                <h3>Please Enter your NRIC</h3>
-                                <div class="form-group">
-                                    <label for="existnric">NRIC:</label>
-                                    <asp:TextBox runat="server" CssClass="form-control" ID="existnric"></asp:TextBox>
-                                    <asp:LinkButton ID="submitExistNricButton" CssClass="btn btn-success" runat="server" OnClick="SubmitExistNRIC">Submit</asp:LinkButton>
-                                </div>
+                        <div id="existingusercontent" class="col-sm-6" runat="server">
+                            <h3>Please Enter your NRIC</h3>
+                            <div class="form-group">
+                                <label for="existnric">NRIC:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="existnric"></asp:TextBox>
+                            </div>
+                        </div>
+                        <div id="staticinfocontainer" class="col-sm-6" runat="server">
+                            <h3>Visit Health Questionnaire</h3>
+                            <div class="form-group">
+                                <label for="wardno">Ward Number:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="wardno"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="wingno">Wing Number:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="wingno"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="cubno">Cubicle Number:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="cubno"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="bedno">Bed Number:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="bedno"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label for="visitbookingtime">Appointment Time:</label>
+                                <select class="form-control" id="visitbookingtime">
+                                    <option>0900</option>
+                                    <option>0930</option>
+                                    <option>1000</option>
+                                    <option>1030</option>
+                                    <option>1100</option>
+                                    <option>1130</option>
+                                    <option>1200</option>
+                                    <option>1230</option>
+                                    <option>1300</option>
+                                    <option>1330</option>
+                                    <option>1400</option>
+                                    <option>1430</option>
+                                    <option>1500</option>
+                                    <option>1530</option>
+                                    <option>1600</option>
+                                    <option>1630</option>
+                                    <option>1700</option>
+                                    <option>1730</option>
+                                    <option>1800</option>
+                                    <option>1830</option>
+                                    <option>1900</option>
+                                    <option>1930</option>
+                                    <option>2000</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="healthcheck">Past Medical Issues (In the last 6 months):</label>
+                                <asp:TextBox runat="server" CssClass="form-control" TextMode="MultiLine" Rows="5" ID="healthcheck"></asp:TextBox>
                             </div>
                         </div>
                     </div>
+                    <div id="submitExist"  runat="server" class="container-fluid">
+                        <asp:LinkButton ID="submitNricButton" CssClass="btn btn-success btn-block" runat="server" OnClick="SubmitExistNRIC">Submit</asp:LinkButton>
+                    </div>
+                    <div id="submitNew" runat="server" class="container-fluid">
+                        <asp:LinkButton ID="submitNewEntryButton" CssClass="btn btn-success btn-block" runat="server" OnClick="SubmitNewReg">Submit New Registration</asp:LinkButton>
+                    </div>
                 </div>
-        </div>
+                </div>
     </form>
     <script type="text/javascript">
         $(window).load(function () {
