@@ -65,9 +65,9 @@
                     <div class="tab-content maxHeight" id="generalContent">
 
                         <div class="tab-pane maxHeight" id="registration">
-                           <div class="jumbotron maxHeight">
+                            
                                <nav class="navbar navbar-default">
-                                  <div class="container-fluid " style="margin-top: 8px;">
+                                  <div class="container-fluid " style="margin-top: 4px;">
                                     
                                     <ul class="nav nav-pills contentNav" style="margin-bottom:0;" id="regPageNavigation">
                                       
@@ -85,7 +85,7 @@
                                          <div class="jumbotron maxHeight">Test2</div>
                                    </div>
                                </div>
-                           </div>
+                          =
                             <br />
 
                         </div>
