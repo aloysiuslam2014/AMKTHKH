@@ -10,6 +10,11 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
+    <style type="text/css">
+    .buttonedge {
+        border-top-left-radius: 4px; border-bottom-left-radius: 4px
+    }
+    </style>
 </head>
 <body>
     <form id="selfregistration" runat="server">
@@ -37,7 +42,7 @@
                             <div class="modal-body">
                                 <div class="btn-group">
                                     <%-- <button type="button" class="btn btn-primary" onclick="showNewContent()">New Visitor</button>--%>
-                                    <asp:LinkButton ID="NewVisitorButton" CssClass="btn btn-primary" runat="server" OnClick="LinkButton1_Click">New Visitor</asp:LinkButton>
+                                    <asp:LinkButton ID="NewVisitorButton" CssClass="btn btn-primary buttonedge" runat="server" OnClick="LinkButton1_Click">New Visitor</asp:LinkButton>
                                     <%--                            <button type="button" class="btn btn-primary" onclick="showExistContent()">Existing Visitor</button>--%>
                                     <asp:LinkButton ID="ExistingVisitorButton" runat="server" CssClass="btn btn-primary" OnClick="LinkButton2_Click">Existing Visitor</asp:LinkButton>
                                 </div>
@@ -51,6 +56,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div id="newusercontent" class="col-sm-6" runat="server">
+                            <div class="jumbotron">
                             <h3>Personal Details</h3>
                             <div class="form-group">
                                 <asp:Label ID="lblname" Text="Name:" runat="server"></asp:Label>
@@ -96,6 +102,7 @@
                                 <asp:TextBox runat="server" CssClass="form-control" ID="daterange">01/01/2015 - 01/31/2015</asp:TextBox>
                             </div>
                         </div>
+                            </div>
                         <div id="existingusercontent" class="col-sm-6" runat="server">
                             <h3>Please Enter your NRIC</h3>
                             <div class="form-group">
