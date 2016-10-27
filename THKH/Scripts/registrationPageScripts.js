@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    alert('worked');
+    
     // ajax call here
 });
 

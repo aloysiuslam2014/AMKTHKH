@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace THKH.Webpage.Staff
 {
@@ -51,12 +52,14 @@ namespace THKH.Webpage.Staff
             string connectionString = null;
             int rows = 0;
             SqlConnection cnn;
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=WARSHOCK\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             try
             {
-                SqlCommand command = new SqlCommand("SELECT * FROM [dbo].[staff] WHERE staff_id=@sid", cnn);
-                command.Parameters.AddWithValue("@sid", txtUserName.Value.ToString());
+                SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - login]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
+                command.Parameters.AddWithValue("@pPassword", ComputeHash(txtUserPass.Value.ToString()));
                 cnn.Open();
                 //rows = command.ExecuteNonQuery();
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -80,12 +83,25 @@ namespace THKH.Webpage.Staff
             return true;
         }
 
-        public static string ComputeHash(string plainText,
-                                     string hashAlgorithm,
-                                     byte[] saltBytes)
+        private string ComputeHash(string plainText)
         {
+            string hash = "";
+            SHA512 alg = SHA512.Create();
+            byte[] result = alg.ComputeHash(Encoding.UTF8.GetBytes(plainText));
+            hash = HexStringFromBytes(result);
 
-            return "";
+            return "0x"+hash.ToUpper();
         }
+
+        public string HexStringFromBytes(byte[] bytes)
+        {
+            var sb = new StringBuilder();
+            foreach (byte b in bytes)
+            {
+                var hex = b.ToString("x2");
+                sb.Append(hex);
+            }
+            return sb.ToString();
         }
+    }
 }

@@ -51,7 +51,7 @@
                         <form id="logbtn" runat="server">
                             <div>
                                 <label>Welcome, user</label>
-                                <asp:Button ID="logout" CssClass="btn" Text="logout" OnClick="logout_Click" runat="server" />
+                                <asp:Button id="logout" class="btn" Text="logout" OnClick="logout_Click" runat="server" />
                             </div>
                         </form>
 
@@ -107,7 +107,108 @@
                     </div>
 
                     <div class="tab-pane maxHeight" id="regVisit">
-                        <div class="jumbotron maxHeight">Test2</div>
+                        <div class="row maxHeight" style="overflow-y:auto">
+                          <div id="newusercontent" class="col-sm-6" runat="server">
+                            <div class="jumbotron">
+                            <h3>Personal Details</h3>
+                            <div class="form-group">
+                                <asp:Label id="lblname" Text="Name:" runat="server"></asp:Label>
+                                <input type="text" runat="server" class="form-control" id="namesInput" />
+                            </div>
+                            <div class="form-group">
+                                <label for="emailinput">Email address:</label>
+                                <input type="text" runat="server" class="form-control" id="emailsInput"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="nricinput">NRIC:</label>
+                                <input type="text" runat="server" class="form-control" id="nricsInput"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="mobileinput">Mobile Number:</label>
+                                <input type="text" runat="server" class="form-control" id="mobilesInput"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="homeinput">Home Number:</label>
+                                <input type="text" runat="server" class="form-control" id="homesInput"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="addressinput">Address:</label>
+                                <input type="text" runat="server" class="form-control" id="addresssInput"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="postalinput">Postal Code:</label>
+                                <input type="text" runat="server" class="form-control" id="postalsInput"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="sexinput">Gender:</label>
+                                <select class="form-control" id="sexinput">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nationalinput">Nationality:</label>
+                                <input type="text" runat="server" class="form-control" id="nationalsInput"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="daterange">Date of Birth:</label>
+                                <input type="text" runat="server" class="form-control" id="datesRange" value="01/01/2015 - 01/31/2015"/>
+                            </div>
+                        </div>
+                            </div>
+                        <div id="staticinfocontainer" class="col-sm-6" runat="server">
+                            <h3>Visit Health Questionnaire</h3>
+                            <div class="form-group">
+                                <label for="wardno">Ward Number:</label>
+                                 <input type="text" runat="server" class="form-control" id="wardno"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="wingno">Wing Number:</label>
+                                 <input type="text" runat="server" class="form-control" id="wingno"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="cubno">Cubicle Number:</label>
+                                 <input type="text" runat="server" class="form-control" id="cubno"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="bedno">Bed Number:</label>
+                                 <input type="text" runat="server" class="form-control" id="bedno"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="visitbookingtime">Appointment Time:</label>
+                                <select class="form-control" id="visitbookingtime">
+                                    <option>0900</option>
+                                    <option>0930</option>
+                                    <option>1000</option>
+                                    <option>1030</option>
+                                    <option>1100</option>
+                                    <option>1130</option>
+                                    <option>1200</option>
+                                    <option>1230</option>
+                                    <option>1300</option>
+                                    <option>1330</option>
+                                    <option>1400</option>
+                                    <option>1430</option>
+                                    <option>1500</option>
+                                    <option>1530</option>
+                                    <option>1600</option>
+                                    <option>1630</option>
+                                    <option>1700</option>
+                                    <option>1730</option>
+                                    <option>1800</option>
+                                    <option>1830</option>
+                                    <option>1900</option>
+                                    <option>1930</option>
+                                    <option>2000</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="healthcheck">Past Medical Issues (In the last 6 months):</label>
+                                 <textarea runat="server" class="form-control" TextMode="MultiLine" Rows="5" id="healthcheck"/>
+                            </div>
+                        </div>
+
+                        </div>
                     </div>
                 </div>
 
