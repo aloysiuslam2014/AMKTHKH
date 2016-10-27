@@ -88,6 +88,7 @@
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\registrationPageScripts.js" />
     <Content Include="Webpage\SelfReg\SelfRegister.aspx" />
     <Content Include="Webpage\Staff\Default.aspx" />
     <Content Include="Webpage\Staff\Login.aspx" />

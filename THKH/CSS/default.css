@@ -22,7 +22,7 @@ body{
     height:50px;
 }
 
-.container{
+.containerMain{
     height: calc(100% - 25px);
    width:100%;
 }
@@ -34,11 +34,15 @@ body{
 .navbar-default{
     margin-bottom:0;
 }
+/*Above are general settings*/
 
-#regContent{
-    height:95%;
+/*For Content settings*/
+
+
+.vertical-center {
+  display: flex;
+  align-items: center;
 }
-
 .contentNav {
   display: inline-block;
   float: none;
@@ -47,11 +51,37 @@ body{
    margin-bottom:0;
 }
 .tab-content {
-    border: 1px solid #ddd;
     width:100%;
-   
+    border-radius:6px;
+}
+
+.tab-content-main{
+    border:1px solid #ddd;
 }
 
 .contentCollapse {
   text-align: center;
 }
+
+.padRows{
+    margin:20px !important ;
+}
+
+.toHoldElementsInContainer{
+    width:100%;
+    margin-top: 10px;
+}
+/*End Main Content Settings*/
+
+/*For registration self register portion*/
+#regContent{
+    height:92%;
+}
+
+#tempField{
+    display:none;
+}
+.userDetails{
+    height:300px;
+}
+/*End registration self register portion*/
