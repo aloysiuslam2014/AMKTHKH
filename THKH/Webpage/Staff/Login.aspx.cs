@@ -53,6 +53,7 @@ namespace THKH.Webpage.Staff
             int rows = 0;
             SqlConnection cnn;
             connectionString = "Data Source=WARSHOCK\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             try
             {
