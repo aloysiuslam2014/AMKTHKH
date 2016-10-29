@@ -51,24 +51,39 @@ namespace THKH.Webpage.Staff
             //Assume for now the user and pass checks out. Create the cookie
             string connectionString = null;
             int rows = 0;
+            string saltString = "";
             SqlConnection cnn;
-            connectionString = "Data Source=WARSHOCK\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
-            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            //connectionString = "Data Source=WARSHOCK\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             try
             {
+                SqlCommand commandSalt = new SqlCommand("[dbo].[SELECT FROM - staff_salt]", cnn);
+                commandSalt.CommandType = System.Data.CommandType.StoredProcedure;
+                commandSalt.Parameters.AddWithValue("@pStaffId", txtUserName.Value.ToString());
+                //command.Parameters.AddWithValue("@pPassword", txtUserPass.Value.ToString());
+                //command.Parameters.AddWithValue("@pSalt", saltString);
+                cnn.Open();
+
+                using (SqlDataReader reader = commandSalt.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        saltString = reader.GetGuid(0).ToString().ToUpper();
+                    }
+                }
+
                 SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - login]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
-                command.Parameters.AddWithValue("@pPassword", ComputeHash(txtUserPass.Value.ToString()));
-                cnn.Open();
-                //rows = command.ExecuteNonQuery();
+                command.Parameters.AddWithValue("@pStaffId", txtUserName.Value.ToString());
+                command.Parameters.AddWithValue("@pPassword", txtUserPass.Value.ToString());
+                command.Parameters.AddWithValue("@pSalt", saltString);
+                //cnn.Open();
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         rows++;
-                        //Get Salt Hash txtPwd with Salt using SHA2-512 & compare hash values
                     }
                 }
                 cnn.Close();
