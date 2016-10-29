@@ -14,21 +14,21 @@
     .buttonedge {
         border-top-left-radius: 4px; border-bottom-left-radius: 4px
     }
-        .navbar-header {
-        display: inline-block;
-      float: none;
-      vertical-align: top;
-       text-align: center;
-       margin-bottom:0;
-        }
+    .contentNav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+   text-align: center;
+   margin-bottom:0;
+}
     </style>
 </head>
 <body>
     <form id="selfregistration" runat="server">
         <div id="maincontainer" class="container-fluid" runat="server">
             <nav class="navbar navbar-default navbar-fixed-top">
-                <div class="container-fluid">
-                    <div class="navbar-header">
+                <div class="container-fluid contentNav">
+                    <div class="navbar-header ">
                         <a class="navbar-brand"><b>Thye Hua Kwan Hospital</b></a>
                     </div>
                 </div>
