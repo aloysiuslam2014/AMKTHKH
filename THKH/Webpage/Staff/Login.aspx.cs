@@ -87,5 +87,33 @@ namespace THKH.Webpage.Staff
 
             return "";
         }
+
+        //public static void createUser() { //Stored Procedure
+        //    string connectionString = null;
+        //    SqlConnection cnn;
+        //    connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+        //    cnn = new SqlConnection(connectionString);
+        //    try
+        //    {
+        //        SqlCommand command = new SqlCommand("[dbo].[INSERT INTO  - staff]", cnn);
+        //        command.CommandType = System.Data.CommandType.StoredProcedure;
+        //        //command.Parameters.Add("@sid", txtUserName.Value.ToString());
+        //        cnn.Open();
+        //        //rows = command.ExecuteNonQuery();
+        //        using (SqlDataReader reader = command.ExecuteReader())
+        //        {
+        //            while (reader.Read())
+        //            {
+        //                //rows++;
+        //                //Get Salt Hash txtPwd with Salt using SHA2-512 & compare hash values
+        //            }
+        //        }
+        //        cnn.Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return false;
+        //    }
+        //}
         }
 }

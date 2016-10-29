@@ -99,7 +99,7 @@
                                 <div class="row padRows">
                                     <div class="col-lg-10 col-lg-offset-1">
                                         <div id="Details" class="form-control userDetails" >Waiting for input</div>
-
+                                        
                                     </div>
                                 </div>
                             </div>

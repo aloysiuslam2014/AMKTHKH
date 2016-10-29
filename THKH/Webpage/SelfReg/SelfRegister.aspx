@@ -14,6 +14,13 @@
     .buttonedge {
         border-top-left-radius: 4px; border-bottom-left-radius: 4px
     }
+        .navbar-header {
+        display: inline-block;
+      float: none;
+      vertical-align: top;
+       text-align: center;
+       margin-bottom:0;
+        }
     </style>
 </head>
 <body>
