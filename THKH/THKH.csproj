@@ -99,6 +99,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="Webpage\Staff\CheckInOut\CheckIn.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -111,6 +112,9 @@
     </Compile>
     <Compile Include="Webpage\SelfReg\SelfRegister.aspx.designer.cs">
       <DependentUpon>SelfRegister.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Webpage\Staff\CheckInOut\CheckIn.ashx.cs">
+      <DependentUpon>CheckIn.ashx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Staff\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -129,7 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SQL Script\" />
-    <Folder Include="Webpage\Staff\CheckInOut\" />
     <Folder Include="Webpage\Staff\Register\" />
     <Folder Include="Webpage\Staff\UpdateAccount\" />
     <Folder Include="Webpage\Staff\UpdateQuestionaires\" />

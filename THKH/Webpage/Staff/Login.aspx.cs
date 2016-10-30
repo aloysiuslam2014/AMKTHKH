@@ -51,10 +51,10 @@ namespace THKH.Webpage.Staff
             //Assume for now the user and pass checks out. Create the cookie
             string connectionString = null;
             int rows = 0;
-            string saltString = "";
+             
             SqlConnection cnn;
-            //connectionString = "Data Source=WARSHOCK\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             try {
                 SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - login]", cnn);
