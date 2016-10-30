@@ -4,12 +4,11 @@
 });
 
 function callCheck (){
-    
-    alert(nric.value);
     //Do ajax call
-    var headersToProcess = {  messages: "Hi i was sent to and back" }; //Store objects in this manner 
-    var nricValue = nric.value.toString;
 
+    var nricValue = nric.value;
+    var msg;
+    var headersToProcess = { nric: nricValue }; //Store objects in this manner 
     $.ajax({
         url: './CheckInOut/checkIn.ashx',
         method: 'post',
@@ -19,19 +18,81 @@ function callCheck (){
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result == "Success") {
-                alert(resultOfGeneration.Msg);
+                DataExists(resultOfGeneration.Msg.split(','));
+            } else {
+                DataNoExists();
             }
         },
         error: function (err) {
         },
     });
     dataFound = true;
-    //If data was returned , populate the text area and reveal temp box else declare that user not found
-    if (dataFound) {
-        obj = $('#tempField')
-        obj.css("display", "block");
-        alert(nric.value);
-    } else {
-        $('#Details').innerHTML = "Visitor Not Found. Please register the visitor.";
-    }
+}
+
+function DataExists(arr) {
+    var htmStr = "";
+    var count = 0;
+    arr.forEach(function (element) {
+        htmStr += "<br/>" + element
+    });
+    $('#Details').html(htmStr);
+    $('#Details').css("display", "block");
+    $('#tempField').css("display", "block");
+}
+
+function DataNoExists() {
+    $('#Details').html("Visitor Not Found. Please register the visitor.");
+}
+
+function CheckIn() {
+    var temper = temp.value;
+    var check = "true";
+    var headersToProcess = { nric: nric.value, temperature: temper };
+    $.ajax({
+        url: './CheckInOut/checkIn.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            $('#Details').html(resultOfGeneration.Msg);
+            $('#Details').css("display", "block");
+        },
+        error: function (err) {
+        },
+    });
+    dataFound = true;
+}
+
+function NewAssistReg() {
+    var fname = document.getElementById("namesInput").value;
+    var lname = document.getElementById("namesInput").value;
+    var snric = document.getElementById("nricsInput").value;
+    var address = document.getElementById("addresssInput").value;
+    var postal = document.getElementById("postalsInput").value;
+    var mobtel = document.getElementById("mobilesInput").value;
+    var alttel = "235";
+    var hometel = "672";
+    var sex = "M";
+    var nationality = document.getElementById("nationalsInput").value;
+    var dob = document.getElementById("datesRange").value;
+    var race = "Chinese";
+    var age = 23;
+    var Email = "hello";
+
+    var headersToProcess = { firstName: fname, lastName: lname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email, AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age };
+    $.ajax({
+        url: './CheckInOut/checkIn.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            alert(resultOfGeneration.Msg);
+        },
+        error: function (err) {
+        },
+    });
 }

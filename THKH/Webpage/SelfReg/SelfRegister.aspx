@@ -49,7 +49,7 @@
                             <div class="modal-body">
                                 <div class="btn-group">
                                     <%-- <button type="button" class="btn btn-primary" onclick="showNewContent()">New Visitor</button>--%>
-                                    <asp:LinkButton ID="NewVisitorButton" CssClass="btn btn-primary buttonedge" runat="server" OnClick="LinkButton1_Click">New Visitor</asp:LinkButton>
+                                    <asp:LinkButton ID="NewVisitorButton" CssClass="btn btn-primary buttonedge" runat="server" OnClick="LinkButton1_Click" OnClientClick="isNew.value=1;">New Visitor</asp:LinkButton>
                                     <%--                            <button type="button" class="btn btn-primary" onclick="showExistContent()">Existing Visitor</button>--%>
                                     <asp:LinkButton ID="ExistingVisitorButton" runat="server" CssClass="btn btn-primary" OnClick="LinkButton2_Click">Existing Visitor</asp:LinkButton>
                                 </div>
@@ -209,5 +209,7 @@
         }
 
     </script>
+
+    <input type="hidden" id="isNew" value="0" runat="server">
 </body>
 </html>
