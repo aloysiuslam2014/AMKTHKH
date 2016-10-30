@@ -50,7 +50,7 @@ createdBy VARCHAR(100)); -- Logged in staff_id or null if self-register
 -- To Store Staff Data
 
 CREATE TABLE stepwise.dbo.staff
-(staff_id INT PRIMARY KEY NOT NULL,
+(staff_id VARCHAR(50) PRIMARY KEY NOT NULL,
 firstName VARCHAR(200) NOT NULL,
 lastName VARCHAR(200) NOT NULL,
 nric VARCHAR(100) NOT NULL,
@@ -141,7 +141,7 @@ answer VARCHAR(1000) NOT NULL);
 GO
 CREATE PROCEDURE [dbo].[INSERT INTO  - staff]
 
-    @pLogin					INT, 
+    @pStaff_Id				VARCHAR(50), 
     @pPassword				NVARCHAR(50),
     @pFirstName				VARCHAR(200), 
     @pLastName				VARCHAR(200),
@@ -176,7 +176,7 @@ BEGIN
         INSERT INTO staff (staff_id, firstName, lastName, nric, address, postalCode, homeTel, altTel,
 		mobTel, email, sex, nationality, dateOfBirth, age, race, PasswordHash, Salt, permission,
 		position, dateCreated, dateUpdated, createdBy)
-        VALUES(@pLogin, @pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
+        VALUES(@pStaff_Id, @pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
 		@pMobileTel, @pEmail, @pSex, @pNationality, @pDOB, @pAge, @pRace, 
 		HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))), @salt, @pPermission ,@pPostion, GETDATE(),
 		GETDATE(), @pCreatedBy)
@@ -193,29 +193,94 @@ END;
 
 
 
+
+-- Validate Staff Login
 GO
-CREATE PROCEDURE [dbo].[SELECT FROM - login] --You can use a User-defined function or a view instead of a procedure.
-    @pNric NVARCHAR(254),
+CREATE PROCEDURE [dbo].[SELECT FROM - login]
+    @pStaffId VARCHAR(50),
     @pPassword NVARCHAR(50),
+	@pSalt NVARCHAR(36),
     @responseMessage NVARCHAR(250)='' OUTPUT
 AS
 BEGIN
 
     SET NOCOUNT ON
-
     DECLARE @userID INT
 
-    IF EXISTS (SELECT TOP 1 staff_id FROM dbo.staff WHERE nric=@pNric)
+    IF EXISTS (SELECT TOP 1 nric FROM dbo.staff WHERE staff_id = @pStaffId)
     BEGIN
-        SET @userID=(SELECT staff_id FROM dbo.staff WHERE nric=@pNric AND PasswordHash=HASHBYTES('SHA2_512', @pPassword+CAST(Salt AS NVARCHAR(36))))
+        SET @userID = (SELECT TOP 1 nric 
+		FROM [dbo].[staff] 
+		WHERE staff_id = @pStaffId AND PasswordHash = HASHBYTES('SHA2_512', @pPassword + CAST(@pSalt AS NVARCHAR(36))))
 
        IF(@userID IS NULL)
            SET @responseMessage='Incorrect password'
        ELSE 
            SET @responseMessage='User successfully logged in'
+		   SELECT TOP 1 nric 
+		FROM [dbo].[staff] 
+		WHERE staff_id = @pStaffId AND PasswordHash = HASHBYTES('SHA2_512', @pPassword + CAST(@pSalt AS NVARCHAR(36)))
     END
     ELSE
        SET @responseMessage='Invalid login'
 END;
 
+-- Get salt procedure
+GO
+CREATE PROCEDURE [dbo].[SELECT FROM - staff_salt]
+	@pStaffId VARCHAR(50)
 
+	AS
+	BEGIN
+		SET NOCOUNT ON
+
+	DECLARE @salt NVARCHAR(36)
+
+	SELECT TOP 1 salt FROM dbo.staff WHERE staff_id = @pStaffId
+    
+END;
+
+-- Procedures for adding user and logging in
+GO
+CREATE PROCEDURE [dbo].[INSERT INTO  - visitor]
+
+	@pVisitor_id INT,
+	@pFirstName VARCHAR(200),
+	@pLastName VARCHAR(200),
+	@pNric VARCHAR(100),
+	@pAddress VARCHAR(300),
+	@pPostal INT,
+	@pHomeTel VARCHAR(100), -- Visitors may not be from Singapore so no +65
+	@pAltTel VARCHAR(100) = NULL,
+	@pMobTel VARCHAR(100),
+	@pEmail VARCHAR(200),
+	@pSex CHAR(50),
+	@pNationality VARCHAR(100),
+	@pDOB DATE = '09/08/1965',
+	@pAge INT,
+	@prace VARCHAR(150),
+	-- @pdateCreated DATETIME,
+	-- @pdateUpdated DATETIME,
+	@pcreatedBy VARCHAR(100) = 'MASTER',
+	@pResponseMessage NVARCHAR(250) OUTPUT
+
+AS
+
+BEGIN
+
+    SET NOCOUNT ON
+    BEGIN TRY
+
+        INSERT INTO visitor (visitor_id, firstName, lastName, nric, address, postalCode, homeTel, altTel,
+		mobTel, email, sex, nationality, dateOfBirth, age, race, dateCreated, dateUpdated, createdBy)
+        VALUES(@pVisitor_id, @pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
+		@pMobTel, @pEmail, @pSex, @pNationality, @pDOB, @pAge, @pRace, GETDATE(), GETDATE(), @pCreatedBy)
+
+       SET @pResponseMessage='Success'
+
+    END TRY
+    BEGIN CATCH
+        SET @pResponseMessage=ERROR_MESSAGE() 
+    END CATCH
+
+END;

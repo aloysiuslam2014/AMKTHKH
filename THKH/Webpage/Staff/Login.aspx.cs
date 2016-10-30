@@ -8,8 +8,6 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
-using System.Data;
-
 
 namespace THKH.Webpage.Staff
 {
@@ -53,34 +51,34 @@ namespace THKH.Webpage.Staff
             //Assume for now the user and pass checks out. Create the cookie
             string connectionString = null;
             int rows = 0;
+            string saltString = "";
             SqlConnection cnn;
-            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
-            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            //connectionString = "Data Source=WARSHOCK\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
-            try
-            {
+            try {
                 SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - login]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
                 command.Parameters.AddWithValue("@pPassword", ComputeHash(txtUserPass.Value.ToString()));
-               
+
                 cnn.Open();
-                Object[] test ;
-                
+                Object[] test;
+
                 //rows = command.ExecuteNonQuery();
                 using (SqlDataReader reader = command.ExecuteReader())
+            {
+                test = new Object[reader.FieldCount];
+                while (reader.Read())
                 {
-                    
-                    while (reader.Read())
-                    {
-                        
-                        reader.GetValues(test);
-                        rows++;
-                        //Get Salt Hash txtPwd with Salt using SHA2-512 & compare hash values
-                    }
+
+                    reader.GetValues(test);
+                    rows++;
+                    //Get txtPwd with Salt using SHA2-512 & compare hash values
                 }
-                cnn.Close();
-                test=new Object[0];
+            }
+            cnn.Close();
+                 test = new Object[0];
             }
             catch (Exception ex)
             {
@@ -98,7 +96,7 @@ namespace THKH.Webpage.Staff
             string hash = "";
             SHA512 alg = SHA512.Create();
             byte[] result = alg.ComputeHash(Encoding.UTF8.GetBytes(plainText));
-            hash = HexStringFromBytes(result);
+          
 
             return result;
         }
