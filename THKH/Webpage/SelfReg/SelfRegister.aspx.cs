@@ -79,7 +79,7 @@ namespace THKH.Webpage.SelfReg
                         //send registration to database
                     }
                     else {
-                        errorMsg.InnerText = "This NRIC has not registered before, please register as a new visitor.";
+                        //errorMsg.InnerText = "This NRIC has not registered before, please register as a new visitor.";
                     }
                 }
                 catch (Exception ex)
@@ -92,7 +92,7 @@ namespace THKH.Webpage.SelfReg
                 }
             }
             else {
-                errorMsg.InnerText = "Invalid Username/Password. Please try again.";
+                //errorMsg.InnerText = "Invalid Username/Password. Please try again.";
             }
         }
 

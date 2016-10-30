@@ -93,7 +93,8 @@
                                 </div>
                                 <div class=" row padRows" id="tempField" >
                                     <div class="col-lg-4 col-lg-offset-4">
-                                        Temperature:<input runat="server" id="temp" class="form-control" type="text" /><input class="btn btn-default" type="submit" id="checkInBtn" runat="server" onclick="checkIn(nric.value); false;" value="Check-In" />
+                                        Temperature:<input runat="server" id="temp" class="form-control" type="text" />
+                                        <input class="btn btn-default" type="submit" id="checkInBtn" runat="server" onclick="CheckIn(); false;" value="Check-In" />
                                     </div>
                                 </div>
                                 <div class="row padRows">
@@ -106,7 +107,7 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane maxHeight" id="regVisit">
+                    <div class="tab-pane maxHeight" id="regVisit" runat="server">
                         <div class="row maxHeight" style="overflow-y:auto">
                           <div id="newusercontent" class="col-sm-6" runat="server">
                             <div class="jumbotron">
@@ -152,7 +153,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="daterange">Date of Birth:</label>
-                                <input type="text" runat="server" class="form-control" id="datesRange" value="01/01/2015 - 01/31/2015"/>
+                                <input type="text" runat="server" class="form-control" id="datesRange" value="1965-08-09"/>
                             </div>
                         </div>
                             </div>
@@ -209,6 +210,7 @@
                         </div>
 
                         </div>
+                        <input class="btn btn-default" type="submit" id="submitNewEntry" runat="server" onclick="NewAssistReg(); false;" value="Submit" />
                     </div>
                 </div>
 

@@ -27,7 +27,7 @@ USE stepwise;
 
 
 CREATE TABLE stepwise.dbo.visitor
-(visitor_id INT PRIMARY KEY NOT NULL,
+(visitor_id INT IDENTITY(1,1) PRIMARY KEY NOT NULL, -- Changed to self incremental value
 firstName VARCHAR(200) NOT NULL,
 lastName VARCHAR(200) NOT NULL,
 nric VARCHAR(100) NOT NULL,
@@ -83,7 +83,7 @@ activated INT NOT NULL);
 -- To Store Visit Details
 GO
 CREATE TABLE stepwise.dbo.visit_details
-(visit_id INT PRIMARY KEY NOT NULL,
+(visit_id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 cicoid INT NOT NULL,
 visitor_id INT NOT NULL,
 visitTime DATETIME NOT NULL, --Patient can request for a visit time? Yes. Timeouts will occur if the patient is late by 15 mins for now
@@ -98,7 +98,7 @@ dateCreated DATETIME NOT NULL);
 -- To Store Check-in Details
 GO
 CREATE TABLE stepwise.dbo.check_in_out
-(cicoid INT PRIMARY KEY,
+(cicoid INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 nric VARCHAR(100) NOT NULL,
 temperature VARCHAR(100) NOT NULL,
 staff_id INT NOT NULL,
@@ -111,7 +111,7 @@ checkoutTime DATETIME);
 -- To Store Movement Details
 GO
 CREATE TABLE stepwise.dbo.movementTable
-(moveid INT PRIMARY KEY NOT NULL,
+(moveid INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 nric VARCHAR(100) NOT NULL,
 cicoid INT NOT NULL,
 checkpointtimeid VARCHAR(500) NOT NULL); -- stored in the following format [timestamp]:LID
@@ -119,7 +119,7 @@ checkpointtimeid VARCHAR(500) NOT NULL); -- stored in the following format [time
 -- To Store Form Question IDs
 GO
 CREATE TABLE stepwise.dbo.form_qns
-(qnid INT PRIMARY KEY NOT NULL,
+(qnid INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 question VARCHAR(500) NOT NULL,
 optionstype INT NOT NULL);
 
@@ -224,7 +224,7 @@ END
 GO
 CREATE PROCEDURE [dbo].[INSERT INTO  - Registration]
 
-	@pVisitor_id INT,
+	--@pVisitor_id INT,
 	@pFirstName VARCHAR(200),
 	@pLastName VARCHAR(200),
 	@pNric VARCHAR(100),
@@ -261,9 +261,9 @@ BEGIN
 		END CATCH	
 	ELSE
 		BEGIN TRY
-			INSERT INTO visitor (visitor_id, firstName, lastName, nric, address, postalCode, homeTel, altTel,
+			INSERT INTO visitor (firstName, lastName, nric, address, postalCode, homeTel, altTel,
 			mobTel, email, sex, nationality, dateOfBirth, age, race, dateCreated, dateUpdated, createdBy)
-			VALUES(@pVisitor_id, @pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
+			VALUES(@pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
 			@pMobTel, @pEmail, @pSex, @pNationality, @pDOB, @pAge, @pRace, GETDATE(), GETDATE(), @pCreatedBy)
 
 			SET @pResponseMessage='Success'
@@ -360,26 +360,21 @@ END;
 GO
 CREATE PROCEDURE [dbo].[INSERT INTO  - First_Check_In]
 
-	@pCicoid INT,
 	@pNric VARCHAR(100),
 	@pTemperature VARCHAR(100),
 	@pStaff_id INT,
 	@pVisit_id INT,
 	@pCheckinlid INT, -- Can be 1=Entrance, 2=Ward 1 & 4=Exit
-	@pCheckinTime DATETIME,
-	@pCheckoutlid INT,
-	@pCheckoutTime DATETIME,
 	@pResponseMessage NVARCHAR(250) OUTPUT
 AS
 
 BEGIN
     SET NOCOUNT ON
-
     BEGIN TRY
-        INSERT INTO check_in_out (cicoid, nric, temperature, staff_id, visit_id, checkinlid, 
+        INSERT INTO check_in_out (nric, temperature, staff_id, visit_id, checkinlid, 
 								  checkinTime, checkoutlid, checkoutTime)
-        VALUES(@pCicoid, @pNric, @pTemperature, @pStaff_id, @pVisit_id, @pCheckinlid, @pCheckinTime, 
-			   @pCheckoutlid, @pCheckoutTime)
+        VALUES(@pNric, @pTemperature, @pStaff_id, @pVisit_id, @pCheckinlid, GETDATE(), 
+			   NULL, NULL)
 
        SET @pResponseMessage='Success'
     END TRY
@@ -423,8 +418,7 @@ BEGIN
 
     BEGIN TRY
         UPDATE check_in_out 
-		SET cicoid = @pCicoid, 
-			staff_id = @pStaff_id, 
+		SET staff_id = @pStaff_id, -- Removed CICOID as it is self incremental
 			temperature = @pTemperature,
 			checkinlid = @pCheckinlid, 
 			checkinTime = @pCheckinTime, 
