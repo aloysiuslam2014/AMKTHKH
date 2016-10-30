@@ -86,7 +86,7 @@
                             <div class="toHoldElementsInContainer">
                                 <div class="row padRows form-horizontal">
                                     <div class=" col-lg-4 col-lg-offset-4">
-
+                                        
                                         <label class="control-label" for="nric">Visitor's NRIC:</label><input runat="server" id="nric" onchange="callCheck(); false;" class="form-control" type="text" />
                                         <input class="btn btn-default" type="submit" id="submitNricBtn" onclick="callCheck(); false;" runat="server" value="submit" />
                                     </div>
@@ -254,6 +254,7 @@
 
         $('#navigatePage a:first').tab('show');
         $('#regPageNavigation a:first').tab('show');
+        nric.value.toString();
     </script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/registrationPageScripts.js") %>"></script>
 </body>
