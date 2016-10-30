@@ -56,37 +56,29 @@ namespace THKH.Webpage.Staff
             //connectionString = "Data Source=WARSHOCK\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
             connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
-            try
-            {
-                SqlCommand commandSalt = new SqlCommand("[dbo].[SELECT FROM - staff_salt]", cnn);
-                commandSalt.CommandType = System.Data.CommandType.StoredProcedure;
-                commandSalt.Parameters.AddWithValue("@pStaffId", txtUserName.Value.ToString());
-                //command.Parameters.AddWithValue("@pPassword", txtUserPass.Value.ToString());
-                //command.Parameters.AddWithValue("@pSalt", saltString);
-                cnn.Open();
-
-                using (SqlDataReader reader = commandSalt.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        saltString = reader.GetGuid(0).ToString().ToUpper();
-                    }
-                }
-
+            try {
                 SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - login]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pStaffId", txtUserName.Value.ToString());
-                command.Parameters.AddWithValue("@pPassword", txtUserPass.Value.ToString());
-                command.Parameters.AddWithValue("@pSalt", saltString);
-                //cnn.Open();
+                command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
+                command.Parameters.AddWithValue("@pPassword", ComputeHash(txtUserPass.Value.ToString()));
+
+                cnn.Open();
+                Object[] test;
+
+                //rows = command.ExecuteNonQuery();
                 using (SqlDataReader reader = command.ExecuteReader())
+            {
+                test = new Object[reader.FieldCount];
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        rows++;
-                    }
+
+                    reader.GetValues(test);
+                    rows++;
+                    //Get txtPwd with Salt using SHA2-512 & compare hash values
                 }
-                cnn.Close();
+            }
+            cnn.Close();
+                 test = new Object[0];
             }
             catch (Exception ex)
             {
@@ -99,14 +91,14 @@ namespace THKH.Webpage.Staff
             return true;
         }
 
-        private string ComputeHash(string plainText)
+        private byte[] ComputeHash(string plainText)
         {
             string hash = "";
             SHA512 alg = SHA512.Create();
             byte[] result = alg.ComputeHash(Encoding.UTF8.GetBytes(plainText));
-            hash = HexStringFromBytes(result);
+          
 
-            return "0x"+hash.ToUpper();
+            return result;
         }
 
         public string HexStringFromBytes(byte[] bytes)
