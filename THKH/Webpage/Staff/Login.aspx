@@ -23,7 +23,7 @@
             <tr><td class=""><b>Password:</b></td><td><input id="txtUserPass" class="txbox" type="password" runat="server" /></td></tr>
             <tr><td colspan="2" align="center">
                 <asp:Button type="submit" Text="Login" runat="server" id="loginSubmit" OnClick="loginSubmit_Click" class="btn" />
-                <asp:Button type="submit" Text="Check-In Terminal" runat="server" id="Button1" OnClick="loginSubmit_Click" class="btn" />
+                <asp:Button type="submit" Text="Check-In Terminal" runat="server" id="checkInTerminal" OnClick="checkInTerminal_Click" class="btn" />
                 </td></tr>
             <tr><td colspan="2" align="center"><label id="errorMsg" runat="server" ></label></td></tr>
         </table>

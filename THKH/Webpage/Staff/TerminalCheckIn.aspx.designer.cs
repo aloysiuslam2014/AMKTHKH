@@ -10,60 +10,42 @@
 namespace THKH.Webpage.Staff {
     
     
-    public partial class Login {
+    public partial class TerminalCheckIn {
         
         /// <summary>
-        /// login control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm login;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// txtUserName control.
+        /// newusercontent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txtUserName;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl newusercontent;
         
         /// <summary>
-        /// txtUserPass control.
+        /// staticinfocontainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputPassword txtUserPass;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl staticinfocontainer;
         
         /// <summary>
-        /// loginSubmit control.
+        /// wardno control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button loginSubmit;
-        
-        /// <summary>
-        /// checkInTerminal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button checkInTerminal;
-        
-        /// <summary>
-        /// errorMsg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl errorMsg;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText wardno;
     }
 }
