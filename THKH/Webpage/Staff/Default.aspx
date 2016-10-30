@@ -87,7 +87,7 @@
                                 <div class="row padRows form-horizontal">
                                     <div class=" col-lg-4 col-lg-offset-4">
 
-                                        <label class="control-label" for="nric">Visitor's NRIC:</label><input runat="server" id="nric" class="form-control" type="text" />
+                                        <label class="control-label" for="nric">Visitor's NRIC:</label><input runat="server" id="nric" onchange="callCheck(); false;" class="form-control" type="text" />
                                         <input class="btn btn-default" type="submit" id="submitNricBtn" onclick="callCheck(); false;" runat="server" value="submit" />
                                     </div>
                                 </div>

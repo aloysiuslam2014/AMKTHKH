@@ -7,7 +7,8 @@ function callCheck (){
     
     alert(nric.value);
     //Do ajax call
-    var headersToProcess = {  messages: "Hi i was sent to and back" };//Store objects in this manner 
+    var headersToProcess = {  messages: "Hi i was sent to and back" }; //Store objects in this manner 
+    var nricValue = nric.value.toString;
 
     $.ajax({
         url: './CheckInOut/checkIn.ashx',

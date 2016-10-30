@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -16,6 +17,10 @@ namespace THKH.Webpage.Staff.CheckInOut
             context.Response.ContentType = "text/plain";
          
             var msgg = context.Request.Form["messages"];
+
+            // Get NRIC & Call Procedure
+            
+
             String successString = "{\"Result\":\"Success\",\"Msg\":\""+ msgg + "\"}";
             context.Response.Write(successString);//Json Format
         }
