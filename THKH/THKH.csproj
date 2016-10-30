@@ -85,6 +85,7 @@
     <Content Include="Scripts\locationQueries.js" />
     <Content Include="Webpage\peoplewhosuck.html" />
     <Content Include="Webpage\SQL Script\StepwiseDBScript %282%29.sql" />
+    <Content Include="Webpage\SQL Script\THKHDB_Script.sql" />
     <Content Include="Webpage\Staff\TerminalCheckIn.aspx" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
