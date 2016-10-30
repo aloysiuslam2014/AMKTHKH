@@ -44,8 +44,23 @@ function DataNoExists() {
     $('#Details').html("Visitor Not Found. Please register the visitor.");
 }
 
-function CheckIn(nric) {
-    var temp = document.getElementById('temp');
+function CheckIn() {
+    var temper = temp.value;
     var check = "true";
-    var headersToProcess = { nric: nric.value, checkInTruth: check, temperature: temp };
+    var headersToProcess = { nric: nric.value, temperature: temper };
+    $.ajax({
+        url: './CheckInOut/checkIn.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            $('#Details').html(resultOfGeneration.Msg);
+            $('#Details').css("display", "block");
+        },
+        error: function (err) {
+        },
+    });
+    dataFound = true;
 }
