@@ -82,6 +82,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Scripts\locationQueries.js" />
+    <Content Include="Webpage\SQL Script\StepwiseDBScript %282%29.sql" />
+    <Content Include="Webpage\Staff\TerminalCheckIn.aspx" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -130,9 +133,15 @@
     <Compile Include="Webpage\Staff\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Webpage\Staff\TerminalCheckIn.aspx.cs">
+      <DependentUpon>TerminalCheckIn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Webpage\Staff\TerminalCheckIn.aspx.designer.cs">
+      <DependentUpon>TerminalCheckIn.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SQL Script\" />
     <Folder Include="Webpage\Staff\Register\" />
     <Folder Include="Webpage\Staff\UpdateAccount\" />
     <Folder Include="Webpage\Staff\UpdateQuestionaires\" />

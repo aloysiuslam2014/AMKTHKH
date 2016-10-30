@@ -111,5 +111,10 @@ namespace THKH.Webpage.Staff
             }
             return sb.ToString();
         }
+
+        protected void checkInTerminal_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("./TerminalCheckIn.aspx");
+        }
     }
 }
