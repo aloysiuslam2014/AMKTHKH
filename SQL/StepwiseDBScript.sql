@@ -139,30 +139,35 @@ answer VARCHAR(1000) NOT NULL);
 
 -- Procedures for adding user and logging in
 GO
+/****** Object:  StoredProcedure [dbo].[INSERT INTO  - staff]    Script Date: 10/30/2016 3:38:44 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE PROCEDURE [dbo].[INSERT INTO  - staff]
 
-    @pStaff_Id				VARCHAR(50), 
-    @pPassword				NVARCHAR(50),
-    @pFirstName				VARCHAR(200), 
-    @pLastName				VARCHAR(200),
-	@pNric					VARCHAR(100),
-	@pAddress				VARCHAR(300),
-	@pPostal				INT,
-	@pHomeTel				VARCHAR(100),
-	@pAltTel				VARCHAR(100) = NULL,
-	@pMobileTel				VARCHAR(100),
-	@pEmail					VARCHAR(200),
-	@pSex					CHAR(50) = 'M',
-	@pNationality			VARCHAR(100) = 'Singaporean',
-	@pDOB					DATE = '09/08/1965',
-	@pAge					INT,
-	@pRace					VARCHAR(150),
-	@pPermission			INT = 1,
-	@pPostion				VARCHAR(100) = 'Nurse',
-	--@pDateCreated			DATETIME,
-	--@pDateUpdated			DATETIME,
-	@pCreatedBy				VARCHAR(100) = 'MASTER',
-    @responseMessage		NVARCHAR(250) OUTPUT
+    @pLogin          INT, 
+    @pPassword        VARCHAR(64),
+    @pFirstName        VARCHAR(200), 
+    @pLastName        VARCHAR(200),
+  @pNric          VARCHAR(100),
+  @pAddress        VARCHAR(300),
+  @pPostal        INT,
+  @pHomeTel        VARCHAR(100),
+  @pAltTel        VARCHAR(100) = NULL,
+  @pMobileTel        VARCHAR(100),
+  @pEmail          VARCHAR(200),
+  @pSex          CHAR(50) = 'M',
+  @pNationality      VARCHAR(100) = 'Singaporean',
+  @pDOB          DATE = '09/08/1965',
+  @pAge          INT,
+  @pRace          VARCHAR(150),
+  @pPermission      INT = 1,
+  @pPostion        VARCHAR(100) = 'Nurse',
+  --@pDateCreated      DATETIME,
+  --@pDateUpdated      DATETIME,
+  @pCreatedBy        VARCHAR(100) = 'MASTER',
+    @responseMessage    NVARCHAR(250) OUTPUT
 
 AS
 
@@ -174,12 +179,12 @@ BEGIN
     BEGIN TRY
 
         INSERT INTO staff (staff_id, firstName, lastName, nric, address, postalCode, homeTel, altTel,
-		mobTel, email, sex, nationality, dateOfBirth, age, race, PasswordHash, Salt, permission,
-		position, dateCreated, dateUpdated, createdBy)
-        VALUES(@pStaff_Id, @pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
-		@pMobileTel, @pEmail, @pSex, @pNationality, @pDOB, @pAge, @pRace, 
-		HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))), @salt, @pPermission ,@pPostion, GETDATE(),
-		GETDATE(), @pCreatedBy)
+    mobTel, email, sex, nationality, dateOfBirth, age, race, PasswordHash, permission,
+    position, dateCreated, dateUpdated, createdBy)
+        VALUES(@pLogin, @pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
+    @pMobileTel, @pEmail, @pSex, @pNationality, @pDOB, @pAge, @pRace, 
+    HASHBYTES('SHA2_512', @pPassword),  @pPermission ,@pPostion, GETDATE(),
+    GETDATE(), @pCreatedBy)
 
        SET @responseMessage='Success'
 
@@ -190,55 +195,29 @@ BEGIN
 
 END;
 
-
-
-
-
 -- Validate Staff Login
 GO
-CREATE PROCEDURE [dbo].[SELECT FROM - login]
-    @pStaffId VARCHAR(50),
-    @pPassword NVARCHAR(50),
-	@pSalt NVARCHAR(36),
-    @responseMessage NVARCHAR(250)='' OUTPUT
+/****** Object:  StoredProcedure [dbo].[SELECT FROM - login]    Script Date: 30/10/2016 15:48:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SELECT FROM - login] --You can use a User-defined function or a view instead of a procedure.
+    @pNric NVARCHAR(254),
+    @pPassword varbinary(64)
+     
 AS
 BEGIN
 
     SET NOCOUNT ON
+
     DECLARE @userID INT
 
-    IF EXISTS (SELECT TOP 1 nric FROM dbo.staff WHERE staff_id = @pStaffId)
-    BEGIN
-        SET @userID = (SELECT TOP 1 nric 
-		FROM [dbo].[staff] 
-		WHERE staff_id = @pStaffId AND PasswordHash = HASHBYTES('SHA2_512', @pPassword + CAST(@pSalt AS NVARCHAR(36))))
-
-       IF(@userID IS NULL)
-           SET @responseMessage='Incorrect password'
-       ELSE 
-           SET @responseMessage='User successfully logged in'
-		   SELECT TOP 1 nric 
-		FROM [dbo].[staff] 
-		WHERE staff_id = @pStaffId AND PasswordHash = HASHBYTES('SHA2_512', @pPassword + CAST(@pSalt AS NVARCHAR(36)))
-    END
-    ELSE
-       SET @responseMessage='Invalid login'
-END;
-
--- Get salt procedure
-GO
-CREATE PROCEDURE [dbo].[SELECT FROM - staff_salt]
-	@pStaffId VARCHAR(50)
-
-	AS
-	BEGIN
-		SET NOCOUNT ON
-
-	DECLARE @salt NVARCHAR(36)
-
-	SELECT TOP 1 salt FROM dbo.staff WHERE staff_id = @pStaffId
-    
-END;
+    SELECT * FROM dbo.staff WHERE staff_id=@pNric AND PasswordHash=@pPassword
+       
+   
+END
+;
 
 -- Procedures for adding user and logging in
 GO
