@@ -224,7 +224,7 @@ END
 GO
 CREATE PROCEDURE [dbo].[INSERT INTO  - Registration]
 
-	@pVisitor_id INT,
+	--@pVisitor_id INT,
 	@pFirstName VARCHAR(200),
 	@pLastName VARCHAR(200),
 	@pNric VARCHAR(100),
@@ -261,9 +261,9 @@ BEGIN
 		END CATCH	
 	ELSE
 		BEGIN TRY
-			INSERT INTO visitor (visitor_id, firstName, lastName, nric, address, postalCode, homeTel, altTel,
+			INSERT INTO visitor (firstName, lastName, nric, address, postalCode, homeTel, altTel,
 			mobTel, email, sex, nationality, dateOfBirth, age, race, dateCreated, dateUpdated, createdBy)
-			VALUES(@pVisitor_id, @pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
+			VALUES(@pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
 			@pMobTel, @pEmail, @pSex, @pNationality, @pDOB, @pAge, @pRace, GETDATE(), GETDATE(), @pCreatedBy)
 
 			SET @pResponseMessage='Success'
