@@ -72,6 +72,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="CSS\default.css" />
     <Content Include="CSS\login.css" />
+    <Content Include="CSS\terminal.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -103,6 +104,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <Content Include="Webpage\Staff\CheckInOut\checkIn.ashx" />
+    <Content Include="Webpage\Staff\TerminalCalls\TerminalCheck.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -139,6 +141,9 @@
     </Compile>
     <Compile Include="Webpage\Staff\TerminalCheckIn.aspx.designer.cs">
       <DependentUpon>TerminalCheckIn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Webpage\Staff\TerminalCalls\TerminalCheck.ashx.cs">
+      <DependentUpon>TerminalCheck.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

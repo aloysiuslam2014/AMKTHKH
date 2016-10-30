@@ -31,21 +31,12 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl newusercontent;
         
         /// <summary>
-        /// staticinfocontainer control.
+        /// terminalsAvail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl staticinfocontainer;
-        
-        /// <summary>
-        /// wardno control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText wardno;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl terminalsAvail;
     }
 }

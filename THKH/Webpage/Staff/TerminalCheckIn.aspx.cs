@@ -15,18 +15,18 @@ namespace THKH.Webpage.Staff
         {
             string connectionString = null;
             int rows = 0;
-
+            DataTable dataTable = new DataTable();
             SqlConnection cnn;
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE FROM - login]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - Locations]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 //command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
                 cnn.Open();
-                DataTable dataTable = new DataTable();
+               
                 SqlDataAdapter da = new SqlDataAdapter();
                 da.SelectCommand = command;
                 da.Fill(dataTable);
@@ -39,6 +39,30 @@ namespace THKH.Webpage.Staff
             catch (Exception ex)
             {
                 
+            }
+           
+          
+            for(var i =0; i < dataTable.Rows.Count; i++) 
+            {
+                String placeName = dataTable.Rows[i]["locationName"].ToString();
+                String id = dataTable.Rows[i]["lid"].ToString();
+                System.Web.UI.HtmlControls.HtmlGenericControl createDiv =
+                      new System.Web.UI.HtmlControls.HtmlGenericControl("DIV");
+                createDiv.Attributes.Add("class", "form-control");
+                Label name = new Label();
+                name.Attributes.Add("class", "textOpt");
+                name.Text = placeName;
+                System.Web.UI.HtmlControls.HtmlGenericControl activate =
+                      new System.Web.UI.HtmlControls.HtmlGenericControl("input");
+                activate.ID = placeName+":"+ id; // Button name qwi
+                activate.Attributes.Add("type", "button");
+                activate.Attributes.Add("value", "Activate");
+                activate.Attributes.Add("onclick", "activateMe(this);false;") ;
+                activate.Attributes.Add("class", "btn");
+                createDiv.Controls.Add(name);
+                createDiv.Controls.Add(activate);
+                createDiv.Attributes.Add("style", "height: 47px;");
+                terminalsAvail.Controls.Add(createDiv);
             }
         }
     }
