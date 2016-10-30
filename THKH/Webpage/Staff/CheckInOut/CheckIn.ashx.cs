@@ -12,7 +12,7 @@ namespace THKH.Webpage.Staff.CheckInOut
     {
 
         public void ProcessRequest(HttpContext context)
-        {
+        {   
             context.Response.ContentType = "text/plain";
             var xAxisHeaders = context.Request.Form["xAxis"]; //Retrieve data in this manner
             var yAxisHeaders = context.Request.Form["yAxis"];
