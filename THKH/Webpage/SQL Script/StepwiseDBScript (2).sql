@@ -301,6 +301,30 @@ BEGIN
 END;
 
 
+-- Get Visitor Details
+GO
+CREATE PROCEDURE [dbo].[SELECT FROM - VisitorDetails]
+    @pNRIC VARCHAR(100),
+	@responseMessage NVARCHAR(250) OUTPUT
+
+AS
+BEGIN
+    SET NOCOUNT ON
+	DECLARE @userID INT
+
+    IF EXISTS (SELECT nric FROM dbo.visitor WHERE nric = @pNric)
+		
+		BEGIN
+			SET @userID = (SELECT TOP 1 visitor_id
+			FROM [dbo].[visitor] WHERE nric = @pNRIC)
+
+				SELECT firstName, lastName, mobTel FROM dbo.visitor WHERE nric = @pNric
+				SET @responseMessage='Visitor found'
+		END
+    ELSE
+       SET @responseMessage='Visitor not found'
+END;
+
 -- Find visitor
 GO
 CREATE PROCEDURE [dbo].[SELECT FROM - FindVisitor]

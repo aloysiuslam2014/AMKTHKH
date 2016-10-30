@@ -93,7 +93,7 @@
                                 </div>
                                 <div class=" row padRows" id="tempField" >
                                     <div class="col-lg-4 col-lg-offset-4">
-                                        Temperature:<input runat="server" id="temp" class="form-control" type="text" /><input class="btn btn-default" type="submit" id="checkInBtn" runat="server" value="Check-In" />
+                                        Temperature:<input runat="server" id="temp" class="form-control" type="text" /><input class="btn btn-default" type="submit" id="checkInBtn" runat="server" onclick="checkIn(nric.value); false;" value="Check-In" />
                                     </div>
                                 </div>
                                 <div class="row padRows">
