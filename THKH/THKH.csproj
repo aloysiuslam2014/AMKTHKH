@@ -82,6 +82,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Scripts\locationQueries.js" />
+    <Content Include="Webpage\SQL Script\StepwiseDBScript %282%29.sql" />
     <Content Include="Webpage\Staff\TerminalCheckIn.aspx" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -140,7 +142,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SQL Script\" />
     <Folder Include="Webpage\Staff\Register\" />
     <Folder Include="Webpage\Staff\UpdateAccount\" />
     <Folder Include="Webpage\Staff\UpdateQuestionaires\" />

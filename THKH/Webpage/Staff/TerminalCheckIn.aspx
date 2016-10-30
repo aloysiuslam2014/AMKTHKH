@@ -8,16 +8,17 @@
         <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
+     <link href="~/CSS/default.css" rel="stylesheet" />
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" style="width: 80%;" runat="server">
     <div>
      <div class="row maxHeight" style="overflow-y: auto">
                             <div id="newusercontent" class="col-sm-6" runat="server">
                                 <div class="jumbotron">
                                     <h3>Available Terminals</h3>
                                     <div class="form-group">
-                                        <div id="terminalsAvail" class="form-control userDetails" >Waiting for input</div>
+                                        <div id="terminalsAvail" class="form-control userDetails" ></div>
                                     </div>
                                     
                                 </div>
