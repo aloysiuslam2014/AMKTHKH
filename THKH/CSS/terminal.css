@@ -5,3 +5,11 @@
 {
  font-weight:bold; color:#000000;letter-spacing:1pt;word-spacing:2pt;font-size:14px;text-align:right;font-family:arial, helvetica, sans-serif;line-height:1;
 }
+
+.userTextScan{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 3em;
+    height: 2em;
+}
