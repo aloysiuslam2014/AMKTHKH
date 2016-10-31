@@ -2,10 +2,10 @@
 -- To store Visitor Registration Data
 USE master;   
 
-IF EXISTS(SELECT * from sys.databases WHERE name='stepwise')  
+IF EXISTS(SELECT * from sys.databases WHERE name='thkhdb')  
 BEGIN  
 	DECLARE @DatabaseName nvarchar(50)
-	SET @DatabaseName = 'stepwise'
+	SET @DatabaseName = 'thkhdb'
 
 	DECLARE @SQL varchar(max)
 
@@ -16,18 +16,17 @@ BEGIN
 	SELECT @SQL 
 	EXEC(@SQL)
 
-	DROP DATABASE stepwise;  
+	DROP DATABASE thkhdb;  
 END 
 
 GO
-CREATE DATABASE stepwise; 
+CREATE DATABASE thkhdb; 
 
 GO
-USE stepwise;
+USE thkhdb;
 
-
-CREATE TABLE stepwise.dbo.visitor
-(visitor_id INT PRIMARY KEY NOT NULL,
+CREATE TABLE visitor
+(visitor_id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 firstName VARCHAR(200) NOT NULL,
 lastName VARCHAR(200) NOT NULL,
 nric VARCHAR(100) NOT NULL,
@@ -49,7 +48,7 @@ createdBy VARCHAR(100)); -- Logged in staff_id or null if self-register
 
 -- To Store Staff Data
 
-CREATE TABLE stepwise.dbo.staff
+CREATE TABLE staff
 (staff_id VARCHAR(50) PRIMARY KEY NOT NULL,
 firstName VARCHAR(200) NOT NULL,
 lastName VARCHAR(200) NOT NULL,
@@ -75,14 +74,15 @@ createdBy VARCHAR(100)); -- Logged in Admin_ID
 
 -- To Store Checkpoint Locations
 GO
-CREATE TABLE stepwise.dbo.locations
+CREATE TABLE locations
 (lid INT PRIMARY KEY NOT NULL,
-locationName VARCHAR(400) NOT NULL);
+locationName VARCHAR(400) NOT NULL,
+activated INT NOT NULL);
 
 -- To Store Visit Details
 GO
-CREATE TABLE stepwise.dbo.visit_details
-(visit_id INT PRIMARY KEY NOT NULL,
+CREATE TABLE visit_details
+(visit_id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 cicoid INT NOT NULL,
 visitor_id INT NOT NULL,
 visitTime DATETIME NOT NULL, --Patient can request for a visit time? Yes. Timeouts will occur if the patient is late by 15 mins for now
@@ -96,8 +96,8 @@ dateCreated DATETIME NOT NULL);
 
 -- To Store Check-in Details
 GO
-CREATE TABLE stepwise.dbo.check_in_out
-(cicoid INT PRIMARY KEY,
+CREATE TABLE check_in_out
+(cicoid INT IDENTITY(1,1) PRIMARY KEY,
 nric VARCHAR(100) NOT NULL,
 temperature VARCHAR(100) NOT NULL,
 staff_id INT NOT NULL,
@@ -109,29 +109,30 @@ checkoutTime DATETIME);
 
 -- To Store Movement Details
 GO
-CREATE TABLE stepwise.dbo.movementTable
-(moveid INT PRIMARY KEY NOT NULL,
+CREATE TABLE movementTable
+(moveid INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 nric VARCHAR(100) NOT NULL,
 cicoid INT NOT NULL,
 checkpointtimeid VARCHAR(500) NOT NULL); -- stored in the following format [timestamp]:LID
 
 -- To Store Form Question IDs
 GO
-CREATE TABLE stepwise.dbo.form_qns
+CREATE TABLE form_qns
 (qnid INT PRIMARY KEY NOT NULL,
 question VARCHAR(500) NOT NULL,
 optionstype INT NOT NULL);
 
 -- To Store Form Question Option Values
 GO
-CREATE TABLE stepwise.dbo.form_qns_options
+CREATE TABLE form_qns_options
 (qnoptid INT PRIMARY KEY NOT NULL,
 qnid INT NOT NULL,
 optionvalue VARCHAR(400) NOT NULL);
 
 -- To Store Form Question Answers
 GO
-CREATE TABLE stepwise.dbo.form_ans
+CREATE TABLE 
+form_ans
 (ansid INT PRIMARY KEY NOT NULL,
 qnid INT NOT NULL,
 visitid INT NOT NULL,
@@ -146,10 +147,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE [dbo].[INSERT INTO  - staff]
 
-    @pLogin          INT, 
-    @pPassword        VARCHAR(64),
-    @pFirstName        VARCHAR(200), 
-    @pLastName        VARCHAR(200),
+ @pLogin          INT, 
+ @pPassword        VARCHAR(64),
+ @pFirstName        VARCHAR(200), 
+ @pLastName        VARCHAR(200),
   @pNric          VARCHAR(100),
   @pAddress        VARCHAR(300),
   @pPostal        INT,
@@ -219,11 +220,11 @@ BEGIN
 END
 ;
 
--- Procedures for adding user and logging in
+-- Procedures for adding new visitor
 GO
-CREATE PROCEDURE [dbo].[INSERT INTO  - visitor]
+CREATE PROCEDURE [dbo].[INSERT INTO  - Registration]
 
-	@pVisitor_id INT,
+	--@pVisitor_id INT,
 	@pFirstName VARCHAR(200),
 	@pLastName VARCHAR(200),
 	@pNric VARCHAR(100),
@@ -246,18 +247,168 @@ CREATE PROCEDURE [dbo].[INSERT INTO  - visitor]
 AS
 
 BEGIN
+    SET NOCOUNT ON
 
+	IF EXISTS (SELECT visitor_id FROM dbo.visitor WHERE nric = @pNric)
+		BEGIN TRY
+		SET @pResponseMessage='Existing vistor'
+		SELECT TOP 1 visitor_id 
+			FROM [dbo].[visitor] WHERE nric = @pNric
+		END try
+
+		BEGIN CATCH
+			SET @pResponseMessage=ERROR_MESSAGE() 
+		END CATCH	
+	ELSE
+		BEGIN TRY
+			INSERT INTO visitor (firstName, lastName, nric, address, postalCode, homeTel, altTel,
+			mobTel, email, sex, nationality, dateOfBirth, age, race, dateCreated, dateUpdated, createdBy)
+			VALUES(@pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
+			@pMobTel, @pEmail, @pSex, @pNationality, @pDOB, @pAge, @pRace, GETDATE(), GETDATE(), @pCreatedBy)
+
+			SET @pResponseMessage='Success'
+			SELECT TOP 1 visitor_id 
+				FROM [dbo].[visitor] WHERE nric = @pNric
+		END TRY
+
+		BEGIN CATCH
+			SET @pResponseMessage=ERROR_MESSAGE() 
+		END CATCH
+END;
+
+
+
+-- Returning visitor
+GO
+CREATE PROCEDURE [dbo].[SELECT FROM - ReturningVisitor]
+    @pNRIC VARCHAR(100),
+	@responseMessage NVARCHAR(250) OUTPUT
+
+AS
+BEGIN
+    SET NOCOUNT ON
+
+    IF EXISTS (SELECT * FROM dbo.visitor WHERE nric = @pNric)
+		BEGIN
+			SET @responseMessage='Existing visitor'
+
+			SELECT TOP 1 visitor_id 
+			FROM [dbo].[visitor] WHERE nric = @pNric
+		END
+		
+    ELSE
+       SET @responseMessage='Non-existing visitor'
+END;
+
+
+-- Find visitor
+GO
+CREATE PROCEDURE [dbo].[SELECT FROM - FindVisitor]
+    @pNRIC VARCHAR(100),
+	@responseMessage NVARCHAR(250) OUTPUT
+
+AS
+BEGIN
+    SET NOCOUNT ON
+	DECLARE @userID INT
+
+    IF EXISTS (SELECT * FROM dbo.visitor WHERE nric = @pNric)
+		
+		BEGIN
+			SET @userID = (SELECT TOP 1 visitor_id
+			FROM [dbo].[visitor] WHERE nric = @pNRIC)
+
+			IF(@userID IS NULL)
+				SET @responseMessage='Visitor not found'
+			ELSE 
+				SET @responseMessage='Visitor found'
+
+				SELECT TOP 1 * 
+				FROM [dbo].[visit_details] WHERE visitor_id = @userID
+		END
+    ELSE
+       SET @responseMessage='Visitor not found'
+END;
+
+
+
+-- Procedures for adding details in Check_In_Out
+GO
+CREATE PROCEDURE [dbo].[INSERT INTO  - First_Check_In]
+
+	@pNric VARCHAR(100),
+	@pTemperature VARCHAR(100),
+	@pStaff_id INT,
+	@pVisit_id INT,
+	@pCheckinlid INT, -- Can be 1=Entrance, 2=Ward 1 & 4=Exit
+	@pResponseMessage NVARCHAR(250) OUTPUT
+AS
+
+BEGIN
     SET NOCOUNT ON
     BEGIN TRY
-
-        INSERT INTO visitor (visitor_id, firstName, lastName, nric, address, postalCode, homeTel, altTel,
-		mobTel, email, sex, nationality, dateOfBirth, age, race, dateCreated, dateUpdated, createdBy)
-        VALUES(@pVisitor_id, @pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel,
-		@pMobTel, @pEmail, @pSex, @pNationality, @pDOB, @pAge, @pRace, GETDATE(), GETDATE(), @pCreatedBy)
+        INSERT INTO check_in_out (nric, temperature, staff_id, visit_id, checkinlid, 
+								  checkinTime, checkoutlid, checkoutTime)
+        VALUES(@pNric, @pTemperature, @pStaff_id, @pVisit_id, @pCheckinlid, GETDATE(), 
+			   NULL, NULL)
 
        SET @pResponseMessage='Success'
-
     END TRY
+
+    BEGIN CATCH
+        SET @pResponseMessage=ERROR_MESSAGE() 
+    END CATCH
+
+END;
+
+GO
+
+CREATE PROCEDURE [dbo].[SELECT FROM - Locations]
+AS
+BEGIN
+    SET NOCOUNT ON
+		
+		BEGIN
+			SELECT * FROM [dbo].[locations] as d where d.activated = 0
+		END
+END;
+
+
+-- Procedures for updating details in Check_In_Out
+GO
+CREATE PROCEDURE [dbo].[UPDATE - Check_In]
+
+	--@pCicoid INT,
+	@pNric VARCHAR(100),
+	@pTemperature VARCHAR(100),
+	@pStaff_id INT,
+	@pVisit_id INT,
+	@pCheckinlid INT, -- Can be 1=Entrance, 2=Ward 1 & 4=Exit
+	@pCheckinTime DATETIME,
+	@pCheckoutlid INT,
+	@pCheckoutTime DATETIME,
+	@pResponseMessage NVARCHAR(250) OUTPUT
+AS
+
+BEGIN
+    SET NOCOUNT ON
+	set identity_insert check_in_out ON
+    BEGIN TRY
+		
+        UPDATE check_in_out -- Need to change this as CICOID is self incremental
+		SET --cicoid = @pCicoid, 
+			staff_id = @pStaff_id, 
+			temperature = @pTemperature,
+			checkinlid = @pCheckinlid, 
+			checkinTime = @pCheckinTime, 
+			checkoutlid = @pCheckoutlid, 
+			checkoutTime = @pCheckoutTime
+        WHERE nric = @pNric
+
+       SET @pResponseMessage='Successfully Updated'
+	   set identity_insert check_in_out OFF
+    END TRY
+
     BEGIN CATCH
         SET @pResponseMessage=ERROR_MESSAGE() 
     END CATCH

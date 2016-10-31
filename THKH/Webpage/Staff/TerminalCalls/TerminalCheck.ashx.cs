@@ -20,7 +20,12 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
                 activateTerminal(msgg);
             }
-            else
+            else if(action.Equals("checkIn"))
+            {
+                var userNric = context.Request.Form["user"];
+                checkInUser(msgg, userNric);
+            }
+            else  
             {
                 deactivateTerminal(msgg);
             }
@@ -46,6 +51,36 @@ namespace THKH.Webpage.Staff.TerminalCalls
 
                 command.ExecuteNonQuery();
                  
+                //rows = command.ExecuteNonQuery();
+
+
+                cnn.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public void checkInUser(String locationId, String userId)
+        {
+            string connectionString = null;
+            int id = Convert.ToInt32(locationId);
+            SqlConnection cnn;
+            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            cnn = new SqlConnection(connectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[UPDATE FROM - Locations]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@locationId", locationId);
+                command.Parameters.AddWithValue("@Nric", locationId);
+                cnn.Open();
+
+                command.ExecuteNonQuery();
+
                 //rows = command.ExecuteNonQuery();
 
 
