@@ -40,9 +40,10 @@
                     </div>
                 </div>
                 <div id="beginTerminal" class="tab-pane fade">
-                    <h3><b>Terminal <label id="terminalName"></label></b></h3>
+                    <h3 style="font-size: 7em;"><b>Terminal <label id="terminalName"></label></b></h3>
                     <input type="hidden" id="termValue"/>
-                    <input type="text" onchange="updateCheckIn()"/>
+                    <input type="text" class="form-control userTextScan" id="userNric" onchange="updateCheckIn()"/>
+                    <label id="userWelcome" class="text-success" style="font-size: 4em;">Please Scan Your Card</label>
                 </div>
                 
             </div>
@@ -73,7 +74,19 @@
                
             }
 
-            
+            function updateCheckIn() {
+                var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value };
+                $.ajax({
+                    url: './TerminalCalls/TerminalCheck.ashx',
+                    method: 'post',
+                    data: headersToProcess,
+                    success: function (returner) {
+
+                    },
+                    error: function (err) {
+                    },
+                });
+            }
 
 
         </script>
