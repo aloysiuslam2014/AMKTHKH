@@ -8,7 +8,9 @@
     <title>Welcome "username"</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/scripts/moment.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/scripts/bootstrap-datetimepicker.js") %>"></script>
 
     <link href="~/CSS/default.css" rel="stylesheet" />
 
@@ -109,6 +111,7 @@
 
                     <div class="tab-pane maxHeight" id="regVisit" runat="server">
                         <div class="row maxHeight" style="overflow-y: auto">
+                            
                             <div id="newusercontent" class="col-sm-6" runat="server">
                                 <div class="jumbotron">
                                     <h3>Personal Details</h3>
@@ -126,7 +129,7 @@
                                     </div>
                                     <label for="nricsInput">NRIC:</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="nricsInput" /><label for="nricsInput" id="nricWarning">Invalid NRIC!</label>
+                                        <input type="text" runat="server" class="form-control" id="nricsInput" /><label for="nricsInput" id="nricWarning" style="color: red">Invalid NRIC!</label>
                                     </div>
                                     <label for="mobileinput">Mobile Number:</label>
                                     <div class="form-group">
@@ -160,18 +163,44 @@
                                         <input type="text" runat="server" class="form-control" id="nationalsInput" />
                                     </div>
                                     <label for="daterange">Date of Birth:</label>
-                                    <div class="form-group">
-                                        <input type="text" id="daterange" />
+                                    <div class="input-group date" id="datetimepicker">
+                                        <input type='text'id="daterange" class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                             <div id="staticinfocontainer" class="col-sm-6" runat="server">
-                                <h3>Visit Health Questionnaire</h3>
-                                <label for="bedno">Bed Number:</label>
+                                <label for="pInput">Visit Purpose:</label> <%--Check for Purpose of Visit--%>
+                                <div class="form-group">
+                                    <select class="form-control" id="pInput" onchange="purposePanels()">
+                                        <option value="-">-- Select One --</option>
+                                        <option value="patient">Visit Patient</option>
+                                        <option value ="other">Other Purpose</option>
+                                        </select>
+                                    </div>
+                                <div id="patientpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Visit Patient"--%>
+                                    <label for="patientName">Patient Name</label> <%--AJAX Call to search for Patient Name--%>
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="patientName" />
+                                    </div>
+                                    <label for="patientNric">Patient NRIC</label>
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="patientNric" />
+                                    </div>
+                                </div>
+                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
+                                    <label for="purposeInput">Purpose of Visit</label> 
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
+                                    </div>
+                                </div>
+                                <label for="bedno">Bed Number:</label> <%--Bed Number--%>
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
-                                <label for="visitbookingtime">Appointment Time:</label>
+                                <label for="visitbookingtime">Appointment Time:</label> <%--Appointment Time--%>
                                 <div class="form-group">
                                     <select class="form-control" id="visitbookingtime">
                                         <option>0900</option>
@@ -199,34 +228,35 @@
                                         <option>2000</option>
                                     </select>
                                 </div>
-                                <label for="symptomInput">Gender:</label>
+                                <h3>Visit Health Questionnaire</h3>
+                                <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field--%>
+                                <div class="checkbox" id="fevdiv">
+                                    <input type="checkbox" name="yesopt" value="Yes" />
+                                    Yes<br />
+                                </div>
+                                <label for="symptomInput">I possess the following symptom(s)</label> <%--Patient Symptom declaration--%>
                                 <div class="form-group">
-                                    <select class="form-control" id="symptomInput">
-                                        <option>Pimple</option>
-                                        <option>Hair Loss</option>
-                                    </select>
+                                    <div id="symptomInput" class="checkbox">
+                                        <label for="one">
+                                            <input type="checkbox" id="one" value="Pimple" />Pimple</label>
+                                        <label for="two">
+                                            <input type="checkbox" id="two" value="Hair Loss" />Hair Loss</label>
+                                    </div>
                                 </div>
                                 <label for="symdiv">Do you have any close contact with person or persons returning from INFLUENZA [FLU] INFECTED countries?</label>
-                                <div class="radio" id="symdiv">
-                                    <input type="radio" name="optradio" value="Yes" />
-                                    Yes<br />
-                                </div>
-                                <label for="fevdiv">Do you have a Fever?</label>
-                                <div class="checkbox" id="fevdiv">
-                                    <input type="radio" name="yesopt" value="Yes" />
-                                    Yes<br />
-                                    <input type="radio" name="noopt" value="No" />
-                                    No<br />
+                                <div id="symdiv" class="checkbox">
+                                        <label for="one">
+                                            <input type="checkbox" id="one" value="Yes" />Yes</label>
                                 </div>
                                 <label for="visitInput">Countries Travelled For The Past 2 Weeks </label>
                                 <div class="form-group">
-                                    <div id="checkboxes">
+                                    <div id="checkboxes" class="checkbox">
                                         <label for="one">
-                                            <input type="checkbox" id="one" />Singapore</label>
+                                            <input type="checkbox" id="one" value="Singapore" />Singapore</label>
                                         <label for="two">
-                                            <input type="checkbox" id="two" />Malaysia</label>
+                                            <input type="checkbox" id="two" value="Malaysia" />Malaysia</label>
                                         <label for="three">
-                                            <input type="checkbox" id="three" />China</label>
+                                            <input type="checkbox" id="three" value="China" />China</label>
                                     </div>
                                 </div>
                                 <label for="remarksinput">Remarks:</label>
@@ -236,11 +266,11 @@
                             </div>
 
                         </div>
+                    </div>
                         <div class="checkbox">
                             <input type="checkbox" id="declaration" value="true" checked />I declare that the above information given is accurate<br />
                         </div>
                         <input class="btn btn-success" type="submit" id="submitNewEntry" runat="server" onclick="NewAssistReg(); false;" value="Submit" />
-                    </div>
                 </div>
 
             </div>
@@ -289,34 +319,37 @@
         $('#regPageNavigation a:first').tab('show');
         nric.value.toString();
 
-        var expanded = false;
-        function showCheckboxes() {
-            var checkboxes = document.getElementById("checkboxes");
-            if (!expanded) {
-                checkboxes.style.display = "block";
-                expanded = true;
+        function purposePanels() {
+            var purpose = $("#pInput").val();
+            if(purpose === "patient"){
+                $("#patientpurposevisit").css("display", "block");
+                $("#otherpurposevisit").css("display", "none");
+            } else if (purpose === "other") {
+                $("#patientpurposevisit").css("display", "none");
+                $("#otherpurposevisit").css("display", "block");
             } else {
-                checkboxes.style.display = "none";
-                expanded = false;
+                $("#patientpurposevisit").css("display", "none");
+                $("#otherpurposevisit").css("display", "none");            
             }
         }
 
         $(function () {
-            $("#daterange").datepicker();
-            $("#daterange").datepicker("show");
+            $('#datetimepicker').datetimepicker();
         });
 
         $("#nricsInput").on("input", function () {
-            var validNric = validateNRIC(document.getElementById("nricsInput").value);
-            if (validNric != false) {
-                document.getElementById("nricWarning").style.visibility = "hidden";
+            var validNric = validateNRIC($("#nricsInput").val());
+            if (validNric !== false) {
+                $("#nricWarning").css("display", "none");
             } else {
-                document.getElementById("nricWarning").style.visibility = "visible";
+                $("#nricWarning").css("display", "block");
             }
         });
 
         function hideTags() {
-            document.getElementById("nricWarning").style.visibility = "hidden";
+            $("#nricWarning").css("display", "none");
+            $("#patientpurposevisit").css("display", "none");
+            $("#otherpurposevisit").css("display", "none");
         }
 
 
