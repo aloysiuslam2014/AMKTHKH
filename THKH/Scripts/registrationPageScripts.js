@@ -67,16 +67,16 @@ function CheckIn() {
 
 function NewAssistReg() {
     var fname = document.getElementById("namesInput").value;
-    var lname = document.getElementById("namesInput").value;
+    var lname = document.getElementById("lnamesInput").value;
     var snric = document.getElementById("nricsInput").value;
     var address = document.getElementById("addresssInput").value;
     var postal = document.getElementById("postalsInput").value;
     var mobtel = document.getElementById("mobilesInput").value;
-    var alttel = "235";
-    var hometel = "672";
-    var sex = "M";
+    var alttel = document.getElementById("altInput").value;
+    var hometel = document.getElementById("homesInput").value;
+    var sex = document.getElementById("sexInput").value;
     var nationality = document.getElementById("nationalsInput").value;
-    var dob = document.getElementById("datesRange").value;
+    var dob = document.getElementById("datepicker").value;
     var race = "Chinese";
     var age = 23;
     var Email = "hello";
