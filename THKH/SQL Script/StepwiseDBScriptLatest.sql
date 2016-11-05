@@ -276,7 +276,27 @@ BEGIN
 		END CATCH
 END;
 
+-- Edit visitor info
+GO
+CREATE PROCEDURE [dbo].[SELECT FROM - ReturningVisitor]
+    @pNRIC VARCHAR(100),
+	@responseMessage NVARCHAR(250) OUTPUT
 
+AS
+BEGIN
+    SET NOCOUNT ON
+
+    IF EXISTS (SELECT * FROM dbo.visitor WHERE nric = @pNric)
+		BEGIN
+			SET @responseMessage='Existing visitor'
+
+			SELECT TOP 1 visitor_id 
+			FROM [dbo].[visitor] WHERE nric = @pNric
+		END
+		
+    ELSE
+       SET @responseMessage='Non-existing visitor'
+END;
 
 -- Returning visitor
 GO
@@ -299,7 +319,6 @@ BEGIN
     ELSE
        SET @responseMessage='Non-existing visitor'
 END;
-
 
 -- Find visitor
 GO
@@ -330,7 +349,34 @@ BEGIN
        SET @responseMessage='Visitor not found'
 END;
 
+-- Validate Check_in Attempt (More than 3 visitors?) TO BE EDITED
+GO
+CREATE PROCEDURE [dbo].[INSERT INTO  - First_Check_In]
 
+	@pNric VARCHAR(100),
+	@pTemperature VARCHAR(100),
+	@pStaff_id INT,
+	@pVisit_id INT,
+	@pCheckinlid INT, -- Can be 1=Entrance, 2=Ward 1 & 4=Exit
+	@pResponseMessage NVARCHAR(250) OUTPUT
+AS
+
+BEGIN
+    SET NOCOUNT ON
+    BEGIN TRY
+        INSERT INTO check_in_out (nric, temperature, staff_id, visit_id, checkinlid, 
+								  checkinTime, checkoutlid, checkoutTime)
+        VALUES(@pNric, @pTemperature, @pStaff_id, @pVisit_id, @pCheckinlid, GETDATE(), 
+			   NULL, NULL)
+
+       SET @pResponseMessage='Success'
+    END TRY
+
+    BEGIN CATCH
+        SET @pResponseMessage=ERROR_MESSAGE() 
+    END CATCH
+
+END;
 
 -- Procedures for adding details in Check_In_Out
 GO

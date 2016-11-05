@@ -66,20 +66,20 @@ function CheckIn() {
 }
 
 function NewAssistReg() {
-    var fname = document.getElementById("namesInput").value;
-    var lname = document.getElementById("lnamesInput").value;
-    var snric = document.getElementById("nricsInput").value;
-    var address = document.getElementById("addresssInput").value;
-    var postal = document.getElementById("postalsInput").value;
-    var mobtel = document.getElementById("mobilesInput").value;
-    var alttel = document.getElementById("altInput").value;
-    var hometel = document.getElementById("homesInput").value;
-    var sex = document.getElementById("sexInput").value;
-    var nationality = document.getElementById("nationalsInput").value;
-    var dob = document.getElementById("datepicker").value;
-    var race = "Chinese";
-    var age = 23;
-    var Email = "hello";
+    var fname = $("#namesInput").val();
+    var lname = $("#lnamesInput").val();
+    var snric = $("#nricsInput").val();
+    var address = $("#addresssInput").val();
+    var postal = $("#postalsInput").val();
+    var mobtel = $("#mobilesInput").val();
+    var alttel = $("#altInput").val();
+    var hometel = $("#homesInput").val();
+    var sex = $("#sexinput").val();
+    var nationality = $("#nationalsInput").val();
+    var dob = $("#daterange").val();
+    var race = "Chinese"; 
+    var age = 23; 
+    var Email = $("#emailsInput").val();
 
     var headersToProcess = { firstName: fname, lastName: lname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email, AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age };
     $.ajax({

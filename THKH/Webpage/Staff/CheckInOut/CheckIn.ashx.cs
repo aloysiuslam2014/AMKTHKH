@@ -45,7 +45,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 string connectionString = null;
                 SqlConnection cnn;
                 int row = 0;
-                connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+                connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
                 cnn = new SqlConnection(connectionString);
                 successString = "{\"Result\":\"Success\",\"Msg\":\"NRIC:" + nric + "";
                 try
@@ -94,51 +94,82 @@ namespace THKH.Webpage.Staff.CheckInOut
             string connectionString = null;
             SqlConnection cnn;
             int row = 0;
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
-            String successString = "{\"Result\":\"Success\",\"Msg\":\""; // Reflect Time Checked in - TO BE AMENDED
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             try
-            {
-                // Find Visitor Details
-                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO  - Registration]", cnn);
+            { // Check for Visitor Existence
+                SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - ReturningVisitor]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pFirstName", fname);
-                command.Parameters.AddWithValue("@pLastName", lname);
                 command.Parameters.AddWithValue("@pNric", nric);
-                command.Parameters.AddWithValue("@pAddress", address);
-                command.Parameters.AddWithValue("@pPostal", postal);
-                command.Parameters.AddWithValue("@pHomeTel", hometel);
-                command.Parameters.AddWithValue("@pAltTel", alttel);
-                command.Parameters.AddWithValue("@pMobTel", mobtel);
-                command.Parameters.AddWithValue("@pEmail", email);
-                command.Parameters.AddWithValue("@pSex", sex);
-                command.Parameters.AddWithValue("@pNationality", nationality); // Signed in staff_id - TO BE AMENDED
-                command.Parameters.AddWithValue("@pDOB", dob); // Visitor's ID - TO BE AMENDED
-                command.Parameters.AddWithValue("@pAge", age); //Location ID of terminal - TO BE AMENDED
-                command.Parameters.AddWithValue("@prace", race);
                 command.Parameters.Add("@pResponseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
                 cnn.Open();
-                Object[] test;
-
+                Object[] result;
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    test = new Object[reader.FieldCount];
+                    result = new Object[reader.FieldCount];
                     while (reader.Read())
                     {
-
                         row++;
-                        // Get back all the data from Stored Procedure
                     }
                 }
-                cnn.Close();
-                successString += nric + " Successfully Added as a new Visitor " + DateTime.Now;
-                successString += "\"}";
-
             }
             catch (Exception ex)
             {
-                successString += ex.Message;
-                successString += "\"}";
+
+            }
+            finally {
+                cnn.Close();
+            }
+            if (row == 0) // If Visitor does not exist, add new Registration
+            {
+                try
+                {
+                    // Write to DB, New Registration
+                    SqlCommand command = new SqlCommand("[dbo].[INSERT INTO  - Registration]", cnn);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@pFirstName", fname);
+                    command.Parameters.AddWithValue("@pLastName", lname);
+                    command.Parameters.AddWithValue("@pNric", nric);
+                    command.Parameters.AddWithValue("@pAddress", address);
+                    command.Parameters.AddWithValue("@pPostal", postal);
+                    command.Parameters.AddWithValue("@pHomeTel", hometel);
+                    command.Parameters.AddWithValue("@pAltTel", alttel);
+                    command.Parameters.AddWithValue("@pMobTel", mobtel);
+                    command.Parameters.AddWithValue("@pEmail", email);
+                    command.Parameters.AddWithValue("@pSex", sex);
+                    command.Parameters.AddWithValue("@pNationality", nationality);
+                    command.Parameters.AddWithValue("@pDOB", dob);
+                    command.Parameters.AddWithValue("@pAge", age);
+                    command.Parameters.AddWithValue("@prace", race);
+                    command.Parameters.Add("@pResponseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+                    cnn.Open();
+                    Object[] test;
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        test = new Object[reader.FieldCount];
+                        while (reader.Read())
+                        {
+                            row++;
+                        }
+                    }
+                    successString += nric + " Successfully Added as a new Visitor " + DateTime.Now;
+                    successString += "\"}";
+
+                }
+                catch (Exception ex)
+                {
+                    successString += ex.Message;
+                    successString += "\"}";
+                }
+                finally
+                {
+                    cnn.Close();
+                }
+            }
+            else { // Or Else Edit Visitor Info
+
             }
             return successString;// Json Format
         }
@@ -147,7 +178,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             string connectionString = null;
             SqlConnection cnn;
             int row = 0;
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             String successString = "{\"Result\":\"Success\",\"Msg\":\""; // Reflect Time Checked in - TO BE AMENDED
             try

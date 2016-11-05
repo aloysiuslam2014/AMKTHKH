@@ -129,7 +129,7 @@
                                     </div>
                                     <label for="nricsInput">NRIC:</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="nricsInput" /><label for="nricsInput" id="nricWarning" style="color: red">Invalid NRIC!</label>
+                                        <input type="text" runat="server" class="form-control" id="nricsInput" /><label for="nricsInput" id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID!</label>
                                     </div>
                                     <label for="mobileinput">Mobile Number:</label>
                                     <div class="form-group">
@@ -154,8 +154,8 @@
                                     <label for="sexinput">Gender:</label>
                                     <div class="form-group">
                                         <select class="form-control" id="sexinput">
-                                            <option>Male</option>
-                                            <option>Female</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
                                         </select>
                                     </div>
                                     <label for="nationalinput">Nationality:</label>
