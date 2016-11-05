@@ -46,23 +46,28 @@ function DataNoExists() {
 
 function CheckIn() {
     var temper = temp.value;
-    var check = "true";
-    var headersToProcess = { nric: nric.value, temperature: temper };
-    $.ajax({
-        url: './CheckInOut/checkIn.ashx',
-        method: 'post',
-        data: headersToProcess,
+    if (parseFloat(temper) > 37.6) {
+        $('#Details').html("Temperature is Above 37.6 Degrees Celcius. No Entry!");
+        $('#Details').css("display", "block");
+    } else {
+        var check = "true";
+        var headersToProcess = { nric: nric.value, temperature: temper };
+        $.ajax({
+            url: './CheckInOut/checkIn.ashx',
+            method: 'post',
+            data: headersToProcess,
 
 
-        success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
-            $('#Details').html(resultOfGeneration.Msg);
-            $('#Details').css("display", "block");
-        },
-        error: function (err) {
-        },
-    });
-    dataFound = true;
+            success: function (returner) {
+                var resultOfGeneration = JSON.parse(returner);
+                $('#Details').html(resultOfGeneration.Msg);
+                $('#Details').css("display", "block");
+            },
+            error: function (err) {
+            },
+        });
+        dataFound = true;
+    }
 }
 
 function NewAssistReg() {

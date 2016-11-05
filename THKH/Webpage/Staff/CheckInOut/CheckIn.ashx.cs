@@ -51,7 +51,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 try
                 {
                     // Find Visitor Details
-                    SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - VisitorDetails]", cnn);
+                    SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - VisitorDetails]", cnn); //Error dude to missing procedure
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@pNRIC", nric);
                     command.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;

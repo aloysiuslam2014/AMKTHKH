@@ -111,9 +111,8 @@
 
                     <div class="tab-pane maxHeight" id="regVisit" runat="server">
                         <div class="row maxHeight" style="overflow-y: auto">
-                            
                             <div id="newusercontent" class="col-sm-6" runat="server">
-                                <div class="jumbotron">
+                                <div class="jumbotron" style="text-align:left">
                                     <h3>Personal Details</h3>
                                     <label for="namesinput">First Name:</label>
                                     <div class="form-group">
@@ -171,7 +170,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="staticinfocontainer" class="col-sm-6" runat="server">
+                            <div id="staticinfocontainer" class="col-sm-6" style="text-align:left" runat="server">
+                                <h3>Visit Details</h3>
                                 <label for="pInput">Visit Purpose:</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels()">
@@ -228,12 +228,13 @@
                                         <option>2000</option>
                                     </select>
                                 </div>
-                                <h3>Visit Health Questionnaire</h3>
-                                <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field--%>
+                                <h3>Health Screening Questionnaire</h3>
+                                <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
+                                <div class="form-group">
                                 <div class="checkbox" id="fevdiv">
-                                    <input type="checkbox" name="yesopt" value="Yes" />
-                                    Yes<br />
+                                    <input type="checkbox" name="yesopt" value="Yes" />Yes</label>
                                 </div>
+                                    </div>
                                 <label for="symptomInput">I possess the following symptom(s)</label> <%--Patient Symptom declaration--%>
                                 <div class="form-group">
                                     <div id="symptomInput" class="checkbox">
