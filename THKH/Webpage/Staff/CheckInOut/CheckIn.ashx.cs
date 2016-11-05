@@ -32,13 +32,25 @@ namespace THKH.Webpage.Staff.CheckInOut
             var dob = context.Request.Form["DOB"];
             var race = context.Request.Form["RACE"];
             var email = context.Request.Form["email"];
+            var purpose = context.Request.Form["purpose"];
+            var pName = context.Request.Form["pName"];
+            var pNric = context.Request.Form["pNric"];
+            var otherPurpose = context.Request.Form["otherPurpose"];
+            var bedno = context.Request.Form["bedno"];
+            var appTime = context.Request.Form["appTime"];
+            var fever = context.Request.Form["fever"];
+            var symptoms = context.Request.Form["symptoms"];
+            var influenza = context.Request.Form["influenza"];
+            var countriesTravelled = context.Request.Form["countriesTravelled"];
+            var remarks = context.Request.Form["remarks"];
 
             if (temperature != null)
             {
                 successString = CheckIn(nric, temperature);
             }
             else if (age != null) {
-                successString = AssistReg(nric, age, fname, lname, address, postal, mobtel, alttel, hometel, sex, nationality, dob, race, email);
+                successString = AssistReg(nric, age, fname, lname, address, postal, mobtel, alttel, hometel, sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime, fever,
+                    symptoms, influenza, countriesTravelled, remarks);
             }
             else{
                 // Get NRIC & Call Procedure
@@ -84,13 +96,16 @@ namespace THKH.Webpage.Staff.CheckInOut
                 }
                 catch (Exception ex)
                 {
+                    successString += " " + ex.Message + "\"}";
                 }
             }
             context.Response.Write(successString);// Json Format
         }
 
 
-        private String AssistReg(String nric, String age, String fname, String lname, String address, String postal, String mobtel, String alttel, String hometel, String sex, String nationality, String dob, String race, String email) {
+        private String AssistReg(String nric, String age, String fname, String lname, String address, String postal, String mobtel, String alttel, String hometel, 
+            String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
+            String fever, String symptoms, String influenza, String countriesTravelled, String remarks) {
             string connectionString = null;
             SqlConnection cnn;
             int row = 0;

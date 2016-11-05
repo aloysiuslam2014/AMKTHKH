@@ -232,46 +232,49 @@
                                 <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
                                 <div class="form-group">
                                 <div class="checkbox" id="fevdiv">
-                                    <input type="checkbox" name="yesopt" value="Yes" />Yes</label>
+                                    <input type="checkbox" id="fever" name="yesopt" value="Yes" />Yes</label>
                                 </div>
                                     </div>
                                 <label for="symptomInput">I possess the following symptom(s)</label> <%--Patient Symptom declaration--%>
                                 <div class="form-group">
                                     <div id="symptomInput" class="checkbox">
                                         <label for="one">
-                                            <input type="checkbox" id="one" value="Pimple" />Pimple</label>
+                                            <input type="checkbox" id="pimple" value="Pimple" />Pimple</label>
                                         <label for="two">
-                                            <input type="checkbox" id="two" value="Hair Loss" />Hair Loss</label>
+                                            <input type="checkbox" id="hairloss" value="Hair Loss" />Hair Loss</label>
                                     </div>
                                 </div>
                                 <label for="symdiv">Do you have any close contact with person or persons returning from INFLUENZA [FLU] INFECTED countries?</label>
                                 <div id="symdiv" class="checkbox">
                                         <label for="one">
-                                            <input type="checkbox" id="one" value="Yes" />Yes</label>
+                                            <input type="checkbox" id="flu" value="Yes" />Yes</label>
                                 </div>
                                 <label for="visitInput">Countries Travelled For The Past 2 Weeks </label>
                                 <div class="form-group">
                                     <div id="checkboxes" class="checkbox">
                                         <label for="one">
-                                            <input type="checkbox" id="one" value="Singapore" />Singapore</label>
+                                            <input type="checkbox" id="sg" value="Singapore" />Singapore</label>
                                         <label for="two">
-                                            <input type="checkbox" id="two" value="Malaysia" />Malaysia</label>
+                                            <input type="checkbox" id="mi" value="Malaysia" />Malaysia</label>
                                         <label for="three">
-                                            <input type="checkbox" id="three" value="China" />China</label>
+                                            <input type="checkbox" id="cn" value="China" />China</label>
                                     </div>
                                 </div>
                                 <label for="remarksinput">Remarks:</label>
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="remarksinput" />
                                 </div>
+                                <div class="checkbox">
+                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation()" value="true" checked />I declare that the above information given is accurate<br />
+                                    <input type="hidden" name="declare" value="false" />
+                            <label for="declaration" id="declabel" style="color:red">Please check this option to continue</label>
+                        </div>
+                        <input class="btn btn-success" type="submit" id="submitNewEntry" runat="server" onclick="NewAssistReg(); false;" value="Submit" />
                             </div>
 
                         </div>
                     </div>
-                        <div class="checkbox">
-                            <input type="checkbox" id="declaration" value="true" checked />I declare that the above information given is accurate<br />
-                        </div>
-                        <input class="btn btn-success" type="submit" id="submitNewEntry" runat="server" onclick="NewAssistReg(); false;" value="Submit" />
+                        
                 </div>
 
             </div>
@@ -334,6 +337,20 @@
             }
         }
 
+        function declarationValidation() {
+            //var dec = $("#declaration").val();
+            //if (dec !== "true") {
+            //    $("#declabel").css("display", "block");
+            //} else {
+            //    $("#declabel").css("display", "none");
+            //}
+            if ($("#declaration").prop('checked') == true) {
+                $("#declabel").css("display", "none");
+            } else {
+                $("#declabel").css("display", "block");
+            }
+        }
+
         $(function () {
             $('#datetimepicker').datetimepicker();
         });
@@ -349,6 +366,7 @@
 
         function hideTags() {
             $("#nricWarning").css("display", "none");
+            $("#declabel").css("display", "none");
             $("#patientpurposevisit").css("display", "none");
             $("#otherpurposevisit").css("display", "none");
         }

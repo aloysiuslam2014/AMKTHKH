@@ -63,10 +63,6 @@ END; 
  
 ---------------------------------------------------------------------------------------------------------------------------------------------------- Validate Staff Login 
 GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE PROCEDURE [dbo].[SELECT FROM - login] --You can use a User-defined function or a view instead of a procedure. 
     @pNric NVARCHAR(254), 
     @pPassword varbinary(64) 
@@ -209,6 +205,7 @@ BEGIN
 END;
  
 --------------------------------------------------------------------------------------------- Procedures for adding details in Check_In_Out   for the check in step
+GO
 CREATE PROCEDURE [dbo].[INSERT INTO  - First_Check_In] 
  
 @pNric VARCHAR(100), 
@@ -236,6 +233,7 @@ BEGIN 
  
 END; 
  
+---------------------------------------------------------------------------------------------------------------- Get Locations
 GO 
 CREATE PROCEDURE [dbo].[SELECT FROM - Locations] 
 AS 
@@ -285,6 +283,7 @@ checkoutTime = @pCheckoutTime 
  
 END; 
  
+------------------------------------------------------------------------------------Update from locations
 GO 
 CREATE PROCEDURE [dbo].[UPDATE FROM - Locations] 
   @id INT 
