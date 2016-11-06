@@ -78,7 +78,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\hospitalLogo.png" />
+    <Content Include="Assets\hospitalLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -255,6 +257,9 @@
     <Folder Include="Webpage\Staff\Register\" />
     <Folder Include="Webpage\Staff\UpdateAccount\" />
     <Folder Include="Webpage\Staff\UpdateQuestionaires\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
