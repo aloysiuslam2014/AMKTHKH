@@ -84,19 +84,14 @@ CREATE TABLE visit_details 
 (visit_id INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
 cicoid INT, -- NOT NULL Initially 
 visitor_id INT, 
-visitTime VARCHAR(100), --Patient can request for a visit time? Yes. Timeouts will occur if the patient is late by 15 mins for now 
-purpose VARCHAR(100),
-patientName VARCHAR(100),
-patientNRIC VARCHAR(100),
+visitTime DATETIME, --Patient can request for a visit time? Yes. Timeouts will occur if the patient is late by 15 mins for now 
 wingNo INT, 
 wardNo INT, 
 cubicleNo INT, -- This point of time ward is the best we got  
 bedNo INT, 
-visitLocation VARCHAR(100),
-visitPurpose VARCHAR(100),
 -- visit_status VARCHAR(50) NOT NULL, -- Pending, Rejected, Waitlist, Approved -- Registration will not be vetted.  
--- validatedBy VARCHAR(100) NOT NULL, -- Logged in staff_id
-dateCreated DATETIME
+-- validatedBy VARCHAR(100) NOT NULL, -- Logged in staff_id 
+dateCreated DATETIME 
 CONSTRAINT FK1 FOREIGN KEY (visitor_id) REFERENCES thkhdb.dbo.visitor(visitor_id)); 
  
 ---------------------------------------------------------------------------------------------------------------------------------------------------- To Store Check-in Details 

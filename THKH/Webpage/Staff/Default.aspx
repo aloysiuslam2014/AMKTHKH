@@ -189,14 +189,7 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="patientNric" />
                                     </div>
-                                </div>
-                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
-                                    <label for="purposeInput">Purpose of Visit</label> 
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
-                                    </div>
-                                </div>
-                                <label for="bedno">Bed Number:</label> <%--Bed Number--%>
+                                    <label for="bedno">Bed Number:</label> <%--Bed Number--%>
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
@@ -228,6 +221,20 @@
                                         <option>2000</option>
                                     </select>
                                 </div>
+                                </div>
+                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
+                                    <label for="visLoc">Visit Location</label> 
+                                    <div class="form-group">
+                                    <select class="form-control" id="visLoc">
+                                        <option name="canteen" value="canteen">Canteen</option>
+                                        </select>
+                                    </div>
+                                    <label for="purposeInput">Purpose of Visit</label> 
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
+                                    </div>
+                                </div>
+                                
                                 <h3>Health Screening Questionnaire</h3>
                                 <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
                                 <div class="form-group">
@@ -265,7 +272,7 @@
                                     <input type="text" runat="server" class="form-control" id="remarksinput" />
                                 </div>
                                 <div class="checkbox">
-                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation()" value="true" checked />I declare that the above information given is accurate<br />
+                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate<br />
                                     <input type="hidden" name="declare" value="false" />
                             <label for="declaration" id="declabel" style="color:red">Please check this option to continue</label>
                         </div>
@@ -346,8 +353,10 @@
             //}
             if ($("#declaration").prop('checked') == true) {
                 $("#declabel").css("display", "none");
+                $("#submitNewEntry").css("display", "block");
             } else {
                 $("#declabel").css("display", "block");
+                $("#submitNewEntry").css("display", "none");
             }
         }
 
@@ -366,9 +375,9 @@
 
         function hideTags() {
             $("#nricWarning").css("display", "none");
-            $("#declabel").css("display", "none");
             $("#patientpurposevisit").css("display", "none");
             $("#otherpurposevisit").css("display", "none");
+            $("#submitNewEntry").css("display", "none");
         }
 
 

@@ -106,6 +106,10 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Webpage\SQL Script\AddStaff.sql" />
+    <Content Include="Webpage\SQL Script\AddVisitor.sql" />
+    <Content Include="Webpage\SQL Script\thkhdb create procedures.sql" />
+    <Content Include="Webpage\SQL Script\thkhdb create tables.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_Script.sql" />
     <Content Include="Webpage\Staff\TerminalCheckIn.aspx" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
