@@ -85,15 +85,6 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl newusercontent;
         
         /// <summary>
-        /// lblname control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblname;
-        
-        /// <summary>
         /// namesInput control.
         /// </summary>
         /// <remarks>
@@ -101,6 +92,15 @@ namespace THKH.Webpage.Staff {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText namesInput;
+        
+        /// <summary>
+        /// lnamesInput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText lnamesInput;
         
         /// <summary>
         /// emailsInput control.
@@ -139,6 +139,15 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlInputText homesInput;
         
         /// <summary>
+        /// altInput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText altInput;
+        
+        /// <summary>
         /// addresssInput control.
         /// </summary>
         /// <remarks>
@@ -166,15 +175,6 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlInputText nationalsInput;
         
         /// <summary>
-        /// datesRange control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText datesRange;
-        
-        /// <summary>
         /// staticinfocontainer control.
         /// </summary>
         /// <remarks>
@@ -184,31 +184,49 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl staticinfocontainer;
         
         /// <summary>
-        /// wardno control.
+        /// patientpurposevisit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText wardno;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl patientpurposevisit;
         
         /// <summary>
-        /// wingno control.
+        /// patientName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText wingno;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText patientName;
         
         /// <summary>
-        /// cubno control.
+        /// patientNric control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText cubno;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText patientNric;
+        
+        /// <summary>
+        /// otherpurposevisit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl otherpurposevisit;
+        
+        /// <summary>
+        /// purposeInput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText purposeInput;
         
         /// <summary>
         /// bedno control.
@@ -220,13 +238,13 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlInputText bedno;
         
         /// <summary>
-        /// healthcheck control.
+        /// remarksinput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea healthcheck;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText remarksinput;
         
         /// <summary>
         /// submitNewEntry control.

@@ -46,42 +46,63 @@ function DataNoExists() {
 
 function CheckIn() {
     var temper = temp.value;
-    var check = "true";
-    var headersToProcess = { nric: nric.value, temperature: temper };
-    $.ajax({
-        url: './CheckInOut/checkIn.ashx',
-        method: 'post',
-        data: headersToProcess,
+    if (parseFloat(temper) > 37.6) {
+        $('#Details').html("Temperature is Above 37.6 Degrees Celcius. No Entry!");
+        $('#Details').css("display", "block");
+        $('#Details').css("color", "red");
+    } else {
+        var check = "true";
+        var headersToProcess = { nric: nric.value, temperature: temper };
+        $.ajax({
+            url: './CheckInOut/checkIn.ashx',
+            method: 'post',
+            data: headersToProcess,
 
 
-        success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
-            $('#Details').html(resultOfGeneration.Msg);
-            $('#Details').css("display", "block");
-        },
-        error: function (err) {
-        },
-    });
-    dataFound = true;
+            success: function (returner) {
+                var resultOfGeneration = JSON.parse(returner);
+                $('#Details').html(resultOfGeneration.Msg);
+                $('#Details').css("display", "block");
+            },
+            error: function (err) {
+            },
+        });
+        dataFound = true;
+    }
 }
 
 function NewAssistReg() {
-    var fname = document.getElementById("namesInput").value;
-    var lname = document.getElementById("namesInput").value;
-    var snric = document.getElementById("nricsInput").value;
-    var address = document.getElementById("addresssInput").value;
-    var postal = document.getElementById("postalsInput").value;
-    var mobtel = document.getElementById("mobilesInput").value;
-    var alttel = "235";
-    var hometel = "672";
-    var sex = "M";
-    var nationality = document.getElementById("nationalsInput").value;
-    var dob = document.getElementById("datesRange").value;
-    var race = "Chinese";
-    var age = 23;
-    var Email = "hello";
+    var fname = $("#namesInput").val();
+    var lname = $("#lnamesInput").val();
+    var snric = $("#nricsInput").val();
+    var address = $("#addresssInput").val();
+    var postal = $("#postalsInput").val();
+    var mobtel = $("#mobilesInput").val();
+    var alttel = $("#altInput").val();
+    var hometel = $("#homesInput").val();
+    var sex = $("#sexinput").val();
+    var nationality = $("#nationalsInput").val();
+    var dob = $("#daterange").val();
+    var race = "Chinese"; 
+    var age = 23; 
+    var Email = $("#emailsInput").val();
+    var purpose = $("#pInput").val();
+    var pName = $("#patientName").val();
+    var pNric = $("#patientNric").val();
+    var otherPurpose = $("#purposeInput").val();
+    var bedno = $("#bedno").val();
+    var appTime = $("#visitbookingtime").val();
+    var fever = $("#fever").val();
+    var symptoms = $("#pimple").val();
+    var influenza = $("#flu").val();
+    var countriesTravelled = $("#sg").val();
+    var remarks = $("#remarksinput").val();
 
-    var headersToProcess = { firstName: fname, lastName: lname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email, AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age };
+    var headersToProcess = {
+        firstName: fname, lastName: lname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
+        AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, pName: pName, pNric: pNric,
+        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza, countriesTravelled: countriesTravelled, remarks: remarks
+    };
     $.ajax({
         url: './CheckInOut/checkIn.ashx',
         method: 'post',

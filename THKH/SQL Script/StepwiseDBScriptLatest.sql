@@ -119,7 +119,7 @@ checkpointtimeid VARCHAR(500) NOT NULL); -- stored in the following format [time
 GO
 CREATE TABLE form_qns
 (qnid INT PRIMARY KEY NOT NULL,
-question VARCHAR(500) NOT NULL,
+question VARCHAR(MAX) NOT NULL,
 optionstype INT NOT NULL);
 
 -- To Store Form Question Option Values
@@ -276,7 +276,27 @@ BEGIN
 		END CATCH
 END;
 
+-- Edit visitor info
+GO
+CREATE PROCEDURE [dbo].[UPDATE TO -	VisitDetails]
+    @pNRIC VARCHAR(100),
+	@responseMessage NVARCHAR(250) OUTPUT
 
+AS
+BEGIN
+    SET NOCOUNT ON
+
+    IF EXISTS (SELECT * FROM dbo.visitor WHERE nric = @pNric)
+		BEGIN
+			SET @responseMessage='Existing visitor'
+
+			SELECT TOP 1 visitor_id 
+			FROM [dbo].[visitor] WHERE nric = @pNric
+		END
+		
+    ELSE
+       SET @responseMessage='Non-existing visitor'
+END;
 
 -- Returning visitor
 GO
@@ -299,7 +319,6 @@ BEGIN
     ELSE
        SET @responseMessage='Non-existing visitor'
 END;
-
 
 -- Find visitor
 GO
@@ -330,7 +349,83 @@ BEGIN
        SET @responseMessage='Visitor not found'
 END;
 
+-- Add Questions to DB
+GO
+CREATE PROCEDURE [dbo].[INSERT INTO  - Form_Qns]
 
+	@pQn VARCHAR(MAX),
+	@pQnVal INT,
+	@pResponseMessage NVARCHAR(250) OUTPUT
+AS
+
+BEGIN
+    SET NOCOUNT ON
+    BEGIN TRY
+        INSERT INTO form_qns (question, optionstype)
+        VALUES(@pQn, @pQnVal)
+
+       SET @pResponseMessage='Question Successfully Added'
+    END TRY
+
+    BEGIN CATCH
+        SET @pResponseMessage=ERROR_MESSAGE() 
+    END CATCH
+
+END;
+
+
+-- Validate Check_in Attempt (More than 3 visitors?) TO BE EDITED
+GO
+CREATE PROCEDURE [dbo].[INSERT INTO  - First_Check_In]
+
+	@pNric VARCHAR(100),
+	@pTemperature VARCHAR(100),
+	@pStaff_id INT,
+	@pVisit_id INT,
+	@pCheckinlid INT, -- Can be 1=Entrance, 2=Ward 1 & 4=Exit
+	@pResponseMessage NVARCHAR(250) OUTPUT
+AS
+
+BEGIN
+    SET NOCOUNT ON
+    BEGIN TRY
+        INSERT INTO check_in_out (nric, temperature, staff_id, visit_id, checkinlid, 
+								  checkinTime, checkoutlid, checkoutTime)
+        VALUES(@pNric, @pTemperature, @pStaff_id, @pVisit_id, @pCheckinlid, GETDATE(), 
+			   NULL, NULL)
+
+       SET @pResponseMessage='Success'
+    END TRY
+
+    BEGIN CATCH
+        SET @pResponseMessage=ERROR_MESSAGE() 
+    END CATCH
+
+END;
+
+-- Get Visitor Details
+GO 
+CREATE PROCEDURE [dbo].[SELECT FROM - VisitorDetails] 
+    @pNRIC VARCHAR(100), 
+@responseMessage NVARCHAR(250) OUTPUT 
+ 
+AS 
+BEGIN 
+    SET NOCOUNT ON 
+DECLARE @userID INT 
+ 
+    IF EXISTS (SELECT nric FROM dbo.visitor WHERE nric = @pNric) 
+ 
+BEGIN 
+SET @userID = (SELECT TOP 1 visitor_id 
+FROM [dbo].[visitor] WHERE nric = @pNRIC) 
+ 
+SELECT firstName, lastName, mobTel FROM dbo.visitor WHERE nric = @pNric 
+SET @responseMessage='Visitor found' 
+END 
+    ELSE 
+       SET @responseMessage='Visitor not found' 
+END; 
 
 -- Procedures for adding details in Check_In_Out
 GO
