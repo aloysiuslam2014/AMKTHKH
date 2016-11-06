@@ -55,6 +55,7 @@ function callCheckSelf() {
             }
         },
         error: function (err) {
+            alert(err.msg);
         },
     });
     dataFound = true;

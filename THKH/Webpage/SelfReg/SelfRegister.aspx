@@ -23,6 +23,26 @@
    text-align: center;
    margin-bottom:0;
 }
+    .modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
     </style>
 </head>
 <body onload="hideTags()">
@@ -43,12 +63,12 @@
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header text-center">
                                 <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" />
                                 <h4 class="modal-title" id="memberModalLabel">Select an Option to Begin Self-Registration</h4>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body text-center">
                                 <div class="btn-group">
                                     <%-- <button type="button" class="btn btn-primary" onclick="showNewContent()">New Visitor</button>--%>
                                     <button type="button" id="NewVisitorButton" class="btn btn-primary" onclick="newVis()">New Visitor</button>
@@ -286,6 +306,16 @@
             $('#newusercontent').css("display", "none");
         }
 
+        function declarationValidation() {
+            if ($("#declaration").prop('checked') == true) {
+                $("#declabel").css("display", "none");
+                $("#submitNewEntry").css("display", "block");
+            } else {
+                $("#declabel").css("display", "block");
+                $("#submitNewEntry").css("display", "none");
+            }
+        }
+
         function showStaticContent() {
             $('#staticinfocontainer').css("display", "block");
         }
@@ -303,13 +333,30 @@
             }
         });
 
+        function purposePanels() {
+            var purpose = $("#pInput").val();
+            if (purpose === "patient") {
+                $("#patientpurposevisit").css("display", "block");
+                $("#otherpurposevisit").css("display", "none");
+            } else if (purpose === "other") {
+                $("#patientpurposevisit").css("display", "none");
+                $("#otherpurposevisit").css("display", "block");
+            } else {
+                $("#patientpurposevisit").css("display", "none");
+                $("#otherpurposevisit").css("display", "none");
+            }
+        }
+
         function hideTags() {
             $('#existingusercontent').css("display", "none");
             $('#staticinfocontainer').css("display", "none");
             $('#newusercontent').css("display", "none");
             $("#nricWarning").css("display", "none");
             $("#nricexistlabel").css("display", "none");
+            $("#patientpurposevisit").css("display", "none");
+            $("#otherpurposevisit").css("display", "none");
             $("#nricnotexistlabel").css("display", "none");
+            $("#submitNewEntry").css("display", "none");
         }
 
     </script>

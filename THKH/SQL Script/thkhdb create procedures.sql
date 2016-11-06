@@ -228,7 +228,7 @@ BEGIN 
   checkinTime, checkoutlid, checkoutTime) 
         VALUES(@pNric, @pTemperature, @pStaff_id, @pVisit_id, @pCheckinlid, GETDATE(),  
    NULL, NULL) 
- 
+ 		EXEC [UPDATE FROM - UserMovement] @nric = @pNric, @locationId = 1;
        SET @pResponseMessage='Success' 
     END TRY 
  
@@ -403,26 +403,54 @@ END
 
 ------------------------------------- Update Visitors' Movements ------------------------------------
 GO
-CREATE PROCEDURE [dbo].[UPDATE FROM - UserMovement]  
-@nric varchar(50)  
+CREATE PROCEDURE [dbo].[UPDATE FROM - UserMovement]  
+@nric varchar(100),
+@locationId INT,
+@return_value INT
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+  
+  DECLARE @return_value INT
+  SET @return_value = 1
 
-AS  
-BEGIN  
-	SET NOCOUNT ON  
-	
-	DECLARE @return_value INT
+  DECLARE @updateCheckIn VARCHAR(500),
+		@cicoId INT
+
+  SET @updateCheckIn = (SELECT TOP 1 checkpointtimeid FROM dbo.movementTable 
+        WHERE @nric = nric AND date != '' AND
+        (SELECT CONVERT(VARCHAR(10), SYSDATETIME(), 105) AS [DD-MM-YYYY])= date ORDER BY date DESC)
+  SET @cicoId = (SELECT TOP 1 cicoid FROM dbo.check_in_out 
+        WHERE @nric = nric AND checkinTime != '' AND
+        (SELECT CONVERT(VARCHAR(10), SYSDATETIME(), 105) AS [DD-MM-YYYY])= (SELECT CONVERT(VARCHAR(10), checkinTime, 105) AS [DD-MM-YYYY]))
+
+  IF @updateCheckIn IS NOT NULL
+  BEGIN TRY
+    UPDATE dbo.movementTable
+    SET checkpointtimeid = ',' + @updateCheckIn + '' + CAST(@locationId AS VARCHAR(3)) + '' +  CAST(date AS VARCHAR(10))
+    WHERE nric = @nric
 	SET @return_value = 1
-	
-	IF EXISTS (SELECT TOP 1 moveid FROM dbo.movementTable 
-	WHERE @nric = nric ORDER BY date DESC)
-		SELECT @return_value
-	
-	ELSE
-		SET @return_value = 0
-		SELECT @return_value
+    SELECT @return_value
+    END TRY 
+  
+  BEGIN CATCH  
+    SET @return_value = 0
+    SELECT @return_value
+  END CATCH
+  
+  ELSE
+  BEGIN TRY
+    INSERT INTO dbo.movementTable
+    VALUES(@nric, @cicoId, GETDATE(),NULL)
+
+    SELECT @return_value
+  End TRY
+  
+  BEGIN CATCH  
+    SET @return_value = 0
+    SELECT @return_value
+  END CATCH   
 END;
-
-
 ------------------------------------------ Update Location ----------------------------------------------------
 GO
 CREATE PROCEDURE [dbo].[UPDATE FROM - Locations]  
