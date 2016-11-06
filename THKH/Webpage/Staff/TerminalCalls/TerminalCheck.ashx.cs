@@ -55,7 +55,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             SqlConnection cnn;
             connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
             Object[] test;
             SqlParameter respon = new SqlParameter("@resp", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -101,7 +101,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             SqlConnection cnn;
             connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
             Object[] test =new Object[1];
             try
             {
@@ -147,7 +147,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             SqlConnection cnn;
             connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE FROM - Locations]", cnn);
