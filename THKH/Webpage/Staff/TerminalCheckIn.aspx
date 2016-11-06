@@ -29,7 +29,7 @@
           <form role="form">
             <div class="form-group">
               <label for="usrname"><span class="glyphicon glyphicon-user"></span>Verify Staff</label>
-              <input type="text"  class="form-control text-center" id="usrname" placeholder="Enter NRIC to select a terminal"/>
+              <input type="text"  class="form-control text-center" id="usrname" placeholder="Enter User Login to select a terminal"/>
             </div>
            
               <button type="button" class="btn btn-success btn-block" onclick="verifyUser();"><span class="glyphicon glyphicon-off"></span> Verify</button>
@@ -113,38 +113,6 @@
             <script type="text/javascript">
 
                
-
-                $('#userNric').keypress(function (e) {
-                    if (e.which == 13) {
-                        e.preventDefault();
-                        //do something   
-                        updateCheckIn();
-                    }
-                });
-                function updateCheckIn() {
-
-                   
-                    var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value };
-                    $.ajax({
-                        url: './TerminalCalls/TerminalCheck.ashx',
-                        method: 'post',
-                        data: headersToProcess,
-                        success: function (returner) {
-                            var result = String(returner)
-                            if (result == "succes") {
-                                userWelcome.innerText = "Welcome! " + userNric.value
-                            }
-                        },
-                        error: function (err) {
-                        },
-                    });
-                }
-
-                function returnToLogin() {
-                    var goTo = "./Login.aspx";
-                    document.location.href = goTo;
-                }
-
 
             </script>
         </form>

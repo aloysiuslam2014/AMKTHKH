@@ -17,8 +17,8 @@ namespace THKH.Webpage.Staff
             int rows = 0;
             DataTable dataTable = new DataTable();
             SqlConnection cnn;
-            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=stepwise;Integrated Security=SSPI;";
-            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             try
             {

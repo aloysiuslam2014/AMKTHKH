@@ -53,8 +53,8 @@ namespace THKH.Webpage.Staff.TerminalCalls
             bool success = false;
            
             SqlConnection cnn;
-            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             Object[] test;
             SqlParameter respon = new SqlParameter("@resp", System.Data.SqlDbType.Int);
@@ -99,8 +99,8 @@ namespace THKH.Webpage.Staff.TerminalCalls
             bool success = false;
             int locationId=Convert.ToInt32(id);
             SqlConnection cnn;
-            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             Object[] test =new Object[1];
             try
@@ -145,8 +145,8 @@ namespace THKH.Webpage.Staff.TerminalCalls
             bool success = false;
             int id = Convert.ToInt32(locationId);
             SqlConnection cnn;
-            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=stepwise;Integrated Security=SSPI;";
+            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             try
             {
