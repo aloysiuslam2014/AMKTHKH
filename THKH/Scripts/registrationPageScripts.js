@@ -97,11 +97,13 @@ function NewAssistReg() {
     var influenza = $("#flu").val();
     var countriesTravelled = $("#sg").val();
     var remarks = $("#remarksinput").val();
+    var visitLoc = $("#visLoc").val();
 
     var headersToProcess = {
         firstName: fname, lastName: lname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
-        AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, pName: pName, pNric: pNric,
-        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza, countriesTravelled: countriesTravelled, remarks: remarks
+        AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose,pName: pName, pNric: pNric,
+        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza,
+        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc
     };
     $.ajax({
         url: './CheckInOut/checkIn.ashx',
