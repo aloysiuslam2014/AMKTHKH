@@ -18,6 +18,14 @@ $('#myModal').submit(function (event) {
 });
 
 
+$('#userNric').keypress(function (e) {
+    if (e.which == 13) {
+        e.preventDefault();
+        //do something   
+        updateCheckIn();
+    }
+});
+
 function activateMe(me) {
    
     var nameAndId = me.id.toString().split(":");
@@ -33,7 +41,7 @@ function activateMe(me) {
             if (result == "success") {
                 activaTab("beginTerminal");
             } else {
-                errorMsg.innerText = "The terminal has already been activated elsewhere. Please refresh the page to view the latest list of terminals available.";
+                errorMsg.innerText = "The terminal has already been activated elsewhere. Please choose another terminal to activate.";
                 $("#alertModal").modal({
                     backdrop: 'static',
                     keyboard: false
@@ -73,6 +81,31 @@ function verifyUser() {
         },
     });
 
+}
+
+
+function updateCheckIn() {
+
+
+    var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value };
+    $.ajax({
+        url: './TerminalCalls/TerminalCheck.ashx',
+        method: 'post',
+        data: headersToProcess,
+        success: function (returner) {
+            var result = String(returner)
+            if (result == "succes") {
+                userWelcome.innerText = "Welcome! " + userNric.value
+            }
+        },
+        error: function (err) {
+        },
+    });
+}
+
+function returnToLogin() {
+    var goTo = "./Login.aspx";
+    document.location.href = goTo;
 }
 
 function launchFail() {

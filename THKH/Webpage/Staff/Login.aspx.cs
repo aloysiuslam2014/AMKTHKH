@@ -53,8 +53,8 @@ namespace THKH.Webpage.Staff
             int rows = 0;
              
             SqlConnection cnn;
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             try {
                 SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - login]", cnn);
@@ -96,7 +96,6 @@ namespace THKH.Webpage.Staff
             string hash = "";
             SHA512 alg = SHA512.Create();
             byte[] result = alg.ComputeHash(Encoding.UTF8.GetBytes(plainText));
-          
 
             return result;
         }
