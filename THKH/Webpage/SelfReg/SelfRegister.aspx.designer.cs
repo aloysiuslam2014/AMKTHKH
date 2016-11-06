@@ -31,24 +31,6 @@ namespace THKH.Webpage.SelfReg {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl maincontainer;
         
         /// <summary>
-        /// NewVisitorButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton NewVisitorButton;
-        
-        /// <summary>
-        /// ExistingVisitorButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton ExistingVisitorButton;
-        
-        /// <summary>
         /// newusercontent control.
         /// </summary>
         /// <remarks>
@@ -58,94 +40,94 @@ namespace THKH.Webpage.SelfReg {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl newusercontent;
         
         /// <summary>
-        /// lblname control.
+        /// namesInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblname;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText namesInput;
         
         /// <summary>
-        /// nameinput control.
+        /// lnamesInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox nameinput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText lnamesInput;
         
         /// <summary>
-        /// emailinput control.
+        /// emailsInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox emailinput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText emailsInput;
         
         /// <summary>
-        /// nricinput control.
+        /// nricsInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox nricinput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText nricsInput;
         
         /// <summary>
-        /// mobileinput control.
+        /// mobilesInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox mobileinput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText mobilesInput;
         
         /// <summary>
-        /// homeinput control.
+        /// homesInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox homeinput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText homesInput;
         
         /// <summary>
-        /// addressinput control.
+        /// altInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox addressinput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText altInput;
         
         /// <summary>
-        /// postalinput control.
+        /// addresssInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox postalinput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText addresssInput;
         
         /// <summary>
-        /// nationalinput control.
+        /// postalsInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox nationalinput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText postalsInput;
         
         /// <summary>
-        /// daterange control.
+        /// nationalsInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox daterange;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText nationalsInput;
         
         /// <summary>
         /// existingusercontent control.
@@ -157,15 +139,6 @@ namespace THKH.Webpage.SelfReg {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl existingusercontent;
         
         /// <summary>
-        /// existnric control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox existnric;
-        
-        /// <summary>
         /// staticinfocontainer control.
         /// </summary>
         /// <remarks>
@@ -175,31 +148,31 @@ namespace THKH.Webpage.SelfReg {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl staticinfocontainer;
         
         /// <summary>
-        /// wardno control.
+        /// patientpurposevisit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox wardno;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl patientpurposevisit;
         
         /// <summary>
-        /// wingno control.
+        /// patientName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox wingno;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText patientName;
         
         /// <summary>
-        /// cubno control.
+        /// patientNric control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cubno;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText patientNric;
         
         /// <summary>
         /// bedno control.
@@ -208,60 +181,42 @@ namespace THKH.Webpage.SelfReg {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox bedno;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText bedno;
         
         /// <summary>
-        /// healthcheck control.
+        /// otherpurposevisit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox healthcheck;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl otherpurposevisit;
         
         /// <summary>
-        /// submitExist control.
+        /// purposeInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl submitExist;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText purposeInput;
         
         /// <summary>
-        /// submitNricButton control.
+        /// remarksinput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton submitNricButton;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText remarksinput;
         
         /// <summary>
-        /// submitNew control.
+        /// submitNewEntry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl submitNew;
-        
-        /// <summary>
-        /// submitNewEntryButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton submitNewEntryButton;
-        
-        /// <summary>
-        /// isNew control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden isNew;
+        protected global::System.Web.UI.HtmlControls.HtmlInputSubmit submitNewEntry;
     }
 }

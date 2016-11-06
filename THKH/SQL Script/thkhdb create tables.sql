@@ -96,7 +96,8 @@ visitLocation VARCHAR(100),
 visitPurpose VARCHAR(100),
 -- visit_status VARCHAR(50) NOT NULL, -- Pending, Rejected, Waitlist, Approved -- Registration will not be vetted.  
 -- validatedBy VARCHAR(100) NOT NULL, -- Logged in staff_id
-dateCreated DATETIME
+dateCreated DATETIME,
+approved VARCHAR(50), -- Has the visit request been approved? Auto yes if Assisted reg
 CONSTRAINT FK1 FOREIGN KEY (visitor_id) REFERENCES thkhdb.dbo.visitor(visitor_id)); 
  
 ---------------------------------------------------------------------------------------------------------------------------------------------------- To Store Check-in Details 

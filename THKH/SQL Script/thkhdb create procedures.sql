@@ -191,6 +191,7 @@ AS
 
 BEGIN
     SET NOCOUNT ON
+	
     BEGIN TRY
 	 SELECT cicoid FROM [thkhdb].[dbo].[check_in_out] WHERE checkinTime < GETDATE() AND checkoutlid IS NULL
 
@@ -216,8 +217,13 @@ CREATE PROCEDURE [dbo].[INSERT INTO  - First_Check_In_Out] 
 AS 
  
 BEGIN 
+
+	DECLARE @visitor_id INT
+
     SET NOCOUNT ON 
     BEGIN TRY 
+	--IF EXISTS (SELECT visit_id FROM dbo.visit_details WHERE nric = @pNric AND CAST(dateCreated AS DATE) = CAST(GETDATE() AS DATE))
+		--SET @visitor_id = (SELECT visit_id FROM dbo.visit_details WHERE nric = @pNric AND CAST(dateCreated AS DATE) = CAST(GETDATE() AS DATE))
         INSERT INTO check_in_out (nric, temperature, staff_id, visit_id, checkinlid,  
   checkinTime, checkoutlid, checkoutTime) 
         VALUES(@pNric, @pTemperature, @pStaff_id, @pVisit_id, @pCheckinlid, GETDATE(),  
@@ -328,6 +334,7 @@ CREATE PROCEDURE [dbo].[INSERT INTO  - Registration] 
 @pPatientNric VARCHAR(100) = NULL,
 @visitLocation VARCHAR(100) = NULL,
 @visitPurpose VARCHAR(100) = NULL,
+@approved VARCHAR(50) = 'No',
 @pResponseMessage NVARCHAR(250) OUTPUT 
  
 AS 
@@ -343,8 +350,8 @@ BEGIN TRY 
 	IF NOT EXISTS (SELECT visit_id FROM dbo.visit_details WHERE CAST(dateCreated AS DATE) = CAST(GETDATE() AS DATE))  -- Query visit_details. If entry date is not today, insert new visit_details row
 		BEGIN
 			SET @visitor_id = (SELECT visitor_id FROM dbo.visitor WHERE nric = @pNric)
-			INSERT INTO visit_details (cicoid, visitor_id, visitTime, purpose, patientName, patientNRIC, wingNo, wardNo, cubicleNo, bedNo, visitLocation, visitPurpose, dateCreated) 
-			VALUES (null, @visitor_id, @pVisitTime, @pPurpose, @pPatientName, @pPatientNric, @pWingNo, @pWardNo, @pCubicleNo, @pBedNo, @visitLocation, @visitPurpose, GETDATE())
+			INSERT INTO visit_details (cicoid, visitor_id, visitTime, purpose, patientName, patientNRIC, wingNo, wardNo, cubicleNo, bedNo, visitLocation, visitPurpose, dateCreated, approved) 
+			VALUES (null, @visitor_id, @pVisitTime, @pPurpose, @pPatientName, @pPatientNric, @pWingNo, @pWardNo, @pCubicleNo, @pBedNo, @visitLocation, @visitPurpose, GETDATE(), @approved)
 			SET @pResponseMessage='Existing Visitor Success' 
 		END
 	END
@@ -364,8 +371,8 @@ VALUES(@pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel
 
 SET @visitor_id = (SELECT visitor_id FROM dbo.visitor WHERE nric = @pNric)
  
-INSERT INTO visit_details (cicoid, visitor_id, visitTime, purpose, patientName, patientNRIC, wingNo, wardNo, cubicleNo, bedNo, visitLocation, visitPurpose, dateCreated) 
-VALUES (null, @visitor_id, @pVisitTime, @pPurpose, @pPatientName, @pPatientNric, @pWingNo, @pWardNo, @pCubicleNo, @pBedNo, @visitLocation, @visitPurpose, GETDATE()) 
+INSERT INTO visit_details (cicoid, visitor_id, visitTime, purpose, patientName, patientNRIC, wingNo, wardNo, cubicleNo, bedNo, visitLocation, visitPurpose, dateCreated, approved) 
+VALUES (null, @visitor_id, @pVisitTime, @pPurpose, @pPatientName, @pPatientNric, @pWingNo, @pWardNo, @pCubicleNo, @pBedNo, @visitLocation, @visitPurpose, GETDATE(), @approved) 
  
 SET @pResponseMessage='Success' 
 SELECT TOP 1 visitor_id  

@@ -44,60 +44,119 @@ namespace THKH.Webpage.Staff.CheckInOut
             var countriesTravelled = context.Request.Form["countriesTravelled"];
             var remarks = context.Request.Form["remarks"];
             var visitLocation = context.Request.Form["visitLocation"];
-
-            if (temperature != null)
-            {
-                successString = CheckIn(nric, temperature);
-            }
-            else if (age != null) {
-                successString = AssistReg(nric, age, fname, lname, address, postal, mobtel, alttel, hometel, sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime, fever,
-                    symptoms, influenza, countriesTravelled, remarks, visitLocation);
-            }
-            else{
-                // Get NRIC & Call Procedure
-                string connectionString = null;
-                SqlConnection cnn;
-                int row = 0;
-                connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-                cnn = new SqlConnection(connectionString);
-                successString = "{\"Result\":\"Success\",\"Msg\":\"NRIC:" + nric + "";
-                try
+            var assisted = context.Request.Form["ASSISTED"];
+            if (assisted == "yes") {
+                if (temperature != null)
                 {
-                    // Find Visitor Details
-                    SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - VisitorDetails]", cnn); //Error dude to missing procedure
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@pNRIC", nric);
-                    command.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
-                    cnn.Open();
-                    Object[] test;
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        test = new Object[reader.FieldCount];
-                        while (reader.Read())
-                        {
-
-                            reader.GetValues(test);
-                            row++;
-                            // Get back all the data from Stored Procedure
-                        }
-                    }
-                    cnn.Close();
-                    int count = 0;
-                    String[] cols = { "First Name", "Last Name", "Mobile Number" };
-                    foreach (object value in test)
-                    {
-                        successString = successString + "," + cols[count] + ":" + value.ToString();
-                        count++;
-                    }
-                    successString = successString + "\"}";
-                    test = new Object[0];
-                    // Get NRIC-Done, Name, Mobile Number
-
+                    successString = CheckIn(nric, temperature);
                 }
-                catch (Exception ex)
+                else if (age != null)
                 {
-                    successString += " " + ex.Message + "\"}";
+                    successString = AssistReg(nric, age, fname, lname, address, postal, mobtel, alttel, hometel, sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime, fever,
+                        symptoms, influenza, countriesTravelled, remarks, visitLocation, assisted);
+                }
+                else
+                {
+                    // Get NRIC & Call Procedure
+                    string connectionString = null;
+                    SqlConnection cnn;
+                    int row = 0;
+                    connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+                    cnn = new SqlConnection(connectionString);
+                    successString = "{\"Result\":\"Success\",\"Msg\":\"";
+                    try
+                    {
+                        // Find Visitor Details
+                        SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - VisitorDetails]", cnn);
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@pNRIC", nric);
+                        command.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+                        cnn.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                row++;
+                            }
+                        }
+                        if (row == 0)
+                        {
+                            successString += "notfound";
+                        }
+                        else
+                        {
+                            successString += "found";
+                        }
+                        successString += "\"}";
+                    }
+                    catch (Exception ex)
+                    {
+                        successString += " " + ex.Message + "\"}";
+                    }
+                    finally
+                    {
+                        cnn.Close();
+                    }
+                }
+            } else {
+                if (temperature != null)
+                {
+                    successString = CheckIn(nric, temperature);
+                }
+                else if (age != null) {
+                    successString = AssistReg(nric, age, fname, lname, address, postal, mobtel, alttel, hometel, sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime, fever,
+                        symptoms, influenza, countriesTravelled, remarks, visitLocation, assisted);
+                }
+                else {
+                    // Get NRIC & Call Procedure
+                    string connectionString = null;
+                    SqlConnection cnn;
+                    int row = 0;
+                    connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+                    cnn = new SqlConnection(connectionString);
+                    successString = "{\"Result\":\"Success\",\"Msg\":\"NRIC:" + nric + "";
+                    try
+                    {
+                        // Find Visitor Details
+                        SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - VisitorDetails]", cnn);
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@pNRIC", nric);
+                        command.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+                        cnn.Open();
+                        Object[] test;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            test = new Object[reader.FieldCount];
+                            while (reader.Read())
+                            {
+
+                                reader.GetValues(test);
+                                row++;
+                                // Get back all the data from Stored Procedure
+                            }
+                        }
+                        int count = 0;
+                        String[] cols = { "First Name", "Last Name", "Mobile Number" };
+                        foreach (object value in test)
+                        {
+                            successString = successString + "," + cols[count] + ":" + value.ToString();
+                            count++;
+                        }
+                        successString = successString + "\"}";
+                        test = new Object[0];
+                        // Get NRIC-Done, Name, Mobile Number
+
+                    }
+                    catch (Exception ex)
+                    {
+                        successString += " " + ex.Message + "\"}";
+                    }
+                    finally
+                    {
+                        cnn.Close();
+                    }
                 }
             }
             context.Response.Write(successString);// Json Format
@@ -106,39 +165,13 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         private String AssistReg(String nric, String age, String fname, String lname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation) {
+            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String assisted) {
             string connectionString = null;
             SqlConnection cnn;
             int row = 0;
             connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(connectionString);
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            //try
-            //{ // Check for Visitor Existence
-            //    SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - ReturningVisitor]", cnn);
-            //    command.CommandType = System.Data.CommandType.StoredProcedure;
-            //    command.Parameters.AddWithValue("@pNric", nric);
-            //    command.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
-            //    cnn.Open();
-            //    Object[] result;
-            //    using (SqlDataReader reader = command.ExecuteReader())
-            //    {
-            //        result = new Object[reader.FieldCount];
-            //        while (reader.Read())
-            //        {
-            //            row++;
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-
-            //}
-            //finally {
-            //    cnn.Close();
-            //}
-            //if (row == 0) // If Visitor does not exist, add new Registration
-            //{
             try
             {
                 // Write to DB, New Registration
@@ -168,6 +201,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pPatientNric", pNric);
                 command.Parameters.AddWithValue("@visitLocation", visitLocation);
                 command.Parameters.AddWithValue("@visitPurpose", otherPurpose);
+                command.Parameters.AddWithValue("@approved", assisted);
                 command.Parameters.Add("@pResponseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
                 cnn.Open();
                 Object[] test;
