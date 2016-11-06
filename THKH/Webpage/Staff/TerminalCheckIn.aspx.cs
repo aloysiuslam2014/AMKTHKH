@@ -19,7 +19,7 @@ namespace THKH.Webpage.Staff
             SqlConnection cnn;
             //connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - Locations]", cnn);
