@@ -63,24 +63,22 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header text-center">
-                                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
                                 <h4 class="modal-title" id="memberModalLabel">Please enter your NRIC/Identification Number</h4>
                             </div>
                             <div class="modal-body text-center">
                                     NRIC: <input type="text" id="selfRegNric" class="form-control" />
-                                    <button type="button" class="btn btn-success" id="submitNric" onclick="newOrExistVisitor()">Submit</button>
                             </div>
                             <div class="modal-footer">
-                                <%--<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>--%>
+                                <button type="submit" class="btn btn-block btn-success" id="submitNric" onclick="newOrExistVisitor()">Submit</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="container-fluid">
-                    <h5 id="emptyFields" style="color:red">Please fill in all the required fields (*).</h5>
+                    <h4 id="emptyFields" style="color:red">Please fill in all the required fields (*).</h4>
                     <div class="row">
-                        <div id="newusercontent" class="col-sm-6" runat="server">
+                        <div id="newusercontent" runat="server">
                             <div class="jumbotron" style="text-align:left">
                                     <h3>Personal Details</h3>
                                     <label for="namesinput">First Name:</label><label for="existnric" id="comp1" style="color:red">*</label>
@@ -139,18 +137,8 @@
                                     </div>
                                 </div>
                             </div>
-                        <div id="existingusercontent" class="col-sm-6" runat="server">
+                        <div id="staticinfocontainer" runat="server">
                             <div class="jumbotron" style="text-align:left">
-                            <h3>Please Enter your NRIC</h3>
-                            <div class="form-group">
-                                <label for="existnric">NRIC:</label>
-                                <input class="form-control" id="existnric" onchange="callCheckSelf(); false;"></input>
-                                <label for="existnric" id="nricexistlabel" style="color:lightgreen">NRIC Found!</label>
-                                <label for="existnric" id="nricnotexistlabel" style="color:red">NRIC Not Found! Please Register as a New Visitor or Approach the Registration Desk.</label>
-                            </div>
-                                </div>
-                        </div>
-                        <div id="staticinfocontainer" class="col-sm-6" runat="server">
                             <h3>Visit Details</h3>
                                 <label for="pInput">Visit Purpose:</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
@@ -256,9 +244,10 @@
                                     <input type="hidden" name="declare" value="false" />
                             <label for="declaration" id="declabel" style="color:red">Please check this option to continue</label>
                         </div>
-                        <input class="btn btn-success" type="submit" id="submitNewEntry" runat="server" onclick="NewSelfReg(); false;" value="Submit" />
+                        <button class="btn btn-block btn-success" type="button" id="submitNewEntry" runat="server" onclick="NewSelfReg(); false;">Submit</button> <%--Copy to Tables without confirmation--%>
 
                         </div>
+                            </div>
                     </div>
                 </div>
                 </div>
@@ -305,13 +294,13 @@
         function showNewContent(nricValue) {
             $("#nricsInput").val(nricValue);
             $('#newusercontent').css("display", "block");
-            $('#existingusercontent').css("display", "none");
+            //$('#existingusercontent').css("display", "none");
             showStaticContent();
             hideModal();
         }
 
         function showExistContent(nricValue) {
-            $('#existingusercontent').css("display", "block");
+            //$('#existingusercontent').css("display", "block");
             $('#newusercontent').css("display", "none");
             showStaticContent();
             hideModal();
@@ -359,7 +348,7 @@
         }
 
         function hideTags() {
-            $('#existingusercontent').css("display", "none");
+            //$('#existingusercontent').css("display", "none");
             $('#staticinfocontainer').css("display", "none");
             $('#newusercontent').css("display", "none");
             $("#nricWarning").css("display", "none");
