@@ -59,22 +59,17 @@
             <br />
             <br />
             <a data-controls-modal="myModal" data-backdrop="static" data-keyboard="false" href="#">
-                <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#myModal">Choose User</button>
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
-                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" />
-                                <h4 class="modal-title" id="memberModalLabel">Select an Option to Begin Self-Registration</h4>
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title" id="memberModalLabel">Please enter your NRIC/Identification Number</h4>
                             </div>
                             <div class="modal-body text-center">
-                                <div class="btn-group">
-                                    <%-- <button type="button" class="btn btn-primary" onclick="showNewContent()">New Visitor</button>--%>
-                                    <button type="button" id="NewVisitorButton" class="btn btn-primary" onclick="newVis()">New Visitor</button>
-                                    <%--                            <button type="button" class="btn btn-primary" onclick="showExistContent()">Existing Visitor</button>--%>
-                                    <button type="button" id="ExistingVisitorButton" class="btn btn-primary" onclick="exiVis()">Existing Visitor</button>
-                                </div>
+                                    NRIC: <input type="text" id="selfRegNric" class="form-control" />
+                                    <button type="button" class="btn btn-success" id="submitNric" onclick="newOrExistVisitor()">Submit</button>
                             </div>
                             <div class="modal-footer">
                                 <%--<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>--%>
@@ -83,15 +78,16 @@
                     </div>
                 </div>
                 <div class="container-fluid">
+                    <h5 id="emptyFields" style="color:red">Please fill in all the required fields (*).</h5>
                     <div class="row">
                         <div id="newusercontent" class="col-sm-6" runat="server">
                             <div class="jumbotron" style="text-align:left">
                                     <h3>Personal Details</h3>
-                                    <label for="namesinput">First Name:</label>
+                                    <label for="namesinput">First Name:</label><label for="existnric" id="comp1" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="namesInput" />
+                                        <input type="text" runat="server" class="form-control required" id="namesInput" />
                                     </div>
-                                    <label for="lnamesinput">Last Name:</label>
+                                    <label for="lnamesinput">Last Name:</label> <%--Remove--%>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="lnamesInput" />
                                     </div>
@@ -99,9 +95,9 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="emailsInput" />
                                     </div>
-                                    <label for="nricsInput">NRIC:</label>
+                                    <label for="nricsInput">NRIC:</label><label for="existnric" id="comp2" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="nricsInput" /><label for="nricsInput" id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID!</label>
+                                        <input type="text" runat="server" class="form-control required" id="nricsInput" /><label for="nricsInput" id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID!</label>
                                     </div>
                                     <label for="mobileinput">Mobile Number:</label>
                                     <div class="form-group">
@@ -115,28 +111,28 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="altInput" />
                                     </div>
-                                    <label for="addressinput">Address:</label>
+                                    <label for="addressinput">Address:</label><label for="existnric" id="comp4" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="addresssInput" />
+                                        <input type="text" runat="server" class="form-control required" id="addresssInput" />
                                     </div>
-                                    <label for="postalinput">Postal Code:</label>
+                                    <label for="postalinput">Postal Code:</label><label for="existnric" id="comp5" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="postalsInput" />
+                                        <input type="text" runat="server" class="form-control required" id="postalsInput" />
                                     </div>
-                                    <label for="sexinput">Gender:</label>
+                                    <label for="sexinput">Gender:</label><label for="existnric" id="comp5" style="color:red">*</label>
                                     <div class="form-group">
                                         <select class="form-control" id="sexinput">
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                         </select>
                                     </div>
-                                    <label for="nationalinput">Nationality:</label>
+                                    <label for="nationalinput">Nationality:</label><label for="existnric" id="comp6" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="nationalsInput" />
+                                        <input type="text" runat="server" class="form-control required" id="nationalsInput" />
                                     </div>
-                                    <label for="daterange">Date of Birth:</label>
+                                    <label for="daterange">Date of Birth:</label><label for="existnric" id="comp7" style="color:red">*</label>
                                     <div class="input-group date" id="datetimepicker">
-                                        <input type='text'id="daterange" class="form-control" />
+                                        <input type='text'id="daterange" class="form-control required" />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -276,17 +272,27 @@
             }
         });
 
-        function newVis() {
-            showNewContent();
-            showStaticContent();
-            hideModal();
+        function newOrExistVisitor() {
+            // Call procedure to check if visitor exists in DB
+            var nricValue = $('#selfRegNric').val();
+            // showExistContent()
+            showNewContent(nricValue);
         }
 
-        function exiVis() {
-            showExistContent();
-            showStaticContent();
-            hideModal();
-        }
+        $("#selfregistration input.required").change(function () {
+            var valid = true;
+            $.each($("#selfregistration input.required"), function (index, value) {
+                if (!$(value).val()) {
+                    valid = false;
+                }
+            });
+            if (valid) {
+                $('#emptyFields').css("display", "none");
+            }
+            else {
+                $('#emptyFields').css("display", "block");
+            }
+        });
 
         function showModal() {
             $('#myModal').modal('show');
@@ -296,14 +302,19 @@
             $('#myModal').modal('hide');
         }
 
-        function showNewContent() {
+        function showNewContent(nricValue) {
+            $("#nricsInput").val(nricValue);
             $('#newusercontent').css("display", "block");
             $('#existingusercontent').css("display", "none");
+            showStaticContent();
+            hideModal();
         }
 
-        function showExistContent() {
+        function showExistContent(nricValue) {
             $('#existingusercontent').css("display", "block");
             $('#newusercontent').css("display", "none");
+            showStaticContent();
+            hideModal();
         }
 
         function declarationValidation() {
@@ -357,7 +368,14 @@
             $("#otherpurposevisit").css("display", "none");
             $("#nricnotexistlabel").css("display", "none");
             $("#submitNewEntry").css("display", "none");
+            $('#emptyFields').css("display", "none");
         }
+
+        $("#selfRegNric").keyup(function (event) {
+            if (event.keyCode == 13) {
+                $("#submitNric").click();
+            }
+        });
 
     </script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/registrationPageScripts.js") %>"></script>
