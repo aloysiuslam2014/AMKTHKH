@@ -65,105 +65,63 @@
 
 
     <div class="container containerMain">
-
-        <div class="tab-content tab-content-main maxHeight" id="generalContent">
-
-            <div class="tab-pane maxHeight" id="registration">
-
-                <nav class="navbar navbar-default">
-                    <div class="container-fluid " style="margin-top: 4px;">
-
-                        <ul class="nav nav-pills contentNav" style="margin-bottom: 0;" id="regPageNavigation">
-
-                            <li><a href="#checkIn" data-toggle='tab'>Check-In Visitor</a></li>
-                            <li><a href="#regVisit" data-toggle='tab'>Register Visitor</a></li>
-
-                        </ul>
-                    </div>
-                </nav>
-                <div class="tab-content maxHeight" id="regContent">
-                    <div class="tab-pane maxHeight" id="checkIn">
-                        <div class="container center-block vertical-center">
-
-                            <div class="toHoldElementsInContainer">
-                                <div class="row padRows form-horizontal">
-                                    <div class=" col-lg-4 col-lg-offset-4">
-
-                                        <label class="control-label" for="nric">Visitor's NRIC:</label><input runat="server" id="nric" onchange="callCheck(); false;" class="form-control" type="text" />
-                                        <input class="btn btn-default" type="submit" id="submitNricBtn" onclick="callCheck(); false;" runat="server" value="submit" />
+        <div class="row">
+                            <div id="nurseInputArea" class="col-sm-6">
+                                <label class="control-label" for="nric">Visitor's NRIC:</label>
+                                <div class="input-group date" id="nricinputgroup">
+                                       <input runat="server" id="nric" onchange="checkExistOrNew(); false;" class="form-control required" type="text" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server">Check NRIC</button>
+                                        </span>
                                     </div>
-                                </div>
-                                <div class=" row padRows" id="tempField">
-                                    <div class="col-lg-4 col-lg-offset-4">
-                                        Temperature:<input runat="server" id="temp" class="form-control" type="text" />
-                                        <input class="btn btn-default" type="submit" id="checkInBtn" runat="server" onclick="CheckIn(); false;" value="Check-In" />
-                                    </div>
-                                </div>
-                                <div class="row padRows">
-                                    <div class="col-lg-10 col-lg-offset-1">
-                                        <div id="Details" class="form-control userDetails">Waiting for input</div>
-
-                                    </div>
-                                </div>
+                                <label class="control-label" for="temp">Temperature:</label><input runat="server" id="temp" class="form-control required" type="text" />
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane maxHeight" id="regVisit" runat="server">
-                        <div class="row maxHeight" style="overflow-y: auto">
+            </div><div class="row">
                             <div id="newusercontent" class="col-sm-6" runat="server">
                                 <div class="jumbotron" style="text-align:left">
                                     <h3>Personal Details</h3>
-                                    <label for="namesinput">First Name:</label>
+                                    <label for="namesinput">Full Name</label><label for="namesinput" id="comp1" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="namesInput" />
+                                        <input type="text" runat="server" class="form-control required" id="namesInput" />
                                     </div>
-                                    <label for="lnamesinput">Last Name:</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="lnamesInput" />
-                                    </div>
-                                    <label for="emailinput">Email address:</label>
+                                    <label for="emailinput">Email address</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="emailsInput" />
                                     </div>
-                                    <label for="nricsInput">NRIC:</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="nricsInput" /><label for="nricsInput" id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID!</label>
-                                    </div>
-                                    <label for="mobileinput">Mobile Number:</label>
+                                    <label for="mobileinput">Mobile Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="mobilesInput" />
                                     </div>
-                                    <label for="homeinput">Home Number:</label>
+                                    <label for="homeinput">Home Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="homesInput" />
                                     </div>
-                                    <label for="altInput">Alternate Number:</label>
+                                    <label for="altInput">Alternate Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="altInput" />
                                     </div>
-                                    <label for="addressinput">Address:</label>
+                                    <label for="addressinput">Address</label><label for="addressinput" id="comp2" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="addresssInput" />
+                                        <input type="text" runat="server" class="form-control required" id="addresssInput" />
                                     </div>
-                                    <label for="postalinput">Postal Code:</label>
+                                    <label for="postalinput">Postal Code</label><label for="postalinput" id="comp3" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="postalsInput" />
+                                        <input type="text" runat="server" class="form-control required" id="postalsInput" />
                                     </div>
-                                    <label for="sexinput">Gender:</label>
+                                    <label for="sexinput">Gender</label><label for="sexinput" id="comp4" style="color:red">*</label>
                                     <div class="form-group">
-                                        <select class="form-control" id="sexinput">
+                                        <select class="form-control required" id="sexinput">
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                         </select>
                                     </div>
-                                    <label for="nationalinput">Nationality:</label>
+                                    <label for="nationalinput">Nationality</label><label for="nationalinput" id="comp5" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="nationalsInput" />
+                                        <input type="text" runat="server" class="form-control required" id="nationalsInput" />
                                     </div>
-                                    <label for="daterange">Date of Birth:</label>
+                                    <label for="daterange">Date of Birth</label><label for="daterange" id="comp6" style="color:red">*</label>
                                     <div class="input-group date" id="datetimepicker">
-                                        <input type='text'id="daterange" class="form-control" />
+                                        <input type='text'id="daterange" class="form-control required" />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -172,7 +130,7 @@
                             </div>
                             <div id="staticinfocontainer" class="col-sm-6" style="text-align:left" runat="server">
                                 <h3>Visit Details</h3>
-                                <label for="pInput">Visit Purpose:</label> <%--Check for Purpose of Visit--%>
+                                <label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels()">
                                         <option value="-">-- Select One --</option>
@@ -181,19 +139,19 @@
                                         </select>
                                     </div>
                                 <div id="patientpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Visit Patient"--%>
-                                    <label for="patientName">Patient Name</label> <%--AJAX Call to search for Patient Name--%>
+                                    <label for="patientName">Patient Name</label><label for="patientName" id="comp8" style="color:red">*</label> <%--AJAX Call to search for Patient Name--%>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="patientName" />
+                                        <input type="text" runat="server" class="form-control required" id="patientName" />
                                     </div>
-                                    <label for="patientNric">Patient NRIC</label>
+                                    <label for="patientNric">Patient NRIC</label><label for="patientNric" id="comp9" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="patientNric" />
+                                        <input type="text" runat="server" class="form-control required" id="patientNric" />
                                     </div>
-                                    <label for="bedno">Bed Number:</label> <%--Bed Number--%>
+                                    <label for="bedno">Bed Number</label> <%--Bed Number--%>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control" id="bedno" />
+                                    <input type="text" runat="server" class="form-control required" id="bedno" /><label for="bedno" id="comp10" style="color:red">*</label>
                                 </div>
-                                <label for="visitbookingtime">Appointment Time:</label> <%--Appointment Time--%>
+                                <label for="visitbookingtime">Appointment Time</label><label for="visitbookingtime" id="comp11" style="color:red">*</label> <%--Appointment Time--%>
                                 <div class="form-group">
                                     <select class="form-control" id="visitbookingtime">
                                         <option>0900</option>
@@ -281,47 +239,7 @@
 
                         </div>
                     </div>
-                        
-                </div>
 
-            </div>
-
-            <div class="tab-pane" id="formManagement">
-                <p>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    isadosdoasjdakdadsdasjadslsdk
-                </p>
-            </div>
-
-            <div class="tab-pane" id="userManagement">
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <p>oiafosdoiadsoadsij</p>
-            </div>
-        </div>
-
-    </div>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript">
 
@@ -344,6 +262,31 @@
             }
         }
 
+        $("#register-form").submit(function () {
+            var isFormValid = true;
+
+            $(".required input").each(function () {
+                if ($.trim($(this).val()).length == 0) {
+                    $(this).addClass("highlight");
+                    isFormValid = false;
+                }
+                else {
+                    $(this).removeClass("highlight");
+                }
+            });
+
+            if (!isFormValid) alert("Please fill in all the required fields (indicated by *)");
+
+            return isFormValid;
+        });
+
+        function checkExistOrNew() {
+            // Call to ASHX page
+            callCheck();
+            $("#newusercontent").css("display", "block");
+            $("#staticinfocontainer").css("display", "block");
+        }
+
         function declarationValidation() {
             //var dec = $("#declaration").val();
             //if (dec !== "true") {
@@ -364,8 +307,8 @@
             $('#datetimepicker').datetimepicker();
         });
 
-        $("#nricsInput").on("input", function () {
-            var validNric = validateNRIC($("#nricsInput").val());
+        $("#nric").on("input", function () {
+            var validNric = validateNRIC($("#nric").val());
             if (validNric !== false) {
                 $("#nricWarning").css("display", "none");
             } else {
@@ -378,6 +321,8 @@
             $("#patientpurposevisit").css("display", "none");
             $("#otherpurposevisit").css("display", "none");
             $("#submitNewEntry").css("display", "none");
+            $("#newusercontent").css("display", "none");
+            $("#staticinfocontainer").css("display", "none");
         }
 
 

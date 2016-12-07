@@ -166,7 +166,7 @@ function NewSelfReg() {
 function NewAssistReg() {
     var fname = $("#namesInput").val();
     var lname = $("#lnamesInput").val();
-    var snric = $("#nricsInput").val();
+    var snric = $("#nric").val();
     var address = $("#addresssInput").val();
     var postal = $("#postalsInput").val();
     var mobtel = $("#mobilesInput").val();

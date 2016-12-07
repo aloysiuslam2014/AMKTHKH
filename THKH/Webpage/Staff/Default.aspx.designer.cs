@@ -40,15 +40,6 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlInputText nric;
         
         /// <summary>
-        /// submitNricBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputSubmit submitNricBtn;
-        
-        /// <summary>
         /// temp control.
         /// </summary>
         /// <remarks>
@@ -56,24 +47,6 @@ namespace THKH.Webpage.Staff {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText temp;
-        
-        /// <summary>
-        /// checkInBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputSubmit checkInBtn;
-        
-        /// <summary>
-        /// regVisit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl regVisit;
         
         /// <summary>
         /// newusercontent control.
@@ -94,15 +67,6 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlInputText namesInput;
         
         /// <summary>
-        /// lnamesInput control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText lnamesInput;
-        
-        /// <summary>
         /// emailsInput control.
         /// </summary>
         /// <remarks>
@@ -110,15 +74,6 @@ namespace THKH.Webpage.Staff {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText emailsInput;
-        
-        /// <summary>
-        /// nricsInput control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText nricsInput;
         
         /// <summary>
         /// mobilesInput control.
