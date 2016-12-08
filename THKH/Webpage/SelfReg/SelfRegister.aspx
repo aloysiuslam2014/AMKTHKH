@@ -43,6 +43,25 @@
   text-align: left;
   vertical-align: middle;
 }
+
+.scrollToTop{
+	width:100px; 
+	height:130px;
+	padding:10px; 
+	text-align:center; 
+	background: whiteSmoke;
+	font-weight: bold;
+	color: #444;
+	text-decoration: none;
+	position:fixed;
+	top:75px;
+	right:40px;
+	display:none;
+	background: url('arrow_up.png') no-repeat 0px 20px;
+}
+.scrollToTop:hover{
+	text-decoration:none;
+}
     </style>
 </head>
 <body onload="hideTags()">
@@ -70,50 +89,46 @@
                                     NRIC: <input type="text" id="selfRegNric" class="form-control" />
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-block btn-success" id="submitNric" onclick="newOrExistVisitor()">Submit</button>
+                                <input type="submit" class="btn btn-block btn-success" id="submitNric" onclick="checkIfExistingVisitor(); false;" value="Submit"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="container-fluid">
+                <div class="col-md-6 col-md-offset-3">
                     <h4 id="emptyFields" style="color:red">Please fill in all the required fields (*).</h4>
                     <div class="row">
                         <div id="newusercontent" runat="server">
                             <div class="jumbotron" style="text-align:left">
                                     <h3>Personal Details</h3>
-                                    <label for="namesinput">First Name:</label><label for="existnric" id="comp1" style="color:red">*</label>
+                                    <label for="namesinput">Full Name</label><label for="existnric" id="comp1" style="color:red">*</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="namesInput" />
                                     </div>
-                                    <label for="lnamesinput">Last Name:</label> <%--Remove--%>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="lnamesInput" />
-                                    </div>
-                                    <label for="emailinput">Email address:</label>
+                                    <label for="emailinput">Email address</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="emailsInput" />
                                     </div>
-                                    <label for="nricsInput">NRIC:</label><label for="existnric" id="comp2" style="color:red">*</label>
+                                    <label for="nricsInput">NRIC</label><label for="existnric" id="comp2" style="color:red">*</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="nricsInput" /><label for="nricsInput" id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID!</label>
                                     </div>
-                                    <label for="mobileinput">Mobile Number:</label>
+                                    <label for="mobileinput">Mobile Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="mobilesInput" />
                                     </div>
-                                    <label for="homeinput">Home Number:</label>
+                                    <label for="homeinput">Home Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="homesInput" />
                                     </div>
-                                    <label for="altInput">Alternate Number:</label>
+                                    <label for="altInput">Alternate Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="altInput" />
                                     </div>
-                                    <label for="addressinput">Address:</label><label for="existnric" id="comp4" style="color:red">*</label>
+                                    <label for="addressinput">Address</label><label for="existnric" id="comp4" style="color:red">*</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="addresssInput" />
                                     </div>
-                                    <label for="postalinput">Postal Code:</label><label for="existnric" id="comp5" style="color:red">*</label>
+                                    <label for="postalinput">Postal Code</label><label for="existnric" id="comp5" style="color:red">*</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="postalsInput" />
                                     </div>
@@ -124,11 +139,11 @@
                                             <option value="Female">Female</option>
                                         </select>
                                     </div>
-                                    <label for="nationalinput">Nationality:</label><label for="existnric" id="comp6" style="color:red">*</label>
+                                    <label for="nationalinput">Nationality</label><label for="existnric" id="comp6" style="color:red">*</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="nationalsInput" />
                                     </div>
-                                    <label for="daterange">Date of Birth:</label><label for="existnric" id="comp7" style="color:red">*</label>
+                                    <label for="daterange">Date of Birth</label><label for="existnric" id="comp7" style="color:red">*</label>
                                     <div class="input-group date" id="datetimepicker">
                                         <input type='text'id="daterange" class="form-control required" />
                                         <span class="input-group-addon">
@@ -139,8 +154,16 @@
                             </div>
                         <div id="staticinfocontainer" runat="server">
                             <div class="jumbotron" style="text-align:left">
+                                <div id="changeddetailsdeclaration">
+                            <label for="changeddetails">I have changed my contact details since the last visit</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
+                                <div class="form-group">
+                                <div class="checkbox" id="changeddetails">
+                                    <label for="yesopt">
+                                    <input type="checkbox" id="changed" onchange="amendVisitorDetails()" name="yesopt" value="Yes" />Yes</label>
+                                </div></div>
+                                    </div>
                             <h3>Visit Details</h3>
-                                <label for="pInput">Visit Purpose:</label> <%--Check for Purpose of Visit--%>
+                                <label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels()">
                                         <option value="-">-- Select One --</option>
@@ -207,6 +230,7 @@
                                 <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
                                 <div class="form-group">
                                 <div class="checkbox" id="fevdiv">
+                                    <label for="yesopt">
                                     <input type="checkbox" id="fever" name="yesopt" value="Yes" />Yes</label>
                                 </div>
                                     </div>
@@ -240,35 +264,34 @@
                                     <input type="text" runat="server" class="form-control" id="remarksinput" />
                                 </div>
                                 <div class="checkbox">
-                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate<br />
+                                    <label for="declaration">
+                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate</label><br />
                                     <input type="hidden" name="declare" value="false" />
                             <label for="declaration" id="declabel" style="color:red">Please check this option to continue</label>
                         </div>
-                        <button class="btn btn-block btn-success" type="button" id="submitNewEntry" runat="server" onclick="NewSelfReg(); false;">Submit</button> <%--Copy to Tables without confirmation--%>
+                        <input class="btn btn-block btn-success" type="button" id="submitNewEntry" runat="server" onclick="checkRequiredFields(); false;" value="Submit"/> <%--Copy to Tables without confirmation--%>
 
                         </div>
                             </div>
                     </div>
                 </div>
                 </div>
+        <a href="#" class="scrollToTop">Back to Top <span class="glyphicon glyphicon-arrow-up"></span></a>
     </form>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript">
         $(window).load(function () {
-            if (sessionStorage["PopupShown"] != 'yes') {
+            //if (sessionStorage["PopupShown"] != 'yes') {
                 $('#myModal').modal('show');
-                sessionStorage["PopupShown"] = 'yes';
-            }
+               // sessionStorage["PopupShown"] = 'yes';
+            //}
         });
 
-        function newOrExistVisitor() {
-            // Call procedure to check if visitor exists in DB
-            var nricValue = $('#selfRegNric').val();
-            // showExistContent()
-            showNewContent(nricValue);
-        }
+        $("#selfregistration").submit(function (e) {
+            e.preventDefault();
+        });
 
-        $("#selfregistration input.required").change(function () {
+        function checkRequiredFields(){
             var valid = true;
             $.each($("#selfregistration input.required"), function (index, value) {
                 if (!$(value).val()) {
@@ -277,11 +300,12 @@
             });
             if (valid) {
                 $('#emptyFields').css("display", "none");
+                NewSelfReg();
             }
             else {
                 $('#emptyFields').css("display", "block");
             }
-        });
+        }
 
         function showModal() {
             $('#myModal').modal('show');
@@ -292,20 +316,20 @@
         }
 
         function showNewContent(nricValue) {
-            $("#nricsInput").val(nricValue);
+            //$("#nricsInput").val(nricValue);
             $('#newusercontent').css("display", "block");
-            //$('#existingusercontent').css("display", "none");
-            showStaticContent();
+            $('#staticinfocontainer').css("display", "block");
             hideModal();
         }
 
+        // Show only the Visit Purpose & Questionnaire
         function showExistContent(nricValue) {
-            //$('#existingusercontent').css("display", "block");
-            $('#newusercontent').css("display", "none");
-            showStaticContent();
+            $('#changeddetailsdeclaration').css("display", "block");
+            $('#staticinfocontainer').css("display", "block");
             hideModal();
         }
 
+        // Display Submit Button according to whether the user has checked the declaration checkbox
         function declarationValidation() {
             if ($("#declaration").prop('checked') == true) {
                 $("#declabel").css("display", "none");
@@ -316,10 +340,7 @@
             }
         }
 
-        function showStaticContent() {
-            $('#staticinfocontainer').css("display", "block");
-        }
-
+        // Datetime Picker JQuery
         $(function () {
             $('#datetimepicker').datetimepicker();
         });
@@ -347,9 +368,16 @@
             }
         }
 
+        function amendVisitorDetails() {
+            if ($("#changed").prop('checked') == true) {
+                $('#newusercontent').css("display", "block");
+            } 
+        }
+
         function hideTags() {
             //$('#existingusercontent').css("display", "none");
             $('#staticinfocontainer').css("display", "none");
+            $('#changeddetailsdeclaration').css("display", "none");
             $('#newusercontent').css("display", "none");
             $("#nricWarning").css("display", "none");
             $("#nricexistlabel").css("display", "none");
@@ -360,14 +388,26 @@
             $('#emptyFields').css("display", "none");
         }
 
-        $("#selfRegNric").keyup(function (event) {
-            if (event.keyCode == 13) {
-                $("#submitNric").click();
-            }
-        });
+        $(document).ready(function () {
 
+            //Check to see if the window is top if not then display button
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 100) {
+                    $('.scrollToTop').fadeIn();
+                } else {
+                    $('.scrollToTop').fadeOut();
+                }
+            });
+
+            //Click event to scroll to top
+            $('.scrollToTop').click(function () {
+                $('html, body').animate({ scrollTop: 0 }, 800);
+                return false;
+            });
+
+        });
     </script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/registrationPageScripts.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/selfRegistrationScript.js") %>"></script>
     <input type="hidden" id="isNew" value="true" />
 </body>
 </html>

@@ -64,18 +64,20 @@
     </nav>
 
 
-    <div class="container containerMain">
+    <div class="container container-fluid">
         <div class="row">
-                            <div id="nurseInputArea" class="col-sm-6">
+                            <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
+                                <div class="jumbotron" style="text-align:left">
                                 <label class="control-label" for="nric">Visitor's NRIC:</label>
                                 <div class="input-group date" id="nricinputgroup">
                                        <input runat="server" id="nric" onchange="checkExistOrNew(); false;" class="form-control required" type="text" />
                                         <span class="input-group-btn">
                                             <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server">Check NRIC</button>
                                         </span>
-                                    </div>
+                                    </div><br />
                                 <label class="control-label" for="temp">Temperature:</label><input runat="server" id="temp" class="form-control required" type="text" />
                             </div>
+                                </div>
             </div><div class="row">
                             <div id="newusercontent" class="col-sm-6" runat="server">
                                 <div class="jumbotron" style="text-align:left">
@@ -129,6 +131,7 @@
                                 </div>
                             </div>
                             <div id="staticinfocontainer" class="col-sm-6" style="text-align:left" runat="server">
+                                <div class="jumbotron" style="text-align:left">
                                 <h3>Visit Details</h3>
                                 <label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
@@ -197,6 +200,7 @@
                                 <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
                                 <div class="form-group">
                                 <div class="checkbox" id="fevdiv">
+                                    <label for="yesopt">
                                     <input type="checkbox" id="fever" name="yesopt" value="Yes" />Yes</label>
                                 </div>
                                     </div>
@@ -230,13 +234,14 @@
                                     <input type="text" runat="server" class="form-control" id="remarksinput" />
                                 </div>
                                 <div class="checkbox">
+                                    <label for="declaration"></label>
                             <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate<br />
                                     <input type="hidden" name="declare" value="false" />
                             <label for="declaration" id="declabel" style="color:red">Please check this option to continue</label>
                         </div>
                         <input class="btn btn-success" type="submit" id="submitNewEntry" runat="server" onclick="NewAssistReg(); false;" value="Submit" />
                             </div>
-
+                                </div>
                         </div>
                     </div>
 

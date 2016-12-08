@@ -49,15 +49,6 @@ namespace THKH.Webpage.SelfReg {
         protected global::System.Web.UI.HtmlControls.HtmlInputText namesInput;
         
         /// <summary>
-        /// lnamesInput control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText lnamesInput;
-        
-        /// <summary>
         /// emailsInput control.
         /// </summary>
         /// <remarks>
@@ -208,6 +199,6 @@ namespace THKH.Webpage.SelfReg {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton submitNewEntry;
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton submitNewEntry;
     }
 }

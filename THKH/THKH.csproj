@@ -109,6 +109,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\selfRegistrationScript.js" />
     <Content Include="Webpage\SQL Script\AddStaff.sql" />
     <Content Include="Webpage\SQL Script\AddVisitor.sql" />
     <Content Include="Webpage\SQL Script\thkhdb create procedures.sql" />
