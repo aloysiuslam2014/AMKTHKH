@@ -12,9 +12,12 @@ namespace THKH.Webpage.Staff
 {
     public partial class Default : System.Web.UI.Page
     {
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Session["username"] == null) {
+                logout_Click(sender, e);
+            }
         }
 
         protected void logout_Click(object sender, EventArgs e)

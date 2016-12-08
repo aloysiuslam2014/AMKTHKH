@@ -33,7 +33,7 @@ namespace THKH.Webpage.Staff
                     ck.Expires = tkt.Expiration;
                 ck.Path = FormsAuthentication.FormsCookiePath;
                 Response.Cookies.Add(ck);
-
+                Session["username"] = txtUserName.Value.ToString();
                 Response.Redirect("Default.aspx",true);
 
            
@@ -74,10 +74,8 @@ namespace THKH.Webpage.Staff
                 test = new Object[reader.FieldCount];
                 while (reader.Read())
                 {
-
                     reader.GetValues(test);
                     rows++;
-                    //Get txtPwd with Salt using SHA2-512 & compare hash values
                 }
             }
             cnn.Close();

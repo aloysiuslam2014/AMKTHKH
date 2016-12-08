@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="utf-8">
-    <title>Welcome "username"</title>
+    <title>Welcome <%= Session["username"].ToString()%></title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/moment.min.js") %>"></script>
@@ -52,7 +52,7 @@
                     <li><a id="logAnchor" href="#">
                         <form id="logbtn" runat="server">
                             <div>
-                                <label>Welcome, user</label>
+                                <label>Welcome, <%= Session["username"].ToString()%></label>
                                 <asp:Button ID="logout" class="btn" Text="logout" OnClick="logout_Click" runat="server" />
                             </div>
                         </form>
@@ -70,7 +70,7 @@
                                 <div class="jumbotron" style="text-align:left">
                                 <label class="control-label" for="nric">Visitor's NRIC:</label>
                                 <div class="input-group date" id="nricinputgroup">
-                                       <input runat="server" id="nric" onchange="checkExistOrNew(); false;" class="form-control required" type="text" />
+                                       <input runat="server" id="nric" class="form-control required" type="text" />
                                         <span class="input-group-btn">
                                             <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server">Check NRIC</button>
                                         </span>
@@ -293,12 +293,6 @@
         }
 
         function declarationValidation() {
-            //var dec = $("#declaration").val();
-            //if (dec !== "true") {
-            //    $("#declabel").css("display", "block");
-            //} else {
-            //    $("#declabel").css("display", "none");
-            //}
             if ($("#declaration").prop('checked') == true) {
                 $("#declabel").css("display", "none");
                 $("#submitNewEntry").css("display", "block");

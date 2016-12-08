@@ -12,7 +12,6 @@ function checkIfExistingVisitor() {
 
 function callCheck (){
     //Do ajax call
-
     var nricValue = nric.value;
     var msg;
     var headersToProcess = { nric: nricValue }; //Store objects in this manner 
@@ -25,9 +24,8 @@ function callCheck (){
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result == "Success") {
-                DataExists(resultOfGeneration.Msg.split(','));
-            } else {
-                DataNoExists();
+                // ASHX returns all the visitor information
+                // Populate fields if visitor exists
             }
         },
         error: function (err) {
@@ -35,62 +33,6 @@ function callCheck (){
     });
     dataFound = true;
 }
-
-//function callCheckSelf() {
-//    var nricValue = existnric.value;
-//    var msg;
-//    var headersToProcess = { nric: nricValue}; //Store objects in this manner 
-//    //var pathToCheckIn = Page.ResolveClientUrl("/Webpage/Staff/CheckInOut/checkIn.ashx")
-//    $.ajax({
-//        url: '../Staff/CheckInOut/checkIn.ashx',
-//        method: 'post',
-//        data: headersToProcess,
-
-
-//        success: function (returner) {
-//            var resultOfGeneration = JSON.parse(returner);
-//            if (resultOfGeneration.Result == "Success") {
-//                var result = resultOfGeneration.Msg;
-//                if (resultOfGeneration.Msg == "found") {
-//                    DataExistsSelf();
-//                } else {
-//                    DataNoExistsSelf();
-//                }
-//            } else {
-//                DataNoExistsSelf();
-//            }
-//        },
-//        error: function (err) {
-//            alert(err.msg);
-//        },
-//    });
-//    dataFound = true;
-//}
-
-//function DataExistsSelf() {
-//    $('#nricexistlabel').css("display", "block");
-//    $('#nricnotexistlabel').css("display", "none");
-//}
-
-//function DataNoExistsSelf() {
-//    $('#nricnotexistlabel').css("display", "block");
-//    $('#nricexistlabel').css("display", "none");
-//}
-
-//function DataExists(arr) {
-//    var htmStr = "";
-//    var count = 0;
-//    arr.forEach(function (element) {
-//        htmStr += "<br/>" + element
-//    });
-//    $('#Details').html(htmStr);
-//    $('#Details').css("display", "block");
-//    $('#tempField').css("display", "block");
-//}
-
-//function DataNoExists() {
-//    $('#Details').html("Visitor Not Found. Please register the visitor.");
-//}
 
 function CheckIn() {
     var temper = temp.value;

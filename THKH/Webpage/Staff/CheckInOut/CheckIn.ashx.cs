@@ -69,6 +69,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
+        // Write to Visitor & Visit Table
         private String selfReg(String nric, String age, String fname, String lname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
             String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation) {
@@ -81,6 +82,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
+        // Write to Visitor, Visit & Confirmation Table
         private String AssistReg(String nric, String age, String fname, String lname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
             String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation) {
@@ -92,7 +94,6 @@ namespace THKH.Webpage.Staff.CheckInOut
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             try
             {
-                // Write to DB, New Registration
                 SqlCommand command = new SqlCommand("[dbo].[INSERT INTO  - Registration]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pFirstName", fname);
