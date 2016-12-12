@@ -83,10 +83,10 @@
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h4 class="modal-title" id="memberModalLabel">Please enter your NRIC/Identification Number</h4>
+                                <h4 class="modal-title" id="memberModalLabel">Please enter your NRIC/Identification Number to Begin</h4>
                             </div>
                             <div class="modal-body text-center">
-                                    NRIC: <input type="text" id="selfRegNric" class="form-control" />
+                                    NRIC: <input type="text" id="selfRegNric" class="form-control" autofocus />
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-block btn-success" id="submitNric" onclick="checkIfExistingVisitor(); false;" value="Submit"/>
@@ -184,7 +184,21 @@
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
-                                <label for="visitbookingtime">Appointment Time:</label> <%--Appointment Time--%>
+                                
+                                </div>
+                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
+                                    <label for="visLoc">Visit Location</label> 
+                                    <div class="form-group">
+                                    <select class="form-control" id="visLoc">
+                                        <option name="canteen" value="canteen">Canteen</option>
+                                        </select>
+                                    </div>
+                                    <label for="purposeInput">Purpose of Visit</label> 
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
+                                    </div>
+                                </div>
+                                <label for="visitbookingtime">Visit Time:</label> <%--Appointment Time--%>
                                 <div class="form-group">
                                     <select class="form-control" id="visitbookingtime">
                                         <option>0900</option>
@@ -212,20 +226,6 @@
                                         <option>2000</option>
                                     </select>
                                 </div>
-                                </div>
-                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
-                                    <label for="visLoc">Visit Location</label> 
-                                    <div class="form-group">
-                                    <select class="form-control" id="visLoc">
-                                        <option name="canteen" value="canteen">Canteen</option>
-                                        </select>
-                                    </div>
-                                    <label for="purposeInput">Purpose of Visit</label> 
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
-                                    </div>
-                                </div>
-                                
                                 <h3>Health Screening Questionnaire</h3>
                                 <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
                                 <div class="form-group">

@@ -70,7 +70,7 @@
                                 <div class="jumbotron" style="text-align:left">
                                 <label class="control-label" for="nric">Visitor's NRIC:</label>
                                 <div class="input-group date" id="nricinputgroup">
-                                       <input runat="server" id="nric" class="form-control required" type="text" />
+                                       <input runat="server" id="nric" class="form-control required" type="text" autofocus />
                                         <span class="input-group-btn">
                                             <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server">Check NRIC</button>
                                         </span>
@@ -150,11 +150,25 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="patientNric" />
                                     </div>
-                                    <label for="bedno">Bed Number</label> <%--Bed Number--%>
+                                    <label for="bedno">Bed Number</label><label for="bedno" id="comp10" style="color:red">*</label> <%--Bed Number--%>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control required" id="bedno" /><label for="bedno" id="comp10" style="color:red">*</label>
+                                    <input type="text" runat="server" class="form-control required" id="bedno" />
                                 </div>
-                                <label for="visitbookingtime">Appointment Time</label><label for="visitbookingtime" id="comp11" style="color:red">*</label> <%--Appointment Time--%>
+                                
+                                </div>
+                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
+                                    <label for="visLoc">Visit Location</label> 
+                                    <div class="form-group">
+                                    <select class="form-control" id="visLoc">
+                                        <option name="canteen" value="canteen">Canteen</option>
+                                        </select>
+                                    </div>
+                                    <label for="purposeInput">Purpose of Visit</label> 
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
+                                    </div>
+                                </div>
+                                <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color:red">*</label> <%--Appointment Time--%>
                                 <div class="form-group">
                                     <select class="form-control" id="visitbookingtime">
                                         <option>0900</option>
@@ -182,20 +196,6 @@
                                         <option>2000</option>
                                     </select>
                                 </div>
-                                </div>
-                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
-                                    <label for="visLoc">Visit Location</label> 
-                                    <div class="form-group">
-                                    <select class="form-control" id="visLoc">
-                                        <option name="canteen" value="canteen">Canteen</option>
-                                        </select>
-                                    </div>
-                                    <label for="purposeInput">Purpose of Visit</label> 
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
-                                    </div>
-                                </div>
-                                
                                 <h3>Health Screening Questionnaire</h3>
                                 <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
                                 <div class="form-group">

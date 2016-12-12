@@ -20,8 +20,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             var nric = context.Request.Form["nric"].ToString();
             var temperature = context.Request.Form["temperature"];
             var age = context.Request.Form["AGE"];
-            var fname = context.Request.Form["firstName"];// Full name
-            //var lname = context.Request.Form["lastName"];
+            var fname = context.Request.Form["fullName"];
             var address = context.Request.Form["ADDRESS"];
             var postal = context.Request.Form["POSTAL"];
             var mobtel = context.Request.Form["MobTel"];
@@ -131,7 +130,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
-                command.Parameters.AddWithValue("@pTimestamp", DateTime.Now);
+                command.Parameters.AddWithValue("@pTimestamp", DateTime.Now);// To change to DB side
                 command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cnn.Open();
 
@@ -200,7 +199,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO-CREATE_VISITOR_PROFILE]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO-CREATE_VISITOR_PROFILE]", cnn);//Update_Visitor_Profile
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", nric);
                 command.Parameters.AddWithValue("@pFullName", fname);
@@ -214,7 +213,8 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
-                command.Parameters.AddWithValue("@pTimestamp", DateTime.Now);
+                command.Parameters.AddWithValue("@pTimestamp", DateTime.Now);// To change to DB side
+                // Add in confirmed = 1
                 command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cnn.Open();
 
@@ -296,6 +296,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNRIC", nric);
                 //command.Parameters.AddWithValue("@staffID", Session);
+                //command.Parameters.AddWithValue("@temperature", temperature);
                 command.Parameters.Add("@pResponseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
                 cnn.Open();
                 Object[] test;
