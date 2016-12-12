@@ -112,7 +112,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             SqlConnection cnn;
             int row = 0;
             connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
+            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
+            cnn = new SqlConnection(connectionString);
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             try
             {
@@ -195,7 +196,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             SqlConnection cnn;
             int row = 0;
             connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
+            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
+            cnn = new SqlConnection(connectionString);
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             try
             {
@@ -331,7 +333,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             SqlConnection cnn;
             int row = 0;
             connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
+            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
+            cnn = new SqlConnection(connectionString);
             String successString = "{\"Result\":\"Success\",\"Msg\":\""; // Reflect Time Checked in - TO BE AMENDED
             try
             {

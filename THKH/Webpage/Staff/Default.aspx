@@ -63,112 +63,123 @@
         </div>
     </nav>
 
+    <div class="container containerMain">
+        <div class="tab-content tab-content-main maxHeight" id="generalContent">
 
-    <div class="container container-fluid">
-        <div class="row">
-                            <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
-                                <div class="jumbotron" style="text-align:left">
+            <div class="tab-pane maxHeight" id="registration">
+           
+                    <div class="row">
+                        <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
+                            <div class="jumbotron" style="text-align: left">
                                 <label class="control-label" for="nric">Visitor's NRIC:</label>
                                 <div class="input-group date" id="nricinputgroup">
-                                       <input runat="server" id="nric" class="form-control required" type="text" autofocus />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server">Check NRIC</button>
-                                        </span>
-                                    </div><br />
-                                <label class="control-label" for="temp">Temperature:</label><input runat="server" id="temp" class="form-control required" type="text" />
-                            </div>
+                                    <input runat="server" id="nric" class="form-control required" type="text" autofocus />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server">Check NRIC</button>
+                                    </span>
                                 </div>
-            </div><div class="row">
-                            <div id="newusercontent" class="col-sm-6" runat="server">
-                                <div class="jumbotron" style="text-align:left">
-                                    <h3>Personal Details</h3>
-                                    <label for="namesinput">Full Name</label><label for="namesinput" id="comp1" style="color:red">*</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="namesInput" />
-                                    </div>
-                                    <label for="emailinput">Email address</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="emailsInput" />
-                                    </div>
-                                    <label for="mobileinput">Mobile Number</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="mobilesInput" />
-                                    </div>
-                                    <label for="homeinput">Home Number</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="homesInput" />
-                                    </div>
-                                    <label for="altInput">Alternate Number</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="altInput" />
-                                    </div>
-                                    <label for="addressinput">Address</label><label for="addressinput" id="comp2" style="color:red">*</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="addresssInput" />
-                                    </div>
-                                    <label for="postalinput">Postal Code</label><label for="postalinput" id="comp3" style="color:red">*</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="postalsInput" />
-                                    </div>
-                                    <label for="sexinput">Gender</label><label for="sexinput" id="comp4" style="color:red">*</label>
-                                    <div class="form-group">
-                                        <select class="form-control required" id="sexinput">
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                    </div>
-                                    <label for="nationalinput">Nationality</label><label for="nationalinput" id="comp5" style="color:red">*</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="nationalsInput" />
-                                    </div>
-                                    <label for="daterange">Date of Birth</label><label for="daterange" id="comp6" style="color:red">*</label>
-                                    <div class="input-group date" id="datetimepicker">
-                                        <input type='text'id="daterange" class="form-control required" />
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                    </div>
+                                <br />
+                                <label class="control-label" for="temp">Temperature</label><input runat="server" id="temp" class="form-control required" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="newusercontent" class="col-sm-6" runat="server">
+                            <div class="jumbotron" style="text-align: left">
+                                <h3>Personal Details</h3>
+                                <label for="namesinput">Full Name</label><label for="namesinput" id="comp1" style="color: red">*</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control required" id="namesInput" />
+                                </div>
+                                <label for="emailinput">Email address</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control" id="emailsInput" />
+                                </div>
+                                <label for="mobileinput">Mobile Number</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control" id="mobilesInput" />
+                                </div>
+                                <label for="homeinput">Home Number</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control" id="homesInput" />
+                                </div>
+                                <label for="altInput">Alternate Number</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control" id="altInput" />
+                                </div>
+                                <label for="addressinput">Address</label><label for="addressinput" id="comp2" style="color: red">*</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control required" id="addresssInput" />
+                                </div>
+                                <label for="postalinput">Postal Code</label><label for="postalinput" id="comp3" style="color: red">*</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control required" id="postalsInput" />
+                                </div>
+                                <label for="sexinput">Gender</label><label for="sexinput" id="comp4" style="color: red">*</label>
+                                <div class="form-group">
+                                    <select class="form-control required" id="sexinput">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <label for="nationalinput">Nationality</label><label for="nationalinput" id="comp5" style="color: red">*</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control required" id="nationalsInput" />
+                                </div>
+                                <label for="daterange">Date of Birth</label><label for="daterange" id="comp6" style="color: red">*</label>
+                                <div class="input-group date" id="datetimepicker">
+                                    <input type='text' id="daterange" class="form-control required" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                             </div>
-                            <div id="staticinfocontainer" class="col-sm-6" style="text-align:left" runat="server">
-                                <div class="jumbotron" style="text-align:left">
+                        </div>
+                        <div id="staticinfocontainer" class="col-sm-6" style="text-align: left" runat="server">
+                            <div class="jumbotron" style="text-align: left">
                                 <h3>Visit Details</h3>
-                                <label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
+                                <label for="pInput">Visit Purpose</label>
+                                <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels()">
                                         <option value="-">-- Select One --</option>
                                         <option value="patient">Visit Patient</option>
-                                        <option value ="other">Other Purpose</option>
-                                        </select>
-                                    </div>
-                                <div id="patientpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Visit Patient"--%>
-                                    <label for="patientName">Patient Name</label><label for="patientName" id="comp8" style="color:red">*</label> <%--AJAX Call to search for Patient Name--%>
+                                        <option value="other">Other Purpose</option>
+                                    </select>
+                                </div>
+                                <div id="patientpurposevisit" class="container-fluid" runat="server">
+                                    <%--Show this only when Visit Purpose is "Visit Patient"--%>
+                                    <label for="patientName">Patient Name</label><label for="patientName" id="comp8" style="color: red">*</label>
+                                    <%--AJAX Call to search for Patient Name--%>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="patientName" />
                                     </div>
-                                    <label for="patientNric">Patient NRIC</label><label for="patientNric" id="comp9" style="color:red">*</label>
+                                    <label for="patientNric">Patient NRIC</label><label for="patientNric" id="comp9" style="color: red">*</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="patientNric" />
                                     </div>
-                                    <label for="bedno">Bed Number</label><label for="bedno" id="comp10" style="color:red">*</label> <%--Bed Number--%>
-                                <div class="form-group">
-                                    <input type="text" runat="server" class="form-control required" id="bedno" />
-                                </div>
-                                
-                                </div>
-                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
-                                    <label for="visLoc">Visit Location</label> 
+                                    <label for="bedno">Bed Number</label><label for="bedno" id="comp10" style="color: red">*</label>
+                                    <%--Bed Number--%>
                                     <div class="form-group">
-                                    <select class="form-control" id="visLoc">
-                                        <option name="canteen" value="canteen">Canteen</option>
+                                        <input type="text" runat="server" class="form-control required" id="bedno" />
+                                    </div>
+
+                                </div>
+                                <div id="otherpurposevisit" class="container-fluid" runat="server">
+                                    <%--Show this only when Visit Purpose is "Other Purpose"--%>
+                                    <label for="visLoc">Visit Location</label>
+                                    <div class="form-group">
+                                        <select class="form-control" id="visLoc">
+                                            <option name="canteen" value="canteen">Canteen</option>
                                         </select>
                                     </div>
-                                    <label for="purposeInput">Purpose of Visit</label> 
+                                    <label for="purposeInput">Purpose of Visit</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="purposeInput" />
                                     </div>
                                 </div>
-                                <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color:red">*</label> <%--Appointment Time--%>
+                                <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
+                                <%--Appointment Time--%>
                                 <div class="form-group">
                                     <select class="form-control" id="visitbookingtime">
                                         <option>0900</option>
@@ -197,14 +208,16 @@
                                     </select>
                                 </div>
                                 <h3>Health Screening Questionnaire</h3>
-                                <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
+                                <label for="fevdiv">Do you have a Fever?</label>
+                                <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
                                 <div class="form-group">
-                                <div class="checkbox" id="fevdiv">
-                                    <label for="yesopt">
-                                    <input type="checkbox" id="fever" name="yesopt" value="Yes" />Yes</label>
-                                </div>
+                                    <div class="checkbox" id="fevdiv">
+                                        <label for="yesopt">
+                                            <input type="checkbox" id="fever" name="yesopt" value="Yes" />Yes</label>
                                     </div>
-                                <label for="symptomInput">I possess the following symptom(s)</label> <%--Patient Symptom declaration--%>
+                                </div>
+                                <label for="symptomInput">I possess the following symptom(s)</label>
+                                <%--Patient Symptom declaration--%>
                                 <div class="form-group">
                                     <div id="symptomInput" class="checkbox">
                                         <label for="one">
@@ -215,8 +228,8 @@
                                 </div>
                                 <label for="symdiv">Do you have any close contact with person or persons returning from INFLUENZA [FLU] INFECTED countries?</label>
                                 <div id="symdiv" class="checkbox">
-                                        <label for="one">
-                                            <input type="checkbox" id="flu" value="Yes" />Yes</label>
+                                    <label for="one">
+                                        <input type="checkbox" id="flu" value="Yes" />Yes</label>
                                 </div>
                                 <label for="visitInput">Countries Travelled For The Past 2 Weeks </label>
                                 <div class="form-group">
@@ -235,15 +248,23 @@
                                 </div>
                                 <div class="checkbox">
                                     <label for="declaration"></label>
-                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate<br />
+                                    <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate<br />
                                     <input type="hidden" name="declare" value="false" />
-                            <label for="declaration" id="declabel" style="color:red">Please check this option to continue</label>
-                        </div>
-                        <input class="btn btn-success" type="submit" id="submitNewEntry" runat="server" onclick="NewAssistReg(); false;" value="Submit" />
-                            </div>
+                                    <label for="declaration" id="declabel" style="color: red">Please check this option to continue</label>
                                 </div>
+                                <input class="btn btn-success" type="submit" id="submitNewEntry" runat="server" onclick="NewAssistReg(); false;" value="Submit" />
+                            </div>
                         </div>
                     </div>
+                
+            </div>
+
+             <div class="tab-pane maxHeight" id="formManagement">
+
+             </div>
+        </div>
+    </div>
+
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript">
@@ -255,7 +276,7 @@
 
         function purposePanels() {
             var purpose = $("#pInput").val();
-            if(purpose === "patient"){
+            if (purpose === "patient") {
                 $("#patientpurposevisit").css("display", "block");
                 $("#otherpurposevisit").css("display", "none");
             } else if (purpose === "other") {
@@ -263,7 +284,7 @@
                 $("#otherpurposevisit").css("display", "block");
             } else {
                 $("#patientpurposevisit").css("display", "none");
-                $("#otherpurposevisit").css("display", "none");            
+                $("#otherpurposevisit").css("display", "none");
             }
         }
 

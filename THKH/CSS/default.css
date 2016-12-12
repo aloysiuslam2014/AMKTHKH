@@ -25,6 +25,7 @@ body{
 .containerMain{
     height: calc(100% - 25px);
    width:100%;
+   overflow-y:auto;
 }
 .maxHeight{
     height:100%;
