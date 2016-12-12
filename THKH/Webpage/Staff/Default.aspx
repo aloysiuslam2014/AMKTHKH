@@ -65,7 +65,7 @@
 
     <div class="container containerMain">
         <div class="tab-content tab-content-main maxHeight" id="generalContent">
-
+            <!-- Registration -->
             <div class="tab-pane maxHeight" id="registration">
            
                     <div class="row">
@@ -78,8 +78,10 @@
                                         <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server">Check NRIC</button>
                                     </span>
                                 </div>
+                                <h4 id="nricWarning" style="color:red">Non-Singapore Based NRIC/ID!</h4>
                                 <br />
-                                <label class="control-label" for="temp">Temperature</label><input runat="server" id="temp" class="form-control required" type="text" />
+                                <label class="control-label" for="temp">Temperature</label><input runat="server" id="temp" class="form-control required" type="text" onchange="checkTemp(); false;" />
+                                <h4 id="tempWarning" style="color:red">Visitor's Temperature is above 37.6 Degrees Celcius!</h4>
                             </div>
                         </div>
                     </div>
@@ -258,7 +260,23 @@
                     </div>
                 
             </div>
+            <!-- End of Registration -->
 
+            <!-- FormManagement -->
+
+            <!-- End of FormManagement -->
+
+            <!-- FacilitiesManagement -->
+
+            <!-- End of FacilitiesManagement -->
+
+            <!-- PassManagement -->
+
+            <!-- End of PassManagement -->
+
+            <!-- UserManagement -->
+
+            <!-- End of UserManagement -->
              <div class="tab-pane maxHeight" id="formManagement">
 
              </div>
@@ -338,14 +356,13 @@
 
         function hideTags() {
             $("#nricWarning").css("display", "none");
+            $('#tempWarning').css("display", "none");
             $("#patientpurposevisit").css("display", "none");
             $("#otherpurposevisit").css("display", "none");
             $("#submitNewEntry").css("display", "none");
             $("#newusercontent").css("display", "none");
             $("#staticinfocontainer").css("display", "none");
         }
-
-
     </script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/registrationPageScripts.js") %>"></script>

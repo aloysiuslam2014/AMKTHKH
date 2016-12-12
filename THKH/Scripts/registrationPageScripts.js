@@ -19,7 +19,7 @@ function callCheck (){
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result == "Success") {
                 // ASHX returns all the visitor information
-                // Populate fields if visitor exists
+                // Populate fields if visitor exists by spliting string into array of values & populating
 
             }
         },
@@ -30,32 +30,13 @@ function callCheck (){
     dataFound = true;
 }
 
-function CheckIn() {
+function checkTemp() { // Rewrite to actively check
     var temper = temp.value;
     if (parseFloat(temper) > 37.6) { //Check if temperature exists & meets criteria
-        $('#Details').html("Temperature is Above 37.6 Degrees Celcius. No Entry!");
-        $('#Details').css("display", "block");
-        $('#Details').css("color", "red");
+        $('#tempWarning').css("display", "block");
     } else {
-        var check = "true";
-        var headersToProcess = { nric: nric.value, temperature: temper, requestType: "checkIn" };
-        $.ajax({
-            url: './CheckInOut/checkIn.ashx',
-            method: 'post',
-            data: headersToProcess,
-
-
-            success: function (returner) {
-                var resultOfGeneration = JSON.parse(returner);
-                $('#Details').html(resultOfGeneration.Msg);
-                $('#Details').css("display", "block");
-            },
-            error: function (err) {
-                alert(err.Msg);
-            },
-        });
-        dataFound = true;
-    }
+        $('#tempWarning').css("display", "none");
+    } 
 }
 
 function NewAssistReg() {
@@ -99,9 +80,9 @@ function NewAssistReg() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-            alert(resultOfGeneration.Msg);
-            $('[href="#checkIn"]').click();
-            $('#nric').val(snric)
+            if (resultOfGeneration.Msg == "1") {
+                alert("Successfully Added!")
+            }
         },
         error: function (err) {
             alert(err.Msg);

@@ -87,6 +87,7 @@
                             </div>
                             <div class="modal-body text-center">
                                     NRIC: <input type="text" id="selfRegNric" class="form-control" autofocus />
+
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-block btn-success" id="submitNric" onclick="checkIfExistingVisitor(); false;" value="Submit"/>
