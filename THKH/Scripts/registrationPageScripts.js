@@ -24,6 +24,7 @@ function callCheck (){
             }
         },
         error: function (err) {
+            alert(err.Msg);
         },
     });
     dataFound = true;
@@ -50,6 +51,7 @@ function CheckIn() {
                 $('#Details').css("display", "block");
             },
             error: function (err) {
+                alert(err.Msg);
             },
         });
         dataFound = true;
@@ -103,6 +105,7 @@ function NewAssistReg() {
             $('#nric').val(snric)
         },
         error: function (err) {
+            alert(err.Msg);
         },
     });
 }
