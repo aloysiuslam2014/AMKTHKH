@@ -17,10 +17,22 @@ function callCheck (){
         
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-            if (resultOfGeneration.Result == "Success") {
+            if (resultOfGeneration.Result === "Success") {
                 // ASHX returns all the visitor information
                 // Populate fields if visitor exists by spliting string into array of values & populating
-
+                var string = resultOfGeneration.Msg;
+                var arr = string.split(",");
+                $("#nric").value = arr[0];
+                $("#namesInput").value = arr[1];
+                $("#sexinput").value = arr[2];
+                $("#nationalsInput").value = arr[3];
+                $("#daterange").value = arr[4];
+                $("#addresssInput").value = arr[10];
+                $("#postalsInput").value = arr[11];
+                $("#mobilesInput").value = arr[6];
+                $("#altInput").value = arr[8];
+                $("#homesInput").value = arr[7];
+                $("#emailsInput").value = arr[9];
             }
         },
         error: function (err) {
@@ -81,7 +93,7 @@ function NewAssistReg() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-            if (resultOfGeneration.Msg == "1") {
+            if (resultOfGeneration.Msg === "1") {
                 alert("Successfully Added!")
             }
         },
