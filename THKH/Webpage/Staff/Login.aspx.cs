@@ -53,12 +53,12 @@ namespace THKH.Webpage.Staff
             int rows = 0;
              
             SqlConnection cnn;
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Server=tcp:gbdb.database.windows.net,1433;Initial Catalog=stepwise;Persist Security Info=False;User ID={gbadmin};Password={stepWISE1};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+          //  cnn = new SqlConnection(connectionString);
             try {
                 SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - login]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
