@@ -22,17 +22,17 @@ function callCheck (){
                 // Populate fields if visitor exists by spliting string into array of values & populating
                 var string = resultOfGeneration.Msg;
                 var arr = string.split(",");
-                $("#nric").value = arr[0];
-                $("#namesInput").value = arr[1];
-                $("#sexinput").value = arr[2];
-                $("#nationalsInput").value = arr[3];
-                $("#daterange").value = arr[4];
-                $("#addresssInput").value = arr[10];
-                $("#postalsInput").value = arr[11];
-                $("#mobilesInput").value = arr[6];
-                $("#altInput").value = arr[8];
-                $("#homesInput").value = arr[7];
-                $("#emailsInput").value = arr[9];
+                $("#nric").attr('value', arr[0]);
+                $("#namesInput").attr('value', arr[1]);
+                $("#sexinput").attr('value', arr[2]);
+                $("#nationalsInput").attr('value', arr[3]);
+                $("#daterange").attr('value', arr[4]);
+                $("#addresssInput").attr('value', arr[10]);
+                $("#postalsInput").attr('value', arr[11]);
+                $("#mobilesInput").attr('value', arr[6]);
+                $("#altInput").attr('value', arr[8]);
+                $("#homesInput").attr('value', arr[7]);
+                $("#emailsInput").attr('value', arr[9]);
             }
         },
         error: function (err) {

@@ -64,12 +64,9 @@ namespace THKH.Webpage.Staff.CheckInOut
         }
 
         private String getVisitorDetails(String nric) {
-            String connectionString = null;
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@returnValue", SqlDbType.VarChar, -1);
             respon.Direction = ParameterDirection.Output;
             try
@@ -81,16 +78,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.Add(respon);
                 cnn.Open();
 
-                //using (SqlDataReader reader = command.ExecuteReader())
-                //{
-                //    bool fields = reader.HasRows; // Rows Returned
-                //    while (reader.Read())
-                //    {
-                //        // Get result string in the following format "header:value"
-                //        // Append each headername:value to success string
-                //        successString += reader["@returnValue"].ToString();
-                //    }
-                //}
                 command.ExecuteNonQuery();
                 successString += respon.Value;
                 successString += "\"}";
@@ -109,12 +96,9 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         private String getVisitDetails(String nric)
         {
-            String connectionString = null;
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@returnValue", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             try
@@ -125,17 +109,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.Add(respon);
                 cnn.Open();
 
-                //using (SqlDataReader reader = command.ExecuteReader())
-                //{
-                //    bool fields = reader.HasRows; // Rows Returned
-                //    while (reader.Read())
-                //    {
-                //        // Get result string in the following format "header:value"
-                //        // Append each headername:value to success string
-                //        // Need jason to amend output
-                //        successString += reader["@returnValue"].ToString();
-                //    }
-                //}
                 command.ExecuteNonQuery();
                 successString += respon.Value;
                 successString += "\"}";
@@ -156,15 +129,12 @@ namespace THKH.Webpage.Staff.CheckInOut
         private String selfReg(String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
             String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation) {
-            String connectionString = null;
             SqlConnection cnn;
-            int row = 0;
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            //String doB = dob.Substring(0, 10);
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[INSERT INTO - CREATE_VISITOR_PROFILE]", cnn);
@@ -184,14 +154,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.Add(respon);
                 cnn.Open();
 
-                //using (SqlDataReader reader = command.ExecuteReader())
-                //{
-                //    bool hasResult = reader.HasRows;
-                //    while (reader.Read())
-                //    {
-                //        successString += reader["@responseMessage"].ToString();
-                //    }
-                //}
                 command.ExecuteNonQuery();
                 successString += respon.Value;
                 successString += "\"}";
@@ -223,14 +185,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cnn.Open();
 
-                //using (SqlDataReader reader = command.ExecuteReader())
-                //{
-                //    while (reader.Read())
-                //    {
-                //        successString += reader["@responseMessage"].ToString();
-                //    }
-                //}
-                //successString += "\"}";
                 command.ExecuteNonQuery();
                 successString += respon.Value;
             }
@@ -251,12 +205,8 @@ namespace THKH.Webpage.Staff.CheckInOut
         private String AssistReg(String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
             String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature) {
-            string connectionString = null;
             SqlConnection cnn;
-            int row = 0;
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
@@ -280,14 +230,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.Add(respon);
                 cnn.Open();
 
-                //using (SqlDataReader reader = command.ExecuteReader())
-                //{
-                //    bool hasRows = reader.HasRows;
-                //    while (reader.Read())
-                //    {
-                //        successString += reader["@responseMessage"].ToString();
-                //    }
-                //}
                 command.ExecuteNonQuery();
                 successString += respon.Value;
                 successString += "\"}";
@@ -319,13 +261,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.Add(respon);
                 cnn.Open();
 
-                //using (SqlDataReader reader = command.ExecuteReader())
-                //{
-                //    while (reader.Read())
-                //    {
-                //        successString += reader["@responseMessage"].ToString();
-                //    }
-                //}
                 command.ExecuteNonQuery();
                 successString += respon.Value;
                 successString += "\"}";
@@ -345,11 +280,8 @@ namespace THKH.Webpage.Staff.CheckInOut
         }
 
         private String CheckIn(String nric, String temp) {
-            string connectionString = null;
             SqlConnection cnn;
-            connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
-            cnn = new SqlConnection(connectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             String successString = "{\"Result\":\"Success\",\"Msg\":\""; 
@@ -364,13 +296,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.Add(respon);
                 cnn.Open();
 
-                //using (SqlDataReader reader = command.ExecuteReader())
-                //{
-                //    while (reader.Read())
-                //    {
-                //        //successString += nric + " Successfully Added as a new Visitor, Visit Details & Confirmation Recorded at " + DateTime.Now;
-                //    }
-                //}
                 command.ExecuteNonQuery();
                 successString += respon.Value;
                 successString += "\"}";

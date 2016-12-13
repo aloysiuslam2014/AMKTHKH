@@ -8,7 +8,7 @@
     var hometel = $("#homesInput").val();
     var sex = $("#sexinput").val();
     var nationality = $("#nationalsInput").val();
-    var dob = $("#daterange").val();
+    var dob = $("#daterange").val(); // Format date
     var race = "Chinese";
     var age = 23;
     var Email = $("#emailsInput").val();
@@ -62,18 +62,21 @@ function checkIfExistingVisitor() {
 
 
             success: function (returner) {
-                resultOfGeneration = JSON.parse(returner).Result;
+                resultOfGeneration = JSON.parse(returner);
+                var res = resultOfGeneration.Msg;
+                if (resultOfGeneration.Msg === "") {
+                    showNewContent(snric);
+                }
+                else {
+                    showExistContent(snric);
+                }
+                $('#nricsInput').attr('value', snric);
             },
             error: function (err) {
                 alert(err.Msg);
             },
         });
-        if (resultOfGeneration === "") {
-            showNewContent(snric);
-        }
-        else {
-            showExistContent(snric);
-        }
+        
         
     }
 }
