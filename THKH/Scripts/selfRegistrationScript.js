@@ -32,7 +32,7 @@
         countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, typeOfRequest: "self"
     };
     $.ajax({
-        url: './CheckInOut/checkIn.ashx',
+        url: './Staff/CheckInOut/checkIn.ashx', // Change Path
         method: 'post',
         data: headersToProcess,
 
@@ -48,27 +48,32 @@
 
 function checkIfExistingVisitor() {
     var snric = $("#selfRegNric").val();
-    var headersToProcess = {
-        firstName: "", nric: snric, ADDRESS: "", POSTAL: "", MobTel: "", email: "",
-        AltTel: "", HomeTel: "", SEX: "", Natl: "", DOB: "", RACE: "", AGE: "", PURPOSE: "", pName: "", pNric: "",
-        otherPurpose: "", bedno: "", appTime: "", fever: "", symptoms: "", influenza: "",
-        countriesTravelled: "", remarks: "", visitLocation: "", typeOfRequest: "getdetails"
-    };
-    $.ajax({
-        url: './CheckInOut/checkIn.ashx',
-        method: 'post',
-        data: headersToProcess,
+    if (snric == "") {
+        showNricWarning();
+    } else {
+        var resultOfGeneration = "";
+        var headersToProcess = {
+            nric: snric, typeOfRequest: "getdetails"
+        };
+        $.ajax({
+            url: './Staff/CheckInOut/checkIn.ashx', // Change path
+            method: 'post',
+            data: headersToProcess,
 
 
-        success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
-            alert(resultOfGeneration.Msg);
-        },
-        error: function (err) {
-        },
-    });
-    //If Existing, Populate Fields & hide details
-    //showExistContent(snric);
-    //Else, show whole form
-    showNewContent(snric);
+            success: function (returner) {
+                resultOfGeneration = JSON.parse(returner).Result;
+            },
+            error: function (err) {
+                alert(err.Msg);
+            },
+        });
+        if (resultOfGeneration == "") {
+            showNewContent(snric);
+        }
+        else {
+            showExistContent(snric);
+        }
+        
+    }
 }

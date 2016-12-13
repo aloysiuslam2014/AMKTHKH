@@ -86,8 +86,8 @@
                                 <h4 class="modal-title" id="memberModalLabel">Please enter your NRIC/Identification Number to Begin</h4>
                             </div>
                             <div class="modal-body text-center">
-                                    NRIC: <input type="text" id="selfRegNric" class="form-control" autofocus />
-
+                                    NRIC: <input type="text" id="selfRegNric" class="form-control" autofocus/>
+                                <h4 id="emptyNricWarning">Please enter your NRIC/Identification Number!</h4>
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-block btn-success" id="submitNric" onclick="checkIfExistingVisitor(); false;" value="Submit"/>
@@ -113,9 +113,9 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="nricsInput" /><label for="nricsInput" id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID!</label>
                                     </div>
-                                    <label for="mobileinput">Mobile Number</label>
+                                    <label for="mobileinput">Mobile Number</label><label for="mobileinput" id="comp0" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="mobilesInput" />
+                                        <input type="text" runat="server" class="form-control required" id="mobilesInput" />
                                     </div>
                                     <label for="homeinput">Home Number</label>
                                     <div class="form-group">
@@ -200,32 +200,11 @@
                                     </div>
                                 </div>
                                 <label for="visitbookingtime">Visit Time:</label> <%--Appointment Time--%>
-                                <div class="form-group">
-                                    <select class="form-control" id="visitbookingtime">
-                                        <option>0900</option>
-                                        <option>0930</option>
-                                        <option>1000</option>
-                                        <option>1030</option>
-                                        <option>1100</option>
-                                        <option>1130</option>
-                                        <option>1200</option>
-                                        <option>1230</option>
-                                        <option>1300</option>
-                                        <option>1330</option>
-                                        <option>1400</option>
-                                        <option>1430</option>
-                                        <option>1500</option>
-                                        <option>1530</option>
-                                        <option>1600</option>
-                                        <option>1630</option>
-                                        <option>1700</option>
-                                        <option>1730</option>
-                                        <option>1800</option>
-                                        <option>1830</option>
-                                        <option>1900</option>
-                                        <option>1930</option>
-                                        <option>2000</option>
-                                    </select>
+                                <div class="input-group date" id="visitbookingtimediv">
+                                    <input type='text' id="visitbookingtime" class="form-control required" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                                 <h3>Health Screening Questionnaire</h3>
                                 <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
@@ -277,7 +256,6 @@
                     </div>
                 </div>
                 </div>
-        <a href="#" class="scrollToTop">Back to Top <span class="glyphicon glyphicon-arrow-up"></span></a>
     </form>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript">
@@ -292,121 +270,108 @@
             e.preventDefault();
         });
 
-        function checkRequiredFields(){
-            var valid = true;
-            $.each($("#selfregistration input.required"), function (index, value) {
-                if (!$(value).val()) {
-                    valid = false;
+        function showNricWarning() {
+            emptyNricWarning$('#emptyNricWarning').css("display", "block");
+        }
+
+            function checkRequiredFields(){
+                var valid = true;
+                $.each($("#selfregistration input.required"), function (index, value) {
+                    if (!$(value).val()) {
+                        valid = false;
+                    }
+                });
+                if (valid) {
+                    $('#emptyFields').css("display", "none");
+                    NewSelfReg();
                 }
-            });
-            if (valid) {
-                $('#emptyFields').css("display", "none");
-                NewSelfReg();
+                else {
+                    $('#emptyFields').css("display", "block");
+                }
             }
-            else {
-                $('#emptyFields').css("display", "block");
+
+            function showModal() {
+                $('#myModal').modal('show');
             }
-        }
 
-        function showModal() {
-            $('#myModal').modal('show');
-        }
-
-        function hideModal() {
-            $('#myModal').modal('hide');
-        }
-
-        function showNewContent(nricValue) {
-            //$("#nricsInput").val(nricValue);
-            $('#newusercontent').css("display", "block");
-            $('#staticinfocontainer').css("display", "block");
-            hideModal();
-        }
-
-        // Show only the Visit Purpose & Questionnaire
-        function showExistContent(nricValue) {
-            $('#changeddetailsdeclaration').css("display", "block");
-            $('#staticinfocontainer').css("display", "block");
-            hideModal();
-        }
-
-        // Display Submit Button according to whether the user has checked the declaration checkbox
-        function declarationValidation() {
-            if ($("#declaration").prop('checked') == true) {
-                $("#declabel").css("display", "none");
-                $("#submitNewEntry").css("display", "block");
-            } else {
-                $("#declabel").css("display", "block");
-                $("#submitNewEntry").css("display", "none");
+            function hideModal() {
+                $('#myModal').modal('hide');
             }
-        }
 
-        // Datetime Picker JQuery
-        $(function () {
-            $('#datetimepicker').datetimepicker();
-        });
-
-        $("#nricsInput").on("input", function () {
-            var validNric = validateNRIC($("#nricsInput").val());
-            if (validNric !== false) {
-                $("#nricWarning").css("display", "none");
-            } else {
-                $("#nricWarning").css("display", "block");
-            }
-        });
-
-        function purposePanels() {
-            var purpose = $("#pInput").val();
-            if (purpose === "patient") {
-                $("#patientpurposevisit").css("display", "block");
-                $("#otherpurposevisit").css("display", "none");
-            } else if (purpose === "other") {
-                $("#patientpurposevisit").css("display", "none");
-                $("#otherpurposevisit").css("display", "block");
-            } else {
-                $("#patientpurposevisit").css("display", "none");
-                $("#otherpurposevisit").css("display", "none");
-            }
-        }
-
-        function amendVisitorDetails() {
-            if ($("#changed").prop('checked') == true) {
+            function showNewContent(nricValue) {
+                //$("#nricsInput").val(nricValue);
                 $('#newusercontent').css("display", "block");
-            } 
-        }
+                $('#staticinfocontainer').css("display", "block");
+                hideModal();
+            }
 
-        function hideTags() {
-            //$('#existingusercontent').css("display", "none");
-            $('#staticinfocontainer').css("display", "none");
-            $('#changeddetailsdeclaration').css("display", "none");
-            $('#newusercontent').css("display", "none");
-            $("#nricWarning").css("display", "none");
-            $("#nricexistlabel").css("display", "none");
-            $("#patientpurposevisit").css("display", "none");
-            $("#otherpurposevisit").css("display", "none");
-            $("#nricnotexistlabel").css("display", "none");
-            $("#submitNewEntry").css("display", "none");
-            $('#emptyFields').css("display", "none");
-        }
+            // Show only the Visit Purpose & Questionnaire
+            function showExistContent(nricValue) {
+                $('#changeddetailsdeclaration').css("display", "block");
+                $('#staticinfocontainer').css("display", "block");
+                hideModal();
+            }
 
-        $(document).ready(function () {
-
-            //Check to see if the window is top if not then display button
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 100) {
-                    $('.scrollToTop').fadeIn();
+            // Display Submit Button according to whether the user has checked the declaration checkbox
+            function declarationValidation() {
+                if ($("#declaration").prop('checked') == true) {
+                    $("#declabel").css("display", "none");
+                    $("#submitNewEntry").css("display", "block");
                 } else {
-                    $('.scrollToTop').fadeOut();
+                    $("#declabel").css("display", "block");
+                    $("#submitNewEntry").css("display", "none");
+                }
+            }
+
+            // Datetime Picker JQuery
+            $(function () {
+                $('#datetimepicker').datetimepicker();
+                $('#visitbookingtimediv').datetimepicker();
+            });
+
+            $("#nricsInput").on("input", function () {
+                var validNric = validateNRIC($("#nricsInput").val());
+                if (validNric !== false) {
+                    $("#nricWarning").css("display", "none");
+                } else {
+                    $("#nricWarning").css("display", "block");
                 }
             });
 
-            //Click event to scroll to top
-            $('.scrollToTop').click(function () {
-                $('html, body').animate({ scrollTop: 0 }, 800);
-                return false;
-            });
+            function purposePanels() {
+                var purpose = $("#pInput").val();
+                if (purpose === "patient") {
+                    $("#patientpurposevisit").css("display", "block");
+                    $("#otherpurposevisit").css("display", "none");
+                } else if (purpose === "other") {
+                    $("#patientpurposevisit").css("display", "none");
+                    $("#otherpurposevisit").css("display", "block");
+                } else {
+                    $("#patientpurposevisit").css("display", "none");
+                    $("#otherpurposevisit").css("display", "none");
+                }
+            }
 
-        });
+            function amendVisitorDetails() {
+                if ($("#changed").prop('checked') == true) {
+                    $('#newusercontent').css("display", "block");
+                } 
+            }
+
+            function hideTags() {
+                //$('#existingusercontent').css("display", "none");
+                $('#emptyNricWarning').css("display", "none");
+                $('#staticinfocontainer').css("display", "none");
+                $('#changeddetailsdeclaration').css("display", "none");
+                $('#newusercontent').css("display", "none");
+                $("#nricWarning").css("display", "none");
+                $("#nricexistlabel").css("display", "none");
+                $("#patientpurposevisit").css("display", "none");
+                $("#otherpurposevisit").css("display", "none");
+                $("#nricnotexistlabel").css("display", "none");
+                $("#submitNewEntry").css("display", "none");
+                $('#emptyFields').css("display", "none");
+            }
     </script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/selfRegistrationScript.js") %>"></script>
     <input type="hidden" id="isNew" value="true" />

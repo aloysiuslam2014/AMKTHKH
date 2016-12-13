@@ -63,7 +63,7 @@
         </div>
     </nav>
 
-    <div class="container containerMain">
+    <div id="main" class="container containerMain">
         <div class="tab-content tab-content-main maxHeight" id="generalContent">
             <!-- Registration -->
             <div class="tab-pane maxHeight" id="registration">
@@ -78,13 +78,16 @@
                                         <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server">Check NRIC</button>
                                     </span>
                                 </div>
+                                <h4 id="emptyNricWarning" style="color:red">Please enter your NRIC/Identification Number!</h4>
                                 <h4 id="nricWarning" style="color:red">Non-Singapore Based NRIC/ID!</h4>
                                 <br />
-                                <label class="control-label" for="temp">Temperature</label><input runat="server" id="temp" class="form-control required" type="text" onchange="checkTemp(); false;" />
+                                <label class="control-label" for="temp">Temperature</label><label for="temp" id="comp0" style="color: red">*</label>
+                                <input runat="server" id="temp" class="form-control required" type="text" onchange="checkTemp(); false;" />
                                 <h4 id="tempWarning" style="color:red">Visitor's Temperature is above 37.6 Degrees Celcius!</h4>
                             </div>
                         </div>
                     </div>
+                    <h4 id="emptyFields" style="color:red">Please fill in all the required fields (*).</h4>
                     <div class="row">
                         <div id="newusercontent" class="col-sm-6" runat="server">
                             <div class="jumbotron" style="text-align: left">
@@ -97,9 +100,9 @@
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="emailsInput" />
                                 </div>
-                                <label for="mobileinput">Mobile Number</label>
+                                <label for="mobileinput">Mobile Number</label><label for="namesinput" id="comp12" style="color: red">*</label>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control" id="mobilesInput" />
+                                    <input type="text" runat="server" class="form-control required" id="mobilesInput" />
                                 </div>
                                 <label for="homeinput">Home Number</label>
                                 <div class="form-group">
@@ -151,19 +154,19 @@
                                 </div>
                                 <div id="patientpurposevisit" class="container-fluid" runat="server">
                                     <%--Show this only when Visit Purpose is "Visit Patient"--%>
-                                    <label for="patientName">Patient Name</label><label for="patientName" id="comp8" style="color: red">*</label>
+                                    <label for="patientName">Patient Name</label>
                                     <%--AJAX Call to search for Patient Name--%>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="patientName" />
+                                        <input type="text" runat="server" class="form-control" id="patientName" />
                                     </div>
-                                    <label for="patientNric">Patient NRIC</label><label for="patientNric" id="comp9" style="color: red">*</label>
+                                    <label for="patientNric">Patient NRIC</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="patientNric" />
+                                        <input type="text" runat="server" class="form-control" id="patientNric" />
                                     </div>
                                     <label for="bedno">Bed Number</label><label for="bedno" id="comp10" style="color: red">*</label>
                                     <%--Bed Number--%>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="bedno" />
+                                        <input type="text" runat="server" class="form-control" id="bedno" />
                                     </div>
 
                                 </div>
@@ -181,33 +184,12 @@
                                     </div>
                                 </div>
                                 <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
-                                <%--Appointment Time--%>
-                                <div class="form-group">
-                                    <select class="form-control" id="visitbookingtime">
-                                        <option>0900</option>
-                                        <option>0930</option>
-                                        <option>1000</option>
-                                        <option>1030</option>
-                                        <option>1100</option>
-                                        <option>1130</option>
-                                        <option>1200</option>
-                                        <option>1230</option>
-                                        <option>1300</option>
-                                        <option>1330</option>
-                                        <option>1400</option>
-                                        <option>1430</option>
-                                        <option>1500</option>
-                                        <option>1530</option>
-                                        <option>1600</option>
-                                        <option>1630</option>
-                                        <option>1700</option>
-                                        <option>1730</option>
-                                        <option>1800</option>
-                                        <option>1830</option>
-                                        <option>1900</option>
-                                        <option>1930</option>
-                                        <option>2000</option>
-                                    </select>
+                                <%--Visit Time--%>
+                                    <div class="input-group date" id="visitbookingtimediv">
+                                    <input type='text' id="visitbookingtime" class="form-control required" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                                 <h3>Health Screening Questionnaire</h3>
                                 <label for="fevdiv">Do you have a Fever?</label>
@@ -254,7 +236,7 @@
                                     <input type="hidden" name="declare" value="false" />
                                     <label for="declaration" id="declabel" style="color: red">Please check this option to continue</label>
                                 </div>
-                                <input class="btn btn-success" type="submit" id="submitNewEntry" runat="server" onclick="NewAssistReg(); false;" value="Submit" />
+                                <input class="btn btn-success" type="submit" id="submitNewEntry" runat="server" onclick="checkRequiredFields(); false;" value="Submit" />
                             </div>
                         </div>
                     </div>
@@ -306,29 +288,41 @@
             }
         }
 
-        $("#register-form").submit(function () {
-            var isFormValid = true;
-
-            $(".required input").each(function () {
-                if ($.trim($(this).val()).length == 0) {
-                    $(this).addClass("highlight");
-                    isFormValid = false;
-                }
-                else {
-                    $(this).removeClass("highlight");
+        function checkRequiredFields() {
+            var valid = true;
+            $.each($("#main input.required"), function (index, value) {
+                if (!$(value).val()) {
+                    valid = false;
                 }
             });
+            if (valid) {
+                $('#emptyFields').css("display", "none");
+                NewAssistReg();
+            }
+            else {
+                $('#emptyFields').css("display", "block");
+            }
+        }
 
-            if (!isFormValid) alert("Please fill in all the required fields (indicated by *)");
-
-            return isFormValid;
+        $("#nric").on("input", function () {
+            var validNric = validateNRIC($("#nric").val());
+            if (validNric !== false) {
+                $("#nricWarning").css("display", "none");
+            } else {
+                $("#nricWarning").css("display", "block");
+            }
         });
 
         function checkExistOrNew() {
             // Call to ASHX page
-            callCheck();
-            $("#newusercontent").css("display", "block");
-            $("#staticinfocontainer").css("display", "block");
+            if ($("#nric").val() == "") {
+                $("#emptyNricWarning").css("display", "block");
+            } else {
+                $("#emptyNricWarning").css("display", "none");
+                callCheck();
+                $("#newusercontent").css("display", "block");
+                $("#staticinfocontainer").css("display", "block");
+            }
         }
 
         function declarationValidation() {
@@ -343,19 +337,13 @@
 
         $(function () {
             $('#datetimepicker').datetimepicker();
-        });
-
-        $("#nric").on("input", function () {
-            var validNric = validateNRIC($("#nric").val());
-            if (validNric !== false) {
-                $("#nricWarning").css("display", "none");
-            } else {
-                $("#nricWarning").css("display", "block");
-            }
+            $('#visitbookingtimediv').datetimepicker();
         });
 
         function hideTags() {
+            $("#emptyFields").css("display", "none");
             $("#nricWarning").css("display", "none");
+            $("#emptyNricWarning").css("display", "none");
             $('#tempWarning').css("display", "none");
             $("#patientpurposevisit").css("display", "none");
             $("#otherpurposevisit").css("display", "none");

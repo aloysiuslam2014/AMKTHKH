@@ -173,7 +173,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
-                command.Parameters.AddWithValue("@pTimestamp", DateTime.Now);// To change to DB side
                 command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cnn.Open();
 
@@ -200,16 +199,16 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO FROM - CREATE_VISIT]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO - CREATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pVisitRequestTime", nric);
-                command.Parameters.AddWithValue("@pPatientNRIC", nric);
+                command.Parameters.AddWithValue("@pVisitRequestTime", appTime);
+                command.Parameters.AddWithValue("@pPatientNRIC", pNric);
                 command.Parameters.AddWithValue("@pVisitorNRIC", nric);
-                command.Parameters.AddWithValue("@pPatientFullName", nric);
-                command.Parameters.AddWithValue("@pPurpose", nric);
-                command.Parameters.AddWithValue("@pReason", nric);
-                command.Parameters.AddWithValue("@pVisitLocation", nric);
-                command.Parameters.AddWithValue("@pBedNo", nric);
+                command.Parameters.AddWithValue("@pPatientFullName", pName);
+                command.Parameters.AddWithValue("@pPurpose", purpose);
+                command.Parameters.AddWithValue("@pReason", otherPurpose);
+                command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
+                command.Parameters.AddWithValue("@pBedNo", bedno);
                 command.Parameters.AddWithValue("@pQaID", 1); // Hardcode for now
                 command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cnn.Open();
@@ -288,58 +287,41 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-            //try
-            //{
-            //    SqlCommand command = new SqlCommand("[dbo].[INSERT INTO-CREATE_VISITOR_PROFILE]", cnn);// Change procedure to write to VISIT
-            //    command.CommandType = System.Data.CommandType.StoredProcedure;
-            //    command.Parameters.AddWithValue("@pFirstName", fname);// Fullname
-            //    command.Parameters.AddWithValue("@pNric", nric);
-            //    command.Parameters.AddWithValue("@pAddress", address);
-            //    command.Parameters.AddWithValue("@pPostal", postal);
-            //    command.Parameters.AddWithValue("@pHomeTel", hometel);
-            //    command.Parameters.AddWithValue("@pAltTel", alttel);
-            //    command.Parameters.AddWithValue("@pMobTel", mobtel);
-            //    command.Parameters.AddWithValue("@pEmail", email);
-            //    command.Parameters.AddWithValue("@pSex", sex);
-            //    command.Parameters.AddWithValue("@pNationality", nationality);
-            //    command.Parameters.AddWithValue("@pDOB", dob);
-            //    command.Parameters.AddWithValue("@pPurpose", purpose);
-            //    command.Parameters.AddWithValue("@pAge", age);
-            //    command.Parameters.AddWithValue("@prace", race);
-            //    command.Parameters.AddWithValue("@pVisitTime", appTime);
-            //    command.Parameters.AddWithValue("@pWingNo", bedno);
-            //    command.Parameters.AddWithValue("@pWardNo", bedno);
-            //    command.Parameters.AddWithValue("@pCubicleNo", bedno);
-            //    command.Parameters.AddWithValue("@pBedNo", bedno);
-            //    command.Parameters.AddWithValue("@pPatientName", pName);
-            //    command.Parameters.AddWithValue("@pPatientNric", pNric);
-            //    command.Parameters.AddWithValue("@visitLocation", visitLocation);
-            //    command.Parameters.AddWithValue("@visitPurpose", otherPurpose);
-            //    command.Parameters.Add("@pResponseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
-            //    cnn.Open();
-            //    Object[] test;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO - UPDATE_VISIT]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pVisitRequestTime", appTime);
+                command.Parameters.AddWithValue("@pPatientNRIC", pNric);
+                command.Parameters.AddWithValue("@pVisitorNRIC", nric);
+                command.Parameters.AddWithValue("@pPatientFullName", pName);
+                command.Parameters.AddWithValue("@pPurpose", purpose);
+                command.Parameters.AddWithValue("@pReason", otherPurpose);
+                command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
+                command.Parameters.AddWithValue("@pBedNo", bedno);
+                command.Parameters.AddWithValue("@pQaID", 1); // Hardcode for now
+                command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
+                cnn.Open();
 
-            //    using (SqlDataReader reader = command.ExecuteReader())
-            //    {
-            //        test = new Object[reader.FieldCount];
-            //        while (reader.Read())
-            //        {
-            //            row++;
-            //        }
-            //    }
-            //    successString += "\"}";
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    successString += ex.Message;
-            //    successString += "\"}";
-            //    return successString;
-            //}
-            //finally
-            //{
-            //    cnn.Close();
-            //}
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        successString += reader["@responseMessage"].ToString();
+                    }
+                }
+                successString += "\"}";
+            }
+            catch (Exception ex)
+            {
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
             CheckIn(nric, temperature);
             return successString;
         }
@@ -347,34 +329,29 @@ namespace THKH.Webpage.Staff.CheckInOut
         private String CheckIn(String nric, String temp) {
             string connectionString = null;
             SqlConnection cnn;
-            int row = 0;
             connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
             cnn = new SqlConnection(connectionString);
-            String successString = "{\"Result\":\"Success\",\"Msg\":\""; // Reflect Time Checked in - TO BE AMENDED
+            String successString = "{\"Result\":\"Success\",\"Msg\":\""; 
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - CONFIRM_CHECK_IN]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", nric);
-                //command.Parameters.AddWithValue("@pActualTimeVisit", Session);
-                //command.Parameters.AddWithValue("@pStaffID", Session);
-                //command.Parameters.AddWithValue("@pTemperature", temperature);
-                command.Parameters.Add("@pResponseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
+                command.Parameters.AddWithValue("@pActualTimeVisit", DateTime.Now);
+                command.Parameters.AddWithValue("@pStaffID", 1);
+                command.Parameters.AddWithValue("@pTemperature", temp);
+                command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cnn.Open();
-                Object[] test;
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    test = new Object[reader.FieldCount];
                     while (reader.Read())
                     {
-                        row++;
+                        //successString += nric + " Successfully Added as a new Visitor, Visit Details & Confirmation Recorded at " + DateTime.Now;
                     }
                 }
-                successString += nric + " Successfully Added as a new Visitor, Visit Details & Confirmation Recorded at " + DateTime.Now;
                 successString += "\"}";
-
             }
             catch (Exception ex)
             {
