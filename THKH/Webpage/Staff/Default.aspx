@@ -9,6 +9,7 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/moment.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/w3data.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/bootstrap-datetimepicker.js") %>"></script>
 
@@ -243,9 +244,12 @@
                 
             </div>
             <!-- End of Registration -->
-
+            
             <!-- FormManagement -->
-
+            <div class="tab-pane maxHeight" id="formManagement">
+                <h1>This is the test page potato pirates!</h1>
+                <div w3-include-html="./RegistrationHTML/registrationPart.html"></div> 
+            </div>
             <!-- End of FormManagement -->
 
             <!-- FacilitiesManagement -->
@@ -272,7 +276,7 @@
 
         $('#navigatePage a:first').tab('show');
         $('#regPageNavigation a:first').tab('show');
-        nric.value.toString();
+        w3IncludeHTML();
 
         function purposePanels() {
             var purpose = $("#pInput").val();
