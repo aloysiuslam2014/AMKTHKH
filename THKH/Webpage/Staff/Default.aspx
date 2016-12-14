@@ -248,7 +248,8 @@
             <!-- FormManagement -->
             <div class="tab-pane maxHeight" id="formManagement">
                 <h1>This is the test page potato pirates!</h1>
-                <div w3-include-html="./RegistrationHTML/registrationPart.html"></div> 
+                <!--<div w3-include-html="./RegistrationHTML/registrationPart.html"></div> -->
+               
             </div>
             <!-- End of FormManagement -->
 
