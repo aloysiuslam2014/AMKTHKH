@@ -18,11 +18,11 @@ namespace THKH.Webpage.Staff
             DataTable dataTable = new DataTable();
             SqlConnection cnn;
             //connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - Locations]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[GET_TERMINAL]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 //command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
                 cnn.Open();

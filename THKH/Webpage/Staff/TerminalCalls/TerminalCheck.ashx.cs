@@ -33,7 +33,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 success = verify(userNric);
 
             }else{
-                deactivateTerminal(msgg);
+                success = deactivateTerminal(msgg);
             }
             context.Response.ContentType = "text/plain";
             if (success)
@@ -55,15 +55,15 @@ namespace THKH.Webpage.Staff.TerminalCalls
             SqlConnection cnn;
             connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             Object[] test;
-            SqlParameter respon = new SqlParameter("@resp", System.Data.SqlDbType.Int);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[Find Staff]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[VERIFY_STAFF]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@pEmail", id);
                 
                 command.Parameters.Add(respon);
                 cnn.Open();
@@ -78,7 +78,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             }
             catch (Exception ex)
             {
-
+                var d = ex;//to read any errors
             }
 
             if (respon.Value.ToString().Equals("1"))
@@ -95,29 +95,77 @@ namespace THKH.Webpage.Staff.TerminalCalls
 
         public bool activateTerminal(String id)
         {
-            string connectionString = null;
+          //string connectionString = null;
             bool success = false;
             int locationId=Convert.ToInt32(id);
             SqlConnection cnn;
-            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+           // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
-            Object[] test =new Object[1];
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE FROM - Locations]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[ACTIVATE_TERMINAL]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@ID", locationId);
+                command.Parameters.AddWithValue("@pTerminal_Id", locationId);
+                command.Parameters.Add(respon);
                 cnn.Open();
 
                 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    test = new Object[reader.FieldCount];
+                   
                     while (reader.Read())
                     {
 
-                        reader.GetValues(test);
+                        
+                        //Get txtPwd with Salt using SHA2-512 & compare hash values
+                    }
+                }
+                //rows = command.ExecuteNonQuery();
+
+
+                cnn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                var a= ex;
+            }
+         
+
+            success = respon.Value.ToString().Equals("1") ? true : false;
+
+            return success;
+        }
+
+        public bool deactivateTerminal(String id)
+        {
+            //string connectionString = null;
+            bool success = false;
+            int locationId = Convert.ToInt32(id);
+            SqlConnection cnn;
+            // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[ACTIVATE_TERMINAL]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pTerminal_Id", locationId);
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    
+                    while (reader.Read())
+                    {
+
                         
                         //Get txtPwd with Salt using SHA2-512 & compare hash values
                     }
@@ -132,28 +180,29 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
 
             }
-            var terminalActivated = Convert.ToInt32(test[0]);
 
-            success = terminalActivated == 1 ? true : false;
+
+            success = respon.Value.ToString().Equals("1") ? true : false;
 
             return success;
+
         }
 
         public bool checkInUser(String locationId, String userId)
         {
-            string connectionString = null;
+          //  string connectionString = null;
             bool success = false;
             int id = Convert.ToInt32(locationId);
             SqlConnection cnn;
-            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+           // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["onlineConnection"].ConnectionString);
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE FROM - Locations]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[CREATE_MOVEMENT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@locationId", locationId);
-                command.Parameters.AddWithValue("@Nric", locationId);
+                command.Parameters.AddWithValue("@pLocationId", locationId);
+                command.Parameters.AddWithValue("@pNRIC", locationId);
                 cnn.Open();
 
                 command.ExecuteNonQuery();
@@ -171,11 +220,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             return success;
         }
 
-        public void deactivateTerminal(String id)
-        {
-           int d =  Convert.ToInt32(id);
-            
-        }
+       
 
         public bool IsReusable
         {

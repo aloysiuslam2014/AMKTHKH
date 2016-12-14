@@ -101,6 +101,7 @@
                          <div class="form-group" id="test22">
                         <input type="text" class="form-control text-center userTextScan" id="userNric" autofocus />
                         <label id="userWelcome" class="text-success" style="font-size: 4em;">Please Scan Your Card</label>
+                             
                         </div>
                     </div>
 
