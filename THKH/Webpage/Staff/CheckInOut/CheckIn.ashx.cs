@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -17,38 +18,41 @@ namespace THKH.Webpage.Staff.CheckInOut
         {   
             context.Response.ContentType = "text/plain";
             String successString = "";
-            var nric = context.Request.Form["nric"].ToString();
-            var temperature = context.Request.Form["temperature"];
-            var age = context.Request.Form["AGE"];
-            var fname = context.Request.Form["fullName"];
-            var address = context.Request.Form["ADDRESS"];
-            var postal = context.Request.Form["POSTAL"];
-            var mobtel = context.Request.Form["MobTel"];
-            var alttel = context.Request.Form["AltTel"];
-            var hometel = context.Request.Form["HomeTel"];
-            var sex = context.Request.Form["SEX"];
-            var nationality = context.Request.Form["Natl"];
-            var dob = context.Request.Form["DOB"];
-            var race = context.Request.Form["RACE"];
-            var email = context.Request.Form["email"];
-            var purpose = context.Request.Form["PURPOSE"];
-            var pName = context.Request.Form["pName"];
-            var pNric = context.Request.Form["pNric"];
-            var otherPurpose = context.Request.Form["otherPurpose"];
-            var bedno = context.Request.Form["bedno"];
-            var appTime = context.Request.Form["appTime"];
-            var fever = context.Request.Form["fever"];
-            var symptoms = context.Request.Form["symptoms"];
-            var influenza = context.Request.Form["influenza"];
-            var countriesTravelled = context.Request.Form["countriesTravelled"];
-            var remarks = context.Request.Form["remarks"];
-            var visitLocation = context.Request.Form["visitLocation"];
+            
             var typeOfRequest = context.Request.Form["requestType"];
             if (typeOfRequest == "getdetails") {
+                var nric = context.Request.Form["nric"].ToString();
                 successString = getVisitorDetails(nric);
             }
             if (typeOfRequest == "self")
             {
+                
+                var nric = context.Request.Form["nric"].ToString();
+                var temperature = context.Request.Form["temperature"];
+                var age = context.Request.Form["AGE"];
+                var fname = context.Request.Form["fullName"];
+                var address = context.Request.Form["ADDRESS"];
+                var postal = context.Request.Form["POSTAL"];
+                var mobtel = context.Request.Form["MobTel"];
+                var alttel = context.Request.Form["AltTel"];
+                var hometel = context.Request.Form["HomeTel"];
+                var sex = context.Request.Form["SEX"];
+                var nationality = context.Request.Form["Natl"];
+                var dob = context.Request.Form["DOB"];
+                var race = context.Request.Form["RACE"];
+                var email = context.Request.Form["email"];
+                var purpose = context.Request.Form["PURPOSE"];
+                var pName = context.Request.Form["pName"];
+                var pNric = context.Request.Form["pNric"];
+                var otherPurpose = context.Request.Form["otherPurpose"];
+                var bedno = context.Request.Form["bedno"];
+                var appTime = context.Request.Form["appTime"];
+                var fever = context.Request.Form["fever"];
+                var symptoms = context.Request.Form["symptoms"];
+                var influenza = context.Request.Form["influenza"];
+                var countriesTravelled = context.Request.Form["countriesTravelled"];
+                var remarks = context.Request.Form["remarks"];
+                var visitLocation = context.Request.Form["visitLocation"];
                 // Write to Visitor_Profile & Visit Table
                 successString = selfReg(nric, age, fname, address, postal, mobtel, alttel, hometel,
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
@@ -56,7 +60,34 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
         if (typeOfRequest == "confirmation") {
                 // Write to Visitor_Profile, Visit, Confirmed & CheckInCheckOut Tables
-                successString = AssistReg(nric, age, fname, address, postal, mobtel, alttel, hometel,
+                var staffUser = context.Request.Form["staffUser"].ToString();
+                var nric = context.Request.Form["nric"].ToString();
+                var temperature = context.Request.Form["temperature"];
+                var age = context.Request.Form["AGE"];
+                var fname = context.Request.Form["fullName"];
+                var address = context.Request.Form["ADDRESS"];
+                var postal = context.Request.Form["POSTAL"];
+                var mobtel = context.Request.Form["MobTel"];
+                var alttel = context.Request.Form["AltTel"];
+                var hometel = context.Request.Form["HomeTel"];
+                var sex = context.Request.Form["SEX"];
+                var nationality = context.Request.Form["Natl"];
+                var dob = context.Request.Form["DOB"];
+                var race = context.Request.Form["RACE"];
+                var email = context.Request.Form["email"];
+                var purpose = context.Request.Form["PURPOSE"];
+                var pName = context.Request.Form["pName"];
+                var pNric = context.Request.Form["pNric"];
+                var otherPurpose = context.Request.Form["otherPurpose"];
+                var bedno = context.Request.Form["bedno"];
+                var appTime = context.Request.Form["appTime"];
+                var fever = context.Request.Form["fever"];
+                var symptoms = context.Request.Form["symptoms"];
+                var influenza = context.Request.Form["influenza"];
+                var countriesTravelled = context.Request.Form["countriesTravelled"];
+                var remarks = context.Request.Form["remarks"];
+                var visitLocation = context.Request.Form["visitLocation"];
+                successString = AssistReg(staffUser,nric, age, fname, address, postal, mobtel, alttel, hometel,
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
             fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature);
             }
@@ -84,7 +115,6 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
             }
@@ -116,7 +146,6 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
             }
@@ -145,7 +174,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pFullName", fname);
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.Parse(dob));
+                command.Parameters.AddWithValue("@pDateOfBirth", dob);
                 command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pHomeTel", hometel);
@@ -163,7 +192,6 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
@@ -193,7 +221,6 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
             }
@@ -206,15 +233,13 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         
         // Write to Visitor, Visit & Confirmation Table
-        private String AssistReg(String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
+        private String AssistReg(String staffuser,String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
             String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            SqlParameter responUpdateVisit = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            responUpdateVisit.Direction = ParameterDirection.Output;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             try
             {
@@ -224,7 +249,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pFullName", fname);
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.Parse(dob));
+                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob,"dd-MM-yyyy", CultureInfo.InvariantCulture));
                 command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pHomeTel", hometel);
@@ -243,7 +268,6 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
@@ -252,6 +276,9 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
+
+            respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISIT]", cnn);
@@ -265,16 +292,15 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
                 command.Parameters.AddWithValue("@pBedNo", bedno);
                 command.Parameters.AddWithValue("@pQaID", 1); // Hardcode for now
-                command.Parameters.Add(responUpdateVisit);
+                command.Parameters.Add(respon);
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += responUpdateVisit.Value;
+                successString += respon.Value;
                 successString += "\"}";
             }
             catch (Exception ex)
             {
-                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
@@ -283,11 +309,11 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-            CheckIn(nric, temperature);
+            CheckIn(staffuser,nric, temperature);
             return successString;
         }
 
-        private String CheckIn(String nric, String temp) {
+        private String CheckIn(String staffuser,String nric, String temp) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -299,7 +325,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", nric);
                 command.Parameters.AddWithValue("@pActualTimeVisit", DateTime.Now);
-                command.Parameters.AddWithValue("@pStaffID", 1);
+                command.Parameters.AddWithValue("@pStaffEmail", staffuser);
                 command.Parameters.AddWithValue("@pTemperature", temp);
                 command.Parameters.Add(respon);
                 cnn.Open();
@@ -310,7 +336,6 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
             }

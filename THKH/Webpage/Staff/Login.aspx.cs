@@ -62,7 +62,7 @@ namespace THKH.Webpage.Staff
             try {
                 SqlCommand command = new SqlCommand("[dbo].[LOGIN]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
+                command.Parameters.AddWithValue("@pEmail", txtUserName.Value.ToString());
                 command.Parameters.AddWithValue("@pPassword", ComputeHash(txtUserPass.Value.ToString()));
 
                 cnn.Open();
@@ -97,7 +97,7 @@ namespace THKH.Webpage.Staff
             string hash = "";
             SHA512 alg = SHA512.Create();
             byte[] result = alg.ComputeHash(Encoding.UTF8.GetBytes(plainText));
-
+            
             return result;
         }
 

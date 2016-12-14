@@ -53,6 +53,7 @@ function checkTemp() { // Rewrite to actively check
 }
 
 function NewAssistReg() {
+    var username = user;//from the default page the user is declared there
     var fname = $("#namesInput").val();
     var snric = $("#nric").val();
     var address = $("#addresssInput").val();
@@ -81,7 +82,7 @@ function NewAssistReg() {
     var visitLoc = $("#visLoc").val();
 
     var headersToProcess = {
-        fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
+        staffUser:username,fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
         AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose,pName: pName, pNric: pNric,
         otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza,
         countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp

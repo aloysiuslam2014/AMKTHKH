@@ -274,7 +274,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript">
 
-
+        var user= '<%= Session["username"].ToString()%>';
         $('#navigatePage a:first').tab('show');
         $('#regPageNavigation a:first').tab('show');
         w3IncludeHTML();
@@ -342,9 +342,20 @@
 
         // Datetime Picker JQuery
         $(function () {
-            $('#datetimepicker').datetimepicker();
+            $('#datetimepicker').datetimepicker({
+                // dateFormat: 'dd-mm-yy',
+                defaultDate: new Date(),
+                format: 'DD-MM-YYYY'
+            });
             $('#visitbookingtimediv').datetimepicker();
         });
+
+        function getFormattedDate(date) {
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear().toString().slice(2);
+            return day + '-' + month + '-' + year;
+        }
 
         function hideTags() {
             $("#emptyFields").css("display", "none");
