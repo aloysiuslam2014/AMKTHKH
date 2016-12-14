@@ -71,7 +71,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - GET_VISITOR]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[GET_VISITOR]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNRIC", nric);
                 command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
@@ -103,7 +103,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - GET_VISIT_DETAILS] ", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[GET_VISIT_DETAILS] ", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", nric);
                 command.Parameters.Add(respon);
@@ -137,7 +137,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             //String doB = dob.Substring(0, 10);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO - CREATE_VISITOR_PROFILE]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[CREATE_VISITOR_PROFILE]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNRIC", nric);
                 command.Parameters.AddWithValue("@pFullName", fname);
@@ -171,7 +171,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO - CREATE_VISIT]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[CREATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pVisitRequestTime", appTime);
                 command.Parameters.AddWithValue("@pPatientNRIC", pNric);
@@ -212,7 +212,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO - UPDATE_VISITOR_PROFILE]", cnn); //Update_Visitor_Profile
+                SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISITOR_PROFILE]", cnn); //Update_Visitor_Profile
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNRIC", nric);
                 command.Parameters.AddWithValue("@pFullName", fname);
@@ -247,7 +247,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[INSERT INTO - UPDATE_VISIT]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pVisitRequestTime", appTime);
                 command.Parameters.AddWithValue("@pPatientNRIC", pNric);
@@ -287,7 +287,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             String successString = "{\"Result\":\"Success\",\"Msg\":\""; 
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - CONFIRM_CHECK_IN]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[CONFIRM_CHECK_IN]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", nric);
                 command.Parameters.AddWithValue("@pActualTimeVisit", DateTime.Now);

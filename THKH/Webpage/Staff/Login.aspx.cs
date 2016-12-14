@@ -60,7 +60,7 @@ namespace THKH.Webpage.Staff
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
           //  cnn = new SqlConnection(connectionString);
             try {
-                SqlCommand command = new SqlCommand("[dbo].[SELECT FROM - login]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[LOGIN]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
                 command.Parameters.AddWithValue("@pPassword", ComputeHash(txtUserPass.Value.ToString()));
