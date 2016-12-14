@@ -84,6 +84,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
             }
@@ -115,6 +116,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
             }
@@ -143,7 +145,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pFullName", fname);
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDateOfBirth", dob);
+                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.Parse(dob));
                 command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pHomeTel", hometel);
@@ -161,6 +163,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
@@ -190,6 +193,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
             }
@@ -209,6 +213,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
+            SqlParameter responUpdateVisit = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            responUpdateVisit.Direction = ParameterDirection.Output;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             try
             {
@@ -218,7 +224,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pFullName", fname);
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDateOfBirth", dob);
+                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.Parse(dob));
                 command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pHomeTel", hometel);
@@ -237,6 +243,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
@@ -258,15 +265,16 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
                 command.Parameters.AddWithValue("@pBedNo", bedno);
                 command.Parameters.AddWithValue("@pQaID", 1); // Hardcode for now
-                command.Parameters.Add(respon);
+                command.Parameters.Add(responUpdateVisit);
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                successString += responUpdateVisit.Value;
                 successString += "\"}";
             }
             catch (Exception ex)
             {
+                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
@@ -302,6 +310,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString = "{\"Result\":\"Failure\",\"Msg\":\""; 
                 successString += ex.Message;
                 successString += "\"}";
             }

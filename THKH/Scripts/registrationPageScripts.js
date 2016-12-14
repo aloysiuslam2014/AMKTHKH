@@ -22,11 +22,12 @@ function callCheck (){
                 // Populate fields if visitor exists by spliting string into array of values & populating
                 var string = resultOfGeneration.Msg;
                 var arr = string.split(",");
+                var dateString = arr[4].replace(/-/g, "/").toString() + " 0:01 AM";
                 $("#nric").attr('value', arr[0]);
                 $("#namesInput").attr('value', arr[1]);
                 $("#sexinput").attr('value', arr[2]);
                 $("#nationalsInput").attr('value', arr[3]);
-                $("#daterange").attr('value', arr[4]);
+                $("#daterange").attr('value', dateString);
                 $("#addresssInput").attr('value', arr[10]);
                 $("#postalsInput").attr('value', arr[11]);
                 $("#mobilesInput").attr('value', arr[6]);
