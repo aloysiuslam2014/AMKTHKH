@@ -164,7 +164,7 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="patientNric" />
                                     </div>
-                                    <label for="bedno">Bed Number</label><label for="bedno" id="comp10" style="color: red">*</label>
+                                    <label for="bedno">Bed Number</label>
                                     <%--Bed Number--%>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="bedno" />
@@ -340,6 +340,7 @@
             }
         }
 
+        // Datetime Picker JQuery
         $(function () {
             $('#datetimepicker').datetimepicker();
             $('#visitbookingtimediv').datetimepicker();

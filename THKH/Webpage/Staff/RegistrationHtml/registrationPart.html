@@ -1,5 +1,5 @@
 ﻿
-    <div class="row">
+    <!--<div class="row">
         <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
             <div class="jumbotron" style="text-align: left">
                 <label class="control-label" for="nric">Visitor's NRIC:</label>
@@ -194,21 +194,21 @@
         }
     }
 
-    function checkRequiredFields() {
-        var valid = true;
-        $.each($("#main input.required"), function (index, value) {
-            if (!$(value).val()) {
-                valid = false;
-            }
-        });
-        if (valid) {
-            $('#emptyFields').css("display", "none");
-            NewAssistReg();
-        }
-        else {
-            $('#emptyFields').css("display", "block");
-        }
-    }
+    //function checkRequiredFields() {
+    //    var valid = true;
+    //    $.each($("#main input.required"), function (index, value) {
+    //        if (!$(value).val()) {
+    //            valid = false;
+    //        }
+    //    });
+    //    if (valid) {
+    //        $('#emptyFields').css("display", "none");
+    //        NewAssistReg();
+    //    }
+    //    else {
+    //        $('#emptyFields').css("display", "block");
+    //    }
+    //}
 
     $("#nric").on("input", function () {
         var validNric = validateNRIC($("#nric").val());
@@ -259,4 +259,4 @@
     }
 </script>
 
-<script type="text/javascript" src="<%= Page.ResolveClientUrl(" ~/Scripts/registrationPageScripts.js") %>"></script>
+<script type="text/javascript" src="<%= Page.ResolveClientUrl(" ~/Scripts/registrationPageScripts.js") %>"></script>-->
