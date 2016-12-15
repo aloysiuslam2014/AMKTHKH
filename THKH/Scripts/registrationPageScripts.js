@@ -40,6 +40,8 @@ function callCheck (){
                 $("#pInput").attr('value', arr[17]);
                 $("#purposeInput").attr('value', arr[18]);
                 $("#visLoc").attr('value', arr[19]);
+            } else {
+                alert("Error: " + resultOfGeneration.Msg);
             }
         },
         error: function (err) {
@@ -103,8 +105,11 @@ function NewAssistReg() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-            if (resultOfGeneration.Msg === "1") {
-                alert("Successfully Added!")
+            if (resultOfGeneration.Result === "Success") {
+                var today = new Date();
+                alert("Visitor successfully checked-in at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
+            } else {
+                alert("Error: " + resultOfGeneration.Msg);
             }
         },
         error: function (err) {

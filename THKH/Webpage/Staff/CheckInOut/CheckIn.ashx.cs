@@ -177,7 +177,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pFullName", fname);
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDateOfBirth", dob);
+                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
                 command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pHomeTel", hometel);
@@ -195,6 +195,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
@@ -224,6 +225,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
             }
@@ -261,7 +263,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
-                command.Parameters.AddWithValue("@pTimestamp", DateTime.Now);// To change to DB side
+                //command.Parameters.AddWithValue("@pTimestamp", DateTime.Now);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
@@ -272,6 +274,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
@@ -305,6 +308,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;

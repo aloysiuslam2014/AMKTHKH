@@ -168,8 +168,8 @@
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels()">
                                         <option value="">-- Select One --</option>
-                                        <option value="patient">Visit Patient</option>
-                                        <option value ="other">Other Purpose</option>
+                                        <option value="Visit Patient">Visit Patient</option>
+                                        <option value ="Other Purpose">Other Purpose</option>
                                         </select>
                                     </div>
                                 <div id="patientpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Visit Patient"--%>
