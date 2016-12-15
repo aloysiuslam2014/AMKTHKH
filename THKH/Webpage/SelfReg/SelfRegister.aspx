@@ -160,13 +160,13 @@
                                 <div class="form-group">
                                 <div class="checkbox" id="changeddetails">
                                     <label for="yesopt">
-                                    <input type="checkbox" id="changed" onchange="amendVisitorDetails()" name="yesopt" value="Yes" />Yes</label>
+                                    <input type="checkbox" id="changed" onchange="amendVisitorDetails(); false;" name="yesopt" value="Yes" />Yes</label>
                                 </div></div>
                                     </div>
                             <h3>Visit Details</h3>
                                 <label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
-                                    <select class="form-control" id="pInput" onchange="purposePanels()">
+                                    <select class="form-control" id="pInput" onchange="purposePanels(); false;">
                                         <option value="">-- Select One --</option>
                                         <option value="Visit Patient">Visit Patient</option>
                                         <option value ="Other Purpose">Other Purpose</option>
@@ -255,7 +255,7 @@
                                 </div>
                                 <div class="checkbox">
                                     <label for="declaration">
-                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate</label><br />
+                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation(); false;" value="true" />I declare that the above information given is accurate</label><br />
                                     <input type="hidden" name="declare" value="false" />
                             <label for="declaration" id="declabel" style="color:red">Please check this option to continue</label>
                         </div>
