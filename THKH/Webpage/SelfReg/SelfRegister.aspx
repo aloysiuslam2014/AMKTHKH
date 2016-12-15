@@ -167,7 +167,7 @@
                                 <label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels()">
-                                        <option value="-">-- Select One --</option>
+                                        <option value="">-- Select One --</option>
                                         <option value="patient">Visit Patient</option>
                                         <option value ="other">Other Purpose</option>
                                         </select>
@@ -185,12 +185,13 @@
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
-                                
+                                <input type="button" id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;" />
                                 </div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
                                     <label for="visLoc">Visit Location</label> 
                                     <div class="form-group">
                                     <select class="form-control" id="visLoc">
+                                        <option name="none" value="">-- Select One --</option>
                                         <option name="canteen" value="canteen">Canteen</option>
                                         </select>
                                     </div>
@@ -199,11 +200,20 @@
                                         <input type="text" runat="server" class="form-control" id="purposeInput" />
                                     </div>
                                 </div>
-                                <label for="visitbookingtime">Visit Time:</label> <%--Appointment Time--%>
-                                <div class="input-group date" id="visitbookingtimediv">
-                                    <input type='text' id="visitbookingtime" class="form-control required" />
+                                <label for="visitbookingdate">Visit Date</label><label for="visitbookingdate" id="comp21" style="color: red">*</label>
+                                <%--Visit Time--%>
+                                    <div class="input-group date" id="visitbookingdatediv">
+                                    <input type='text' id="visitbookingdate" class="form-control required" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                                <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
+                                <%--Visit Time--%>
+                                    <div class="input-group date" id="visitbookingtimediv">
+                                    <input type='text' id="visitbookingtime" class="form-control required" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
                                     </span>
                                 </div>
                                 <h3>Health Screening Questionnaire</h3>
@@ -325,8 +335,23 @@
 
             // Datetime Picker JQuery
             $(function () {
-                $('#datetimepicker').datetimepicker();
-                $('#visitbookingtimediv').datetimepicker();
+                $('#datetimepicker').datetimepicker({
+                    // dateFormat: 'dd-mm-yy',
+                    defaultDate: new Date(),
+                    format: 'DD-MM-YYYY'
+                });
+                $('#visitbookingtimediv').datetimepicker(
+                    {
+                        // dateFormat: 'dd-mm-yy',
+                        defaultDate: new Date(),
+                        format: 'HH:mm'
+                    });
+                $('#visitbookingdatediv').datetimepicker(
+                    {
+                        // dateFormat: 'dd-mm-yy',
+                        defaultDate: new Date(),
+                        format: 'DD-MM-YYYY'
+                    });
             });
 
             $("#nricsInput").on("input", function () {
@@ -340,10 +365,10 @@
 
             function purposePanels() {
                 var purpose = $("#pInput").val();
-                if (purpose === "patient") {
+                if (purpose === "Visit Patient") {
                     $("#patientpurposevisit").css("display", "block");
                     $("#otherpurposevisit").css("display", "none");
-                } else if (purpose === "other") {
+                } else if (purpose === "Other Purpose") {
                     $("#patientpurposevisit").css("display", "none");
                     $("#otherpurposevisit").css("display", "block");
                 } else {

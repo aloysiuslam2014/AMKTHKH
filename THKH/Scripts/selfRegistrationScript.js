@@ -17,7 +17,9 @@
     var pNric = $("#patientNric").val();
     var otherPurpose = $("#purposeInput").val();
     var bedno = $("#bedno").val();
-    var appTime = $("#visitbookingtime").val();
+    var visTime = $("#visitbookingtime").val();
+    var visDate = $("#visitbookingdate").val();
+    var appTime = visDate + " " + visTime;
     var fever = $("#fever").val();
     var symptoms = $("#pimple").val();
     var influenza = $("#flu").val();
@@ -64,7 +66,7 @@ function checkIfExistingVisitor() {
             success: function (returner) {
                 resultOfGeneration = JSON.parse(returner);
                 var res = resultOfGeneration.Msg;
-                if (resultOfGeneration.Msg === "") {
+                if (resultOfGeneration.Msg.includes("0")) {
                     showNewContent(snric);
                 }
                 else {

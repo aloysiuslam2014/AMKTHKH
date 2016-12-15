@@ -190,7 +190,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
-                successString += "\"}";
+                //successString += "\"}";
 
             }
             catch (Exception ex)
@@ -207,7 +207,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pVisitRequestTime", appTime);
+                command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
                 command.Parameters.AddWithValue("@pPatientNRIC", pNric);
                 command.Parameters.AddWithValue("@pVisitorNRIC", nric);
                 command.Parameters.AddWithValue("@pPatientFullName", pName);
@@ -231,6 +231,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
+            successString += "\"}";
             return successString;
         }
 
@@ -266,7 +267,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
-                successString += "\"}";
+                //successString += "\"}";
 
             }
             catch (Exception ex)
@@ -286,7 +287,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pVisitRequestTime", appTime);
+                command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
                 command.Parameters.AddWithValue("@pPatientNRIC", pNric);
                 command.Parameters.AddWithValue("@pVisitorNRIC", nric);
                 command.Parameters.AddWithValue("@pPatientFullName", pName);
@@ -300,7 +301,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
-                successString += "\"}";
+                //successString += "\"}";
             }
             catch (Exception ex)
             {
@@ -312,7 +313,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-            CheckIn(staffuser,nric, temperature);
+            successString += CheckIn(staffuser,nric, temperature);
+            successString += "\"}";
             return successString;
         }
 
@@ -321,7 +323,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\""; 
+            String successString = ""; 
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[CONFIRM_CHECK_IN]", cnn);
@@ -335,12 +337,13 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
-                successString += "\"}";
+                //successString += "\"}";
             }
             catch (Exception ex)
             {
                 successString += ex.Message;
-                successString += "\"}";
+                return successString;
+                //successString += "\"}";
             }
             finally
             {
