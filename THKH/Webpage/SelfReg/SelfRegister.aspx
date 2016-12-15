@@ -77,7 +77,7 @@
             <br />
             <br />
             <br />
-            <a data-controls-modal="myModal" data-backdrop="static" data-keyboard="false" href="#">
+            <a data-controls-modal="myModal" data-backdrop="static" data-keyboard="false" href="#/">
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
