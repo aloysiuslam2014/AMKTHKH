@@ -62,7 +62,7 @@ CREATE TABLE STAFF 
 GO
 CREATE TABLE PATIENT 
 (
-	bedNo INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+	bedNo INT PRIMARY KEY NOT NULL, 
 	nric VARCHAR(100) NOT NULL, 
 	patientFullName VARCHAR(MAX) NOT NULL
 ); 
@@ -136,9 +136,9 @@ CREATE TABLE VISIT
 	visitLocation VARCHAR(MAX),    
 	bedNo INT,  
 	QaID INT NOT NULL,
-	confirm INT,   
+	confirm INT   
 	--FOREIGN KEY (QaID) REFERENCES QUESTIONAIRE_ANS(QaID),
-	CONSTRAINT PK_VISIT PRIMARY KEY (visitRequestTime, visitorNric)
+	--CONSTRAINT PK_VISIT PRIMARY KEY (visitRequestTime, visitorNric)
 );
 
 
@@ -521,9 +521,10 @@ BEGIN 
 	BEGIN
 		-- Have some logic to update visit
 		UPDATE VISIT
-		SET visitRequestTime = @pVisitRequestTime, 
+		SET 
+		--visitRequestTime = @pVisitRequestTime, 
 		patientNric = @pPatientNRIC, 
-		visitorNric = @pVisitorNRIC, 
+		--visitorNric = @pVisitorNRIC, 
 		patientFullName = @pPatientFullName, 
 		purpose = @pPurpose, 
 		reason = @pReason, 
@@ -531,7 +532,7 @@ BEGIN 
 		bedNo = @pBedNo, 
 		QaID = @pQaID, 
 		confirm = 1
-		WHERE visitorNric = @pVisitorNRIC
+		WHERE visitorNric = @pVisitorNRIC AND visitRequestTime = @pVisitRequestTime
 	END
 
 	ELSE
@@ -552,12 +553,12 @@ BEGIN 
 	DECLARE @pVisit_Details VARCHAR(MAX)
 	DECLARE @pLatestTimestamp DATETIME
 
-	IF EXISTS (SELECT visitorNric FROM dbo.VISIT WHERE visitorNric = @pNric)  
+	IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
 	BEGIN
 		SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
-                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
-                 WHERE visitRequestTime <= SYSDATETIME() 
-                 OR CONVERT(VARCHAR(20), visitRequestTime, 105) = CONVERT(VARCHAR(20), SYSDATETIME(), 105)))
+								 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
+								 WHERE visitRequestTime <= SYSDATETIME() 
+								 OR CONVERT(VARCHAR(20), visitRequestTime, 105) = CONVERT(VARCHAR(20), SYSDATETIME(), 105)))
 
 		SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
 										patientNric + ',' + visitorNric + ',' + patientFullName + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
