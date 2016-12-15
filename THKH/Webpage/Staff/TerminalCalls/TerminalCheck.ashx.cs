@@ -153,7 +153,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[ACTIVATE_TERMINAL]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[DEACTIVATE_TERMINAL]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pTerminal_Id", locationId);
                 command.Parameters.Add(respon);
@@ -197,12 +197,15 @@ namespace THKH.Webpage.Staff.TerminalCalls
            // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_MOVEMENT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pLocationId", locationId);
                 command.Parameters.AddWithValue("@pNRIC", locationId);
+                command.Parameters.Add(respon);
                 cnn.Open();
 
                 command.ExecuteNonQuery();
@@ -217,6 +220,9 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
 
             }
+
+            success = respon.Value.ToString().Equals("1") ? true : false;
+
             return success;
         }
 

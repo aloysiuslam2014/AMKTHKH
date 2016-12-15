@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TerminalCheckIn.aspx.cs" Inherits="THKH.Webpage.Staff.TerminalCheckIn" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TerminalCheckIn.aspx.cs"   Inherits="THKH.Webpage.Staff.TerminalCheckIn" %>
 
 <!DOCTYPE html>
 
@@ -13,7 +13,7 @@
 
 </head>
 <body>
-
+    <form role="form" runat="server" class="center-block" id="checkInForm"  style="width: 80%;">
       <!-- Modal Login-->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -26,19 +26,17 @@
            
         </div>
         <div class="modal-body" style="padding:40px 50px; text-align:center;">
-          <form role="form">
+         
             <div class="form-group">
               <label for="usrname"><span class="glyphicon glyphicon-user"></span>Verify Staff</label>
               <input type="text"  class="form-control text-center" id="usrname" placeholder="Enter User Login to select a terminal"/>
             </div>
            
               <button type="button" class="btn btn-success btn-block" onclick="verifyUser();"><span class="glyphicon glyphicon-off"></span> Verify</button>
-          </form>
+          
         </div>
         <div class="modal-footer" style=" text-align:center !important;">
-          <button type="submit" class="btn btn-danger btn-default "  onclick="returnToLogin();"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-           
-        </div>
+ <button type="submit" runat="server" class="btn btn-danger btn-default "  onServerClick="returnToLogin"><span class="glyphicon glyphicon-remove"></span> Cancel</button>        </div>
       </div>
       
     </div>
@@ -52,12 +50,12 @@
       <div class="modal-content">
        
         <div class="modal-body" style="padding:40px 50px; text-align:center;">
-          <form role="form">
+         
               <label for="usrname" id="errorMsg">Your Verification has failed. Please check your username and try again.</label>
-          </form>
+ 
         </div>
         <div class="modal-footer" style=" text-align:center !important;">
-          <button type="submit" class="btn btn-danger btn-default " data-dismiss="modal"  ><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+          <button type="submit" class="btn btn-danger btn-default " data-dismiss="modal"  ><span class="glyphicon glyphicon-remove"></span>Dismiss</button>
            
         </div>
       </div>
@@ -65,8 +63,8 @@
     </div>
   </div>
 
-    <div id="test" style="width:100%;height:100%;" class="center-block text-center">
-        <form role="form" class="center-block" id="checkInForm"  style="width: 80%;">
+  <div id="test" style="width:100%;height:100%;" class="center-block text-center">
+        
             <div>
                 <ul class="nav navbar-nav " style="display: none;" id="navigatePage">
                     <li>
@@ -88,7 +86,7 @@
                                     <div class="form-group">
                                         <div id="terminalsAvail" runat="server" class="form-control userDetails"></div>
                                     </div>
-                                    <button type="submit" class="btn btn-danger btn-default " onclick="returnToLogin();"><span class="glyphicon glyphicon-remove"></span>Return To Login</button>
+                                   <button type="submit" class="btn btn-danger btn-default " runat="server"  onserverclick="returnToLogin"><span class="glyphicon glyphicon-remove"></span>Return To Login</button>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +114,9 @@
                
 
             </script>
-        </form>
+        
     </div>
+
+        </form>
 </body>
 </html>
