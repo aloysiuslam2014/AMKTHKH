@@ -13,6 +13,15 @@ namespace THKH.Webpage.Staff {
     public partial class TerminalCheckIn {
         
         /// <summary>
+        /// checkInForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm checkInForm;
+        
+        /// <summary>
         /// newusercontent control.
         /// </summary>
         /// <remarks>

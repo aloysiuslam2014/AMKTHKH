@@ -86,26 +86,49 @@ function verifyUser() {
 
 function updateCheckIn() {
 
-
-    var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value };
-    $.ajax({
-        url: './TerminalCalls/TerminalCheck.ashx',
-        method: 'post',
-        data: headersToProcess,
-        success: function (returner) {
-            var result = String(returner)
-            if (result == "succes") {
-                userWelcome.innerText = "Welcome! " + userNric.value
-            }
-        },
-        error: function (err) {
-        },
-    });
+    if ($("#userNric").val() == "deactivate") {
+        var headersToProcess = { action: "deactivate", id: termValue.value};
+        $.ajax({
+            url: './TerminalCalls/TerminalCheck.ashx',
+            method: 'post',
+            data: headersToProcess,
+            success: function (returner) {
+                var result = String(returner)
+                if (result == "succes") {
+                    userWelcome.innerText = "Welcome! " + userNric.value;
+                } else {
+                    userWelcome.innerText = "deactivate";
+                }
+            },
+            error: function (err) {
+            },
+        });
+    } else {
+        var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value };
+        $.ajax({
+            url: './TerminalCalls/TerminalCheck.ashx',
+            method: 'post',
+            data: headersToProcess,
+            success: function (returner) {
+                var result = String(returner)
+                if (result == "succes") {
+                    userWelcome.innerText = "Welcome! " + userNric.value;
+                } else {
+                    userWelcome.innerText = "You have not registered at the counter. Please head to Lobby front desk for assistance.";
+                }
+            },
+            error: function (err) {
+            },
+        });
+    }
+    
 }
 
 function returnToLogin() {
+    
     var goTo = "./Login.aspx";
     document.location.href = goTo;
+    
 }
 
 function launchFail() {

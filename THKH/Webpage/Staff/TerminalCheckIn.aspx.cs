@@ -13,8 +13,9 @@ namespace THKH.Webpage.Staff
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string connectionString = null;
-            int rows = 0;
+
+            
+
             DataTable dataTable = new DataTable();
             SqlConnection cnn;
             //connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
@@ -65,6 +66,11 @@ namespace THKH.Webpage.Staff
                 createDiv.Attributes.Add("style", "height: 47px;");
                 terminalsAvail.Controls.Add(createDiv);
             }
+        }
+
+        protected void returnToLogin(object sender, EventArgs e)
+        {
+            Response.Redirect("./Login.aspx");
         }
     }
 }
