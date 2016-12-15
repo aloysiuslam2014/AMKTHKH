@@ -552,10 +552,12 @@ BEGIN 
 	DECLARE @pVisit_Details VARCHAR(MAX)
 	DECLARE @pLatestTimestamp DATETIME
 
-	IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
+	IF EXISTS (SELECT visitorNric FROM dbo.VISIT WHERE visitorNric = @pNric)  
 	BEGIN
 		SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
-								 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitRequestTime <= SYSDATETIME()))
+                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
+                 WHERE visitRequestTime <= SYSDATETIME() 
+                 OR CONVERT(VARCHAR(20), visitRequestTime, 105) = CONVERT(VARCHAR(20), SYSDATETIME(), 105)))
 
 		SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
 										patientNric + ',' + visitorNric + ',' + patientFullName + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 

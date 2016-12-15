@@ -34,6 +34,12 @@ function callCheck (){
                 $("#altInput").attr('value', arr[8]);
                 $("#homesInput").attr('value', arr[7]);
                 $("#emailsInput").attr('value', arr[9]);
+                $("#visitbookingtime").attr('value', arr[13]);
+                $("#patientNric").attr('value', arr[14]);
+                $("#patientName").attr('value', arr[16]);
+                $("#pInput").attr('value', arr[17]);
+                $("#purposeInput").attr('value', arr[18]);
+                $("#visLoc").attr('value', arr[19]);
             }
         },
         error: function (err) {

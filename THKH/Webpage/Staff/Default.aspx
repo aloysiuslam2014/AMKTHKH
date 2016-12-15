@@ -148,9 +148,9 @@
                                 <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels()">
-                                        <option value="-">-- Select One --</option>
-                                        <option value="patient">Visit Patient</option>
-                                        <option value="other">Other Purpose</option>
+                                        <option value="">-- Select One --</option>
+                                        <option value="Visit Patient">Visit Patient</option>
+                                        <option value="Other Purpose">Other Purpose</option>
                                     </select>
                                 </div>
                                 <div id="patientpurposevisit" class="container-fluid" runat="server">
@@ -176,6 +176,7 @@
                                     <label for="visLoc">Visit Location</label>
                                     <div class="form-group">
                                         <select class="form-control" id="visLoc">
+                                            <option name="none" value="">-- Select One --</option>
                                             <option name="canteen" value="canteen">Canteen</option>
                                         </select>
                                     </div>
@@ -281,10 +282,10 @@
 
         function purposePanels() {
             var purpose = $("#pInput").val();
-            if (purpose === "patient") {
+            if (purpose === "Visit Patient") {
                 $("#patientpurposevisit").css("display", "block");
                 $("#otherpurposevisit").css("display", "none");
-            } else if (purpose === "other") {
+            } else if (purpose === "Other Purpose") {
                 $("#patientpurposevisit").css("display", "none");
                 $("#otherpurposevisit").css("display", "block");
             } else {

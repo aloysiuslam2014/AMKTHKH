@@ -111,7 +111,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
-                successString += "\"}";
+                //successString += "\"}";
             }
             catch (Exception ex)
             {
@@ -122,19 +122,21 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
+            successString += "," + getVisitDetails(nric);
+            successString += "\"}";
             return successString;
         }
 
         private String getVisitDetails(String nric)
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            String successString = "";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@returnValue", System.Data.SqlDbType.Int);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_VISIT_DETAILS] ", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[GET_VISIT_DETAILS]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", nric);
                 command.Parameters.Add(respon);
@@ -142,12 +144,13 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
-                successString += "\"}";
+                //successString += "\"}";
             }
             catch (Exception ex)
             {
                 successString += ex.Message;
-                successString += "\"}";
+                //successString += "\"}";
+                return successString;
             }
             finally
             {
