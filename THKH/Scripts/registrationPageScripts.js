@@ -60,6 +60,10 @@ function checkTemp() { // Rewrite to actively check
     } 
 }
 
+function validatePatient() {
+    // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
+}
+
 function NewAssistReg() {
     var username = user;//from the default page the user is declared there
     var fname = $("#namesInput").val();

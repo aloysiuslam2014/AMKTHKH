@@ -53,6 +53,10 @@
     });
 }
 
+function validatePatient() {
+    // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
+}
+
 function checkIfExistingVisitor() {
     var snric = $("#selfRegNric").val();
     if (snric === "") {
