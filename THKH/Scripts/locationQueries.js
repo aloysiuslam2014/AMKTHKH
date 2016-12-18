@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿/// <reference path="C:\Users\iamth\Source\Repos\AMKTHKH\THKH\Webpage/Staff/Login.aspx" />
+/// <reference path="C:\Users\iamth\Source\Repos\AMKTHKH\THKH\Webpage/Staff/Login.aspx" />
+$(document).ready(function () {
     $('#navigatePage a:first').tab('show');
   
    
@@ -94,11 +96,8 @@ function updateCheckIn() {
             data: headersToProcess,
             success: function (returner) {
                 var result = String(returner)
-                if (result == "succes") {
-                    userWelcome.innerText = "Welcome! " + userNric.value;
-                } else {
-                    userWelcome.innerText = "deactivate";
-                }
+                window.location = "./Login.aspx";
+                return;
             },
             error: function (err) {
             },
