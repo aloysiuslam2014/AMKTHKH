@@ -193,15 +193,6 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlInputText purposeInput;
         
         /// <summary>
-        /// remarksinput control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText remarksinput;
-        
-        /// <summary>
         /// submitNewEntry control.
         /// </summary>
         /// <remarks>
