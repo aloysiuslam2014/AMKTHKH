@@ -44,7 +44,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#TerminalManagement" data-toggle="tab">Registration
+                        <a href="#TerminalManagement" data-toggle="tab">Terminals Management
                         </a>
                     </li>
                     <li>
@@ -52,7 +52,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#PassManagement" data-toggle="tab">Registration
+                        <a href="#PassManagement" data-toggle="tab">Pass Management
                         </a>
                     </li>
                 </ul>
