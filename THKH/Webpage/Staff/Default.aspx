@@ -14,6 +14,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/bootstrap-datetimepicker.js") %>"></script>
 
     <link href="~/CSS/default.css" rel="stylesheet" />
+    <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
 
 
 
@@ -73,7 +74,7 @@
     </nav>
 
     <div id="main" class="container containerMain">
-        <div class="tab-content tab-content-main maxHeight" id="generalContent">
+        <div class="tab-content tab-content-main maxHeight" style="border:0;" id="generalContent">
             <!-- Registration -->
             <div class="tab-pane maxHeight" id="registration">
            
@@ -236,8 +237,31 @@
             <!-- End of FormManagement -->
 
             <!-- TerminalManagement -->
-            <div class="tab-pane maxHeight" id="TerminalManagement">
-                <h1>This is the test page for TERMINALS potato pirates!</h1>
+            <div class="tab-pane maxHeight "   id="TerminalManagement">
+                <div class="row inheritHeight" >
+                    <div class="col-md-6 col-md-offset-3 inheritHeight flexDisplay">
+                    <div class="panel  panel-primary maxWidth" >
+                        <div class="panel-heading" style="font-size:36px;">Terminals</div>
+                        <div class="panel-body maxHeightWithButtonSpaceBelow">
+                            
+                                 
+                                    <!-- Show terminals avail here -->
+                                    <div id="terminals" class="table-bordered maxHeight"  >
+                                      <ul class="list-group checked-list-box">
+                                         
+                                          <li class="list-group-item" data-style="button" data-color="info">Morbi leo risus</li>
+                                          
+                                        </ul>
+                                    </div>
+                                 
+                            
+                        </div>
+                        <div>
+                            <button id="addTerminal" class="btn-primary btn-lg" >Add Terminal</button><button id="deleteTerminal"  class="btn-primary btn-lg">Delete Terminal</button>
+                        </div>
+                    </div>
+                        </div>
+                </div>
                 
                
             </div>

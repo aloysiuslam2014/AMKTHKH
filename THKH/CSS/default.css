@@ -10,6 +10,20 @@ body{
     padding-top: 70px;
 }
 
+.inheritHeight{
+    height:inherit;
+}
+
+.maxWidth{
+    width:100%;
+}
+
+.flexDisplay{
+    display:flex;
+}
+
+.boldBor
+
 #logbtn{
     margin-top: -5px;
 }
@@ -31,7 +45,10 @@ body{
     height:100%;
      margin-bottom:0;
 }
-
+.maxHeightWithButtonSpaceBelow{
+    height:80%;
+     margin-bottom:0;
+}
 .navbar-default{
     margin-bottom:0;
 }
