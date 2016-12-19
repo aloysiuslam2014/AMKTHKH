@@ -125,6 +125,7 @@
     <Content Include="Webpage\SQL Script\THKHDB_19Dec16.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_Script.sql" />
     <Content Include="Webpage\Staff\QuestionaireManagement\loadQuestionaire.js" />
+    <Content Include="Webpage\Staff\TerminalCalls\adminTerminal.js" />
     <Content Include="Webpage\Staff\TerminalCheckIn.aspx" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />

@@ -9,3 +9,8 @@
 .well .list-group {
     margin-bottom: 0px;
 }
+
+.list-group-item-info {
+    color: #31708f !important;
+    background-color: #d9edf7 !important;
+}

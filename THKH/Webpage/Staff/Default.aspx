@@ -244,12 +244,37 @@
                         <div class="panel-heading" style="font-size:36px;">Terminals</div>
                         <div class="panel-body maxHeightWithButtonSpaceBelow">
                             
-                                 
+                                 <div class="modal fade" id="addTerminalModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:0px 50px;  text-align:center;">
+         
+          <h4>Add New Terminal </h4>
+           
+        </div>
+        <div class="modal-body" style="padding:40px 50px; text-align:center;">
+         
+            <div class="form-group">
+              <label for="usrname"><span class="glyphicon glyphicon-modal-window"></span>Verify Staff</label>
+              <input type="text"  class="form-control text-center" id="usrname" placeholder="Enter User Login to select a terminal"/>
+            </div>
+           
+              <button type="button" class="btn btn-success btn-block" onclick="verifyUser();"><span class="glyphicon glyphicon-off"></span> Verify</button>
+          
+        </div>
+        <div class="modal-footer" style=" text-align:center !important;">
+ <button type="submit" runat="server" class="btn btn-danger btn-default ">   <span class="glyphicon glyphicon-remove"></span> Cancel</button>        </div>
+      </div>
+      
+    </div>
+  </div> 
                                     <!-- Show terminals avail here -->
                                     <div id="terminals" class="table-bordered maxHeight"  >
                                       <ul class="list-group checked-list-box">
                                          
-                                          <li class="list-group-item" data-style="button" data-color="info">Morbi leo risus</li>
+                                          <li class="list-group-item" style="text-align:left" data-color="info">Morbi leo risus</li>
                                           
                                         </ul>
                                     </div>
@@ -289,7 +314,8 @@
     </div>
    
 
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/QuestionaireManagement/loadQuestionaire.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/TerminalCalls/adminTerminal.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/QuestionaireManagement/loadQuestionaire.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/registrationPageScripts.js") %>"></script>
 </body>
