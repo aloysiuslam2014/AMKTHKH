@@ -37,7 +37,7 @@ function callCheck (){
                 $("#visitbookingtime").attr('value', arr[13]);
                 $("#patientNric").attr('value', arr[14]);
                 $("#patientName").attr('value', arr[16]);
-                $("#pInput").attr('value', arr[17]);
+                $('#pInput').val(arr[17]); // Purpose of visit "Visit Patient" or "Other Purpose"
                 $("#purposeInput").attr('value', arr[18]);
                 $("#visLoc").attr('value', arr[19]);
             } else {
@@ -120,4 +120,115 @@ function NewAssistReg() {
             alert(err.Msg);
         },
     });
+}
+
+var user = '<%= Session["username"].ToString()%>';
+$('#navigatePage a:first').tab('show');
+$('#regPageNavigation a:first').tab('show');
+w3IncludeHTML();
+
+function purposePanels() {
+    var purpose = $("#pInput").val();
+    if (purpose === "Visit Patient") {
+        $("#patientpurposevisit").css("display", "block");
+        $("#otherpurposevisit").css("display", "none");
+    } else if (purpose === "Other Purpose") {
+        $("#patientpurposevisit").css("display", "none");
+        $("#otherpurposevisit").css("display", "block");
+    } else {
+        $("#patientpurposevisit").css("display", "none");
+        $("#otherpurposevisit").css("display", "none");
+    }
+}
+
+// For field validations
+function checkRequiredFields() {
+    var valid = true;
+    $.each($("#main input.required"), function (index, value) {
+        if (!$(value).val()) {
+            valid = false;
+        }
+    });
+    if (valid) {
+        $('#emptyFields').css("display", "none");
+        NewAssistReg();
+    }
+    else {
+        $('#emptyFields').css("display", "block");
+    }
+}
+
+$("#nric").on("input", function () {
+    var validNric = validateNRIC($("#nric").val());
+    if (validNric !== false) {
+        $("#nricWarning").css("display", "none");
+    } else {
+        $("#nricWarning").css("display", "block");
+    }
+});
+
+// Check if visitor record exists in database
+function checkExistOrNew() {
+    // Call to ASHX page
+    if ($("#nric").val() == "") {
+        $("#emptyNricWarning").css("display", "block");
+    } else {
+        $("#emptyNricWarning").css("display", "none");
+        callCheck();
+        $("#newusercontent").css("display", "block");
+        $("#staticinfocontainer").css("display", "block");
+    }
+}
+
+// Check if user has checked the "I declare the info to be accurate" checkbox
+function declarationValidation() {
+    if ($("#declaration").prop('checked') == true) {
+        $("#declabel").css("display", "none");
+        $("#submitNewEntry").css("display", "block");
+    } else {
+        $("#declabel").css("display", "block");
+        $("#submitNewEntry").css("display", "none");
+    }
+}
+
+// Datetime Picker JQuery
+$(function () {
+    $('#datetimepicker').datetimepicker({
+        // dateFormat: 'dd-mm-yy',
+        defaultDate: new Date(),
+        format: 'DD-MM-YYYY'
+    });
+    $('#visitbookingtimediv').datetimepicker(
+        {
+            // dateFormat: 'dd-mm-yy',
+            defaultDate: new Date(),
+            format: 'HH:mm'
+        });
+    $('#visitbookingdatediv').datetimepicker(
+        {
+            // dateFormat: 'dd-mm-yy',
+            defaultDate: new Date(),
+            format: 'DD-MM-YYYY'
+        });
+});
+
+// For datetimepicker
+function getFormattedDate(date) {
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear().toString().slice(2);
+    return day + '-' + month + '-' + year;
+}
+
+// Hiding of labels upon initial loading of page
+function hideTags() {
+    $("#emptyFields").css("display", "none");
+    $("#nricWarning").css("display", "none");
+    $("#emptyNricWarning").css("display", "none");
+    $('#tempWarning').css("display", "none");
+    $("#patientpurposevisit").css("display", "none");
+    $("#otherpurposevisit").css("display", "none");
+    $("#submitNewEntry").css("display", "none");
+    $("#newusercontent").css("display", "none");
+    $("#staticinfocontainer").css("display", "none");
 }
