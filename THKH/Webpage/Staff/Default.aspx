@@ -291,6 +291,6 @@
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/QuestionaireManagement/loadQuestionaire.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/registrationPageScripts.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/registrationPageScripts.js") %>"></script>
 </body>
 </html>

@@ -1,4 +1,7 @@
-﻿function NewSelfReg() {
+﻿/// <reference path="selfRegistrationScript.js" />
+/// <reference path="selfRegistrationScript.js" />
+//
+function NewSelfReg() {
     var fname = $("#namesInput").val();
     var snric = $("#nricsInput").val();
     var address = $("#addresssInput").val();
@@ -53,10 +56,42 @@
     });
 }
 
+//
 function validatePatient() {
     // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
+    var pName = $("#patientName").val();
+    var bedno = $("#bedno").val();
+    if (pName !== "" && bedno !== "") {
+        var headersToProcess = {
+            pName: pName, bedno: bedno, requestType: "patient"
+        };
+        $.ajax({
+            url: '../Staff/CheckInOut/checkIn.ashx', // Change Path
+            method: 'post',
+            data: headersToProcess,
+
+
+            success: function (returner) {
+                var resultOfGeneration = JSON.parse(returner);
+                if (resultOfGeneration.Result === "Success") {
+                    alert("Patient Found! Please fill up the rest of the form.");
+                    // If (patient is valid){}
+                    showNewContent();
+                    // Else {}
+                    // showExistContent();
+                } else {
+                    alert("Error: " + resultOfGeneration.Msg);
+                }
+            },
+            error: function (err) {
+            },
+        });
+    } else {
+        // Display warning
+    }
 }
 
+//
 function checkIfExistingVisitor() {
     var snric = $("#selfRegNric").val();
     if (snric === "") {
@@ -67,7 +102,7 @@ function checkIfExistingVisitor() {
             nric: snric, requestType: "getdetails"
         };
         $.ajax({
-            url: '../Staff/CheckInOut/checkIn.ashx', // Change path
+            url: '../Staff/CheckInOut/checkIn.ashx',
             method: 'post',
             data: headersToProcess,
 
@@ -76,7 +111,7 @@ function checkIfExistingVisitor() {
                 resultOfGeneration = JSON.parse(returner);
                 var res = resultOfGeneration.Msg;
                 if (resultOfGeneration.Msg.includes("0")) {
-                    showNewContent(snric);
+                    showVisitDetails();
                 }
                 else {
                     showExistContent(snric);
@@ -87,26 +122,30 @@ function checkIfExistingVisitor() {
                 alert(err.Msg);
             },
         });
-        
-        
     }
 }
 
 $(window).load(function () {
-    //if (sessionStorage["PopupShown"] != 'yes') {
+    $('#myModal').modal({ backdrop: 'static', keyboard: false });
     $('#myModal').modal('show');
-    // sessionStorage["PopupShown"] = 'yes';
-    //}
 });
 
 $("#selfregistration").submit(function (e) {
     e.preventDefault();
 });
 
+//
+function showVisitDetails() {
+    $('#visitDetailsDiv').css("display", "block");
+    hideModal();
+}
+
+//
 function showNricWarning() {
     emptyNricWarning$('#emptyNricWarning').css("display", "block");
 }
 
+//
 function checkRequiredFields() {
     var valid = true;
     $.each($("#selfregistration input.required"), function (index, value) {
@@ -123,23 +162,25 @@ function checkRequiredFields() {
     }
 }
 
+//
 function showModal() {
     $('#myModal').modal('show');
 }
 
+//
 function hideModal() {
     $('#myModal').modal('hide');
 }
 
-function showNewContent(nricValue) {
-    //$("#nricsInput").val(nricValue);
+//
+function showNewContent() {
     $('#newusercontent').css("display", "block");
     $('#staticinfocontainer').css("display", "block");
     hideModal();
 }
 
 // Show only the Visit Purpose & Questionnaire
-function showExistContent(nricValue) {
+function showExistContent() {
     $('#changeddetailsdeclaration').css("display", "block");
     $('#staticinfocontainer').css("display", "block");
     hideModal();
@@ -191,12 +232,17 @@ function purposePanels() {
     if (purpose === "Visit Patient") {
         $("#patientpurposevisit").css("display", "block");
         $("#otherpurposevisit").css("display", "none");
+        $('#newusercontent').css("display", "none");
+        $('#staticinfocontainer').css("display", "none");
     } else if (purpose === "Other Purpose") {
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "block");
+        showNewContent(); // Need logic to display Existing Visitor Content or New Visitor Content
     } else {
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "none");
+        $('#newusercontent').css("display", "none");
+        $('#staticinfocontainer').css("display", "none");
     }
 }
 
@@ -207,8 +253,8 @@ function amendVisitorDetails() {
 }
 
 function hideTags() {
-    //$('#existingusercontent').css("display", "none");
     $('#emptyNricWarning').css("display", "none");
+    $('#visitDetailsDiv').css("display", "none");
     $('#staticinfocontainer').css("display", "none");
     $('#changeddetailsdeclaration').css("display", "none");
     $('#newusercontent').css("display", "none");

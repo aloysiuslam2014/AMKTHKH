@@ -22,7 +22,7 @@ function callCheck (){
                 // Populate fields if visitor exists by spliting string into array of values & populating
                 var string = resultOfGeneration.Msg;
                 var arr = string.split(",");
-                if (arr.length > 15) {
+                if (arr.length > 5) {
                     var dateString = arr[4].replace(/-/g, "/").toString() + " 0:01 AM";
                     // Populate fields if data exists
                     $("#nric").attr('value', arr[0]);
@@ -73,6 +73,41 @@ function callCheck (){
     dataFound = true;
 }
 
+//
+function validatePatient() {
+    // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
+    var pName = $("#patientName").val();
+    var bedno = $("#bedno").val();
+    var headersToProcess = {
+        pName: pName, bedno: bedno, requestType: "patient"
+    };
+    $.ajax({
+        url: './CheckInOut/checkIn.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Result === "Success") {
+                var string = resultOfGeneration.Msg;
+                var arr = string.split(",");
+                if (arr.length > 2) {
+                    $("#patientNric").attr('value', arr[0]);
+                    $("#patientName").attr('value', arr[1]);
+                    $("#bedno").attr('value', arr[2]);
+                }else {
+                    alert("Patient Not Found!");
+                }
+            } else {
+                alert("Error: " + resultOfGeneration.Msg);
+            }
+        },
+        error: function (err) {
+        },
+    });
+}
+
 function checkTemp() { // Rewrite to actively check
     var temper = temp.value;
     if (parseFloat(temper) > 37.6) { //Check if temperature exists & meets criteria
@@ -80,10 +115,6 @@ function checkTemp() { // Rewrite to actively check
     } else {
         $('#tempWarning').css("display", "none");
     } 
-}
-
-function validatePatient() {
-    // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
 }
 
 function NewAssistReg() {

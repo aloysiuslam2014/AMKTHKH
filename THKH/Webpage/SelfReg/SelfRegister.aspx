@@ -62,6 +62,10 @@
 .scrollToTop:hover{
 	text-decoration:none;
 }
+
+.purposeBorder {
+    outline: 1px solid black;
+}
     </style>
 </head>
 <body onload="hideTags()">
@@ -97,6 +101,63 @@
                 </div>
                 <div class="col-md-6 col-md-offset-3">
                     <h4 id="emptyFields" style="color:red">Please fill in all the required fields (*).</h4>
+                    <div class="row" id="visitDetailsDiv">
+                        <div class="jumbotron">
+                        <h3>Visit Details</h3>
+                                <label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
+                                <div class="form-group">
+                                    <select class="form-control" id="pInput" onchange="purposePanels(); false;">
+                                        <option value="">-- Select One --</option>
+                                        <option value="Visit Patient">Visit Patient</option>
+                                        <option value ="Other Purpose">Other Purpose</option>
+                                        </select>
+                                    </div>
+                                <div id="patientpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Visit Patient"--%>
+                                    <label for="patientName">Patient Name</label> <%--AJAX Call to search for Patient Name--%>
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="patientName" />
+                                    </div>
+                                    <label for="patientNric">Patient NRIC</label>
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="patientNric" />
+                                    </div>
+                                    <label for="bedno">Bed Number:</label> <%--Bed Number--%>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control" id="bedno" />
+                                </div>
+                                <input type="button" id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;" />
+                                </div>
+                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
+                                    <label for="visLoc">Visit Location</label> 
+                                    <div class="form-group">
+                                    <select class="form-control" id="visLoc">
+                                        <option name="none" value="">-- Select One --</option>
+                                        <option name="canteen" value="canteen">Canteen</option>
+                                        </select>
+                                    </div>
+                                    <label for="purposeInput">Purpose of Visit</label> 
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
+                                    </div>
+                                </div>
+                                <label for="visitbookingdate">Visit Date</label><label for="visitbookingdate" id="comp21" style="color: red">*</label>
+                                <%--Visit Time--%>
+                                    <div class="input-group date" id="visitbookingdatediv">
+                                    <input type='text' id="visitbookingdate" class="form-control required" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                                <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
+                                <%--Visit Time--%>
+                                    <div class="input-group date" id="visitbookingtimediv">
+                                    <input type='text' id="visitbookingtime" class="form-control required" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                </div>
+                    </div>
+                        </div>
                     <div class="row">
                         <div id="newusercontent" runat="server">
                             <div class="jumbotron" style="text-align:left">
@@ -163,59 +224,7 @@
                                     <input type="checkbox" id="changed" onchange="amendVisitorDetails(); false;" name="yesopt" value="Yes" />Yes</label>
                                 </div></div>
                                     </div>
-                            <h3>Visit Details</h3>
-                                <label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
-                                <div class="form-group">
-                                    <select class="form-control" id="pInput" onchange="purposePanels(); false;">
-                                        <option value="">-- Select One --</option>
-                                        <option value="Visit Patient">Visit Patient</option>
-                                        <option value ="Other Purpose">Other Purpose</option>
-                                        </select>
-                                    </div>
-                                <div id="patientpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Visit Patient"--%>
-                                    <label for="patientName">Patient Name</label> <%--AJAX Call to search for Patient Name--%>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="patientName" />
-                                    </div>
-                                    <label for="patientNric">Patient NRIC</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="patientNric" />
-                                    </div>
-                                    <label for="bedno">Bed Number:</label> <%--Bed Number--%>
-                                <div class="form-group">
-                                    <input type="text" runat="server" class="form-control" id="bedno" />
-                                </div>
-                                <input type="button" id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;" />
-                                </div>
-                                <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
-                                    <label for="visLoc">Visit Location</label> 
-                                    <div class="form-group">
-                                    <select class="form-control" id="visLoc">
-                                        <option name="none" value="">-- Select One --</option>
-                                        <option name="canteen" value="canteen">Canteen</option>
-                                        </select>
-                                    </div>
-                                    <label for="purposeInput">Purpose of Visit</label> 
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
-                                    </div>
-                                </div>
-                                <label for="visitbookingdate">Visit Date</label><label for="visitbookingdate" id="comp21" style="color: red">*</label>
-                                <%--Visit Time--%>
-                                    <div class="input-group date" id="visitbookingdatediv">
-                                    <input type='text' id="visitbookingdate" class="form-control required" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                                <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
-                                <%--Visit Time--%>
-                                    <div class="input-group date" id="visitbookingtimediv">
-                                    <input type='text' id="visitbookingtime" class="form-control required" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-time"></span>
-                                    </span>
-                                </div>
+                            
                                 <h3>Health Screening Questionnaire</h3>
                                 <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
                                 <div class="form-group">
@@ -268,7 +277,7 @@
                 </div>
     </form>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/selfRegistrationScript.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/SelfReg/selfRegistrationScript.js") %>"></script>
     <input type="hidden" id="isNew" value="true" />
 </body>
 </html>
