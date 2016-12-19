@@ -122,6 +122,7 @@
     <Content Include="Webpage\SQL Script\THKHDB_14Dec16.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_15Dec16.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_Script.sql" />
+    <Content Include="Webpage\Staff\QuestionaireManagement\loadQuestionaire.js" />
     <Content Include="Webpage\Staff\TerminalCheckIn.aspx" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
@@ -220,6 +221,7 @@
     </None>
     <Content Include="Webpage\Staff\CheckInOut\checkIn.ashx" />
     <Content Include="Webpage\Staff\TerminalCalls\TerminalCheck.ashx" />
+    <Content Include="Webpage\Staff\QuestionaireManagement\questionaireManagement.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -250,6 +252,9 @@
     <Compile Include="Webpage\Staff\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Webpage\Staff\QuestionaireManagement\questionaireManagement.ashx.cs">
+      <DependentUpon>questionaireManagement.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Webpage\Staff\TerminalCheckIn.aspx.cs">
       <DependentUpon>TerminalCheckIn.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -263,7 +268,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Webpage\Staff\ContactTracing\" />
-    <Folder Include="Webpage\Staff\QuestionaireManagement\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

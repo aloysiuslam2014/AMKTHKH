@@ -210,43 +210,8 @@
                                     </span>
                                 </div>
                                 <h3>Health Screening Questionnaire</h3>
-                                <label for="fevdiv">Do you have a Fever?</label>
-                                <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
-                                <div class="form-group">
-                                    <div class="checkbox" id="fevdiv">
-                                        <label for="yesopt">
-                                            <input type="checkbox" id="fever" name="yesopt" value="Yes" />Yes</label>
-                                    </div>
-                                </div>
-                                <label for="symptomInput">I possess the following symptom(s)</label>
-                                <%--Patient Symptom declaration--%>
-                                <div class="form-group">
-                                    <div id="symptomInput" class="checkbox">
-                                        <label for="one">
-                                            <input type="checkbox" id="pimple" value="Pimple" />Pimple</label>
-                                        <label for="two">
-                                            <input type="checkbox" id="hairloss" value="Hair Loss" />Hair Loss</label>
-                                    </div>
-                                </div>
-                                <label for="symdiv">Do you have any close contact with person or persons returning from INFLUENZA [FLU] INFECTED countries?</label>
-                                <div id="symdiv" class="checkbox">
-                                    <label for="one">
-                                        <input type="checkbox" id="flu" value="Yes" />Yes</label>
-                                </div>
-                                <label for="visitInput">Countries Travelled For The Past 2 Weeks </label>
-                                <div class="form-group">
-                                    <div id="checkboxes" class="checkbox">
-                                        <label for="one">
-                                            <input type="checkbox" id="sg" value="Singapore" />Singapore</label>
-                                        <label for="two">
-                                            <input type="checkbox" id="mi" value="Malaysia" />Malaysia</label>
-                                        <label for="three">
-                                            <input type="checkbox" id="cn" value="China" />China</label>
-                                    </div>
-                                </div>
-                                <label for="remarksinput">Remarks:</label>
-                                <div class="form-group">
-                                    <input type="text" runat="server" class="form-control" id="remarksinput" />
+                                <div id="questionaireForm">
+                                    <!-- load questionaires here -->
                                 </div>
                                 <div class="checkbox">
                                     <label for="declaration"></label>
@@ -298,8 +263,9 @@
            
         </div>
     </div>
+   
 
-
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/QuestionaireManagement/loadQuestionaire.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/registrationPageScripts.js") %>"></script>
 </body>
