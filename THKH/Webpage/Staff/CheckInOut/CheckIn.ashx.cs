@@ -56,7 +56,12 @@ namespace THKH.Webpage.Staff.CheckInOut
                 successString = selfReg(nric, age, fname, address, postal, mobtel, alttel, hometel,
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
             fever, symptoms, influenza, countriesTravelled, remarks, visitLocation);
-            }
+        }
+        if (typeOfRequest == "patient") {
+                var pName = context.Request.Form["pName"];
+                var bedno = context.Request.Form["bedno"];
+                successString = checkPatient(pName, bedno);
+        }
         if (typeOfRequest == "confirmation") {
                 // Write to Visitor_Profile, Visit, Confirmed & CheckInCheckOut Tables
                 var staffUser = context.Request.Form["staffUser"].ToString();
@@ -91,6 +96,39 @@ namespace THKH.Webpage.Staff.CheckInOut
             fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature);
             }
             context.Response.Write(successString);// String to return to front-end
+        }
+
+        // Check if patient exists in the Patient Database
+        private String checkPatient(String pName, String bedno) {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, -1);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[CONFIRM_PATIENT]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pBedNo", bedno);
+                command.Parameters.AddWithValue("@pPatientFullName", pName);
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                command.ExecuteNonQuery();
+                successString += respon.Value;
+                //successString += "\"}";
+            }
+            catch (Exception ex)
+            {
+                successString += ex.Message;
+                successString += "\"}";
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "\"}";
+            return successString;
         }
 
         private String getVisitorDetails(String nric) {

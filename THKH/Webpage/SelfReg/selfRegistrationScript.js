@@ -59,10 +59,36 @@ function NewSelfReg() {
 //
 function validatePatient() {
     // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
-    // If (patient is valid){}
-    showNewContent();
-    // Else {}
-    // showExistContent();
+    var pName = $("#patientName").val();
+    var bedno = $("#bedno").val();
+    if (pName !== "" && bedno !== "") {
+        var headersToProcess = {
+            pName: pName, bedno: bedno, requestType: "patient"
+        };
+        $.ajax({
+            url: '../Staff/CheckInOut/checkIn.ashx', // Change Path
+            method: 'post',
+            data: headersToProcess,
+
+
+            success: function (returner) {
+                var resultOfGeneration = JSON.parse(returner);
+                if (resultOfGeneration.Result === "Success") {
+                    alert("Patient Found! Please fill up the rest of the form.");
+                    // If (patient is valid){}
+                    showNewContent();
+                    // Else {}
+                    // showExistContent();
+                } else {
+                    alert("Error: " + resultOfGeneration.Msg);
+                }
+            },
+            error: function (err) {
+            },
+        });
+    } else {
+        // Display warning
+    }
 }
 
 //
@@ -83,14 +109,13 @@ function checkIfExistingVisitor() {
 
             success: function (returner) {
                 resultOfGeneration = JSON.parse(returner);
-                //var res = resultOfGeneration.Msg;
-                //if (resultOfGeneration.Msg.includes("0")) {
+                var res = resultOfGeneration.Msg;
+                if (resultOfGeneration.Msg.includes("0")) {
                     showVisitDetails();
-                //    // showNewContent(snric);
-                //}
-                //else {
-                //    // showExistContent(snric);
-                //}
+                }
+                else {
+                    showExistContent(snric);
+                }
                 $('#nricsInput').attr('value', snric);
             },
             error: function (err) {
