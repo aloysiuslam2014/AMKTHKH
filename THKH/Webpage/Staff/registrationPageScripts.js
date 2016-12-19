@@ -22,7 +22,7 @@ function callCheck (){
                 // Populate fields if visitor exists by spliting string into array of values & populating
                 var string = resultOfGeneration.Msg;
                 var arr = string.split(",");
-                if (arr.length > 15) {
+                if (arr.length > 5) {
                     var dateString = arr[4].replace(/-/g, "/").toString() + " 0:01 AM";
                     // Populate fields if data exists
                     $("#nric").attr('value', arr[0]);
