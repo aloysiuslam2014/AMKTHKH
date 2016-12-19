@@ -123,7 +123,6 @@
     <Content Include="Webpage\SQL Script\THKHDB_15Dec16.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_19Dec16.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_Script.sql" />
-    <Content Include="Webpage\Staff\RegistrationHtml\registrationPart.html" />
     <Content Include="Webpage\Staff\TerminalCheckIn.aspx" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
@@ -264,8 +263,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Webpage\Staff\UpdateAccount\" />
-    <Folder Include="Webpage\Staff\UpdateQuestionaires\" />
+    <Folder Include="Webpage\Staff\ContactTracing\" />
+    <Folder Include="Webpage\Staff\QuestionaireManagement\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

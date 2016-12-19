@@ -44,7 +44,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#userManagement" data-toggle="tab">User Management
+                        <a href="#TerminalManagement" data-toggle="tab">Terminals Management
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#UserManagement" data-toggle="tab">User Management
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#PassManagement" data-toggle="tab">Pass Management
                         </a>
                     </li>
                 </ul>
@@ -256,26 +264,38 @@
             
             <!-- FormManagement -->
             <div class="tab-pane maxHeight" id="formManagement">
-                <h1>This is the test page potato pirates!</h1>
-                <!--<div w3-include-html="./RegistrationHTML/registrationPart.html"></div> -->
+                <h1>This is the test page for FORMS potato pirates!</h1>
+                
                
             </div>
             <!-- End of FormManagement -->
 
-            <!-- FacilitiesManagement -->
-
-            <!-- End of FacilitiesManagement -->
-
-            <!-- PassManagement -->
-
-            <!-- End of PassManagement -->
+            <!-- TerminalManagement -->
+            <div class="tab-pane maxHeight" id="TerminalManagement">
+                <h1>This is the test page for TERMINALS potato pirates!</h1>
+                
+               
+            </div>
+            <!-- End of TerminalManagement -->
 
             <!-- UserManagement -->
-
+             <div class="tab-pane maxHeight" id="UserManagement">
+                <h1>This is the test page FOR USERS potato pirates!</h1>
+                
+               
+            </div>
             <!-- End of UserManagement -->
-             <div class="tab-pane maxHeight" id="formManagement">
 
-             </div>
+            <!-- PassManagement -->
+            <div class="tab-pane maxHeight" id="PassManagement">
+                <h1>This is the test page potato pirates!</h1>
+                
+               
+            </div>
+            <!-- End of PassManagement -->
+
+            
+           
         </div>
     </div>
 
