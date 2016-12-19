@@ -133,11 +133,11 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="postalsInput" />
                                     </div>
-                                    <label for="sexinput">Gender:</label><label for="existnric" id="comp5" style="color:red">*</label>
+                                    <label for="sexinput">Gender:</label><label for="existnric" id="comp19" style="color:red">*</label>
                                     <div class="form-group">
                                         <select class="form-control" id="sexinput">
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
                                         </select>
                                     </div>
                                     <label for="nationalinput">Nationality</label><label for="existnric" id="comp6" style="color:red">*</label>
