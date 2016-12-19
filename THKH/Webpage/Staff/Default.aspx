@@ -155,7 +155,7 @@
                                 <label for="pInput">Visit Purpose</label>
                                 <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
-                                    <select class="form-control" id="pInput" onchange="purposePanels()">
+                                    <select class="form-control" id="pInput" onchange="purposePanels()" name="pInput">
                                         <option value="">-- Select One --</option>
                                         <option value="Visit Patient">Visit Patient</option>
                                         <option value="Other Purpose">Other Purpose</option>
@@ -301,115 +301,6 @@
 
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
-    <script type="text/javascript">
-
-        var user= '<%= Session["username"].ToString()%>';
-        $('#navigatePage a:first').tab('show');
-        $('#regPageNavigation a:first').tab('show');
-        w3IncludeHTML();
-
-        function purposePanels() {
-            var purpose = $("#pInput").val();
-            if (purpose === "Visit Patient") {
-                $("#patientpurposevisit").css("display", "block");
-                $("#otherpurposevisit").css("display", "none");
-            } else if (purpose === "Other Purpose") {
-                $("#patientpurposevisit").css("display", "none");
-                $("#otherpurposevisit").css("display", "block");
-            } else {
-                $("#patientpurposevisit").css("display", "none");
-                $("#otherpurposevisit").css("display", "none");
-            }
-        }
-
-        function checkRequiredFields() {
-            var valid = true;
-            $.each($("#main input.required"), function (index, value) {
-                if (!$(value).val()) {
-                    valid = false;
-                }
-            });
-            if (valid) {
-                $('#emptyFields').css("display", "none");
-                NewAssistReg();
-            }
-            else {
-                $('#emptyFields').css("display", "block");
-            }
-        }
-
-        $("#nric").on("input", function () {
-            var validNric = validateNRIC($("#nric").val());
-            if (validNric !== false) {
-                $("#nricWarning").css("display", "none");
-            } else {
-                $("#nricWarning").css("display", "block");
-            }
-        });
-
-        function checkExistOrNew() {
-            // Call to ASHX page
-            if ($("#nric").val() == "") {
-                $("#emptyNricWarning").css("display", "block");
-            } else {
-                $("#emptyNricWarning").css("display", "none");
-                callCheck();
-                $("#newusercontent").css("display", "block");
-                $("#staticinfocontainer").css("display", "block");
-            }
-        }
-
-        function declarationValidation() {
-            if ($("#declaration").prop('checked') == true) {
-                $("#declabel").css("display", "none");
-                $("#submitNewEntry").css("display", "block");
-            } else {
-                $("#declabel").css("display", "block");
-                $("#submitNewEntry").css("display", "none");
-            }
-        }
-
-        // Datetime Picker JQuery
-        $(function () {
-            $('#datetimepicker').datetimepicker({
-                // dateFormat: 'dd-mm-yy',
-                defaultDate: new Date(),
-                format: 'DD-MM-YYYY'
-            });
-            $('#visitbookingtimediv').datetimepicker(
-                {
-                    // dateFormat: 'dd-mm-yy',
-                    defaultDate: new Date(),
-                    format: 'HH:mm'
-                });
-            $('#visitbookingdatediv').datetimepicker(
-                {
-                    // dateFormat: 'dd-mm-yy',
-                    defaultDate: new Date(),
-                    format: 'DD-MM-YYYY'
-                });
-        });
-
-        function getFormattedDate(date) {
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear().toString().slice(2);
-            return day + '-' + month + '-' + year;
-        }
-
-        function hideTags() {
-            $("#emptyFields").css("display", "none");
-            $("#nricWarning").css("display", "none");
-            $("#emptyNricWarning").css("display", "none");
-            $('#tempWarning').css("display", "none");
-            $("#patientpurposevisit").css("display", "none");
-            $("#otherpurposevisit").css("display", "none");
-            $("#submitNewEntry").css("display", "none");
-            $("#newusercontent").css("display", "none");
-            $("#staticinfocontainer").css("display", "none");
-        }
-    </script>
-
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/registrationPageScripts.js") %>"></script>
 </body>
 </html>

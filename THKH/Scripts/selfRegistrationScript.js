@@ -91,3 +91,132 @@ function checkIfExistingVisitor() {
         
     }
 }
+
+$(window).load(function () {
+    //if (sessionStorage["PopupShown"] != 'yes') {
+    $('#myModal').modal('show');
+    // sessionStorage["PopupShown"] = 'yes';
+    //}
+});
+
+$("#selfregistration").submit(function (e) {
+    e.preventDefault();
+});
+
+function showNricWarning() {
+    emptyNricWarning$('#emptyNricWarning').css("display", "block");
+}
+
+function checkRequiredFields() {
+    var valid = true;
+    $.each($("#selfregistration input.required"), function (index, value) {
+        if (!$(value).val()) {
+            valid = false;
+        }
+    });
+    if (valid) {
+        $('#emptyFields').css("display", "none");
+        NewSelfReg();
+    }
+    else {
+        $('#emptyFields').css("display", "block");
+    }
+}
+
+function showModal() {
+    $('#myModal').modal('show');
+}
+
+function hideModal() {
+    $('#myModal').modal('hide');
+}
+
+function showNewContent(nricValue) {
+    //$("#nricsInput").val(nricValue);
+    $('#newusercontent').css("display", "block");
+    $('#staticinfocontainer').css("display", "block");
+    hideModal();
+}
+
+// Show only the Visit Purpose & Questionnaire
+function showExistContent(nricValue) {
+    $('#changeddetailsdeclaration').css("display", "block");
+    $('#staticinfocontainer').css("display", "block");
+    hideModal();
+}
+
+// Display Submit Button according to whether the user has checked the declaration checkbox
+function declarationValidation() {
+    if ($("#declaration").prop('checked') == true) {
+        $("#declabel").css("display", "none");
+        $("#submitNewEntry").css("display", "block");
+    } else {
+        $("#declabel").css("display", "block");
+        $("#submitNewEntry").css("display", "none");
+    }
+}
+
+// Datetime Picker JQuery
+$(function () {
+    $('#datetimepicker').datetimepicker({
+        // dateFormat: 'dd-mm-yy',
+        defaultDate: new Date(),
+        format: 'DD-MM-YYYY'
+    });
+    $('#visitbookingtimediv').datetimepicker(
+        {
+            // dateFormat: 'dd-mm-yy',
+            defaultDate: new Date(),
+            format: 'HH:mm'
+        });
+    $('#visitbookingdatediv').datetimepicker(
+        {
+            // dateFormat: 'dd-mm-yy',
+            defaultDate: new Date(),
+            format: 'DD-MM-YYYY'
+        });
+});
+
+$("#nricsInput").on("input", function () {
+    var validNric = validateNRIC($("#nricsInput").val());
+    if (validNric !== false) {
+        $("#nricWarning").css("display", "none");
+    } else {
+        $("#nricWarning").css("display", "block");
+    }
+});
+
+function purposePanels() {
+    var purpose = $("#pInput").val();
+    if (purpose === "Visit Patient") {
+        $("#patientpurposevisit").css("display", "block");
+        $("#otherpurposevisit").css("display", "none");
+    } else if (purpose === "Other Purpose") {
+        $("#patientpurposevisit").css("display", "none");
+        $("#otherpurposevisit").css("display", "block");
+    } else {
+        $("#patientpurposevisit").css("display", "none");
+        $("#otherpurposevisit").css("display", "none");
+    }
+}
+
+function amendVisitorDetails() {
+    if ($("#changed").prop('checked') == true) {
+        $('#newusercontent').css("display", "block");
+    }
+}
+
+function hideTags() {
+    //$('#existingusercontent').css("display", "none");
+    $('#emptyNricWarning').css("display", "none");
+    $('#staticinfocontainer').css("display", "none");
+    $('#changeddetailsdeclaration').css("display", "none");
+    $('#newusercontent').css("display", "none");
+    $("#nricWarning").css("display", "none");
+    $("#nricexistlabel").css("display", "none");
+    $("#patientpurposevisit").css("display", "none");
+    $("#otherpurposevisit").css("display", "none");
+    $("#nricnotexistlabel").css("display", "none");
+    $("#submitNewEntry").css("display", "none");
+    $('#emptyFields').css("display", "none");
+}
