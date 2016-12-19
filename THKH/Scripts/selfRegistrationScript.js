@@ -42,11 +42,11 @@
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
-                alert("Error: " + resultOfGeneration.Msg);
-            } else {
                 var today = new Date();
                 alert("Your online registration has been recorded at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
-            }  
+            } else {
+                alert("Error: " + resultOfGeneration.Msg);
+            }
         },
         error: function (err) {
         },

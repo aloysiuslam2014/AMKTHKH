@@ -22,24 +22,46 @@ function callCheck (){
                 // Populate fields if visitor exists by spliting string into array of values & populating
                 var string = resultOfGeneration.Msg;
                 var arr = string.split(",");
-                var dateString = arr[4].replace(/-/g, "/").toString() + " 0:01 AM";
-                $("#nric").attr('value', arr[0]);
-                $("#namesInput").attr('value', arr[1]);
-                $("#sexinput").attr('value', arr[2]);
-                $("#nationalsInput").attr('value', arr[3]);
-                $("#daterange").attr('value', dateString);
-                $("#addresssInput").attr('value', arr[10]);
-                $("#postalsInput").attr('value', arr[11]);
-                $("#mobilesInput").attr('value', arr[6]);
-                $("#altInput").attr('value', arr[8]);
-                $("#homesInput").attr('value', arr[7]);
-                $("#emailsInput").attr('value', arr[9]);
-                $("#visitbookingtime").attr('value', arr[13]);
-                $("#patientNric").attr('value', arr[14]);
-                $("#patientName").attr('value', arr[16]);
-                $('#pInput').val(arr[17]); // Purpose of visit "Visit Patient" or "Other Purpose"
-                $("#purposeInput").attr('value', arr[18]);
-                $("#visLoc").attr('value', arr[19]);
+                if (arr.length > 15) {
+                    var dateString = arr[4].replace(/-/g, "/").toString() + " 0:01 AM";
+                    // Populate fields if data exists
+                    $("#nric").attr('value', arr[0]);
+                    $("#namesInput").attr('value', arr[1]);
+                    $("#sexinput").attr('value', arr[2]);
+                    $("#nationalsInput").attr('value', arr[3]);
+                    $("#daterange").attr('value', dateString);
+                    $("#addresssInput").attr('value', arr[10]);
+                    $("#postalsInput").attr('value', arr[11]);
+                    $("#mobilesInput").attr('value', arr[6]);
+                    $("#altInput").attr('value', arr[8]);
+                    $("#homesInput").attr('value', arr[7]);
+                    $("#emailsInput").attr('value', arr[9]);
+                    $("#visitbookingtime").attr('value', arr[13]);
+                    $("#patientNric").attr('value', arr[14]);
+                    $("#patientName").attr('value', arr[16]);
+                    $('#pInput').val(arr[17]); // Purpose of visit "Visit Patient" or "Other Purpose"
+                    $("#purposeInput").attr('value', arr[18]);
+                    $("#visLoc").attr('value', arr[19]);
+                } else {
+                    // Clear fields
+                    $("#nric").attr('value', "");
+                    $("#namesInput").attr('value', "");
+                    $("#sexinput").attr('value', "");
+                    $("#nationalsInput").attr('value', "");
+                    $("#daterange").attr('value', "");
+                    $("#addresssInput").attr('value', "");
+                    $("#postalsInput").attr('value', "");
+                    $("#mobilesInput").attr('value', "");
+                    $("#altInput").attr('value', "");
+                    $("#homesInput").attr('value', "");
+                    $("#emailsInput").attr('value', "");
+                    $("#visitbookingtime").attr('value', "");
+                    $("#patientNric").attr('value', "");
+                    $("#patientName").attr('value', "");
+                    $('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
+                    $("#purposeInput").attr('value', "");
+                    $("#visLoc").attr('value', "");
+                }
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }

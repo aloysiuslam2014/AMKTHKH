@@ -26,7 +26,6 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             if (typeOfRequest == "self")
             {
-                
                 var nric = context.Request.Form["nric"].ToString();
                 var temperature = context.Request.Form["temperature"];
                 var age = context.Request.Form["AGE"];
@@ -168,7 +167,6 @@ namespace THKH.Webpage.Staff.CheckInOut
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            //String doB = dob.Substring(0, 10);
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_VISITOR_PROFILE]", cnn);
@@ -185,6 +183,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
+                //command.Parameters.AddWithValue("@pConfirm", 0);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
