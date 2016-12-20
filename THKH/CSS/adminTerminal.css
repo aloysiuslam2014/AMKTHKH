@@ -14,3 +14,19 @@
     color: #31708f !important;
     background-color: #d9edf7 !important;
 }
+
+  .modal-backdrop {
+    position: absolute !important;
+}
+
+#addTerminalModal{
+    position:relative;
+    width:inherit;
+    height:inherit;
+}
+
+#TerminalManagement{
+    margin-right:-15px;
+    margin-left:-15px;
+}
+

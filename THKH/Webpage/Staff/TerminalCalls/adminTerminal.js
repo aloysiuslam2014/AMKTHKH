@@ -1,4 +1,84 @@
 ﻿$(function () {
+   
+
+    $('#addTerminal').on('click', function (event) {
+        $('#addTerminalModal').modal({ backdrop: 'static', keyboard: false });
+        $('.modal-backdrop').appendTo('#TerminalManagement');
+        $('body').removeClass("modal-open")
+        $('body').css("padding-right", "");
+        $('#addTerminalModal').css('position', 'absolute');
+        $('#addTerminalModal').css('width', 'inherit');
+        $('#addTerminalModal').css('height', 'inherit');
+      
+    });
+
+    $('#addTerminalModal').on('shown.bs.modal', function () {
+        $('#terminalNameInput').focus();
+    })
+
+    $('#adminCloseTerminal').on('click', function (event) {
+        $('#addTerminalModal').modal('hide');
+    });
+
+   
+     
+    $('#deactivateTerminal').on('click', function (event) {
+        event.preventDefault();
+        var selectedItems = getSelectedTerminals();
+        //create looped ajax call to deactivate Terminal
+    });
+
+    $('#deleteTerminal').on('click', function (event) {
+        event.preventDefault();
+        var selectedItems = getSelectedTerminals();
+        //create looped ajax call to delete terminal
+    });
+    $('#deactivateAll').on('click', function (event) {
+        event.preventDefault();
+        var selectedItems = getSelectedTerminals();
+        //create looped ajax call to delete terminal
+    });
+});
+ 
+
+function loadTerminals() {
+    var headersToProcess = { action: "getTerminals", id: "" };
+    //get the terminals
+    $.ajax({
+        url: './TerminalCalls/TerminalCheck.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            generateTerminalListAndInit(returner);
+            
+            //generate elements and append to the ul 
+            
+        },
+        error: function (err) {
+            alert("error");
+        },
+    });
+
+   
+}
+
+function generateTerminalListAndInit(terminalData) {
+    $("#terminalList").html('');
+    var terminalsReceived = terminalData.split("|");
+    for (i = 0; i < terminalsReceived.length - 1; i++) {
+        var datas = terminalsReceived[i].split(",");
+        var terminalName = datas[1];
+        var terminalID = datas[0];
+        var listElement = document.createElement("LI");
+        $(listElement).attr("class", "list-group-item");
+        $(listElement).attr("style", "text-align: left");
+        $(listElement).attr("data-color", "info");
+        $(listElement).attr("id", terminalID);
+        $(listElement).html(terminalName);
+        $("#terminalList").append(listElement);
+    }
     $('.list-group.checked-list-box .list-group-item').each(function () {
 
         // Settings
@@ -66,22 +146,17 @@
         init();
     });
 
-    $('#get-checked-data').on('click', function (event) {
-        event.preventDefault();
-        var checkedItems = {}, counter = 0;
-        $("#check-list-box li.active").each(function (idx, li) {
-            checkedItems[counter] = $(li).text();
-            counter++;
+   
+}
+
+function getSelectedTerminals() {
+    
+       
+    var checkedItems = [];
+    $("#terminalList li.active").each(function (idx, li) {
+        checkedItems.push($(li).attr('id'));
+            
         });
-        $('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
-    });
-
-    $('#addTerminal').on('click', function (event) {
-        $('#addTerminalModal').modal({ backdrop: 'static', keyboard: false });
-        $('.modal-backdrop').appendTo('.TerminalManagement');
-        $('#addTerminalModal').modal('show');
-    });
-});
-
-
-
+        //$('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
+        return checkedItems;
+}

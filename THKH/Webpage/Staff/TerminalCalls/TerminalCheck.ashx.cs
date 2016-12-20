@@ -12,6 +12,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
     /// </summary>
     public class TerminalCheck : IHttpHandler, System.Web.SessionState.IRequiresSessionState
     {
+        private String toReturn = "";
 
         public void ProcessRequest(HttpContext context)
         {
@@ -22,7 +23,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
                 success = activateTerminal(msgg);
             }
-            else if(action.Equals("checkIn"))
+            else if (action.Equals("checkIn"))
             {
                 var userNric = context.Request.Form["user"];
                 success = checkInUser(msgg, userNric);
@@ -32,13 +33,25 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 var userNric = context.Request.Form["user"];
                 success = verify(userNric);
 
-            }else{
+            }
+            else if (action.Equals("getTerminals")) {
+
+                success = getTerminals();
+
+            } else { 
                 success = deactivateTerminal(msgg);
             }
             context.Response.ContentType = "text/plain";
             if (success)
             {
-                context.Response.Write("success");
+                if (!toReturn.Equals(""))
+                {
+                    context.Response.Write(toReturn);
+                }else
+                {
+                    context.Response.Write("success");
+                }
+                
             }
             else{
                 context.Response.Write("failed");
@@ -226,7 +239,45 @@ namespace THKH.Webpage.Staff.TerminalCalls
             return success;
         }
 
-       
+        public bool getTerminals()
+        {
+            
+            DataTable dataTable = new DataTable();
+            SqlConnection cnn;
+            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_TERMINAL]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                //command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
+                cnn.Open();
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = command;
+                da.Fill(dataTable);
+                //rows = command.ExecuteNonQuery();
+
+
+                cnn.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            toReturn = "";
+            for (var i = 0; i < dataTable.Rows.Count; i++)
+            {
+                String placeName = dataTable.Rows[i]["locationName"].ToString();
+                String id = dataTable.Rows[i]["lid"].ToString();
+                toReturn += id + "," + placeName +   "|";
+            }
+
+            return true;
+        }
 
         public bool IsReusable
         {
@@ -236,4 +287,6 @@ namespace THKH.Webpage.Staff.TerminalCalls
             }
         }
     }
+
+   
 }

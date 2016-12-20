@@ -37,10 +37,20 @@ body{
 }
 
 .containerMain{
-    height: calc(100% - 25px);
+    height: 102%;
    width:100%;
    overflow-y:auto;
+   overflow-x:hidden;
+   margin-top:-15px;
 }
+.overflowXaxis{
+    overflow-x:auto;
+}
+
+.removeBtmMargin{
+    margin-bottom:0;
+}
+
 .maxHeight{
     height:100%;
      margin-bottom:0;
