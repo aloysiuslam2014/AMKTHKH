@@ -4,6 +4,12 @@ $(document).ready(function () {
     // ajax call here
 });
 
+//var user = '<%=Session["username"].ToString()%>';
+$('#navigatePage a:first').tab('show');
+$('#regPageNavigation a:first').tab('show');
+w3IncludeHTML();
+
+// Check for visitor details & any online self registration information
 function callCheck (){
     //Do ajax call
     var nricValue = nric.value;
@@ -55,7 +61,7 @@ function callCheck (){
                     $("#altInput").attr('value', "");
                     $("#homesInput").attr('value', "");
                     $("#emailsInput").attr('value', "");
-                    $("#visitbookingtime").attr('value', "");
+                    $("#visitbookingtime").attr('value', ""); // Need to split to date & time
                     $("#patientNric").attr('value', "");
                     $("#patientName").attr('value', "");
                     $('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
@@ -73,7 +79,7 @@ function callCheck (){
     dataFound = true;
 }
 
-//
+// ensure patient info is valid
 function validatePatient() {
     // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
     var pName = $("#patientName").val();
@@ -108,6 +114,7 @@ function validatePatient() {
     });
 }
 
+// Check visitor's temperature
 function checkTemp() { // Rewrite to actively check
     var temper = temp.value;
     if (parseFloat(temper) > 37.6) { //Check if temperature exists & meets criteria
@@ -117,8 +124,9 @@ function checkTemp() { // Rewrite to actively check
     } 
 }
 
+// ASHX page call to write info to DB
 function NewAssistReg() {
-    var username = user;//from the default page the user is declared there
+    var username = user; //from the default page the user is declared there
     var fname = $("#namesInput").val();
     var snric = $("#nric").val();
     var address = $("#addresssInput").val();
@@ -138,9 +146,10 @@ function NewAssistReg() {
     var pNric = $("#patientNric").val();
     var otherPurpose = $("#purposeInput").val();
     var bedno = $("#bedno").val();
-    var visTime = $("#visitbookingtime").val();
-    var visDate = $("#visitbookingdate").val();
-    var appTime = visDate + " " + visTime;
+    //var visTime = $("#visitbookingtime").val();
+    //var visDate = $("#visitbookingdate").val();
+    //var appTime = visDate + " " + visTime;
+    var appTime = Date.now();
     var fever = $("#fever").val();
     var symptoms = $("#pimple").val();
     var influenza = $("#flu").val();
@@ -175,11 +184,7 @@ function NewAssistReg() {
     });
 }
 
-var user = '<%= Session["username"].ToString()%>';
-$('#navigatePage a:first').tab('show');
-$('#regPageNavigation a:first').tab('show');
-w3IncludeHTML();
-
+// Display appropriate panels according to visit purpose
 function purposePanels() {
     var purpose = $("#pInput").val();
     if (purpose === "Visit Patient") {
@@ -211,6 +216,7 @@ function checkRequiredFields() {
     }
 }
 
+// Validate NRIC format
 $("#nric").on("input", function () {
     var validNric = validateNRIC($("#nric").val());
     if (validNric !== false) {
@@ -273,7 +279,7 @@ function getFormattedDate(date) {
     return day + '-' + month + '-' + year;
 }
 
-// Hiding of labels upon initial loading of page
+// hide all warnings on page load
 function hideTags() {
     $("#emptyFields").css("display", "none");
     $("#nricWarning").css("display", "none");
@@ -284,4 +290,5 @@ function hideTags() {
     $("#submitNewEntry").css("display", "none");
     $("#newusercontent").css("display", "none");
     $("#staticinfocontainer").css("display", "none");
+    //loadActiveForm();
 }
