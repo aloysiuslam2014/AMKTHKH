@@ -103,7 +103,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         private String loadForm() {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            String successString = "{\"Result\":\"Success\",\"Msg\":";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -114,8 +114,26 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.Add(respon);
                 cnn.Open();
 
-                command.ExecuteNonQuery();
+                //command.ExecuteNonQuery();
+                SqlDataReader reader = command.ExecuteReader();
+                int count = 1;
+                if (reader.HasRows)
+                {
+                    successString += "[";
+                    while (reader.Read())
+                    {
+                        if (count > 1) {
+                            successString += ",";
+                        }
+                        successString += "{\"QuestionNumber\":\"";
+                        successString += count + "\",\"Question\":\"" + reader.GetString(0) + "\",\"QuestionType\":\"" + reader.GetString(1) + "\",\"QuestionAnswers\":\"" + reader.GetString(2);
+                        successString += "\"}";
+                        count++;
+                    }
+                    successString += "]";
+                }
                 successString += respon.Value;
+                reader.Close();
                 //successString += "\"}";
             }
             catch (Exception ex)
@@ -123,12 +141,13 @@ namespace THKH.Webpage.Staff.CheckInOut
                 successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
+                return successString;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
+            successString += "}";
             return successString;
         }
 

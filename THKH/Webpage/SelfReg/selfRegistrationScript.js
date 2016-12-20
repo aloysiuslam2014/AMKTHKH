@@ -31,6 +31,7 @@ function NewSelfReg() {
     var countriesTravelled = $("#sg").val();
     var remarks = $("#remarksinput").val();
     var visitLoc = $("#visLoc").val();
+    var qAnswers = getQuestionnaireAnswers();
 
     var headersToProcess = {
         fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
@@ -190,7 +191,7 @@ function showExistContent() {
 
 // Display Submit Button according to whether the user has checked the declaration checkbox
 function declarationValidation() {
-    if ($("#declaration").prop('checked') === true && validatePatient === true) {
+    if ($("#declaration").prop('checked') === true && patientValidated === true) {
         $("#declabel").css("display", "none");
         $("#submitNewEntry").css("display", "block");
     } else {
@@ -272,5 +273,91 @@ function hideTags() {
     $("#nricnotexistlabel").css("display", "none");
     $("#submitNewEntry").css("display", "none");
     $('#emptyFields').css("display", "none");
-    //loadActiveForm();
+    loadActiveForm();
+}
+
+// Get Questionnaire Answers by .answer class
+function getQuestionnaireAnswers() {
+    var answers = "";
+    $.each($("#selfregistration input.answer"), function (index, value) {
+        answers += $(value).val();
+    });
+    return answers;
+}
+
+// Loads & displays the active questionnaire from the DB for Self-Reg
+function loadActiveForm() {
+    var headersToProcess = {
+        requestType: "form"
+    };
+    $.ajax({
+        url: '../Staff/CheckInOut/checkIn.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            // Display Form CSS
+            var arr = resultOfGeneration.Msg;
+            var htmlString = "";
+            for (i = 0; i < arr.length; i++) {
+                var object = arr[i];
+                var question = object.Question;
+                var type = object.QuestionType;
+                var values = object.QuestionAnswers;
+                var questionNum = object.QuestionNumber;
+                if (type === "ddList") {
+                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                        + "<div class='form-group'>"
+                            + "<select class='form-control required answer' id='" + questionNum + "'>";
+                    var valArr = values.split(",");
+                    for (j = 0; j < valArr.length; j++) {
+                        htmlString += "<option value='" + valArr[j] + "'>" + valArr[j] + "</option>";
+                    }
+                    htmlString += "</select></div>";
+                }
+                if (type === "radio") {
+                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                        + "<div class='form-group'>";
+                    var valArr = values.split(",");
+                    for (j = 0; j < valArr.length; j++) {
+                        htmlString += "<div class='radio'><label><input class='answer' type='radio' name='" + questionNum + "' value='" + valArr[j] + "'";
+                        if (j == 0) {
+                            htmlString += " checked";
+                        }
+                        htmlString += "/> " + valArr[j] + "</label></div>";
+                    }
+                    htmlString += "</div>";
+                }
+                if (type === "checkbox") {
+                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                        + "<div class='form-group'>";
+                    var valArr = values.split(",");
+                    for (j = 0; j < valArr.length; j++) {
+                        htmlString += "<div class='checkbox'><label><input class='answer' type='checkbox' name='" + questionNum + "' value='" + valArr[j] + "'> " + valArr[j] + "</label></div>";
+                    }
+                    htmlString += "</div>";
+                } if (type === "text") {
+                    htmlString += "<label for='" + questionNum + "'>" + question + "</label>"
+                                    + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                                    + "<div class='form-group'>"
+                                    + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "Input' />"
+                                    + "</div>";
+                }
+            }
+            //var mydiv = document.getElementById("questionaireForm");
+            //var newcontent = document.createElement('div');
+            //newcontent.innerHTML = htmlString;
+            var formElement = document.createElement("DIV");
+            $(formElement).attr("class", "list-group-item");
+            $(formElement).attr("style", "text-align: left");
+            $(formElement).attr("data-color", "info");
+            $(formElement).attr("id", 17);
+            $(formElement).html(htmlString);
+            $("#questionaireForm").append(formElement);
+        },
+        error: function (err) {
+        },
+    });
 }

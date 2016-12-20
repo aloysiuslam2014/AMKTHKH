@@ -229,10 +229,56 @@
             <!-- End of Registration -->
             
             <!-- FormManagement -->
-            <div class="tab-pane maxHeight" id="formManagement">
-                <h1>This is the test page for FORMS potato pirates!</h1>
-                
-               
+            <div class="tab-pane maxHeight jumbotron" id="formManagement">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="modal fade" id="addQuestionnaire" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="padding:0px 50px;  text-align:center;">
+         
+          <h4>Add New Questionnaire</h4>
+           
+        </div>
+        <div class="modal-body" style="padding:40px 50px; text-align:center;">
+         
+            <div class="form-group">
+              <label for="qnaireid"><span class="glyphicon glyphicon-modal-window"></span> Questionnaire Name</label>
+              <input type="text"  class="form-control" id="qnaireid" placeholder="Enter a Questionnaire ID"/>
+            </div>
+           
+              <button type="button" class="btn btn-success btn-block" onclick="addQuestionnaire();"><span class="glyphicon glyphicon-plus"></span> Add Questionnaire</button>
+          
+        </div>
+        <div class="modal-footer" style=" text-align:center !important;">
+ <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();">   <span class="glyphicon glyphicon-remove"></span> Cancel</button>        </div>
+      </div>
+      
+    </div>
+  </div> 
+                        <h3>Select a Questionnaire to Begin</h3>
+                            <div class="input-group" id="qnaireSelection">
+                                    <select class="form-control" id="qnaires" onchange="getForm(); false;">
+                                        <option value="">-- Select Questionnaire --</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                <span class="input-group-btn">
+                                        <button class="btn btn-default" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span> New Questionnaire</button>
+                                </span>
+                                    </div>
+                        <div class="list-group" id="questionnaireQuestionsToDisplay">
+                            <h3>Display Questionnaire #Number Questions Here</h3>
+                            <h5>Each question will have a delete button next to it</h5>
+                        </div>
+                        </div>
+                    <div class="col-sm-6">
+                        <div class="list-group" id="questionnaireQuestions">
+                            <h3>Display All Questions Here - Checkbox styled</h3>
+                            <button type="button" id="addQuestionsToQuestionnaire" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Questions to Questionnaire</button>
+                        </div>
+                        </div>
+                    </div>
             </div>
             <!-- End of FormManagement -->
 
