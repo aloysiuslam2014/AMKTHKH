@@ -24,6 +24,9 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var nric = context.Request.Form["nric"].ToString();
                 successString = getVisitorDetails(nric);
             }
+            if (typeOfRequest == "form") {
+                successString = loadForm();
+            }
             if (typeOfRequest == "self")
             {
                 var nric = context.Request.Form["nric"].ToString();
@@ -98,6 +101,56 @@ namespace THKH.Webpage.Staff.CheckInOut
             context.Response.Write(successString);// String to return to front-end
         }
 
+        private String loadForm() {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[RETRIEVE_ACTIVE_QUESTIONNARIE]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                //command.ExecuteNonQuery();
+                SqlDataReader reader = command.ExecuteReader();
+                int count = 1;
+                if (reader.HasRows)
+                {
+                    successString += "[";
+                    while (reader.Read())
+                    {
+                        if (count > 1) {
+                            successString += ",";
+                        }
+                        successString += "{\"QuestionNumber\":\"";
+                        successString += count + "\",\"Question\":\"" + reader.GetString(0) + "\",\"QuestionType\":\"" + reader.GetString(1) + "\",\"QuestionAnswers\":\"" + reader.GetString(2);
+                        successString += "\"}";
+                        count++;
+                    }
+                    successString += "]";
+                }
+                successString += respon.Value;
+                reader.Close();
+                //successString += "\"}";
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "}";
+            return successString;
+        }
+
         // Check if patient exists in the Patient Database
         private String checkPatient(String pName, String bedno) {
             SqlConnection cnn;
@@ -120,6 +173,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
             }
@@ -152,6 +206,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
             }
@@ -185,6 +240,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 //successString += "\"}";
                 return successString;
@@ -327,7 +383,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
+                command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Now);
                 command.Parameters.AddWithValue("@pPatientNRIC", pNric);
                 command.Parameters.AddWithValue("@pVisitorNRIC", nric);
                 command.Parameters.AddWithValue("@pPatientFullName", pName);
@@ -382,6 +438,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
+                successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 return successString;
                 //successString += "\"}";

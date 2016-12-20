@@ -81,7 +81,7 @@
             <br />
             <br />
             <br />
-            <a data-controls-modal="myModal" data-backdrop="static" data-keyboard="false" href="#/">
+            <a data-controls-modal="myModal" data-backdrop="static" data-keyboard="false" href="#/"></a>
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -226,47 +226,14 @@
                                     </div>
                             
                                 <h3>Health Screening Questionnaire</h3>
-                                <label for="fevdiv">Do you have a Fever?</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
-                                <div class="form-group">
-                                <div class="checkbox" id="fevdiv">
-                                    <label for="yesopt">
-                                    <input type="checkbox" id="fever" name="yesopt" value="Yes" />Yes</label>
-                                </div>
-                                    </div>
-                                <label for="symptomInput">I possess the following symptom(s)</label> <%--Patient Symptom declaration--%>
-                                <div class="form-group">
-                                    <div id="symptomInput" class="checkbox">
-                                        <label for="one">
-                                            <input type="checkbox" id="pimple" value="Pimple" />Pimple</label>
-                                        <label for="two">
-                                            <input type="checkbox" id="hairloss" value="Hair Loss" />Hair Loss</label>
-                                    </div>
-                                </div>
-                                <label for="symdiv">Do you have any close contact with person or persons returning from INFLUENZA [FLU] INFECTED countries?</label>
-                                <div id="symdiv" class="checkbox">
-                                        <label for="one">
-                                            <input type="checkbox" id="flu" value="Yes" />Yes</label>
-                                </div>
-                                <label for="visitInput">Countries Travelled For The Past 2 Weeks </label>
-                                <div class="form-group">
-                                    <div id="checkboxes" class="checkbox">
-                                        <label for="one">
-                                            <input type="checkbox" id="sg" value="Singapore" />Singapore</label>
-                                        <label for="two">
-                                            <input type="checkbox" id="mi" value="Malaysia" />Malaysia</label>
-                                        <label for="three">
-                                            <input type="checkbox" id="cn" value="China" />China</label>
-                                    </div>
-                                </div>
-                                <label for="remarksinput">Remarks:</label>
-                                <div class="form-group">
-                                    <input type="text" runat="server" class="form-control" id="remarksinput" />
+                               <div id="questionaireForm">
+                                    <!-- load questionaires here -->
                                 </div>
                                 <div class="checkbox">
                                     <label for="declaration">
                             <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation(); false;" value="true" />I declare that the above information given is accurate</label><br />
                                     <input type="hidden" name="declare" value="false" />
-                            <label for="declaration" id="declabel" style="color:red">Please check this option to continue</label>
+                            <label for="declaration" id="declabel" style="color:red">Please validate your patient details & check this option to continue</label>
                         </div>
                         <input class="btn btn-block btn-success" type="button" id="submitNewEntry" runat="server" onclick="checkRequiredFields(); false;" value="Submit"/> <%--Copy to Tables without confirmation--%>
 
