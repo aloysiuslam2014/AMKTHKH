@@ -362,6 +362,7 @@
                                 <button id="deactivateTerminal" class="btn-primary btn-lg">Deactivate Selected Terminal</button>
                                 <button id="deleteTerminal" class="btn-primary btn-lg">Delete Selected Terminal</button>
                                 <button id="deactivateAll" class="btn-primary btn-lg">Deactivate All Terminals</button>
+                                <button id="deleteAll" class="btn-primary btn-lg">Delete All Terminals</button>
                             </div>
                         </div>
                     </div>
