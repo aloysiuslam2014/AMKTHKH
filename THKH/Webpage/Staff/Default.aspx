@@ -22,7 +22,7 @@
 
 </head>
 <body onload="hideTags()">
-
+    <% var accessRightsStr = Session["accessRights"].ToString(); %>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
 
@@ -36,26 +36,32 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav " id="navigatePage">
-                    <li>
+                      <%if (accessRightsStr.Contains('1')){ %>
+                     <li id="regtab" runat="server">
                         <a href="#registration" data-toggle="tab">Registration
                         </a>
                     </li>
+                     <%  }if (accessRightsStr.Contains('2')){%>
                     <li>
                         <a href="#formManagement" data-toggle="tab">Form Management
                         </a>
                     </li>
+                    <%  }if (accessRightsStr.Contains('3')){%>
                     <li>
                         <a href="#TerminalManagement" data-toggle="tab" onclick="loadTerminals()">Terminals Management
                         </a>
                     </li>
+                    <%  }if (accessRightsStr.Contains('4')){%>
                     <li>
                         <a href="#UserManagement" data-toggle="tab">User Management
                         </a>
                     </li>
+                    <%  }if (accessRightsStr.Contains('1')){%>
                     <li>
                         <a href="#PassManagement" data-toggle="tab">Pass Management
                         </a>
                     </li>
+                    <%  }%>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -76,6 +82,8 @@
     <div id="main" class="container containerMain">
         <div class="tab-content tab-content-main maxHeight" style="border: 0;" id="generalContent">
             <!-- Registration -->
+            <%if (accessRightsStr.Contains('1'))
+                { %>
             <div class="tab-pane maxHeight" id="registration">
            
                     <div class="row">
@@ -94,6 +102,7 @@
                                 <label class="control-label" for="temp">Temperature</label><label for="temp" id="comp0" style="color: red">*</label>
                                 <input runat="server" id="temp" class="form-control required" type="text" onchange="checkTemp(); false;" />
                                 <h4 id="tempWarning" style="color:red">Visitor's Temperature is above 37.6 Degrees Celcius!</h4>
+                                <h4 id="invalidTempWarning" style="color:red">Please enter a valid temperature in the following format: "36.7"</h4>
                             </div>
                         </div>
                     </div>
@@ -226,6 +235,8 @@
                     </div>
                 
             </div>
+            <%} if (accessRightsStr.Contains('2'))
+                { %>
             <!-- End of Registration -->
 
             <!-- FormManagement -->
@@ -280,6 +291,8 @@
                         </div>
                     </div>
             </div>
+            <%}if (accessRightsStr.Contains('3'))
+                { %>
             <!-- End of FormManagement -->
 
             <!-- TerminalManagement -->
@@ -338,6 +351,8 @@
 
 
             </div>
+            <%} if (accessRightsStr.Contains('4'))
+                { %>
             <!-- End of TerminalManagement -->
 
             <!-- UserManagement -->
@@ -346,6 +361,8 @@
 
 
             </div>
+            <%}if (accessRightsStr.Contains('5'))
+                { %>
             <!-- End of UserManagement -->
 
             <!-- PassManagement -->
@@ -355,7 +372,7 @@
 
             </div>
             <!-- End of PassManagement -->
-
+            <%} %>
 
 
         </div>

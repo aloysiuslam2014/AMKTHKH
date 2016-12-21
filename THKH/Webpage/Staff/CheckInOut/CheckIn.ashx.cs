@@ -409,7 +409,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-            //successString += writeQuestionnaireResponse(qListID, qAns);
+            successString += writeQuestionnaireResponse(qListID, qAns);
             successString += CheckIn(staffuser,nric, temperature);
             successString += "\"}";
             return successString;

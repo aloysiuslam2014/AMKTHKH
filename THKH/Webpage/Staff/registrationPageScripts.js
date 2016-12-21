@@ -101,11 +101,20 @@ function validatePatient() {
 // Check visitor's temperature
 function checkTemp() { 
     var temper = temp.value;
-    if (parseFloat(temper) > 37.6) { 
+    try{
+        var temperature = parseFloat(temper);
+        if (temperature > 37.6) {
+            $('#tempWarning').css("display", "block");
+        } if (temperature < 35.0) {
+            $("#invalidTempWarning").css("display", "block");
+        }
+        else {
+            $('#tempWarning').css("display", "none");
+        }
+    }catch(ex){
         $('#tempWarning').css("display", "block");
-    } else {
-        $('#tempWarning').css("display", "none");
-    } 
+    }
+    
 }
 
 // ASHX page call to write info to DB
@@ -158,6 +167,7 @@ function NewAssistReg() {
                 var today = new Date();
                 alert("Visitor successfully checked-in at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
                 clearFields();
+                //hideTags();
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
@@ -247,7 +257,7 @@ function checkExistOrNew() {
 // Get Questionnaire Answers by .answer class gives back a JSON String
 function getQuestionnaireAnswers() {
     var answers = '{';
-    $.each($("#selfregistration input.answer"), function (index, value) {
+    $.each($("#registration input.answer"), function (index, value) {
         answers += index + ':' + $(value).val() + ',';
     });
     answers = answers.substring(0, answers.length - 1) + '}';
@@ -297,6 +307,7 @@ function getFormattedDate(date) {
 
 // hide all warnings on page load
 function hideTags() {
+    $("#invalidTempWarning").css("display", "none");
     $("#emptyFields").css("display", "none");
     $("#nricWarning").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
