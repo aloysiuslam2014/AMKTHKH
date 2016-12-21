@@ -55,7 +55,7 @@ namespace THKH.Webpage.SelfReg {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText patientNric;
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden patientNric;
         
         /// <summary>
         /// bedno control.

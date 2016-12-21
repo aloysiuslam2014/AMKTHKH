@@ -50,23 +50,7 @@ function callCheck (){
                     $("#visLoc").attr('value', arr[19]);
                 } else {
                     // Clear fields
-                    $("#nric").attr('value', "");
-                    $("#namesInput").attr('value', "");
-                    $("#sexinput").attr('value', "");
-                    $("#nationalsInput").attr('value', "");
-                    $("#daterange").attr('value', "");
-                    $("#addresssInput").attr('value', "");
-                    $("#postalsInput").attr('value', "");
-                    $("#mobilesInput").attr('value', "");
-                    $("#altInput").attr('value', "");
-                    $("#homesInput").attr('value', "");
-                    $("#emailsInput").attr('value', "");
-                    $("#visitbookingtime").attr('value', ""); // Need to split to date & time
-                    $("#patientNric").attr('value', "");
-                    $("#patientName").attr('value', "");
-                    $('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
-                    $("#purposeInput").attr('value', "");
-                    $("#visLoc").attr('value', "");
+                    clearFields();
                 }
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
@@ -146,9 +130,7 @@ function NewAssistReg() {
     var pNric = $("#patientNric").val();
     var otherPurpose = $("#purposeInput").val();
     var bedno = $("#bedno").val();
-    //var visTime = $("#visitbookingtime").val();
-    //var visDate = $("#visitbookingdate").val();
-    //var appTime = visDate + " " + visTime;
+    var qListID = $("#qnlistid").val();
     var appTime = Date.now();
     var fever = $("#fever").val();
     var symptoms = $("#pimple").val();
@@ -162,7 +144,7 @@ function NewAssistReg() {
         staffUser:username,fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
         AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose,pName: pName, pNric: pNric,
         otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza,
-        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp
+        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp, qListID: qListID, qAnswers: qAnswers
     };
     $.ajax({
         url: './CheckInOut/checkIn.ashx',
@@ -175,6 +157,7 @@ function NewAssistReg() {
             if (resultOfGeneration.Result === "Success") {
                 var today = new Date();
                 alert("Visitor successfully checked-in at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
+                clearFields();
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
@@ -183,6 +166,27 @@ function NewAssistReg() {
             alert(err.Msg);
         },
     });
+}
+
+function clearFields() {
+    $("#nric").attr('value', "");
+    $("#namesInput").attr('value', "");
+    $("#sexinput").attr('value', "");
+    $("#nationalsInput").attr('value', "");
+    $("#daterange").attr('value', "");
+    $("#addresssInput").attr('value', "");
+    $("#postalsInput").attr('value', "");
+    $("#mobilesInput").attr('value', "");
+    $("#altInput").attr('value', "");
+    $("#homesInput").attr('value', "");
+    $("#emailsInput").attr('value', "");
+    $("#visitbookingtime").attr('value', "");
+    $("#visitbookingdate").attr('value', "");
+    $("#patientNric").attr('value', "");
+    $("#patientName").attr('value', "");
+    $('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
+    $("#purposeInput").attr('value', "");
+    $("#visLoc").attr('value', "");
 }
 
 // Display appropriate panels according to visit purpose
@@ -242,11 +246,13 @@ function checkExistOrNew() {
 
 // Get Questionnaire Answers by .answer class gives back a JSON String
 function getQuestionnaireAnswers() {
-    var answers = "";
+    var answers = '{';
     $.each($("#selfregistration input.answer"), function (index, value) {
-            answers += $(value).val();
+        answers += index + ':' + $(value).val() + ',';
     });
-    return answers;
+    answers = answers.substring(0, answers.length - 1) + '}';
+    var jsonString = JSON.stringify(answers);
+    return jsonString;
 }
 
 // Check if user has checked the "I declare the info to be accurate" checkbox
@@ -319,8 +325,10 @@ function loadActiveForm() {
             // Display Form CSS
             var arr = resultOfGeneration.Msg;
             var htmlString = "";
+            var qListID = 0;
             for (i = 0; i < arr.length; i++) {
                 var object = arr[i];
+                qListID = object.QuestionList;
                 var question = object.Question;
                 var type = object.QuestionType;
                 var values = object.QuestionAnswers;
@@ -364,9 +372,7 @@ function loadActiveForm() {
                                     + "</div>";
                 }
             }
-            //var mydiv = document.getElementById("questionaireForm");
-            //var newcontent = document.createElement('div');
-            //newcontent.innerHTML = htmlString;
+            htmlString += "<input type='hidden' runat='server' class='form-control' value='" + qListID + "' id='qnlistid' />";
             var formElement = document.createElement("DIV");
             $(formElement).attr("class", "list-group-item");
             $(formElement).attr("style", "text-align: left");
