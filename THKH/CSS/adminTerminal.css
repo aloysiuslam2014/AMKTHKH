@@ -14,6 +14,7 @@
     color: #31708f !important;
     background-color: #d9edf7 !important;
 }
+ 
 
   .modal-backdrop {
     position: absolute !important;
@@ -21,6 +22,12 @@
 
 #addTerminalModal{
     position:relative;
+    width:inherit;
+    height:inherit;
+}
+
+#promptTerminalModal{
+    position:absolute;
     width:inherit;
     height:inherit;
 }

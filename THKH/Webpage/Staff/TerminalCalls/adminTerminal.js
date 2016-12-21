@@ -20,11 +20,17 @@
         $('#addTerminalModal').modal('hide');
     });
 
+    $('#closeAllTerminal').on('click', function (event) {
+        $('#promptTerminalModal').modal('hide');
+        $('#addTerminalModal').modal('hide');
+        loadTerminals();
+    });
+
     $('#addNewTerminal').on('click', function (event) {
         event.preventDefault();
          
         //create looped ajax call to delete terminal
-        for (var i = 0; i < selectedItems.length ; i++) {
+        
 
             var headersToProcess = { action: "addTerminal", id: terminalNameInput.value };
             $.ajax({
@@ -34,13 +40,21 @@
 
 
                 success: function (returner) {
-                   //Alert to show terminal has been added
+                    //Alert to show terminal has been added
+                    $('#promptTerminalModal').modal({ backdrop: false, keyboard: false });
+                    if (returner.toString() == "success")
+                    {
+                        $('#prompText').html("Terminal Successfully Added!");
+                    } else {
+                        $('#prompText').html("Terminal Name Already Exist!");
+                    }
+                    
                 },
                 error: function (err) {
                     alert("error");
                 },
             });
-        }
+       
     });
      
     $('#deactivateTerminal').on('click', function (event) {
@@ -57,8 +71,9 @@
 
 
                 success: function (returner) {
-                    if (i + 1 == selectedItems.length)
+                    if (i == selectedItems.length) {
                         loadTerminals();
+                    }
                 },
                 error: function (err) {
                     alert("error");
@@ -81,8 +96,10 @@
 
 
                 success: function (returner) {
-                    if (i + 1 == selectedItems.length)
-                        loadTerminals();
+                    if (i == selectedItems.length) {
+                          loadTerminals();
+                    }
+                      
                 },
                 error: function (err) {
                     alert("error");
@@ -102,7 +119,7 @@
 
 
             success: function (returner) {
-                if (i + 1 == selectedItems.length)
+               
                     loadTerminals();
             },
             error: function (err) {
@@ -145,13 +162,13 @@ function generateTerminalListAndInit(terminalData) {
         var terminalID = datas[0];
         var listElement = document.createElement("LI");
         $(listElement).attr("class", "list-group-item");
-        
+        $(listElement).attr("data-color", "info");
         if (datas[2].toString() == "1") {
-            $(listElement).attr("data-color", "success");
-            $(listElement).attr("style", "text-align: left;color:'#3c763d'");
+           
+            $(listElement).attr("style", "text-align: left;color:#3c763d");
         } else {
-            $(listElement).attr("data-color", "info");
-            $(listElement).attr("style", "text-align: left");
+           
+            $(listElement).attr("style", "text-align: left;color: #a94442;");
         }
        
         $(listElement).attr("id", terminalID);

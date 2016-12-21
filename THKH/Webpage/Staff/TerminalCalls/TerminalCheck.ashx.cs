@@ -323,7 +323,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[DEACTIVATE_ALL_TERMINAL]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[DEACTIVATE_ALL_TERMINALS]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 
                 command.Parameters.Add(respon);

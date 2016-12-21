@@ -330,6 +330,24 @@
 
                                     </div>
                                 </div>
+                                 <div class="modal fade" id="promptTerminalModal" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                             
+                                            <div class="modal-body" id="prompText" style=" text-align: center;">
+
+                                                <h2>Successfully Added New Terminal</h2>
+
+                                            </div>
+                                            <div class="modal-footer" style="text-align: center !important;">
+                                                <button type="button"   id="closeAllTerminal"   class="btn btn-danger btn-default "><span class="glyphicon glyphicon-remove"></span>Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                                 <!-- Show terminals avail here -->
                                 <div id="terminals" class="table-bordered maxHeight overflowXaxis">
                                     <ul class="list-group checked-list-box" id="terminalList">
