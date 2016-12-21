@@ -20,29 +20,102 @@
         $('#addTerminalModal').modal('hide');
     });
 
-   
+    $('#addNewTerminal').on('click', function (event) {
+        event.preventDefault();
+         
+        //create looped ajax call to delete terminal
+        for (var i = 0; i < selectedItems.length ; i++) {
+
+            var headersToProcess = { action: "addTerminal", id: terminalNameInput.value };
+            $.ajax({
+                url: './TerminalCalls/TerminalCheck.ashx',
+                method: 'post',
+                data: headersToProcess,
+
+
+                success: function (returner) {
+                   //Alert to show terminal has been added
+                },
+                error: function (err) {
+                    alert("error");
+                },
+            });
+        }
+    });
      
     $('#deactivateTerminal').on('click', function (event) {
         event.preventDefault();
         var selectedItems = getSelectedTerminals();
         //create looped ajax call to deactivate Terminal
+        for(var i = 0;i < selectedItems.length ; i++){
+          
+            var headersToProcess = { action: "deactivate", id: selectedItems[i] };
+            $.ajax({
+                url: './TerminalCalls/TerminalCheck.ashx',
+                method: 'post',
+                data: headersToProcess,
+
+
+                success: function (returner) {
+                    if (i + 1 == selectedItems.length)
+                        loadTerminals();
+                },
+                error: function (err) {
+                    alert("error");
+                },
+            });
+        }
     });
 
     $('#deleteTerminal').on('click', function (event) {
         event.preventDefault();
         var selectedItems = getSelectedTerminals();
         //create looped ajax call to delete terminal
+        for (var i = 0; i < selectedItems.length ; i++) {
+
+            var headersToProcess = { action: "deleteTerminals", id: selectedItems[i] };
+            $.ajax({
+                url: './TerminalCalls/TerminalCheck.ashx',
+                method: 'post',
+                data: headersToProcess,
+
+
+                success: function (returner) {
+                    if (i + 1 == selectedItems.length)
+                        loadTerminals();
+                },
+                error: function (err) {
+                    alert("error");
+                },
+            });
+        }
     });
     $('#deactivateAll').on('click', function (event) {
         event.preventDefault();
         var selectedItems = getSelectedTerminals();
-        //create looped ajax call to delete terminal
+        //deactivate all terminal
+        var headersToProcess = { action: "deactivateAllTerminals", id: selectedItems[i] };
+        $.ajax({
+            url: './TerminalCalls/TerminalCheck.ashx',
+            method: 'post',
+            data: headersToProcess,
+
+
+            success: function (returner) {
+                if (i + 1 == selectedItems.length)
+                    loadTerminals();
+            },
+            error: function (err) {
+                alert("error");
+            },
+        });
+
     });
 });
  
 
 function loadTerminals() {
-    var headersToProcess = { action: "getTerminals", id: "" };
+    var headersToProcess = { action: "getAllTerminals", id: "" };
     //get the terminals
     $.ajax({
         url: './TerminalCalls/TerminalCheck.ashx',
@@ -51,9 +124,8 @@ function loadTerminals() {
 
 
         success: function (returner) {
+            //generate elements and append to the ul
             generateTerminalListAndInit(returner);
-            
-            //generate elements and append to the ul 
             
         },
         error: function (err) {
@@ -73,8 +145,15 @@ function generateTerminalListAndInit(terminalData) {
         var terminalID = datas[0];
         var listElement = document.createElement("LI");
         $(listElement).attr("class", "list-group-item");
-        $(listElement).attr("style", "text-align: left");
-        $(listElement).attr("data-color", "info");
+        
+        if (datas[2].toString() == "1") {
+            $(listElement).attr("data-color", "success");
+            $(listElement).attr("style", "text-align: left;color:'#3c763d'");
+        } else {
+            $(listElement).attr("data-color", "info");
+            $(listElement).attr("style", "text-align: left");
+        }
+       
         $(listElement).attr("id", terminalID);
         $(listElement).html(terminalName);
         $("#terminalList").append(listElement);

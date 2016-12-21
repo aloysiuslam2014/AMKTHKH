@@ -307,7 +307,7 @@
                                                     <input type="text" class="form-control text-center" id="terminalNameInput" placeholder="Enter Terminal Name" />
                                                 </div>
 
-                                                <button type="button" class="btn btn-success btn-block" onclick="verifyUser();"><span class="glyphicon glyphicon-off"></span>Add New Terminal</button>
+                                                <button type="button" class="btn btn-success btn-block" id="addNewTerminal"><span class="glyphicon glyphicon-off"></span>Add New Terminal</button>
 
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">

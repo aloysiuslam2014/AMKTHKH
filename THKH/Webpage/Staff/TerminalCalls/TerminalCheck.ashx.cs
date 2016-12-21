@@ -34,11 +34,32 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 success = verify(userNric);
 
             }
-            else if (action.Equals("getTerminals")) {
+            else if (action.Equals("addTerminal"))
+            {
 
-                success = getTerminals();
+                success = addTerminal(msgg);
 
-            } else { 
+            }
+           
+            else if (action.Equals("getAllTerminals"))
+            {
+
+                success = getAllTerminals();
+
+            }
+            else if (action.Equals("deleteTerminals"))
+            {
+
+                success = deleteTerminal(msgg);
+
+            }
+            else if (action.Equals("deactivateAllTerminals"))
+            {
+
+                success = deactivateAllTerminal(msgg);
+
+            }
+            else { 
                 success = deactivateTerminal(msgg);
             }
             context.Response.ContentType = "text/plain";
@@ -60,13 +81,101 @@ namespace THKH.Webpage.Staff.TerminalCalls
 
         }
 
+        private bool addTerminal(string id)
+        {
+            bool success = false;
+
+            SqlConnection cnn;
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+          
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[ADD_TERMINAL]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pTName", id);
+
+                command.Parameters.Add(respon);
+                cnn.Open();
+                command.ExecuteNonQuery();
+
+
+                //rows = command.ExecuteNonQuery();
+
+
+                cnn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                var d = ex;//to read any errors
+            }
+
+            if (respon.Value.ToString().Equals("1"))
+            {
+                success = true;
+            }
+            else
+            {
+                success = false;
+            }
+
+            return success;
+        }
+
+        private bool deleteTerminal(string id)
+        {
+
+            bool success = false;
+
+            SqlConnection cnn;
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            Object[] test;
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[DELETE_TERMINAL]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pTerminal_ID", id);
+
+                command.Parameters.Add(respon);
+                cnn.Open();
+                command.ExecuteNonQuery();
+
+
+                //rows = command.ExecuteNonQuery();
+
+
+                cnn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                var d = ex;//to read any errors
+            }
+
+            if (respon.Value.ToString().Equals("1"))
+            {
+                success = true;
+            }
+            else
+            {
+                success = false;
+            }
+
+            return success;
+        }
+
         public bool verify(String id)
         {
-            string connectionString = null;
+            
             bool success = false;
            
             SqlConnection cnn;
-            connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             Object[] test;
@@ -201,6 +310,54 @@ namespace THKH.Webpage.Staff.TerminalCalls
 
         }
 
+        public bool deactivateAllTerminal(String id)
+        {
+            //string connectionString = null;
+            bool success = false;
+            int locationId = Convert.ToInt32(id);
+            SqlConnection cnn;
+            // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[DEACTIVATE_ALL_TERMINAL]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+
+
+                        //Get txtPwd with Salt using SHA2-512 & compare hash values
+                    }
+                }
+                //rows = command.ExecuteNonQuery();
+
+
+                cnn.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+            success = respon.Value.ToString().Equals("1") ? true : false;
+
+            return success;
+
+        }
+
         public bool checkInUser(String locationId, String userId)
         {
           //  string connectionString = null;
@@ -239,7 +396,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             return success;
         }
 
-        public bool getTerminals()
+        public bool getAllTerminals()
         {
             
             DataTable dataTable = new DataTable();
@@ -249,7 +406,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_TERMINAL]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[GET_ALL_TERMINALS]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 //command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
                 cnn.Open();
@@ -271,9 +428,10 @@ namespace THKH.Webpage.Staff.TerminalCalls
             toReturn = "";
             for (var i = 0; i < dataTable.Rows.Count; i++)
             {
-                String placeName = dataTable.Rows[i]["locationName"].ToString();
-                String id = dataTable.Rows[i]["lid"].ToString();
-                toReturn += id + "," + placeName +   "|";
+                String placeName = dataTable.Rows[i]["tName"].ToString();
+                String id = dataTable.Rows[i]["terminalID"].ToString();
+                String activated = dataTable.Rows[i]["activated"].ToString();
+                toReturn += id + "," + placeName + "," + activated + "|";
             }
 
             return true;

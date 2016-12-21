@@ -23,7 +23,7 @@ namespace THKH.Webpage.Staff
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_TERMINAL]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[GET_ACTIVE_TERMINAL]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 //command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
                 cnn.Open();
@@ -45,8 +45,8 @@ namespace THKH.Webpage.Staff
           
             for(var i =0; i < dataTable.Rows.Count; i++) 
             {
-                String placeName = dataTable.Rows[i]["locationName"].ToString();
-                String id = dataTable.Rows[i]["lid"].ToString();
+                String placeName = dataTable.Rows[i]["tName"].ToString();
+                String id = dataTable.Rows[i]["terminalID"].ToString();
                 System.Web.UI.HtmlControls.HtmlGenericControl createDiv =
                       new System.Web.UI.HtmlControls.HtmlGenericControl("DIV");
                 
