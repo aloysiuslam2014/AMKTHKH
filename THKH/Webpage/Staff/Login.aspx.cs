@@ -49,16 +49,10 @@ namespace THKH.Webpage.Staff
         {
             //Create sql connection and try to log in
             //Assume for now the user and pass checks out. Create the cookie
-            string connectionString = null;
             int rows = 0;
-             
+            Object[] userInfo;
             SqlConnection cnn;
-            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //connectionString = "Server=tcp:gbdb.database.windows.net,1433;Initial Catalog=stepwise;Persist Security Info=False;User ID={gbadmin};Password={stepWISE1};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-          //  cnn = new SqlConnection(connectionString);
             try {
                 SqlCommand command = new SqlCommand("[dbo].[LOGIN]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
@@ -66,20 +60,20 @@ namespace THKH.Webpage.Staff
                 command.Parameters.AddWithValue("@pPassword", ComputeHash(txtUserPass.Value.ToString()));
 
                 cnn.Open();
-                Object[] test;
 
                 //rows = command.ExecuteNonQuery();
                 using (SqlDataReader reader = command.ExecuteReader())
             {
-                test = new Object[reader.FieldCount];
+                    userInfo = new Object[reader.FieldCount];
                 while (reader.Read())
                 {
-                    reader.GetValues(test);
+                    reader.GetValues(userInfo);
                     rows++;
                 }
             }
             cnn.Close();
-                 test = new Object[0];
+                // Assign user access rights string to session
+                Session["accessRights"] = userInfo[16];
             }
             catch (Exception ex)
             {

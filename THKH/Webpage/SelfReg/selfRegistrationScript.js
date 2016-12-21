@@ -31,13 +31,14 @@ function NewSelfReg() {
     var countriesTravelled = $("#sg").val();
     var remarks = $("#remarksinput").val();
     var visitLoc = $("#visLoc").val();
+    var qListID = $("#qnlistid").val();
     var qAnswers = getQuestionnaireAnswers();
 
     var headersToProcess = {
         fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
         AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose, pName: pName, pNric: pNric,
         otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza,
-        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "self"
+        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers
     };
     $.ajax({
         url: '../Staff/CheckInOut/checkIn.ashx',
@@ -50,6 +51,8 @@ function NewSelfReg() {
             if (resultOfGeneration.Result === "Success") {
                 var today = new Date();
                 alert("Your online registration has been recorded at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
+                clearFields();
+                window.location.reload();
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
@@ -77,14 +80,20 @@ function validatePatient() {
             success: function (returner) {
                 var resultOfGeneration = JSON.parse(returner);
                 if (resultOfGeneration.Result === "Success") {
-                    alert("Patient Found! Please fill up the rest of the form.");
-                    patientValidated = true;
-                    showNewContent();
+                    if (resultOfGeneration.Msg === "0") {
+                        alert("Error: Patient Not Found! Please Sign in at the Hospital Directly.");
+                    } else {
+                        alert("Patient Found! Please fill up the rest of the form.");
+                        patientValidated = true;
+                        showNewContent();
+                    }
+                    
                 } else {
                     alert("Error: " + resultOfGeneration.Msg);
                 }
             },
             error: function (err) {
+                alert("Error: " + err.Msg)
             },
         });
     } else {
@@ -173,6 +182,26 @@ function showModal() {
 // Hide Modal
 function hideModal() {
     $('#myModal').modal('hide');
+}
+
+function clearFields() {
+    $("#nricsInput").attr('value', "");
+    $("#namesInput").attr('value', "");
+    $("#sexinput").attr('value', "");
+    $("#nationalsInput").attr('value', "");
+    $("#daterange").attr('value', "");
+    $("#addresssInput").attr('value', "");
+    $("#postalsInput").attr('value', "");
+    $("#mobilesInput").attr('value', "");
+    $("#altInput").attr('value', "");
+    $("#homesInput").attr('value', "");
+    $("#emailsInput").attr('value', "");
+    $("#visitbookingtime").attr('value', ""); // Need to split to date & time
+    $("#patientNric").attr('value', "");
+    $("#patientName").attr('value', "");
+    $('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
+    $("#purposeInput").attr('value', "");
+    $("#visLoc").attr('value', "");
 }
 
 // Show new visitor registration form
@@ -278,11 +307,13 @@ function hideTags() {
 
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
-    var answers = "";
+    var answers = '{';
     $.each($("#selfregistration input.answer"), function (index, value) {
-        answers += $(value).val();
+        answers += index + ':' + $(value).val() + ',';
     });
-    return answers;
+    answers = answers.substring(0, answers.length - 1) + '}';
+    var jsonString = JSON.stringify(answers);
+    return jsonString;
 }
 
 // Loads & displays the active questionnaire from the DB for Self-Reg
@@ -301,8 +332,10 @@ function loadActiveForm() {
             // Display Form CSS
             var arr = resultOfGeneration.Msg;
             var htmlString = "";
+            var qListID = 0;
             for (i = 0; i < arr.length; i++) {
                 var object = arr[i];
+                qListID = object.QuestionList;
                 var question = object.Question;
                 var type = object.QuestionType;
                 var values = object.QuestionAnswers;
@@ -346,9 +379,7 @@ function loadActiveForm() {
                                     + "</div>";
                 }
             }
-            //var mydiv = document.getElementById("questionaireForm");
-            //var newcontent = document.createElement('div');
-            //newcontent.innerHTML = htmlString;
+            htmlString += "<input type='hidden' runat='server' class='form-control' value='" + qListID + "' id='qnlistid' />";
             var formElement = document.createElement("DIV");
             $(formElement).attr("class", "list-group-item");
             $(formElement).attr("style", "text-align: left");

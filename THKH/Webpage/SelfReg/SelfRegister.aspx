@@ -117,9 +117,9 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="patientName" />
                                     </div>
-                                    <label for="patientNric">Patient NRIC</label>
+                                    <%--<label for="patientNric">Patient NRIC</label>--%>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="patientNric" />
+                                        <input type="hidden" runat="server" class="form-control" id="patientNric" />
                                     </div>
                                     <label for="bedno">Bed Number:</label> <%--Bed Number--%>
                                 <div class="form-group">
