@@ -94,13 +94,13 @@
                                 <h4 id="emptyNricWarning">Please enter your NRIC/Identification Number!</h4>
                             </div>
                             <div class="modal-footer">
-                                <input type="submit" class="btn btn-block btn-success" id="submitNric" onclick="checkIfExistingVisitor(); false;" value="Submit"/>
+                                <button class="btn btn-block btn-success" id="submitNric" onclick="checkIfExistingVisitor(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-md-offset-3">
-                    <h4 id="emptyFields" style="color:red">Please fill in all the required fields (*).</h4>
+                    
                     <div class="row" id="visitDetailsDiv">
                         <div class="jumbotron">
                         <h3>Visit Details</h3>
@@ -125,7 +125,7 @@
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
-                                <input type="button" id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;" />
+                                <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Validate Patient</button>
                                 </div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
                                     <label for="visLoc">Visit Location</label> 
@@ -234,8 +234,9 @@
                             <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation(); false;" value="true" />I declare that the above information given is accurate</label><br />
                                     <input type="hidden" name="declare" value="false" />
                             <label for="declaration" id="declabel" style="color:red">Please validate your patient details & check this option to continue</label>
+                                    <h4 id="emptyFields" style="color:red">Please fill in all the required fields (*).</h4>
                         </div>
-                        <input class="btn btn-block btn-success" type="button" id="submitNewEntry" runat="server" onclick="checkRequiredFields(); false;" value="Submit"/> <%--Copy to Tables without confirmation--%>
+                        <button class="btn btn-block btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button> <%--Copy to Tables without confirmation--%>
 
                         </div>
                             </div>

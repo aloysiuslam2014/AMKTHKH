@@ -77,145 +77,238 @@ function updateDataTableSelectAllCtrl(table) {
 
 // Add new questionnaire
 function newQuestionnaire() {
+    var resultOfGeneration = "";
+    var qname = $("#qnaireid").val();
+    var headersToProcess = {
+        requestType: "addQuestionnaire", qName: qname
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Result === "Success") {
+                alert("Questionnaire " + qname + " Added!");
+            } else {
+                alert("Questionnaire name already exists! Please use a unique name.");
+            }
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Delete questionnaire
 function deleteQuestionnaire() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "deleteQuestionnaire"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Add Question
 function addQuestion() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "addQuestion"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Delete Question
 function deleteQuestion() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "deleteQuestion"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Add questions to Questionnaire
 function AddQtoQuestionnaire() {
-
+    // May not need
 }
 
 // Update Questionnaire
 function updateQuestionnaire() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "update"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Remove questions from Questionnaire
 function removeQFromQuestionnaire() {
-
+    // May not need
 }
 
-// set the questionnaire to be active
-function setActiveQuestionnaire(){}
+// Checkbox
+$(function () {
+    $('.list-group.checked-list-box .list-group-item').each(function () {
 
-// Select all checkboxes
-$(document).ready(function () {
-    // Array holding selected row IDs
-    var rows_selected = [];
-    var table = $('#questionBankTable').DataTable({
-        'ajax': {
-            'url': '/lab/articles/jquery-datatables-checkboxes/ids-arrays.txt'
-        },
-        'columnDefs': [{
-            'targets': 0,
-            'searchable': false,
-            'orderable': false,
-            'width': '1%',
-            'className': 'dt-body-center',
-            'render': function (data, type, full, meta) {
-                return '<input type="checkbox">';
-            }
-        }],
-        'order': [[1, 'asc']],
-        'rowCallback': function (row, data, dataIndex) {
-            // Get row ID
-            var rowId = data[0];
+        // Settings
+        var $widget = $(this),
+            $checkbox = $('<input type="checkbox" class="hidden" />'),
+            color = ($widget.data('color') ? $widget.data('color') : "primary"),
+            style = ($widget.data('style') == "button" ? "btn-" : "list-group-item-"),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
 
-            // If row ID is in the list of selected row IDs
-            if ($.inArray(rowId, rows_selected) !== -1) {
-                $(row).find('input[type="checkbox"]').prop('checked', true);
-                $(row).addClass('selected');
-            }
-        }
-    });
+        $widget.css('cursor', 'pointer')
+        $widget.append($checkbox);
 
-    // Handle click on checkbox
-    $('#example tbody').on('click', 'input[type="checkbox"]', function (e) {
-        var $row = $(this).closest('tr');
-
-        // Get row data
-        var data = table.row($row).data();
-
-        // Get row ID
-        var rowId = data[0];
-
-        // Determine whether row ID is in the list of selected row IDs 
-        var index = $.inArray(rowId, rows_selected);
-
-        // If checkbox is checked and row ID is not in list of selected row IDs
-        if (this.checked && index === -1) {
-            rows_selected.push(rowId);
-
-            // Otherwise, if checkbox is not checked and row ID is in list of selected row IDs
-        } else if (!this.checked && index !== -1) {
-            rows_selected.splice(index, 1);
-        }
-
-        if (this.checked) {
-            $row.addClass('selected');
-        } else {
-            $row.removeClass('selected');
-        }
-
-        // Update state of "Select all" control
-        updateDataTableSelectAllCtrl(table);
-
-        // Prevent click event from propagating to parent
-        e.stopPropagation();
-    });
-
-    // Handle click on table cells with checkboxes
-    $('#example').on('click', 'tbody td, thead th:first-child', function (e) {
-        $(this).parent().find('input[type="checkbox"]').trigger('click');
-    });
-
-    // Handle click on "Select all" control
-    $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
-        if (this.checked) {
-            $('#example tbody input[type="checkbox"]:not(:checked)').trigger('click');
-        } else {
-            $('#example tbody input[type="checkbox"]:checked').trigger('click');
-        }
-
-        // Prevent click event from propagating to parent
-        e.stopPropagation();
-    });
-
-    // Handle table draw event
-    table.on('draw', function () {
-        // Update state of "Select all" control
-        updateDataTableSelectAllCtrl(table);
-    });
-
-    // Handle form submission event 
-    $('#frm-example').on('submit', function (e) {
-        var form = this;
-
-        // Iterate over all selected checkboxes
-        $.each(rows_selected, function (index, rowId) {
-            // Create a hidden element 
-            $(form).append(
-                $('<input>')
-                   .attr('type', 'hidden')
-                   .attr('name', 'id[]')
-                   .val(rowId)
-            );
+        // Event Handlers
+        $widget.on('click', function () {
+            $checkbox.prop('checked', !$checkbox.is(':checked'));
+            $checkbox.triggerHandler('change');
+            updateDisplay();
         });
+        $checkbox.on('change', function () {
+            updateDisplay();
+        });
+
+
+        // Actions
+        function updateDisplay() {
+            var isChecked = $checkbox.is(':checked');
+
+            // Set the button's state
+            $widget.data('state', (isChecked) ? "on" : "off");
+
+            // Set the button's icon
+            $widget.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$widget.data('state')].icon);
+
+            // Update the button's color
+            if (isChecked) {
+                $widget.addClass(style + color + ' active');
+            } else {
+                $widget.removeClass(style + color + ' active');
+            }
+        }
+
+        // Initialization
+        function init() {
+
+            if ($widget.data('checked') == true) {
+                $checkbox.prop('checked', !$checkbox.is(':checked'));
+            }
+
+            updateDisplay();
+
+            // Inject the icon if applicable
+            if ($widget.find('.state-icon').length == 0) {
+                $widget.prepend('<span class="state-icon ' + settings[$widget.data('state')].icon + '"></span>');
+            }
+        }
+        init();
     });
 
+    $('#get-checked-data').on('click', function (event) {
+        event.preventDefault();
+        var checkedItems = {}, counter = 0;
+        $("#check-list-box li.active").each(function (idx, li) {
+            checkedItems[counter] = $(li).text();
+            counter++;
+        });
+        $('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
+    });
 });
+
+// set the questionnaire to be active
+function setActiveQuestionnaire() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "active"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
+
+}

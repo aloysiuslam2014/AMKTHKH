@@ -23,6 +23,31 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             if (typeOfRequest == "initialize") {
                 successString += retrieveQuestionnaires();
             }
+            if (typeOfRequest == "addQuestion")
+            {
+                successString += addQuestion();
+            }
+            if (typeOfRequest == "deleteQuestion")
+            {
+                successString += deleteQuestion();
+            }
+            if (typeOfRequest == "addQuestionnaire")
+            {
+                successString += addQuestionnaire();
+            }
+            if (typeOfRequest == "deleteQuestionnaire")
+            {
+                successString += deleteQuestionnaire();
+            }
+            if (typeOfRequest == "update")
+            {
+                successString += updateQuestionnaire();
+            }
+            if (typeOfRequest == "active")
+            {
+                successString += setActiveQuestionnaire();
+            }
+            context.Response.Write(successString);
         }
 
         // Generate JSON String for Questionnaire & Questions - Initial Page Load
@@ -41,14 +66,21 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[ADD_QUESTIONNARIE_LIST]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[ADD_BLANK_QUESTIONNARIE_LIST]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 // Add params Questionnaire ID
                 command.Parameters.Add(respon);
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                var result = Int32.Parse(respon.Value.ToString());
+                if (result == 1)
+                {
+                    successString += result.ToString();
+                }
+                else {
+                    successString.Replace("Success", "Failure");
+                }
             }
             catch (Exception ex)
             {
