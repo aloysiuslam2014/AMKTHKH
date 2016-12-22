@@ -257,7 +257,7 @@
                 if (accessRightsStr.Contains('2'))
                 { %>
             <!-- End of Registration -->
-            kjhfd
+            
             <!-- FormManagement -->
             <div class="tab-pane maxHeight jumbotron" id="formManagement">
                 <div class="row">
