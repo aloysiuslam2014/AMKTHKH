@@ -15,7 +15,9 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         {
 
             context.Response.ContentType = "text/plain";
-            context.Response.Write("Hello World");
+            String successString = "";
+
+            var typeOfRequest = "";
         }
 
         public bool IsReusable
