@@ -10,7 +10,25 @@ function hideAddQuestionnaireModal() {
 
 // Get questionaireList and Question list
 function formManagementInit() {
-        
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "intialize"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+            
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
