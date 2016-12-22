@@ -23,7 +23,7 @@ namespace THKH.Webpage.Staff
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_ACTIVE_TERMINAL]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[GET_INACTIVE_TERMINAL]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 //command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
                 cnn.Open();
