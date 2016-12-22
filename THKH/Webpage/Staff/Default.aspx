@@ -23,7 +23,7 @@
 </head>
 <body onload="hideTags()">
     <% var accessRightsStr = Session["accessRights"].ToString(); %>
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
 
             <div class="navbar-header">
@@ -61,6 +61,11 @@
                         <a href="#PassManagement" data-toggle="tab">Pass Management
                         </a>
                     </li>
+                    <%--<%  }if (accessRightsStr.Contains('6')){%>
+                    <li>
+                        <a href="#ContactTracing" data-toggle="tab">Contact Tracing
+                        </a>
+                    </li>--%>
                     <%  }%>
                 </ul>
 
@@ -89,6 +94,7 @@
                     <div class="row">
                         <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
                             <div class="jumbotron" style="text-align: left">
+                                <h3 style="color: midnightblue">Search for Visitor</h3>
                                 <label class="control-label" for="nric">Visitor's NRIC:</label>
                                 <div class="input-group date" id="nricinputgroup">
                                     <input runat="server" id="nric" class="form-control required" type="text" autofocus />
@@ -110,7 +116,7 @@
                     <div class="row">
                         <div id="newusercontent" class="col-sm-6" runat="server">
                             <div class="jumbotron" style="text-align: left">
-                                <h3>Personal Details</h3>
+                                <h3 style="color: midnightblue">Personal Details</h3>
                                 <label for="namesinput">Full Name</label><label for="namesinput" id="comp1" style="color: red">*</label>
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control required" id="namesInput" />
@@ -161,7 +167,7 @@
                         </div>
                         <div id="staticinfocontainer" class="col-sm-6" style="text-align: left" runat="server">
                             <div class="jumbotron" style="text-align: left">
-                                <h3>Visit Details</h3>
+                                <h3 style="color: midnightblue">Visit Details</h3>
                                 <label for="pInput">Visit Purpose</label>
                                 <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
@@ -187,11 +193,12 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="bedno" />
                                     </div>
+                                    <div class="form-group">
                                     <input type="button" id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;" />
-                                </div>
+                                    </div></div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server">
                                     <%--Show this only when Visit Purpose is "Other Purpose"--%>
-                                    <label for="visLoc">Visit Location</label>
+                                    <label for="visLoc">Intended Visit Location</label>
                                     <div class="form-group">
                                         <select class="form-control" id="visLoc">
                                             <option name="none" value="">-- Select One --</option>
@@ -203,25 +210,25 @@
                                         <input type="text" runat="server" class="form-control" id="purposeInput" />
                                     </div>
                                 </div>
-                                <label for="visitbookingdate">Visit Date</label><label for="visitbookingdate" id="comp21" style="color: red">*</label>
-                                <%--Visit Time--%>
+                                <%--Visit Date--%>
+                                <label for="visitbookingdate">Intended Visit Date</label><label for="visitbookingdate" id="comp21" style="color: red">*</label>
                                     <div class="input-group date" id="visitbookingdatediv">
                                     <input type='text' id="visitbookingdate" class="form-control required" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
-                                <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
                                 <%--Visit Time--%>
+                                <label for="visitbookingtime">Intended Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
                                     <div class="input-group date" id="visitbookingtimediv">
                                     <input type='text' id="visitbookingtime" class="form-control required" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
                                     </span>
                                 </div>
-                                <h3>Health Screening Questionnaire</h3>
+                                <h3 style="color: midnightblue">Health Screening Questionnaire</h3>
                                 <div id="questionaireForm">
-                                    <!-- load questionaires here -->
+                                    <!-- load questionaires here from JS -->
                                 </div>
                                 <div class="checkbox">
                                     <label for="declaration"></label>
@@ -242,7 +249,7 @@
             <!-- FormManagement -->
             <div class="tab-pane maxHeight jumbotron" id="formManagement">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 panel">
                         <div class="modal fade" id="addQuestionnaire" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -258,7 +265,7 @@
               <input type="text"  class="form-control" id="qnaireid" placeholder="Enter a Questionnaire ID"/>
             </div>
            
-              <button type="button" class="btn btn-success btn-block" onclick="addQuestionnaire();"><span class="glyphicon glyphicon-plus"></span> Add Questionnaire</button>
+              <button type="button" class="btn btn-success btn-block" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span> Add Questionnaire</button>
           
         </div>
         <div class="modal-footer" style=" text-align:center !important;">
@@ -267,9 +274,9 @@
       
     </div>
   </div> 
-                        <h3>Select a Questionnaire to Begin</h3>
+                        <h3 style="color: midnightblue">Select a Questionnaire to Begin</h3>
                             <div class="input-group" id="qnaireSelection">
-                                    <select class="form-control" id="qnaires" onchange="getForm(); false;">
+                                    <select class="form-control" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
                                         <option value="">-- Select Questionnaire --</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -278,15 +285,76 @@
                                         <button class="btn btn-default" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span> New Questionnaire</button>
                                 </span>
                                     </div>
-                        <div class="list-group" id="questionnaireQuestionsToDisplay">
-                            <h3>Display Questionnaire #Number Questions Here</h3>
-                            <h5>Each question will have a delete button next to it</h5>
+                        <div class="list-group" style="overflow: auto" id="questionnaireQuestionsToDisplay">
+                            <table id="questionnaireQuestionsTable" class="display select table table-hover table-responsive">
+                               <thead>
+                                  <tr>
+                                     <th><input name="select_all" value="1" type="checkbox"/></th>
+                                     <th>Question</th>
+                                    <th>Answer Type</th>
+                                  </tr>
+                               </thead>
+                                <tbody>
+                                    <tr>
+                                <td><input name="select" value="2" type="checkbox"/></td>
+                                <td>Alfreds Futterkiste</td>
+                                <td>Germany</td>
+                              </tr>
+                              <tr>
+                                  <td><input name="select" value="3" type="checkbox"/></td>
+                                <td>Berglunds snabbkop</td>
+                                <td>Sweden</td>
+                              </tr>
+                              <tr>
+                                  <td><input name="select" value="4" type="checkbox"/></td>
+                                <td>Island Trading</td>
+                                <td>UK</td>
+                              </tr>
+                              <tr>
+                                  <td><input name="select" value="5" type="checkbox"/></td>
+                                <td>Koniglich Essen</td>
+                                <td>Germany</td>
+                              </tr>
+                                </tbody>
+                            </table>
                         </div>
+                        <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Questions from Questionnaire</button>
                         </div>
-                    <div class="col-sm-6">
-                        <div class="list-group" id="questionnaireQuestions">
-                            <h3>Display All Questions Here - Checkbox styled</h3>
-                            <button type="button" id="addQuestionsToQuestionnaire" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Questions to Questionnaire</button>
+                    <div class="col-sm-6 panel">
+                        <div class="list-group" style="overflow: auto" id="questionnaireQuestions">
+                            <h3 style="color: midnightblue">All Questions</h3>
+                            <table id="questionBankTable" class="display select table table-hover table-responsive">
+                               <thead>
+                                  <tr>
+                                     <th><input name="select_all" value="1" type="checkbox"/></th>
+                                     <th>Question</th>
+                                    <th>Answer Type</th>
+                                  </tr>
+                               </thead>
+                                <tbody>
+                                    <tr>
+                                <td><input name="select" value="2" type="checkbox"/></td>
+                                <td>Alfreds Futterkiste</td>
+                                <td>Germany</td>
+                              </tr>
+                              <tr>
+                                  <td><input name="select" value="3" type="checkbox"/></td>
+                                <td>Berglunds snabbkop</td>
+                                <td>Sweden</td>
+                              </tr>
+                              <tr>
+                                  <td><input name="select" value="4" type="checkbox"/></td>
+                                <td>Island Trading</td>
+                                <td>UK</td>
+                              </tr>
+                              <tr>
+                                  <td><input name="select" value="5" type="checkbox"/></td>
+                                <td>Koniglich Essen</td>
+                                <td>Germany</td>
+                              </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Questions to Questionnaire</button>
                         </div>
                         </div>
                     </div>
@@ -391,8 +459,17 @@
 
             </div>
             <!-- End of PassManagement -->
-            <%} %>
+           
+            <%}if (accessRightsStr.Contains('6'))
+                { %>
+            <!-- ContactTracing -->
+            <%--<div class="tab-pane maxHeight" id="ContactTracing">
+                <h1>This is the test page potato pirates!</h1>
 
+
+            </div>--%>
+            <!-- End of ContactTracing -->
+             <%} %>
 
         </div>
     </div>
