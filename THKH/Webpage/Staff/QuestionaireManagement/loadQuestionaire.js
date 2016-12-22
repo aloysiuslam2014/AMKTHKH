@@ -91,41 +91,141 @@ function selectAllInQuestionsList(table) {
 
 // Add new questionnaire
 function newQuestionnaire() {
+    var resultOfGeneration = "";
+    var qname = $("#qnaireid").val();
+    var headersToProcess = {
+        requestType: "addQuestionnaire", qName: qname
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Result === "Success") {
+                alert("Questionnaire " + qname + " Added!");
+            } else {
+                alert("Questionnaire name already exists! Please use a unique name.");
+            }
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Delete questionnaire
 function deleteQuestionnaire() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "deleteQuestionnaire"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Add Question
 function addQuestion() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "addQuestion"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Delete Question
 function deleteQuestion() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "deleteQuestion"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Add questions to Questionnaire
 function AddQtoQuestionnaire() {
-
+    // May not need
 }
 
 // Update Questionnaire
 function updateQuestionnaire() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "update"
+    };
+    $.ajax({
+        url: './questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Msg;
+
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
 
 }
 
 // Remove questions from Questionnaire
 function removeQFromQuestionnaire() {
-
+    // May not need
 }
 
-// set the questionnaire to be active
-function setActiveQuestionnaire(){}
+// Checkbox
+$(function () {
+    $('.list-group.checked-list-box .list-group-item').each(function () {
 
 // Select all checkboxes
 $(document).ready(function () {
