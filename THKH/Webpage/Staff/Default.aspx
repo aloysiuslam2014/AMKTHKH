@@ -283,8 +283,7 @@
                         <div class="input-group" id="qnaireSelection">
                             <select class="form-control" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
                                 <option value="">-- Select Questionnaire --</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                                
                             </select>
                             <span class="input-group-btn">
                                 <button class="btn btn-default" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span> New Questionnaire</button>
