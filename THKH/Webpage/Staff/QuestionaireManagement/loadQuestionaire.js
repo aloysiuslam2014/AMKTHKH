@@ -1,4 +1,26 @@
-﻿// Show Modal
+﻿// Draggable questions for ordering purposes
+$(function () {
+    $("#sortable").sortable({
+        revert: true
+    });
+    $("#draggable").draggable({
+        connectToSortable: "#sortable",
+        helper: "clone",
+        revert: "invalid"
+    });
+    $("ul, li").disableSelection();
+
+    $('#select').change(function () {
+        var current = $('#select').val();
+        if (current != 'null') {
+            $('#select').css('color', 'black');
+        } else {
+            $('#select').css('color', 'gray');
+        }
+    });
+});
+
+// Show Modal
 function showAddQuestionnaireModal() {
     $('#addQuestionnaire').modal('show');
 }
@@ -38,24 +60,24 @@ function formManagementInit() {
 
 // Inserts the data into the appropriate fields
 function initialiseData(data) {
-    var qnList = data.qnList;
-    for(var i = 0; i< qnList.length;i++){
-
+    var qnList = data.qnList; //for qns   --->   qId,question,qnType,values
+    
+}
+//creates options and appends to the field
+function fillQuestinaireList(dataForQList) {
+    for (var i = 0; i < dataForQList.length; i++) {
+        var optin = document.createElement("option");
+        $(optin).html(dataForQList[i].ListName);
+        if (dataForQList[i].Active.toString() == "1") {
+            $(optin).attr("value", "1");
+            $(optin).attr("data-color", "info"); 
+            $(optin).attr("color", "green");
+        }
+        $('#qnaires').append(optin);
     }
 }
 
-// Draggable questions for ordering purposes
-$(function () {
-    $("#sortable").sortable({
-        revert: true
-    });
-    $("#draggable").draggable({
-        connectToSortable: "#sortable",
-        helper: "clone",
-        revert: "invalid"
-    });
-    $("ul, li").disableSelection();
-});
+
 
 // Select All From Questionaire List of questions
 function selectAllInQuestionaireList(table) {
