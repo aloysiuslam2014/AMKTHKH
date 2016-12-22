@@ -32,6 +32,12 @@
     height:inherit;
 }
 
+#genericTerminalModal{
+    position:absolute;
+    width:inherit;
+    height:inherit;
+}
+
 #TerminalManagement{
     margin-right:-15px;
     margin-left:-15px;

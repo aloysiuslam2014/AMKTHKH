@@ -23,6 +23,7 @@
     $('#closeAllTerminal').on('click', function (event) {
         $('#promptTerminalModal').modal('hide');
         $('#addTerminalModal').modal('hide');
+        $('#terminalNameInput').html("");
         loadTerminals();
     });
 
@@ -56,13 +57,65 @@
             });
        
     });
-     
+    $('#cancelAction').on('click', function (event) {
+        $('#genericTerminalModal').modal('hide');
+    });
     $('#deactivateTerminal').on('click', function (event) {
         event.preventDefault();
-        var selectedItems = getSelectedTerminals();
+        $('#GenericMessage').html("Are you sure you want to <B>DEACTIVATE</B> the selected terminal(s)?");
+        $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
+        $('.modal-backdrop').appendTo('#TerminalManagement'); 
+        $('#confirmAction').on('click', function (event) {
+            genericTerminalCofirmation("deactivateTerminal");
+        });
+      
+    });
+    $('#deleteTerminal').on('click', function (event) {
+        event.preventDefault();
+        
+        $('#GenericMessage').html("Are you sure you want to <B>DELETE</B> the selected terminal(s)?");
+        $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
+        $('.modal-backdrop').appendTo('#TerminalManagement');
+        $('#confirmAction').on('click', function (event) {
+            genericTerminalCofirmation("deleteTerminal");
+        });
+    });
+    $('#deactivateAll').on('click', function (event) {
+        event.preventDefault();
+        
+      
+        $('#GenericMessage').html("Are you sure you want to <B>DEACTIVATE <font color='red'>ALL</font></B> the selected terminal(s)?");
+        $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
+        $('.modal-backdrop').appendTo('#TerminalManagement');
+        $('#confirmAction').on('click', function (event) {
+            genericTerminalCofirmation("deactivateAllTerminal");
+        });
+
+    });
+    $('#deleteAll').on('click', function (event) {
+        event.preventDefault();
+       ;
+        $('#GenericMessage').html("Are you sure you want to  <B>DELETE <font color='red'>ALL</font></B> the selected terminal(s)?");
+        $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
+        $('.modal-backdrop').appendTo('#TerminalManagement');
+        $('#confirmAction').on('click', function (event) {
+            genericTerminalCofirmation("deleteAllTerminal")
+        });
+         
+      
+    });
+});
+ 
+function genericTerminalCofirmation(type){
+    //All buttons will have a warning before proceeding on...
+  
+    
+    var selectedItems = getSelectedTerminals();
+    if (type == "deactivateTerminal") {
+       
         //create looped ajax call to deactivate Terminal
-        for(var i = 0;i < selectedItems.length ; i++){
-          
+        for (var i = 0; i < selectedItems.length ; i++) {
+
             var headersToProcess = { action: "deactivate", id: selectedItems[i] };
             $.ajax({
                 url: './TerminalCalls/TerminalCheck.ashx',
@@ -73,6 +126,7 @@
                 success: function (returner) {
                     if (i == selectedItems.length) {
                         loadTerminals();
+
                     }
                 },
                 error: function (err) {
@@ -80,11 +134,8 @@
                 },
             });
         }
-    });
-
-    $('#deleteTerminal').on('click', function (event) {
-        event.preventDefault();
-        var selectedItems = getSelectedTerminals();
+    }
+    else if (type === "deleteTerminal") {
         //create looped ajax call to delete terminal
         for (var i = 0; i < selectedItems.length ; i++) {
 
@@ -97,19 +148,17 @@
 
                 success: function (returner) {
                     if (i == selectedItems.length) {
-                          loadTerminals();
+                        loadTerminals();
                     }
-                      
+
                 },
                 error: function (err) {
                     alert("error");
                 },
             });
         }
-    });
-    $('#deactivateAll').on('click', function (event) {
-        event.preventDefault();
-        var selectedItems = getSelectedTerminals();
+    }
+    else if (type == "deactivateAllTerminal") {
         //deactivate all terminal
         var headersToProcess = { action: "deactivateAllTerminals", id: selectedItems[i] };
         $.ajax({
@@ -119,17 +168,37 @@
 
 
             success: function (returner) {
-               
-                    loadTerminals();
+
+                loadTerminals();
+            },
+            error: function (err) {
+                alert("error");
+            },
+        });
+    }
+    else if (type == "deleteAllTerminal") {
+        //delete all terminal
+        var headersToProcess = { action: "deleteAllTerminals", id: selectedItems[i] };
+        $.ajax({
+            url: './TerminalCalls/TerminalCheck.ashx',
+            method: 'post',
+            data: headersToProcess,
+
+
+            success: function (returner) {
+
+                loadTerminals()
             },
             error: function (err) {
                 alert("error");
             },
         });
 
-    });
-});
- 
+    }
+  
+    $('#genericTerminalModal').modal('hide');
+    $('#confirmAction').prop('onclick', null);
+}
 
 function loadTerminals() {
     var headersToProcess = { action: "getAllTerminals", id: "" };

@@ -59,6 +59,12 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 success = deactivateAllTerminal(msgg);
 
             }
+            else if (action.Equals("deleteAllTerminals"))
+            {
+
+                success = deleteAllTerminals(msgg);
+
+            }
             else { 
                 success = deactivateTerminal(msgg);
             }
@@ -79,6 +85,53 @@ namespace THKH.Webpage.Staff.TerminalCalls
             }
             
 
+        }
+
+        private bool deleteAllTerminals(string id)
+        {
+            //string connectionString = null;
+            bool success = false;
+       
+            SqlConnection cnn;
+            // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[DELETE_ALL_TERMINAL]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+
+
+                        //Get txtPwd with Salt using SHA2-512 & compare hash values
+                    }
+                }
+                //rows = command.ExecuteNonQuery();
+
+
+                cnn.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+            success = respon.Value.ToString().Equals("1") ? true : false;
+
+            return success;
         }
 
         private bool addTerminal(string id)

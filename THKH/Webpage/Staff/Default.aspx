@@ -367,7 +367,7 @@
             <div class="tab-pane maxHeight " style="position:relative" id="TerminalManagement">
                 <div class="row inheritHeight">
                     <div class="col-md-8 col-md-offset-2 inheritHeight flexDisplay">
-                        <div class="panel  panel-primary maxWidth overflowXaxis removeBtmMargin" >
+                        <div class="panel  panel-primary maxWidth  removeBtmMargin" >
                             <div class="panel-heading" style="font-size: 36px;">Terminals</div>
                             <div class="panel-body maxHeightWithButtonSpaceBelow">
 
@@ -416,6 +416,26 @@
 
                                     </div>
                                 </div>
+
+                                 <div class="modal fade" id="genericTerminalModal" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                             
+                                            <div class="modal-body" id="GenericMessage" style=" text-align: center;">
+
+                                                <!-- message here -->
+
+                                            </div>
+                                            <div class="modal-footer" style="text-align: center !important;">
+                                                <button type="button"   id="confirmAction"   class="btn bg-primary btn-default "><span class="glyphicon glyphicon-save-file"></span>Confirm</button>
+                                                <button type="button"   id="cancelAction"   class="btn btn-danger btn-default "><span class="glyphicon glyphicon-remove"></span>Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                                 <!-- Show terminals avail here -->
                                 <div id="terminals" class="table-bordered maxHeight overflowXaxis">
                                     <ul class="list-group checked-list-box" id="terminalList">
@@ -429,6 +449,9 @@
                                 <button id="addTerminal" class="btn-primary btn-lg">Add Terminal</button>
                                 <button id="deactivateTerminal" class="btn-primary btn-lg">Deactivate Selected Terminal</button>
                                 <button id="deleteTerminal" class="btn-primary btn-lg">Delete Selected Terminal</button>
+                                
+                            </div>
+                            <div>
                                 <button id="deactivateAll" class="btn-primary btn-lg">Deactivate All Terminals</button>
                                 <button id="deleteAll" class="btn-primary btn-lg">Delete All Terminals</button>
                             </div>
