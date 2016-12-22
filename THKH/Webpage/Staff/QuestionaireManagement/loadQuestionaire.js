@@ -12,18 +12,18 @@ function hideAddQuestionnaireModal() {
 function formManagementInit() {
     var resultOfGeneration = "";
     var headersToProcess = {
-        requestType: "intialize"
+        requestType: "initialize"
     };
     $.ajax({
-        url: './questionaireManagement.ashx',
+        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
 
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.result;
-            if (res.toString() == "success") {
+            var res = resultOfGeneration.Result;
+            if (res.toString() == "Success") {
                 initialiseData(resultOfGeneration.Msg)
             } else {
                 alert(resultOfGeneration.Msg);
@@ -36,11 +36,11 @@ function formManagementInit() {
 
 }
 
-// Inserts the data into the appropriate fields
+// Inserts the data into the appropriate fields <Populate Dropdown List>
 function initialiseData(data) {
     var qnList = data.qnList;
     for(var i = 0; i< qnList.length;i++){
-
+        // If active, append a "Active" to the Form ID
     }
 }
 
@@ -75,7 +75,7 @@ function newQuestionnaire() {
         requestType: "addQuestionnaire", qName: qname
     };
     $.ajax({
-        url: './questionaireManagement.ashx',
+        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -84,6 +84,7 @@ function newQuestionnaire() {
             resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
                 alert("Questionnaire " + qname + " Added!");
+                hideAddQuestionnaireModal();
             } else {
                 alert("Questionnaire name already exists! Please use a unique name.");
             }
@@ -102,7 +103,7 @@ function deleteQuestionnaire() {
         requestType: "deleteQuestionnaire"
     };
     $.ajax({
-        url: './questionaireManagement.ashx',
+        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -126,7 +127,7 @@ function addQuestion() {
         requestType: "addQuestion"
     };
     $.ajax({
-        url: './questionaireManagement.ashx',
+        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -150,7 +151,7 @@ function deleteQuestion() {
         requestType: "deleteQuestion"
     };
     $.ajax({
-        url: './questionaireManagement.ashx',
+        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -179,7 +180,7 @@ function updateQuestionnaire() {
         requestType: "update"
     };
     $.ajax({
-        url: './questionaireManagement.ashx',
+        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -200,12 +201,3 @@ function updateQuestionnaire() {
 function removeQFromQuestionnaire() {
     // May not need
 }
-
-// Checkbox
-$(function () {
-    $('.list-group.checked-list-box .list-group-item').each(function () {
-
-// Select all checkboxes
-$(document).ready(function () {
-    
-});

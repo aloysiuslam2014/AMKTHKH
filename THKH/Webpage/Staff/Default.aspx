@@ -47,7 +47,7 @@
                     if (accessRightsStr.Contains('2'))
                     {%>
                     <li>
-                        <a href="#formManagement" data-toggle="tab">Form Management
+                        <a href="#formManagement" data-toggle="tab" onclick="formManagementInit()">Form Management
                         </a>
                     </li>
                     <%  }

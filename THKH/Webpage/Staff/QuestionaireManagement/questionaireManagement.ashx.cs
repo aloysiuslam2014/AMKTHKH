@@ -17,35 +17,38 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         {
 
             context.Response.ContentType = "text/plain";
-            String successString = "";
+            String successString = "{\"Result\":\"Success\",";
             var typeOfRequest = context.Request.Form["requestType"];
 
             if (typeOfRequest == "initialize") {
                 successString += retrieveQuestionnaires();
+                successString += ",";
+                successString += retrieveQuestions();
             }
             if (typeOfRequest == "addQuestion")
             {
-                successString += addQuestion();
+                successString = addQuestion();
             }
             if (typeOfRequest == "deleteQuestion")
             {
-                successString += deleteQuestion();
+                successString = deleteQuestion();
             }
             if (typeOfRequest == "addQuestionnaire")
             {
-                successString += addQuestionnaire();
+                var qName = context.Request.Form["qName"];
+                successString = addQuestionnaire(qName);
             }
             if (typeOfRequest == "deleteQuestionnaire")
             {
-                successString += deleteQuestionnaire();
+                successString = deleteQuestionnaire();
             }
             if (typeOfRequest == "update")
             {
-                successString += updateQuestionnaire();
+                successString = updateQuestionnaire();
             }
             if (typeOfRequest == "active")
             {
-                successString += setActiveQuestionnaire();
+                successString = setActiveQuestionnaire();
             }
             context.Response.Write(successString);
         }
@@ -57,7 +60,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Add new questionnaire to DB
-        private String addQuestionnaire()
+        private String addQuestionnaire(String qName)
         {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":";
@@ -68,7 +71,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             {
                 SqlCommand command = new SqlCommand("[dbo].[ADD_BLANK_QUESTIONNARIE_LIST]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params Questionnaire ID
+                command.Parameters.AddWithValue("@pQ_QuestionListID", qName);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
@@ -76,7 +79,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 var result = Int32.Parse(respon.Value.ToString());
                 if (result == 1)
                 {
-                    successString += result.ToString();
+                    successString += "\"" + result.ToString();
                 }
                 else {
                     successString.Replace("Success", "Failure");
@@ -93,7 +96,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             {
                 cnn.Close();
             }
-            successString += "}";
+            successString += "\"}";
             return successString;
         }
 
@@ -271,13 +274,13 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         private String retrieveQuestionnaires()
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            String successString = "\"Qnaires\":";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_ALL_QUESTIONNARIE_LIST]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[GET_ALL_QUESTIONNAIRE_LIST]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.Add(respon);
                 cnn.Open();
@@ -293,9 +296,8 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                         {
                             successString += ",";
                         }
-                        successString += "{\"";
-                        // Get Questionnaire ID
-                        // Get Active Status
+                        successString += "{\"ListName\":\"" + reader.GetString(0) + "\",\"Active\":\""
+                            + reader.GetInt32(2);
                         successString += "\"}";
                         count++;
                     }
@@ -307,7 +309,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             catch (Exception ex)
             {
                 successString.Replace("Success", "Failure");
-                successString += ex.Message;
+                successString += "\"" + ex.Message;
                 successString += "\"}";
                 return successString;
             }
@@ -315,7 +317,6 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             {
                 cnn.Close();
             }
-            successString += "}";
             return successString;
         }
 
@@ -362,7 +363,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             catch (Exception ex)
             {
                 successString.Replace("Success", "Failure");
-                successString += ex.Message;
+                successString += "\"" + ex.Message;
                 successString += "\"}";
                 return successString;
             }
@@ -378,7 +379,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         private String retrieveQuestions()
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            String successString = "\"Qns\":";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -400,11 +401,9 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                         {
                             successString += ",";
                         }
-                        successString += "{\"";
-                        // Get Question ID
-                        // Get Question
-                        // Get Question Type
-                        // Get Question Values
+                        successString += "{\"qId\":\"" + reader.GetInt32(0) + "\",\"question\":\"" 
+                            + reader.GetString(1) + "\",\"qnType\":\"" + reader.GetString(2) + "\",\"values\":\"" 
+                            + reader.GetString(3);
                         successString += "\"}";
                         count++;
                     }
