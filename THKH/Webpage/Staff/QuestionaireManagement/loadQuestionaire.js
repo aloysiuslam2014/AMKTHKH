@@ -28,7 +28,21 @@ function displayQuestionnaireQuestions() {
             }
         }
     }
+
 }
+
+// Draggable questions for ordering purposes
+$(function () {
+    $("#sortable").sortable({
+        revert: true
+    });
+    $("#draggable").draggable({
+        connectToSortable: "#sortable",
+        helper: "clone",
+        revert: "invalid"
+    });
+    $("ul, li").disableSelection();
+});
 
 // Updates "Select all" control in a questionbank data table
 function updateDataTableSelectAllCtrl(table) {
@@ -82,6 +96,11 @@ function deleteQuestion() {
 
 // Add questions to Questionnaire
 function AddQtoQuestionnaire() {
+
+}
+
+// Update Questionnaire
+function updateQuestionnaire() {
 
 }
 

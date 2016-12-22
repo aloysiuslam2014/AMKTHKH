@@ -9,6 +9,7 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/moment.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery-ui.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/w3data.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/bootstrap-datetimepicker.js") %>"></script>
@@ -283,46 +284,25 @@
                                     </select>
                                 <span class="input-group-btn">
                                         <button class="btn btn-default" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span> New Questionnaire</button>
+                                    <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-plus"></span> Set as Active</button>
                                 </span>
                                     </div>
                         <div class="list-group" style="overflow: auto" id="questionnaireQuestionsToDisplay">
-                            <table id="questionnaireQuestionsTable" class="display select table table-hover table-responsive">
-                               <thead>
-                                  <tr>
-                                     <th><input name="select_all" value="1" type="checkbox"/></th>
-                                     <th>Question</th>
-                                    <th>Answer Type</th>
-                                  </tr>
-                               </thead>
-                                <tbody>
-                                    <tr>
-                                <td><input name="select" value="2" type="checkbox"/></td>
-                                <td>Alfreds Futterkiste</td>
-                                <td>Germany</td>
-                              </tr>
-                              <tr>
-                                  <td><input name="select" value="3" type="checkbox"/></td>
-                                <td>Berglunds snabbkop</td>
-                                <td>Sweden</td>
-                              </tr>
-                              <tr>
-                                  <td><input name="select" value="4" type="checkbox"/></td>
-                                <td>Island Trading</td>
-                                <td>UK</td>
-                              </tr>
-                              <tr>
-                                  <td><input name="select" value="5" type="checkbox"/></td>
-                                <td>Koniglich Essen</td>
-                                <td>Germany</td>
-                              </tr>
-                                </tbody>
-                            </table>
+                            <%--Draggable Questions--%>
+                            <ul class="list-group" id="sortable"> 
+                              <li class="list-group-item" id="id_1"> Question 1</li> 
+                              <li class="list-group-item" id="id_2"> Question 2</li> 
+                              <li class="list-group-item" id="id_3"> Question 3</li> 
+                              <li class="list-group-item" id="id_4"> Question 4</li> 
+                              <li class="list-group-item" id="id_5"> Question 5</li> 
+                            </ul>
                         </div>
                         <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Questions from Questionnaire</button>
                         </div>
                     <div class="col-sm-6 panel">
                         <div class="list-group" style="overflow: auto" id="questionnaireQuestions">
                             <h3 style="color: midnightblue">All Questions</h3>
+                            <%--Checkbox Questions--%>
                             <table id="questionBankTable" class="display select table table-hover table-responsive">
                                <thead>
                                   <tr>
@@ -358,6 +338,7 @@
                         </div>
                         </div>
                     </div>
+                <input type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success" value="Update Questionnaire"/> 
             </div>
             <%}if (accessRightsStr.Contains('3'))
                 { %>
