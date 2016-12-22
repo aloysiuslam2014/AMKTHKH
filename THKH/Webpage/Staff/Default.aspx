@@ -261,6 +261,7 @@
             <!-- FormManagement -->
             <div class="tab-pane maxHeight jumbotron" id="formManagement">
                 <div class="row">
+                    <!-- questionaire portion -->
                     <div class="col-sm-6 panel">
                         <div class="modal fade" id="addQuestionnaire" role="dialog">
                             <div class="modal-dialog">
@@ -311,6 +312,8 @@
                         </div>
                         <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete Questions from Questionnaire</button>
                     </div>
+
+                    <!-- questions to be added portion -->
                     <div class="col-sm-6 panel">
                         <div class="list-group" style="overflow: auto" id="questionnaireQuestions">
                             <h3 style="color: midnightblue">All Questions</h3>
