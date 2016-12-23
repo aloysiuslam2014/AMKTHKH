@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Welcome <%= Session["username"].ToString()%> | Ang Mo Kio - Thye Hwa Kuan</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
@@ -44,29 +44,29 @@
                         </a>
                     </li>
                     <%  }
-                    if (accessRightsStr.Contains('2'))
-                    {%>
+                        if (accessRightsStr.Contains('2'))
+                        {%>
                     <li>
                         <a href="#formManagement" data-toggle="tab" onclick="formManagementInit()">Form Management
                         </a>
                     </li>
                     <%  }
-                    if (accessRightsStr.Contains('3'))
-                    {%>
+                        if (accessRightsStr.Contains('3'))
+                        {%>
                     <li>
                         <a href="#TerminalManagement" data-toggle="tab" onclick="loadTerminals()">Terminals Management
                         </a>
                     </li>
                     <%  }
-                    if (accessRightsStr.Contains('4'))
-                    {%>
+                        if (accessRightsStr.Contains('4'))
+                        {%>
                     <li>
                         <a href="#UserManagement" data-toggle="tab">User Management
                         </a>
                     </li>
                     <%  }
-                    if (accessRightsStr.Contains('1'))
-                    {%>
+                        if (accessRightsStr.Contains('1'))
+                        {%>
                     <li>
                         <a href="#PassManagement" data-toggle="tab">Pass Management
                         </a>
@@ -109,7 +109,7 @@
                             <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required" type="text" autofocus />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
+                                    <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Check NRIC</button>
                                 </span>
                             </div>
                             <h4 id="emptyNricWarning" style="color: red">Please enter your NRIC/Identification Number!</h4>
@@ -204,7 +204,7 @@
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
                                 <div class="form-group">
-                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Validate Patient</button>
+                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span>Validate Patient</button>
                                 </div>
                             </div>
                             <div id="otherpurposevisit" class="container-fluid" runat="server">
@@ -247,7 +247,7 @@
                                 <input type="hidden" name="declare" value="false" />
                                 <label for="declaration" id="declabel" style="color: red">Please check this option to continue</label>
                             </div>
-                            <button class="btn btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button>
+                            <button class="btn btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span>Submit</button>
                         </div>
                     </div>
                 </div>
@@ -257,10 +257,10 @@
                 if (accessRightsStr.Contains('2'))
                 { %>
             <!-- FormManagement -->
-            <div class="tab-pane maxHeight jumbotron" id="formManagement">
-                <div class="row">
+            <div class="tab-pane maxHeight " id="formManagement">
+                <div class="row inheritHeight">
                     <!-- questionaire portion -->
-                    <div class="col-sm-6 panel">
+                    <div class="col-sm-6 panel" style="height: 90%;">
                         <div class="modal fade" id="addQuestionnaire" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -271,28 +271,28 @@
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="qnaireid" placeholder="Enter a Questionnaire Name" />
                                         </div>
-                                        <button type="button" class="btn btn-success btn-block" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span> Add Questionnaire</button>
+                                        <button type="button" class="btn btn-success btn-block" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span>Add Questionnaire</button>
                                     </div>
                                     <div class="modal-footer" style="text-align: center !important;">
-                                        <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                        <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <h3 style="color: midnightblue">Select a Questionnaire to Begin</h3>
                         <div class="input-group" id="qnaireSelection">
-                            <select class="form-control" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
+                            <select class="form-control qnaire" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
                                 <option value="">-- Select Questionnaire --</option>
-                                
+
                             </select>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span> New Questionnaire</button>
-                                <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span> Set as Active</button>
+                                <button class="btn btn-default" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span>New Questionnaire</button>
+                                <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span>Set as Active</button>
                             </span>
                         </div>
-                        <div class="list-group" style="overflow: auto" id="questionnaireQuestionsToDisplay">
+                        <div class="list-group" style="overflow: auto; height: 76%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="questionnaireQuestionsToDisplay">
                             <%--Draggable Questions--%>
-                            <ul class="list-group checked-list-box" id="sortable">
+                            <ul class="list-group checked-list-box qnQns" id="sortable">
                                 <li class="list-group-item" id="id_1">Question 1 - Type - Value</li>
                                 <li class="list-group-item" id="id_2">Question 2 - Type - Value</li>
                                 <li class="list-group-item" id="id_3">Question 3 - Type - Value</li>
@@ -300,27 +300,30 @@
                                 <li class="list-group-item" id="id_5">Question 5 - Type - Value</li>
                             </ul>
                         </div>
-                        <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Questions from Questionnaire</button>
+                        <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete Questions from Questionnaire</button>
                     </div>
 
                     <!-- questions to be added portion -->
-                    <div class="col-sm-6 panel">
-                        <div class="list-group" style="overflow: auto" id="questionnaireQuestions">
+                    <div class="col-sm-6 panel" style="height: 90%;">
+                        <div class="list-group" style="height: 94%;" id="questionnaireQuestions">
                             <h3 style="color: midnightblue">All Questions</h3>
                             <%--Checkbox Questions--%>
-                            <ul class="list-group checked-list-box" id="allQuestions">
-                                <li class="list-group-item" id="id_6">Question 1 - Type - Value</li>
-                                <li class="list-group-item" id="id_7">Question 2 - Type - Value</li>
-                                <li class="list-group-item" id="id_8">Question 3 - Type - Value</li>
-                                <li class="list-group-item" id="id_9">Question 4 - Type - Value</li>
-                                <li class="list-group-item" id="id_10">Question 5 - Type - Value</li>
-                            </ul>
-                        </div>
-                            <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Questions to Questionnaire</button>
+                            <div style="border: solid 1pt; border-radius: 2px; height: 87%; overflow-y: auto">
+                                <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
+                                    <li class="list-group-item" id="id_6">Question 1 - Type - Value</li>
+                                    <li class="list-group-item" id="id_7">Question 2 - Type - Value</li>
+                                    <li class="list-group-item" id="id_8">Question 3 - Type - Value</li>
+                                    <li class="list-group-item" id="id_9">Question 4 - Type - Value</li>
+                                    <li class="list-group-item" id="id_10">Question 5 - Type - Value</li>
+                                </ul>
+                            </div>
+                            <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Add Questions to Questionnaire</button>
                         </div>
                     </div>
-                <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Update Questionnaire</button>
-                </div>           
+                    <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>Update Questionnaire</button>
+
+                </div>
+            </div>
             <%}
                 if (accessRightsStr.Contains('3'))
                 { %>
@@ -460,7 +463,6 @@
             <!-- End of ContactTracing -->
             <%} %>
         </div>
-    </div>
     </div>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/TerminalCalls/adminTerminal.js") %>"></script>

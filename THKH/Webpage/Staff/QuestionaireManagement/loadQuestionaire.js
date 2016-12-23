@@ -46,9 +46,9 @@ function formManagementInit() {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Result;
             if (res.toString() == "Success") {
-                initialiseData(resultOfGeneration.Msg)
+                initialiseData(resultOfGeneration)
             } else {
-                alert(resultOfGeneration.Msg);
+                alert(resultOfGeneration.Result);
             }
         },
         error: function (err) {
@@ -60,24 +60,157 @@ function formManagementInit() {
 
 // Inserts the data into the appropriate fields <Populate Dropdown List>
 function initialiseData(data) {
-    var qnList = data.qnList; //for qns   --->   qId,question,qnType,values
-    
+    var qNaire = data.Qnaires;
+    var qnList = data.Qns;
+    fillQuestinaireList(qNaire);
+    $("#allQuestions").html("");//clear quesions
+    fillList(qnList,$("#allQuestions"));
+    //load the selected questionaire questions
+        displayQuestionnaireQuestions();
+
+   
 }
 //creates options and appends to the field
 function fillQuestinaireList(dataForQList) {
+    //clear existing options
+    $('#qnaires').html("");
     for (var i = 0; i < dataForQList.length; i++) {
         var optin = document.createElement("option");
         $(optin).html(dataForQList[i].ListName);
+        $(optin).attr("style", "background:white");
         if (dataForQList[i].Active.toString() == "1") {
             $(optin).attr("value", "1");
-            $(optin).attr("data-color", "info"); 
-            $(optin).attr("color", "green");
+          //  $(optin).attr("data-color", "info"); 
+            $(optin).attr("style", "color:green;background:#dff0d8");
+            $(optin).attr("selected", "");
         }
         $('#qnaires').append(optin);
     }
+    //set the background color of the select
+    setSelectBackground();
+    
 }
 
+function setSelectBackground() {
+    var num = $('.qnaire').find(":selected").attr("value");
+    if (num == "1") {
+        $('.qnaire').css('background', '#dff0d8');
+    } else {
+        $('.qnaire').css('background', 'white');
+    }
+}
+//creates lists and appends to qn list
+function fillList(dataForQnList,target) {
+    //clear existing list objects
+   //for qns   --->   qId,question,qnType,values
+    for (var i = 0; i < dataForQnList.length; i++) {
+        var listElement = document.createElement("LI");
+        $(listElement).attr("class", "list-group-item");
+        $(listElement).attr("data-color", "info");
+        
+        $(listElement).attr("style", "text-align: left;");
+         
+        $(listElement).attr("id", dataForQnList[i].qId);
+        $(listElement).html(dataForQnList[i].question);
+        $(target).append(listElement);
+    }
+    $('.list-group.checked-list-box .list-group-item').each(function () {
 
+        // Settings
+        var $widget = $(this),
+            $checkbox = $('<input type="checkbox" class="hidden" />'),
+            color = ($widget.data('color') ? $widget.data('color') : "primary"),
+            style = ($widget.data('style') == "button" ? "btn-" : "list-group-item-"),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        $widget.css('cursor', 'pointer')
+        $widget.append($checkbox);
+
+        // Event Handlers
+        $widget.on('click', function () {
+            $checkbox.prop('checked', !$checkbox.is(':checked'));
+            $checkbox.triggerHandler('change');
+            updateDisplay();
+        });
+        $checkbox.on('change', function () {
+            updateDisplay();
+        });
+
+
+        // Actions
+        function updateDisplay() {
+            var isChecked = $checkbox.is(':checked');
+
+            // Set the button's state
+            $widget.data('state', (isChecked) ? "on" : "off");
+
+            // Set the button's icon
+            $widget.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$widget.data('state')].icon);
+
+            // Update the button's color
+            if (isChecked) {
+                $widget.addClass(style + color + ' active');
+            } else {
+                $widget.removeClass(style + color + ' active');
+            }
+        }
+
+        // Initialization
+        function init() {
+
+            if ($widget.data('checked') == true) {
+                $checkbox.prop('checked', !$checkbox.is(':checked'));
+            }
+
+            updateDisplay();
+
+            // Inject the icon if applicable
+            if ($widget.find('.state-icon').length == 0) {
+                $widget.prepend('<span class="state-icon ' + settings[$widget.data('state')].icon + '"></span>');
+            }
+        }
+        init();
+    });
+}
+
+function displayQuestionnaireQuestions() {
+    //update dropdownlist background
+    setSelectBackground();
+    //create call and pull the questions out
+    var headersToProcess = {
+        requestType: "getQuestionaireFromList",
+        ListID: $('.qnaire').find(":selected").html()
+    };
+    $.ajax({
+        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Result;
+            if (res.toString() == "Success") {
+                $(".qnQns").html("");
+                fillList(resultOfGeneration.qnQns, $(".qnQns"));
+            } else {
+                alert(resultOfGeneration.Result);
+            }
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
+}
 
 // Select All From Questionaire List of questions
 function selectAllInQuestionaireList(table) {

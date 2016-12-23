@@ -23,7 +23,13 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             if (typeOfRequest == "initialize") {
                 successString += retrieveQuestionnaires();
                 successString += ",";
-                successString += retrieveQuestions();
+                successString += retrieveQuestions();//retrieveQuestionnaireQuestions
+            }
+            if (typeOfRequest == "getQuestionaireFromList")
+            {
+                var idList = context.Request.Form["ListID"];
+                successString += retrieveQuestionnaireQuestions(idList);
+               // successString += "}";
             }
             if (typeOfRequest == "addQuestion")
             {
@@ -321,10 +327,10 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // retrieves all the questions in the SELECTED questionnaire
-        private String retrieveQuestionnaireQuestions()
+        private String retrieveQuestionnaireQuestions(string idList)
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            String successString = "\"qnQns\":";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -333,6 +339,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 SqlCommand command = new SqlCommand("[dbo].[GET_SELECTED_QUESTIONNARIE]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 // Add params
+                command.Parameters.AddWithValue("@pQ_QuestionList_ID", idList);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
@@ -347,12 +354,16 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                         {
                             successString += ",";
                         }
-                        successString += "{\"";
+                        successString += "{";
                         // Get Question ID
+                        successString += "\"qid\":\""+reader.GetInt32(0)+"\",";
                         // Get Question
+                        successString += "\"question\":\"" + reader.GetString(1) + "\",";
                         // Get Question Type
+                        successString += "\"type\":\"" + reader.GetString(2) + "\",";
                         // Get Question Value
-                        successString += "\"}";
+                        successString += "\"val\":\"" + reader.GetString(3)  + "\"";
+                        successString += "}";
                         count++;
                     }
                     successString += "]";

@@ -90,6 +90,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="CSS\adminTerminal.css" />
     <Content Include="CSS\default.css" />
+    <Content Include="CSS\formManagement.css" />
     <Content Include="CSS\login.css" />
     <Content Include="CSS\terminal.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
