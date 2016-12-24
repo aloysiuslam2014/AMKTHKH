@@ -58,7 +58,9 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             }
             if (typeOfRequest == "update")
             {
-                successString = updateQuestionnaire();
+                var qName = context.Request.Form["qnaireId"];
+                var order = context.Request.Form["qnQns"];
+                successString = updateQuestionnaire(qName, order);
             }
             if (typeOfRequest == "active")
             {
@@ -116,7 +118,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Update questionnaire with new question order
-        private String updateQuestionnaire()
+        private String updateQuestionnaire(String qnaire, String order)
         {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":";
@@ -127,7 +129,8 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTIONNARIE_LIST]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params Questionnaire ID, Order
+                command.Parameters.AddWithValue("@pQ_QuestionList_ID", qnaire);
+                command.Parameters.AddWithValue("@pQ_Order", order);
                 command.Parameters.Add(respon);
                 cnn.Open();
 

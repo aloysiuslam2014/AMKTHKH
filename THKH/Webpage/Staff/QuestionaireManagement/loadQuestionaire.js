@@ -63,7 +63,7 @@ function initialiseData(data) {
     var qNaire = data.Qnaires;
     var qnList = data.Qns;
     fillQuestinaireList(qNaire);
-    $("#allQuestions").html("");//clear quesions
+    $("#allQuestions").html("");//clear questions
     fillList(qnList,$("#allQuestions"));
     //load the selected questionaire questions
         displayQuestionnaireQuestions();
@@ -108,7 +108,7 @@ function fillList(dataForQnList,target) {
         $(listElement).attr("data-color", "info");
         $(listElement).attr("style", "text-align: left;");
          
-        $(listElement).attr("id", dataForQnList[i].qId);
+        $(listElement).attr("id", dataForQnList[i].qid);
         $(listElement).html(dataForQnList[i].question);
         $(target).append(listElement);
     }
@@ -313,32 +313,24 @@ function deleteQuestion() {
 
 // Add questions to Questionnaire
 function AddQtoQuestionnaire() {
-    var resultOfGeneration = "";
-    var headersToProcess = {
-        requestType: "addQuestionToQuestionnaire"
-    };
-    $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
-        method: 'post',
-        data: headersToProcess,
-
-
-        success: function (returner) {
-            resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.Msg;
-
-        },
-        error: function (err) {
-            alert(err.Msg);
-        },
-    });
+    // For all the li with active classes in the div, copy the html & append to the questionnaire list
 }
 
 // Update Questionnaire
 function updateQuestionnaire() {
     var resultOfGeneration = "";
+    var qnQns = "";
+    var qnaireId = $("#qnaires").val();
+    var count = 1;
+    $.each($('#sortable li'), function (index, value) {
+        if (count > 1) {
+            qnQns += ',';
+        }
+        qnQns += $(value).attr('id');
+        count++;
+    });
     var headersToProcess = {
-        requestType: "update"
+        qnQns: qnQns, qnaireId: qnaireId, requestType: "update"
     };
     $.ajax({
         url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
@@ -349,7 +341,7 @@ function updateQuestionnaire() {
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Msg;
-
+            alert("Questionnaire Updated!");
         },
         error: function (err) {
             alert(err.Msg);
@@ -358,28 +350,16 @@ function updateQuestionnaire() {
 
 }
 
-// Remove questions from Questionnaire
-function removeQFromQuestionnaire() {
-    var resultOfGeneration = "";
-    var headersToProcess = {
-        requestType: "deleteQuestionFromQuestionnaire"
-    };
-    $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
-        method: 'post',
-        data: headersToProcess,
 
-
-        success: function (returner) {
-            resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.Msg;
-
-        },
-        error: function (err) {
-            alert(err.Msg);
-        },
+// Get the id's of all the check <li>s in the quetionnaire & delete them from the list.
+$('#delQuestionsFromQuestionnaire').click(function () {
+    var arr = [];
+    var str = $('li').each(function (i) {
+        if ($(this).is('.active')) arr.push($(this).val($(this).attr('id')));
     });
-}
+    //$('#tl_2').remove();
+    var one = 1;
+});
 
 function setActiveQuestionnaire() {
     var qnaireId = $("#qnaires").val();
