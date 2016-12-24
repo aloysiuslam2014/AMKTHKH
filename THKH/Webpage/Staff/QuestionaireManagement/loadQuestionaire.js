@@ -212,6 +212,21 @@ function displayQuestionnaireQuestions() {
     });
 }
 
+function selectAll(target) {
+    if (target == 'qns') {
+        //get the list and get all the options
+        $('#allQuestions option').each(function () {
+            var $options = $(this);
+
+        });
+    } else if (target == 'qnaire') {
+        $('.qnQns option').each(function () {
+            var $options = $(this);
+
+        });
+    }
+}
+
 // Select All From Questionaire List of questions
 function selectAllInQuestionaireList(table) {
    

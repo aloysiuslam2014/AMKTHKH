@@ -65,17 +65,17 @@
                         </a>
                     </li>
                     <%  }
-                        if (accessRightsStr.Contains('1'))
+                        if (accessRightsStr.Contains('5'))
                         {%>
                     <li>
                         <a href="#PassManagement" data-toggle="tab">Pass Management
                         </a>
                     </li>
-                    <%--<%  }if (accessRightsStr.Contains('6')){%>
+                    <%  }if (accessRightsStr.Contains('6')){%>
                     <li>
                         <a href="#ContactTracing" data-toggle="tab">Contact Tracing
                         </a>
-                    </li>--%>
+                    </li>
                     <%  }%>
                 </ul>
 
@@ -306,9 +306,9 @@
                     <!-- questions to be added portion -->
                     <div class="col-sm-6 panel" style="height: 90%;">
                         <div class="list-group" style="height: 94%;" id="questionnaireQuestions">
-                            <h3 style="color: midnightblue">All Questions</h3>
+                            <h3 style="color: midnightblue">Available Question(s)</h3>
                             <%--Checkbox Questions--%>
-                            <div style="border: solid 1pt; border-radius: 2px; height: 87%; overflow-y: auto">
+                            <div style="border: solid 1pt; border-radius: 2px; height: 85%; overflow-y: auto">
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
                                     <li class="list-group-item" id="id_6">Question 1 - Type - Value</li>
                                     <li class="list-group-item" id="id_7">Question 2 - Type - Value</li>
@@ -317,7 +317,15 @@
                                     <li class="list-group-item" id="id_10">Question 5 - Type - Value</li>
                                 </ul>
                             </div>
-                            <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Add Questions to Questionnaire</button>
+                           
+                            <div>
+                                <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Add Question(s) to selected Questionnaire</button>
+                                <button type="button" id="createNewQuestion" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Create New Quesion</button>
+                            </div>
+                            <div>
+                                <button type="button" id="selectAll" onclick="selectAll('qns'); false;" class="btn btn-success"><span class="glyphicon glyphicon-check"></span>Select All</button>
+                                <button type="button" id="deSelectAll" onclick="deSelectAll('qns');false;" class="btn btn-success"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>Update Questionnaire</button>
@@ -455,11 +463,11 @@
                 if (accessRightsStr.Contains('6'))
                 { %>
             <!-- ContactTracing -->
-            <%--<div class="tab-pane maxHeight" id="ContactTracing">
+            <div class="tab-pane maxHeight" id="ContactTracing">
                 <h1>This is the test page potato pirates!</h1>
 
 
-            </div>--%>
+            </div> 
             <!-- End of ContactTracing -->
             <%} %>
         </div>
