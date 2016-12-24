@@ -300,7 +300,7 @@
                                 <li class="list-group-item" id="id_5">Question 5 - Type - Value</li>
                             </ul>
                         </div>
-                        <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete Questions from Questionnaire</button>
+                        <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Questions from Questionnaire</button>
                     </div>
 
                     <!-- questions to be added portion -->
@@ -328,7 +328,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>Update Questionnaire</button>
+                    <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Update Questionnaire</button>
 
                 </div>
             </div>

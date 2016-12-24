@@ -39,6 +39,14 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             {
                 successString = deleteQuestion();
             }
+            if (typeOfRequest == "deleteQuestionFromQuestionnaire")
+            {
+                successString = deleteQuestion();
+            }
+            if (typeOfRequest == "addQuestionToQuestionnaire")
+            {
+                successString = deleteQuestion();
+            }
             if (typeOfRequest == "addQuestionnaire")
             {
                 var qName = context.Request.Form["qName"];
@@ -50,11 +58,14 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             }
             if (typeOfRequest == "update")
             {
-                successString = updateQuestionnaire();
+                var qName = context.Request.Form["qnaireId"];
+                var order = context.Request.Form["qnQns"];
+                successString = updateQuestionnaire(qName, order);
             }
             if (typeOfRequest == "active")
             {
-                successString = setActiveQuestionnaire();
+                var qnaireId = context.Request.Form["qnaireId"];
+                successString = setActiveQuestionnaire(qnaireId);
             }
             context.Response.Write(successString);
         }
@@ -107,7 +118,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Update questionnaire with new question order
-        private String updateQuestionnaire()
+        private String updateQuestionnaire(String qnaire, String order)
         {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":";
@@ -118,7 +129,8 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTIONNARIE_LIST]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params Questionnaire ID, Order
+                command.Parameters.AddWithValue("@pQ_QuestionList_ID", qnaire);
+                command.Parameters.AddWithValue("@pQ_Order", order);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
@@ -141,10 +153,10 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Sets the selected questionnaire as active & deactivates the rest
-        private String setActiveQuestionnaire()
+        private String setActiveQuestionnaire(String qName)
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -152,7 +164,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             {
                 SqlCommand command = new SqlCommand("[dbo].[ACTIVATE_QUESTIONNARIE_LIST]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params Questionnaire ID
+                command.Parameters.AddWithValue("@pQ_QuestionList_ID", qName);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
@@ -170,7 +182,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             {
                 cnn.Close();
             }
-            successString += "}";
+            successString += "\"}";
             return successString;
         }
 
@@ -422,6 +434,39 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 }
                 successString += respon.Value;
                 reader.Close();
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "}";
+            return successString;
+        }
+
+        private String addQuestionToQuestionnaire(String qnaireId, String qns) {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTIONNARIE_LIST]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pQ_QuestionList_ID", qnaireId);
+                command.Parameters.AddWithValue("@pQ_Order", qns);
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                command.ExecuteNonQuery();
+                successString += respon.Value;
             }
             catch (Exception ex)
             {
