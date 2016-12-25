@@ -1,4 +1,12 @@
-﻿// Draggable questions for ordering purposes
+﻿//create a case insensitive jquery contains method
+$.extend($.expr[':'], {
+    'containsi': function (elem, i, match, array) {
+        return (elem.textContent || elem.innerText || '').toLowerCase()
+            .indexOf((match[3] || "").toLowerCase()) >= 0;
+    }
+});
+
+// Draggable questions for ordering purposes
 $(function () {
     $("#sortable").sortable({
         revert: true
@@ -157,8 +165,10 @@ function fillList(dataForQnList,target) {
             // Update the button's color
             if (isChecked) {
                 $widget.addClass(style + color + ' active');
+                $widget.removeClass(  ' inactive');
             } else {
                 $widget.removeClass(style + color + ' active');
+                $widget.addClass(' inactive');
             }
         }
 
@@ -210,17 +220,43 @@ function displayQuestionnaireQuestions() {
     });
 }
 
+function filterCurrentList(elment) {
+
+    var value = $(elment).val();
+    if (elment == '' || elment == ' ') {
+        $('#allQuestions > li').show();
+    } else {
+        $('#allQuestions > li:not(:containsi(' + value + '))').hide();
+        $('#allQuestions > li:containsi(' + value + ')').show();
+    }
+   
+}
+
+//select all given a target object
 function selectAll(target) {
     if (target == 'qns') {
         //get the list and get all the options
-        $('#allQuestions option').each(function () {
-            var $options = $(this);
-
+        $("#allQuestions li.inactive").each(function (idx, li) {
+           $(li).triggerHandler('click');
         });
+        
     } else if (target == 'qnaire') {
-        $('.qnQns option').each(function () {
-            var $options = $(this);
+        $(".qnQns li.inactive").each(function (idx, li) {
+            $(li).triggerHandler('click');
+        });
+    }
+}
+//deselect all from a target list given a keyword
+function deSelectAll(target) {
+    if (target == 'qns') {
+        //get the list and get all the options
+        $("#allQuestions li.active").each(function (idx, li) {
+            $(li).triggerHandler('click');
+        });
 
+    } else if (target == 'qnaire') {
+        $("#sortable li.active").each(function (idx, li) {
+            $(li).triggerHandler('click');
         });
     }
 }

@@ -290,7 +290,7 @@
                                 <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span>Set as Active</button>
                             </span>
                         </div>
-                        <div class="list-group" style="overflow: auto; height: 76%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="questionnaireQuestionsToDisplay">
+                        <div class="list-group" style="overflow: auto; height: 74%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="questionnaireQuestionsToDisplay">
                             <%--Draggable Questions--%>
                             <ul class="list-group checked-list-box qnQns" id="sortable">
                                 <li class="list-group-item" id="id_1">Question 1 - Type - Value</li>
@@ -300,7 +300,11 @@
                                 <li class="list-group-item" id="id_5">Question 5 - Type - Value</li>
                             </ul>
                         </div>
-                        <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Questions from Questionnaire</button>
+                        <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete Questions from Questionnaire</button>
+                        <div>
+                            <button type="button"   onclick="selectAll('qnaire'); false;" class="btn btn-success"><span class="glyphicon glyphicon-check"></span>Select All</button>
+                            <button type="button"   onclick="deSelectAll('qnaire');false;" class="btn btn-success"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                        </div>
                     </div>
 
                     <!-- questions to be added portion -->
@@ -308,7 +312,8 @@
                         <div class="list-group" style="height: 94%;" id="questionnaireQuestions">
                             <h3 style="color: midnightblue">Available Question(s)</h3>
                             <%--Checkbox Questions--%>
-                            <div style="border: solid 1pt; border-radius: 2px; height: 85%; overflow-y: auto">
+                            <input type="text" class="form-control maxWidth" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)"/>
+                            <div class=" " style="border: solid 1pt; border-radius: 2px; height: 79%; overflow-y: auto;margin-top:2px;">
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
                                     <li class="list-group-item" id="id_6">Question 1 - Type - Value</li>
                                     <li class="list-group-item" id="id_7">Question 2 - Type - Value</li>
@@ -473,6 +478,7 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/default.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/TerminalCalls/adminTerminal.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/QuestionaireManagement/loadQuestionaire.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>

@@ -89,7 +89,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="CSS\adminTerminal.css" />
+    <Content Include="CSS\asScrollbar.css" />
     <Content Include="CSS\default.css" />
+    <Content Include="CSS\fm.scrollator.jquery.css" />
     <Content Include="CSS\formManagement.css" />
     <Content Include="CSS\login.css" />
     <Content Include="CSS\terminal.css" />
@@ -106,6 +108,7 @@
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\fieldValidations.js" />
+    <Content Include="Scripts\fm.scrollator.jquery.js" />
     <Content Include="Scripts\jquery-ui.min.css" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery-ui.structure.min.css" />
@@ -124,6 +127,7 @@
     <Content Include="Webpage\SQL Script\THKHDB_19Dec16.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_20Dec16.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_21Dec16.sql" />
+    <Content Include="Webpage\Staff\default.js" />
     <Content Include="Webpage\Staff\QuestionaireManagement\loadQuestionaire.js" />
     <Content Include="Webpage\Staff\TerminalCalls\adminTerminal.js" />
     <Content Include="Webpage\Staff\TerminalCheckIn.aspx" />
