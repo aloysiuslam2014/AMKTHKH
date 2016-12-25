@@ -120,7 +120,7 @@ function fillList(dataForQnList,target) {
         $(listElement).html(dataForQnList[i].question);
         $(target).append(listElement);
     }
-    $('.list-group.checked-list-box .list-group-item').each(function () {
+    $('#formManagement .list-group.checked-list-box .list-group-item').each(function () {
 
         // Settings
         var $widget = $(this),

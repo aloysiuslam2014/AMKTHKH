@@ -447,9 +447,30 @@
 
             <!-- UserManagement -->
             <div class="tab-pane maxHeight" id="UserManagement">
-                <h1>This is the test page FOR USERS potato pirates!</h1>
+                <div class="row inheritHeight">
+                    <div class="col-sm-4 panel inheritHeight">
+                        <h3 style="color: midnightblue">Existing Users</h3>
+                          <input type="text" class="form-control maxWidth" placeholder="Enter user name to search here..." onkeyup="filterCurrentList(this)"/>
+                            <div class=" " style="border: solid 1pt; border-radius: 2px; height: 74%; overflow-y: auto;margin-top:2px;">
+                                <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
+                                    <li class="list-group-item" id="">user 1</li>
+                                </ul>
+                            </div>
+                        <div>
+                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span>Delete Selected User(s)</button>
+                                
 
-
+                            </div>
+                         <div>
+                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-success"><span class="glyphicon glyphicon-check"></span>Select All</button>
+                                <button type="button" id="" onclick="deSelectAllUsers();false;" class="btn btn-success"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                            </div>
+                       
+                    </div>
+                    <div>
+                     sasdsadasd   
+                    </div>
+                </div>
             </div>
             <%}
                 if (accessRightsStr.Contains('5'))

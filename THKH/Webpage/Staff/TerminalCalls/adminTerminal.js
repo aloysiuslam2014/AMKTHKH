@@ -244,7 +244,7 @@ function generateTerminalListAndInit(terminalData) {
         $(listElement).html(terminalName);
         $("#terminalList").append(listElement);
     }
-    $('.list-group.checked-list-box .list-group-item').each(function () {
+    $('#TerminalManagement .list-group.checked-list-box .list-group-item').each(function () {
 
         // Settings
         var $widget = $(this),
