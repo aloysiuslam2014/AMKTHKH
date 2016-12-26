@@ -109,7 +109,7 @@
                             <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required" type="text" autofocus />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Check NRIC</button>
+                                    <button class="btn btn-warning" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
                                 </span>
                             </div>
                             <h4 id="emptyNricWarning" style="color: red">Please enter your NRIC/Identification Number!</h4>
@@ -278,10 +278,10 @@
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="qnaireid" placeholder="Enter a Questionnaire Name" />
                                         </div>
-                                        <button type="button" class="btn btn-success btn-block" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span>Add Questionnaire</button>
+                                        <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span> Add Questionnaire</button>
                                     </div>
                                     <div class="modal-footer" style="text-align: center !important;">
-                                        <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
+                                        <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -289,28 +289,27 @@
                         <h3 style="color: midnightblue">Select a Questionnaire to Begin</h3>
                         <div class="input-group" id="qnaireSelection">
                             <select class="form-control qnaire" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
-                                <option value="">-- Select Questionnaire --</option>
+                                <option value="">-- No Questionnaires Created --</option>
 
                             </select>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span>New Questionnaire</button>
-                                <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span>Set as Active</button>
+                                <button class="btn btn-primary" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span> New Questionnaire</button>
+                                <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span> Set Active</button>
                             </span>
                         </div>
                         <div class="list-group" style="overflow: auto; height: 74%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="questionnaireQuestionsToDisplay">
                             <%--Draggable Questions--%>
                             <ul class="list-group checked-list-box qnQns" id="sortable">
-                                <li class="list-group-item" id="id_1">Question 1 - Type - Value</li>
-                                <li class="list-group-item" id="id_2">Question 2 - Type - Value</li>
-                                <li class="list-group-item" id="id_3">Question 3 - Type - Value</li>
-                                <li class="list-group-item" id="id_4">Question 4 - Type - Value</li>
-                                <li class="list-group-item" id="id_5">Question 5 - Type - Value</li>
+                                
                             </ul>
                         </div>
-                        <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete Questions from Questionnaire</button>
-                        <div>
-                            <button type="button"   onclick="selectAll('qnaire'); false;" class="btn btn-success"><span class="glyphicon glyphicon-check"></span>Select All</button>
-                            <button type="button"   onclick="deSelectAll('qnaire');false;" class="btn btn-success"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                        <div class="btn btn-group">
+                            <button type="button"   onclick="selectAll('qnaire'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span> Select All</button>
+                            <button type="button"   onclick="deSelectAll('qnaire');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
+                        </div><br />
+                        <div class="btn btn-group">
+                            <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Remove Questions</button>
+                            <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Update Questionnaire</button>
                         </div>
                     </div>
 
@@ -319,29 +318,27 @@
                         <div class="list-group" style="height: 94%;" id="questionnaireQuestions">
                             <h3 style="color: midnightblue">Available Question(s)</h3>
                             <%--Checkbox Questions--%>
+                            <div class="input-group" id="searchQns">
                             <input type="text" class="form-control maxWidth" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)"/>
-                            <div class=" " style="border: solid 1pt; border-radius: 2px; height: 79%; overflow-y: auto;margin-top:2px;">
+                            <span class="input-group-btn">
+                            <button type="button" id="createNewQuestion" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create New Question</button>
+                            </span>
+                                </div>
+                                <div class=" " style="border: solid 1pt; border-radius: 2px; height: 79%; overflow-y: auto;margin-top:2px;">
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
-                                    <li class="list-group-item" id="id_6">Question 1 - Type - Value</li>
-                                    <li class="list-group-item" id="id_7">Question 2 - Type - Value</li>
-                                    <li class="list-group-item" id="id_8">Question 3 - Type - Value</li>
-                                    <li class="list-group-item" id="id_9">Question 4 - Type - Value</li>
-                                    <li class="list-group-item" id="id_10">Question 5 - Type - Value</li>
+                                    
                                 </ul>
                             </div>
                            
-                            <div>
-                                <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Add Question(s) to selected Questionnaire</button>
-                                <button type="button" id="createNewQuestion" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Create New Quesion</button>
-                            </div>
-                            <div>
-                                <button type="button" id="selectAll" onclick="selectAll('qns'); false;" class="btn btn-success"><span class="glyphicon glyphicon-check"></span>Select All</button>
-                                <button type="button" id="deSelectAll" onclick="deSelectAll('qns');false;" class="btn btn-success"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                            <div class="btn btn-group">
+                                <button type="button" id="selectAll" onclick="selectAll('qns'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span> Select All</button>
+                                <button type="button" id="deSelectAll" onclick="deSelectAll('qns');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
+                            </div><br />
+                            <div class="btn btn-group">
+                                <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add to Questionnaire</button>                           
                             </div>
                         </div>
                     </div>
-                    <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Update Questionnaire</button>
-
                 </div>
             </div>
             <%}
@@ -457,25 +454,27 @@
                 <div class="row inheritHeight">
                     <div class="col-sm-4 panel inheritHeight">
                         <h3 style="color: midnightblue">Existing Users</h3>
-                          <input type="text" class="form-control maxWidth" placeholder="Enter user name to search here..." onkeyup="filterCurrentList(this)"/>
+                        <div class="input-group" id="searchUser">
+                            <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterCurrentList(this)"/>
+                            <span class="input-group-btn">
+                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span> Select All</button>
+                                <button type="button" id="" onclick="deSelectAllUsers();false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
+                            </span>
+                                </div>
+                          
                             <div class=" " style="border: solid 1pt; border-radius: 2px; height: 74%; overflow-y: auto;margin-top:2px;">
                                 <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
                                     <li class="list-group-item" id="">user 1</li>
                                 </ul>
                             </div>
-                        <div>
-                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span>Delete Selected User(s)</button>
-                                
-
+                            <div>
+                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span> Delete Selected User(s)</button>
                             </div>
-                         <div>
-                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-success"><span class="glyphicon glyphicon-check"></span>Select All</button>
-                                <button type="button" id="" onclick="deSelectAllUsers();false;" class="btn btn-success"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
-                            </div>
+                         
                        
                     </div>
                     <div>
-                     sasdsadasd   
+                     Display Staff Information  
                     </div>
                 </div>
             </div>

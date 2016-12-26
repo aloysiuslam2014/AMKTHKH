@@ -374,16 +374,20 @@ function AddQtoQuestionnaire() {
     });
     // Write HTML <li> & append to sortable ul
     for (i = 0; i < ids.length; i++) {
-        $('#sortable').append(ids[i]);
-        $(ids[i]).triggerHandler('click'); // Some error here
+        var item = ids[i];
+        $('#sortable').append(item);
     }
+    // Uncheck the newly added items from questionnaire
+    $.each($("#sortable li.active"), function (idx, li) {
+        $(li).triggerHandler('click');
+    });
 }
 
 // Update Questionnaire
 function updateQuestionnaire() {
     var resultOfGeneration = "";
     var qnQns = "";
-    var qnaireId = $("#qnaires").val();
+    var qnaireId = $('#qnaires option:selected').attr('name');
     var count = 1;
     $.each($('#sortable li'), function (index, value) {
         if (count > 1) {
@@ -416,8 +420,9 @@ function updateQuestionnaire() {
 
 // Get the id's of all the check <li>s in the quetionnaire & delete them from the list.
 $('#delQuestionsFromQuestionnaire').click(function () {
-    $.each($("#sortable li.active"), function (index, value) {
-        // Remove html
+    $.each($("#sortable li.active"), function (idx, li) {
+        // remove li
+        $(li).remove();
     });
 });
 

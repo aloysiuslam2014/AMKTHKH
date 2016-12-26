@@ -237,6 +237,7 @@ function checkRequiredFields() {
 $("#nric").on("input", function () {
     var validNric = validateNRIC($("#nric").val());
     if (validNric !== false) {
+        $("#emptyFields").css("display", "none");
         $("#nricWarnDiv").css("display", "none");
     } else {
         $("#nricWarnDiv").css("display", "block");
@@ -246,14 +247,10 @@ $("#nric").on("input", function () {
 // Check if visitor record exists in database
 function checkExistOrNew() {
     //// Call to ASHX page
-    //if ($("#nric").val() == "") {
-    //    $("#emptyNricWarning").css("display", "block");
-    //} else {
         $("#emptyNricWarning").css("display", "none");
         callCheck();
         $("#newusercontent").css("display", "block");
         $("#staticinfocontainer").css("display", "block");
-    //}
 }
 
 // Get Questionnaire Answers by .answer class gives back a JSON String
@@ -330,7 +327,8 @@ function checkNricWarningDeclaration() {
         $("#emptyNricWarning").css("display", "none");
         var allowNric = false;
         allowNric = $('input[id="ignoreNric"]').is(':checked');
-        if (allowNric) {
+        var panelShown = $('#nricWarnDiv').is(":visible");
+        if (!allowNric & !panelShown) {
             checkExistOrNew();
         }else {
             alert("Please check the 'Allow Anyway' Checkbox");

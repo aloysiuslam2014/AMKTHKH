@@ -23,14 +23,16 @@
          <h2>Triage 2.0 | Staff Login</h2>
         <table class="center">
             
-            <tr><td class=""><b>Username: </b></td><td><input id="txtUserName" class="form-control" type="text" runat="server" autofocus/></td></tr>
-            <tr><td class=""><b>Password: </b></td><td><input id="txtUserPass" class="form-control" type="password" runat="server" /></td></tr>
+            <tr><td class=""><b>Username: </b></td><td><input id="txtUserName" class="form-control" type="text" runat="server" placeholder="Username" autofocus/></td></tr>
+            <tr><td class=""><b>Password: </b></td><td><input id="txtUserPass" class="form-control" type="password" placeholder="Password" runat="server" /></td></tr>
             <tr><br /><br /></tr>
             <tr><td colspan="2" align="center">
                 <br />
-                <asp:Button type="submit" Text="Login" runat="server" id="loginSubmit" OnClick="loginSubmit_Click" class="btn btn-default" />
-                <asp:Button type="submit" Text="Check-In Terminal" runat="server" id="checkInTerminal" OnClick="checkInTerminal_Click" class="btn btn-default" />
-                </td></tr>
+                <div class="btn btn-group">
+                <asp:Button type="submit" Text="Login" runat="server" id="loginSubmit" OnClick="loginSubmit_Click" class="btn btn-success" />
+                <asp:Button type="submit" Text="Check-In Terminal" runat="server" id="checkInTerminal" OnClick="checkInTerminal_Click" class="btn btn-primary" />
+                </div>
+                    </td></tr>
             <tr><td colspan="2" align="center"><label id="errorMsg" runat="server" ></label></td></tr>
         </table>
     </div>
