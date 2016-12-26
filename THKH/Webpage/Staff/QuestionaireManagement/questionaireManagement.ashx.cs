@@ -368,7 +368,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                         }
                         successString += "{";
                         // Get Question ID
-                        successString += "\"qid\":\""+reader.GetInt32(0)+"\",";
+                        successString += "\"qId\":\""+reader.GetInt32(0)+"\",";
                         // Get Question
                         successString += "\"question\":\"" + reader.GetString(1) + "\",";
                         // Get Question Type

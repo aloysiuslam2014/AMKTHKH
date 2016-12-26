@@ -40,7 +40,7 @@
                     <%if (accessRightsStr.Contains('1'))
                         { %>
                     <li id="regtab" runat="server">
-                        <a href="#registration" data-toggle="tab">Registration
+                        <a href="#registration" data-toggle="tab" onclick="hideTags(); false;">Registration
                         </a>
                     </li>
                     <%  }
@@ -109,11 +109,18 @@
                             <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required" type="text" autofocus />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning" onclick="checkExistOrNew(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Check NRIC</button>
+                                    <button class="btn btn-warning" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Check NRIC</button>
                                 </span>
                             </div>
                             <h4 id="emptyNricWarning" style="color: red">Please enter your NRIC/Identification Number!</h4>
-                            <h4 id="nricWarning" style="color: red">Non-Singapore Based NRIC/ID!</h4>
+                            <div id="nricWarnDiv">
+                                <h4 id="nricWarning" style="color: red">Non-Singapore Based NRIC/ID!</h4>
+                                <div class="checkbox">
+                                <label for="ignoreNric"></label>
+                                <input type="checkbox" id="ignoreNric" name="declare" value="true" />Allow Anyway<br />
+                                <label for="ignoreNric" id="ignoreNricLbl" style="color: red">Please check this option to continue</label>
+                                </div>
+                                </div>
                             <br />
                             <label class="control-label" for="temp">Temperature</label><label for="temp" id="comp0" style="color: red">*</label>
                             <input runat="server" id="temp" class="form-control required" type="text" onchange="checkTemp(); false;" />

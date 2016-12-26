@@ -116,7 +116,8 @@ function fillList(dataForQnList,target) {
         $(listElement).attr("data-color", "info");
         $(listElement).attr("style", "text-align: left;");
          
-        $(listElement).attr("id", dataForQnList[i].qid);
+        $(listElement).attr("id", dataForQnList[i].qId);
+        $(listElement).attr("value", dataForQnList[i].question);
         $(listElement).html(dataForQnList[i].question);
         $(target).append(listElement);
     }
@@ -261,16 +262,6 @@ function deSelectAll(target) {
     }
 }
 
-// Select All From Questionaire List of questions
-function selectAllInQuestionaireList(table) {
-   
-}
-
-// Select All From Questions List
-function selectAllInQuestionsList(table) {
-
-}
-
 // Add new questionnaire
 function newQuestionnaire() {
     var resultOfGeneration = "";
@@ -375,6 +366,17 @@ function deleteQuestion() {
 // Add questions to Questionnaire
 function AddQtoQuestionnaire() {
     // For all the li with active classes in the div, copy the html & append to the questionnaire list
+    var ids = [];
+    var questions = [];
+    var count = 1;
+    $.each($("#allQuestions li.active"), function (idx,li) {
+        ids.push($(li).clone(true));
+    });
+    // Write HTML <li> & append to sortable ul
+    for (i = 0; i < ids.length; i++) {
+        $('#sortable').append(ids[i]);
+        $(ids[i]).triggerHandler('click'); // Some error here
+    }
 }
 
 // Update Questionnaire
@@ -414,12 +416,9 @@ function updateQuestionnaire() {
 
 // Get the id's of all the check <li>s in the quetionnaire & delete them from the list.
 $('#delQuestionsFromQuestionnaire').click(function () {
-    var arr = [];
-    var str = $('li').each(function (i) {
-        if ($(this).is('.active')) arr.push($(this).val($(this).attr('id')));
+    $.each($("#sortable li.active"), function (index, value) {
+        // Remove html
     });
-    //$('#tl_2').remove();
-    var one = 1;
 });
 
 function setActiveQuestionnaire() {

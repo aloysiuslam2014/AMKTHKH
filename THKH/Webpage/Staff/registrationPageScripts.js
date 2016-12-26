@@ -105,11 +105,14 @@ function checkTemp() {
         var temperature = parseFloat(temper);
         if (temperature > 37.6) {
             $('#tempWarning').css("display", "block");
+            $("#invalidTempWarning").css("display", "none");
         } if (temperature < 35.0) {
             $("#invalidTempWarning").css("display", "block");
+            $('#tempWarning').css("display", "none");
         }
         else {
             $('#tempWarning').css("display", "none");
+            $("#invalidTempWarning").css("display", "none");
         }
     }catch(ex){
         $('#tempWarning').css("display", "block");
@@ -167,7 +170,6 @@ function NewAssistReg() {
                 var today = new Date();
                 alert("Visitor successfully checked-in at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
                 clearFields();
-                //hideTags();
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
@@ -235,23 +237,23 @@ function checkRequiredFields() {
 $("#nric").on("input", function () {
     var validNric = validateNRIC($("#nric").val());
     if (validNric !== false) {
-        $("#nricWarning").css("display", "none");
+        $("#nricWarnDiv").css("display", "none");
     } else {
-        $("#nricWarning").css("display", "block");
+        $("#nricWarnDiv").css("display", "block");
     }
 });
 
 // Check if visitor record exists in database
 function checkExistOrNew() {
-    // Call to ASHX page
-    if ($("#nric").val() == "") {
-        $("#emptyNricWarning").css("display", "block");
-    } else {
+    //// Call to ASHX page
+    //if ($("#nric").val() == "") {
+    //    $("#emptyNricWarning").css("display", "block");
+    //} else {
         $("#emptyNricWarning").css("display", "none");
         callCheck();
         $("#newusercontent").css("display", "block");
         $("#staticinfocontainer").css("display", "block");
-    }
+    //}
 }
 
 // Get Questionnaire Answers by .answer class gives back a JSON String
@@ -309,7 +311,7 @@ function getFormattedDate(date) {
 function hideTags() {
     $("#invalidTempWarning").css("display", "none");
     $("#emptyFields").css("display", "none");
-    $("#nricWarning").css("display", "none");
+    //$("#nricWarning").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
     $('#tempWarning').css("display", "none");
     $("#patientpurposevisit").css("display", "none");
@@ -317,11 +319,33 @@ function hideTags() {
     $("#submitNewEntry").css("display", "none");
     $("#newusercontent").css("display", "none");
     $("#staticinfocontainer").css("display", "none");
+    $("#nricWarnDiv").css("display", "none");
     loadActiveForm();
 }
 
+function checkNricWarningDeclaration() {
+    if ($("#nric").val() == "") {
+        $("#emptyNricWarning").css("display", "block");
+    } else {
+        $("#emptyNricWarning").css("display", "none");
+        var allowNric = false;
+        allowNric = $('input[id="ignoreNric"]').is(':checked');
+        if (allowNric) {
+            checkExistOrNew();
+        }else {
+            alert("Please check the 'Allow Anyway' Checkbox");
+        }
+    }
+}
+
+// Change checkbox value upon click
+$('#ignoreNric').on('change', function () {
+    var val = this.checked;
+});
+
 // Loads & displays the active questionnaire from the DB for Assisted Reg
 function loadActiveForm() {
+    $("#questionaireForm").html("");
     var headersToProcess = {
         requestType: "form"
     };
