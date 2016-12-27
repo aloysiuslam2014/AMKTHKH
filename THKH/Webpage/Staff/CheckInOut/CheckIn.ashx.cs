@@ -144,7 +144,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                             successString += ",";
                         }
                         successString += "{\"QuestionNumber\":\"";
-                        successString += count + "\",\"QuestionList\":\"" + reader.GetString(0) +"\",\"Question\":\"" + reader.GetString(1) + "\",\"QuestionType\":\"" + reader.GetString(2) + "\",\"QuestionAnswers\":\"" + reader.GetString(3);
+                        successString += reader.GetInt32(1) + "\",\"QuestionList\":\"" + reader.GetString(0) +"\",\"Question\":\"" + reader.GetString(2) + "\",\"QuestionType\":\"" + reader.GetString(3) + "\",\"QuestionAnswers\":\"" + reader.GetString(4);
                         successString += "\"}";
                         count++;
                     }
