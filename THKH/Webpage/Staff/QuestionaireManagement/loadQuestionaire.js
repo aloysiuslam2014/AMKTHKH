@@ -72,7 +72,7 @@ function initialiseData(data) {
     var qnList = data.Qns;
     fillQuestinaireList(qNaire);
     $("#allQuestions").html("");//clear questions
-    fillList(qnList,$("#allQuestions"));
+    fillList(qnList,$("#allQuestions"),true);
     //load the selected questionaire questions
         displayQuestionnaireQuestions();
 }
@@ -106,8 +106,11 @@ function setSelectBackground() {
         $('.qnaire').css('background', 'white');
     }
 }
+
+//if the user clicked the qn edit button or not. To prevent li from activating if the edit button was pressed
+var notEditing = true;
 //creates lists and appends to qn list
-function fillList(dataForQnList,target) {
+function fillList(dataForQnList,target,editButton) {
     //clear existing list objects
    //for qns   --->   qId,question,qnType,values
     for (var i = 0; i < dataForQnList.length; i++) {
@@ -119,9 +122,38 @@ function fillList(dataForQnList,target) {
         $(listElement).attr("id", dataForQnList[i].qId);
         $(listElement).attr("value", dataForQnList[i].question);
         $(listElement).html(dataForQnList[i].question);
+      
+
+        var inputType = document.createElement("input");
+        $(inputType).attr("value", dataForQnList[i].qnType);
+        $(inputType).attr("class", "qType");
+        $(inputType).attr("type", "hidden");
+        $(listElement).append(inputType);
+
+        var inputValues = document.createElement("input");
+        $(inputValues).attr("value", dataForQnList[i].values);
+        $(inputValues).attr("class", "qValues");
+        $(inputValues).attr("type", "hidden");
+        $(listElement).append(inputValues);
+        if (editButton) {
+            var editButton = document.createElement("button");
+            $(editButton).click(function () {
+                //prevent default list action which is highlighting
+                notEditing = false;
+                    editQuestionShow($(this));
+                   
+            });
+            $(editButton).attr("class", "btn btn-success");
+            $(editButton).html("Edit");
+            $(listElement).append(editButton);
+        }
+       
+
         $(target).append(listElement);
+
     }
-    $('#formManagement .list-group.checked-list-box .list-group-item').each(function () {
+    
+    $(target).find('.list-group-item').each(function () {
 
         // Settings
         var $widget = $(this),
@@ -142,9 +174,13 @@ function fillList(dataForQnList,target) {
 
         // Event Handlers
         $widget.on('click', function () {
-            $checkbox.prop('checked', !$checkbox.is(':checked'));
-            $checkbox.triggerHandler('change');
-            updateDisplay();
+            if (notEditing) {
+                $checkbox.prop('checked', !$checkbox.is(':checked'));
+               $checkbox.triggerHandler('change');
+                //updateDisplay();
+            } else {
+                notEditing = true;
+            }
         });
         $checkbox.on('change', function () {
             updateDisplay();
@@ -210,7 +246,7 @@ function displayQuestionnaireQuestions() {
             var res = resultOfGeneration.Result;
             if (res.toString() == "Success") {
                 $(".qnQns").html("");
-                fillList(resultOfGeneration.qnQns, $(".qnQns"));
+                fillList(resultOfGeneration.qnQns, $(".qnQns"),false);
             } else {
                 alert(resultOfGeneration.Result);
             }
@@ -291,6 +327,14 @@ function newQuestionnaire() {
 
 }
 
+//Clear questionaire fields
+function clearQnEditorFields() {
+    $('#qnEditor input').each(function (idx, obj) {
+        $(obj).val("");
+    });
+    var update = false;
+}
+
 // Delete questionnaire
 function deleteQuestionnaire() {
     var resultOfGeneration = "";
@@ -315,8 +359,32 @@ function deleteQuestionnaire() {
 
 }
 
-// Add Question
-function addQuestion() {
+//Variable to store condition on create or update question
+var update = true;
+
+//disable entire list
+function disableAll() {
+    $widget.addClass(style + color + ' active');
+    $widget.removeClass(' inactive');
+}
+
+//When the edit question button is pressed
+function editQuestionShow(me) {
+
+    var qn = $(me).parent().text();
+    var qnType = $(me).parent().find(".qType").val();
+    var qnValues = $(me).parent().find(".qValues").val();
+    $("#detailsQn").val(qn);
+    $("#detailsQnType").val(qnType);
+    $("#detailsQnValues").val(qnValues);
+    update = true;
+    $('#qnEditor').collapse("toggle");
+
+    $(me).parent().attr('disabled', true).addClass('ui-state-disabled');
+}
+
+// Update or create a Question
+function updateOrCreate() {
     var resultOfGeneration = "";
     var headersToProcess = {
         requestType: "addQuestion"

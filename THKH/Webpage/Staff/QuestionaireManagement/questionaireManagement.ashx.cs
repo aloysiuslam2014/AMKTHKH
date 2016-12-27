@@ -372,9 +372,9 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                         // Get Question
                         successString += "\"question\":\"" + reader.GetString(1) + "\",";
                         // Get Question Type
-                        successString += "\"type\":\"" + reader.GetString(2) + "\",";
+                        successString += "\"qnType\":\"" + reader.GetString(2) + "\",";
                         // Get Question Value
-                        successString += "\"val\":\"" + reader.GetString(3)  + "\"";
+                        successString += "\"values\":\"" + reader.GetString(3)  + "\"";
                         successString += "}";
                         count++;
                     }

@@ -16,8 +16,9 @@
 
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
+    <link href="~/CSS/formManagement.css" rel="stylesheet" />
 
-
+     
 
 
 
@@ -267,7 +268,7 @@
             <div class="tab-pane maxHeight " id="formManagement">
                 <div class="row inheritHeight">
                     <!-- questionaire portion -->
-                    <div class="col-sm-6 panel" style="height: 90%;">
+                    <div class="col-sm-6 panel" style="height: 95%;">
                         <div class="modal fade" id="addQuestionnaire" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -297,7 +298,7 @@
                                 <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span> Set Active</button>
                             </span>
                         </div>
-                        <div class="list-group" style="overflow: auto; height: 74%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="questionnaireQuestionsToDisplay">
+                        <div class="list-group" style="overflow: auto; height: 70%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="questionnaireQuestionsToDisplay">
                             <%--Draggable Questions--%>
                             <ul class="list-group checked-list-box qnQns" id="sortable">
                                 
@@ -314,20 +315,33 @@
                     </div>
 
                     <!-- questions to be added portion -->
-                    <div class="col-sm-6 panel" style="height: 90%;">
+                    <div class="col-sm-6 panel" style="height: 95%;">
                         <div class="list-group" style="height: 94%;" id="questionnaireQuestions">
                             <h3 style="color: midnightblue">Available Question(s)</h3>
                             <%--Checkbox Questions--%>
                             <div class="input-group" id="searchQns">
                             <input type="text" class="form-control maxWidth" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)"/>
                             <span class="input-group-btn">
-                            <button type="button" id="createNewQuestion" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create New Question</button>
+                            <button type="button" id="createNewQuestion" data-toggle="collapse" data-target="#qnEditor" onclick="clearQnEditorFields(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create New Question</button>
                             </span>
                                 </div>
-                                <div class=" " style="border: solid 1pt; border-radius: 2px; height: 79%; overflow-y: auto;margin-top:2px;">
+                                <div class=" " style="border: solid 1pt; border-radius: 2px; height: 75%; overflow-y: auto;margin-top:2px;">
+                                    <div id="cover" style="background-color:grey;opacity:0.5;margin-top: 93px;width: 100%;height:inherit; padding-right:30px;position:absolute"></div>
+                                   
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
                                     
                                 </ul>
+                                     <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px;width: 100%;height:inherit; padding-right:30px">
+                                          <div class="panel-body questionEditor" style="background-color: ivory;border-style: solid;border-width: 1px;">
+                                              <h3 id="editQuestionTitle">Question Details</h3>
+                                              <div>Question:<textarea  id="detailsQn" rows="3" cols="30">  </textarea></div>
+                                              <div>Question Response Type: <input type="text" id="detailsQnType" /></div>
+                                              <div>Question Value: <input type="text" id="detailsQnValues" /></div>
+                                              <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="clearQnEditorFields(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Close</button>
+                                              <button type="button" id="updateOrCreateQn"   onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Save Question</button>
+
+                                          </div>
+                                     </div>
                             </div>
                            
                             <div class="btn btn-group">

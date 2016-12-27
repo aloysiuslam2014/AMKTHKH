@@ -19,6 +19,11 @@ body{
     height:inherit;
 }
 
+.placeAboveOtherDivs{
+    position:absolute;
+    top:0;
+}
+
 .maxWidth{
     width:100%;
 }
