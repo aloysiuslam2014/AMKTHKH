@@ -256,8 +256,12 @@ function checkExistOrNew() {
 // Get Questionnaire Answers by .answer class gives back a JSON String
 function getQuestionnaireAnswers() {
     var answers = '{';
-    $.each($("#registration input.answer"), function (index, value) {
-        answers += index + ':' + $(value).val() + ',';
+    $.each($("#registration input.answer"), function (index, value) { 
+        var id = $(value).attr('id');
+        if (id == null) {
+            id = $(value).attr('name');
+        }
+        answers += id + ':' + $(value).val() + ',';
     });
     answers = answers.substring(0, answers.length - 1) + '}';
     var jsonString = JSON.stringify(answers);
@@ -328,7 +332,7 @@ function checkNricWarningDeclaration() {
         var allowNric = false;
         allowNric = $('input[id="ignoreNric"]').is(':checked');
         var panelShown = $('#nricWarnDiv').is(":visible");
-        if (!allowNric & !panelShown) {
+        if ((!allowNric & !panelShown) || (allowNric & panelShown)) {
             checkExistOrNew();
         }else {
             alert("Please check the 'Allow Anyway' Checkbox");
@@ -369,7 +373,7 @@ function loadActiveForm() {
                 if (type === "ddList") {
                     htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>"
-                            + "<select class='form-control required answer' id='" + questionNum + "'>";
+                            + "<select class='form-control required answer' name='" + questionNum + "'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
                         htmlString += "<option value='" + valArr[j] + "'>" + valArr[j] + "</option>";
@@ -401,7 +405,7 @@ function loadActiveForm() {
                     htmlString += "<label for='" + questionNum + "'>" + question + "</label>"
                                     + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                                     + "<div class='form-group'>"
-                                    + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "' />"
+                                    + "<input type='text' runat='server' class='form-control required answer' name='" + questionNum + "' />"
                                     + "</div>";
                 }
             }

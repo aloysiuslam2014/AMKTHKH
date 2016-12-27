@@ -94,7 +94,7 @@
                                 <h4 id="emptyNricWarning">Please enter your NRIC/Identification Number!</h4>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-block btn-success" id="submitNric" onclick="checkIfExistingVisitor(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
+                                <button class="btn btn-block btn-success" id="submitNric" onclick="showVisitDetails(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
                             </div>
                         </div>
                     </div>
