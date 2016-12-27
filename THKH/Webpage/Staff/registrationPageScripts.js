@@ -256,8 +256,12 @@ function checkExistOrNew() {
 // Get Questionnaire Answers by .answer class gives back a JSON String
 function getQuestionnaireAnswers() {
     var answers = '{';
-    $.each($("#registration input.answer"), function (index, value) {
-        answers += index + ':' + $(value).val() + ',';
+    $.each($("#registration input.answer"), function (index, value) { // Still Buggy
+        var id = $(value).attr('id');
+        if (id == null) {
+            id = $(value).attr('name');
+        }
+        answers += id + ':' + $(value).val() + ',';
     });
     answers = answers.substring(0, answers.length - 1) + '}';
     var jsonString = JSON.stringify(answers);
@@ -328,7 +332,7 @@ function checkNricWarningDeclaration() {
         var allowNric = false;
         allowNric = $('input[id="ignoreNric"]').is(':checked');
         var panelShown = $('#nricWarnDiv').is(":visible");
-        if (!allowNric & !panelShown) {
+        if ((!allowNric & !panelShown) || (allowNric & panelShown)) {
             checkExistOrNew();
         }else {
             alert("Please check the 'Allow Anyway' Checkbox");

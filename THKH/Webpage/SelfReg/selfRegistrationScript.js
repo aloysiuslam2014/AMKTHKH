@@ -85,7 +85,7 @@ function validatePatient() {
                     } else {
                         alert("Patient Found! Please fill up the rest of the form.");
                         patientValidated = true;
-                        showNewContent();
+                        checkIfExistingVisitor();
                     }
                     
                 } else {
@@ -120,7 +120,7 @@ function checkIfExistingVisitor() {
             success: function (returner) {
                 resultOfGeneration = JSON.parse(returner);
                 var res = resultOfGeneration.Msg;
-                if (resultOfGeneration.Msg.includes("0")) {
+                if (resultOfGeneration.Msg === "new") {
                     showVisitDetails();
                 }
                 else {
@@ -184,6 +184,12 @@ function hideModal() {
     $('#myModal').modal('hide');
 }
 
+// Show Visit Details Div
+function showVisitDetails() {
+    $('#visitDetailsDiv').css("display", "block");
+    hideModal();
+}
+
 function clearFields() {
     $("#nricsInput").attr('value', "");
     $("#namesInput").attr('value', "");
@@ -208,14 +214,13 @@ function clearFields() {
 function showNewContent() {
     $('#newusercontent').css("display", "block");
     $('#staticinfocontainer').css("display", "block");
-    hideModal();
 }
 
 // Show only the Visit Purpose & Questionnaire
 function showExistContent() {
+    $('#visitDetailsDiv').css("display", "block");
     $('#changeddetailsdeclaration').css("display", "block");
     $('#staticinfocontainer').css("display", "block");
-    hideModal();
 }
 
 // Display Submit Button according to whether the user has checked the declaration checkbox
@@ -272,7 +277,7 @@ function purposePanels() {
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "block");
         patientValidated = true;
-        showNewContent(); // Need logic to display Existing Visitor Content or New Visitor Content
+        checkIfExistingVisitor(); 
     } else {
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "none");
@@ -308,8 +313,12 @@ function hideTags() {
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
     var answers = '{';
-    $.each($("#selfregistration input.answer"), function (index, value) {
-        answers += index + ':' + $(value).val() + ',';
+    $.each($("#selfregistration input.answer"), function (index, value) { // Still Buggy
+        var id = $(value).attr('id');
+        if (id == null) {
+            id = $(value).attr('name');
+        }
+        answers += id + ':' + $(value).val() + ',';
     });
     answers = answers.substring(0, answers.length - 1) + '}';
     var jsonString = JSON.stringify(answers);
@@ -375,7 +384,7 @@ function loadActiveForm() {
                     htmlString += "<label for='" + questionNum + "'>" + question + "</label>"
                                     + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                                     + "<div class='form-group'>"
-                                    + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "Input' />"
+                                    + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "' />"
                                     + "</div>";
                 }
             }

@@ -57,11 +57,17 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var visitLocation = context.Request.Form["visitLocation"];
                 var qListID = context.Request.Form["qListID"];
                 var qAns = context.Request.Form["qAnswers"];
+                long ticks = DateTime.Now.Ticks;
+                byte[] bytes = BitConverter.GetBytes(ticks);
+                string qaid = Convert.ToBase64String(bytes)
+                                        .Replace('+', '_')
+                                        .Replace('/', '-')
+                                        .TrimEnd('=');
 
                 // Write to Visitor_Profile & Visit Table
                 successString = selfReg(nric, age, fname, address, postal, mobtel, alttel, hometel,
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
-            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, qListID, qAns);
+            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, qListID, qAns, qaid);
         }
         if (typeOfRequest == "patient") {
                 var pName = context.Request.Form["pName"];
@@ -99,10 +105,16 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var visitLocation = context.Request.Form["visitLocation"];
                 var qListID = context.Request.Form["qListID"];
                 var qAns = context.Request.Form["qAnswers"];
+                long ticks = DateTime.Now.Ticks;
+                byte[] bytes = BitConverter.GetBytes(ticks);
+                string qaid = Convert.ToBase64String(bytes) // Find a way to generate UNIQUE numbers!!!
+                                        .Replace('+', '_')
+                                        .Replace('/', '-')
+                                        .TrimEnd('=');
 
                 successString = AssistReg(staffUser,nric, age, fname, address, postal, mobtel, alttel, hometel,
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
-            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature, qListID, qAns);
+            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature, qListID, qAns, qaid);
             }
             context.Response.Write(successString);// String to return to front-end
         }
@@ -196,6 +208,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@returnValue", SqlDbType.VarChar, -1);
             respon.Direction = ParameterDirection.Output;
+            String msg = "";
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[GET_VISITOR]", cnn);
@@ -206,20 +219,37 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
-                //successString += "\"}";
+                String response = respon.Value.ToString();
+                if (response.Length > 4)
+                {
+                    msg += response;
+                }
+                else {
+                    successString += "new";
+                    successString += "\"}";
+                    return successString;
+                }   
             }
             catch (Exception ex)
             {
                 successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
+                return successString;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "," + getVisitDetails(nric);
+            try
+            {
+                msg += "," + getVisitDetails(nric);
+            }
+            catch (Exception ex) {
+                successString.Replace("Success", "Failure");
+                msg = ex.Message;
+            }
+            successString += msg;
             successString += "\"}";
             return successString;
         }
@@ -241,14 +271,10 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
-                //successString += "\"}";
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                //successString += "\"}";
-                return successString;
+                throw ex;
             }
             finally
             {
@@ -257,15 +283,20 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
+        private String getSubmittedQuestionnaireResponse() {
+            return "";
+        }
+
         // Write to Visitor & Visit Table
         private String selfReg(String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String qListID, String qAns) {
+            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String qListID, String qAns, String qaid) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            String msg = "";
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_VISITOR_PROFILE]", cnn);
@@ -286,18 +317,31 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                msg += respon.Value;
             }
             catch (Exception ex)
             {
                 successString.Replace("Success", "Failure");
-                successString += ex.Message;
+                msg = ex.Message;
+                successString += msg;
                 successString += "\"}";
                 return successString;
             }
             finally
             {
                 cnn.Close();
+            }
+            try
+            {
+                msg += writeQuestionnaireResponse(qaid, qListID, qAns);
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                msg = ex.Message;
+                successString += msg;
+                successString += "\"}";
+                return successString;
             }
             try
             {
@@ -311,38 +355,38 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pReason", otherPurpose);
                 command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
                 command.Parameters.AddWithValue("@pBedNo", bedno);
-                command.Parameters.AddWithValue("@pQaID", qListID);
+                command.Parameters.AddWithValue("@pQaID", qaid);
                 command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                msg += respon.Value;
             }
             catch (Exception ex)
             {
                 successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
+                msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += writeQuestionnaireResponse(qListID, qAns);
+            successString += msg;
             successString += "\"}";
             return successString;
         }
 
-        
+
         // Write to Visitor, Visit & Confirmation Table
-        private String AssistReg(String staffuser,String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
+        private String AssistReg(String staffuser, String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature, String qListID, String qAns) {
+            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature, String qListID, String qAns, String qaid) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            String msg = "";
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISITOR_PROFILE]", cnn);
@@ -351,7 +395,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pFullName", fname);
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob,"dd-MM-yyyy", CultureInfo.InvariantCulture));
+                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
                 command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pHomeTel", hometel);
@@ -363,12 +407,13 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                msg += respon.Value;
             }
             catch (Exception ex)
             {
                 successString.Replace("Success", "Failure");
-                successString += ex.Message;
+                msg = ex.Message;
+                successString += msg;
                 successString += "\"}";
                 return successString;
             }
@@ -376,7 +421,18 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-
+            try
+            {
+                msg += writeQuestionnaireResponse(qaid, qListID, qAns);
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                msg = ex.Message;
+                successString += msg;
+                successString += "\"}";
+                return successString;
+            }
             respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             try
@@ -391,17 +447,18 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pReason", otherPurpose);
                 command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
                 command.Parameters.AddWithValue("@pBedNo", bedno);
-                command.Parameters.AddWithValue("@pQaID", qListID);
+                command.Parameters.AddWithValue("@pQaID", qaid);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                msg += respon.Value;
             }
             catch (Exception ex)
             {
                 successString.Replace("Success", "Failure");
-                successString += ex.Message;
+                msg = ex.Message;
+                successString += msg;
                 successString += "\"}";
                 return successString;
             }
@@ -409,14 +466,21 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-            successString += writeQuestionnaireResponse(qListID, qAns);
-            successString += CheckIn(staffuser,nric, temperature);
+            try
+            {
+                msg += CheckIn(staffuser, nric, temperature);
+            }
+            catch (Exception ex) {
+                successString.Replace("Success", "Failure");
+                msg = ex.Message;
+            }
+            successString += msg;
             successString += "\"}";
             return successString;
         }
 
         
-        private String writeQuestionnaireResponse(String qListID, String qAns) {
+        private String writeQuestionnaireResponse(String qaid, String qListID, String qAns) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -426,6 +490,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 SqlCommand command = new SqlCommand("[dbo].[INSERT_QUESTIONNARIE_RESPONSE]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pQA_ID", qaid);
                 command.Parameters.AddWithValue("@pQ_QuestionListID", qListID);
                 command.Parameters.AddWithValue("@pQA_JSON", qAns);
                 command.Parameters.Add(respon);
@@ -436,8 +501,9 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString += ex.Message;
-                return successString;
+                throw ex;
+                //successString += ex.Message;
+                //return successString;
             }
             finally
             {
@@ -468,8 +534,9 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString += ex.Message;
-                return successString;
+                throw ex;
+                //successString += ex.Message;
+                //return successString;
             }
             finally
             {
