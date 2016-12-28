@@ -82,14 +82,16 @@ function fillQuestinaireList(dataForQList) {
     $('#qnaires').html("");
     for (var i = 0; i < dataForQList.length; i++) {
         var optin = document.createElement("option");
-        $(optin).html(dataForQList[i].ListName);
+      
         $(optin).attr("style", "background:white");
         $(optin).attr("name", dataForQList[i].ListName);
         if (dataForQList[i].Active.toString() == "1") {
+            $(optin).html(dataForQList[i].ListName + " (Active)");
             $(optin).attr("value", "1");
-          //  $(optin).attr("data-color", "info"); 
             $(optin).attr("style", "color:green;background:#dff0d8");
             $(optin).attr("selected", "");
+        } else {
+            $(optin).html(dataForQList[i].ListName);
         }
         $('#qnaires').append(optin);
     }
@@ -117,7 +119,12 @@ function fillList(dataForQnList,target,editButton) {
         var listElement = document.createElement("LI");
         $(listElement).attr("class", "list-group-item");
         $(listElement).attr("data-color", "info");
-        $(listElement).attr("style", "text-align: left;");
+        if (editButton) {
+            $(listElement).attr("style", "text-align: left;position:unset !important;");
+        } else {
+            $(listElement).attr("style", "text-align: left;");
+        }
+        
          
         $(listElement).attr("id", dataForQnList[i].qId);
         $(listElement).attr("value", dataForQnList[i].question);
@@ -172,40 +179,28 @@ function fillList(dataForQnList,target,editButton) {
         $widget.css('cursor', 'pointer')
         $widget.append($checkbox);
 
-        // Event Handlers
-        $widget.on('click', function () {
-            if (notEditing) {
-                $checkbox.prop('checked', !$checkbox.is(':checked'));
-               $checkbox.triggerHandler('change');
-                //updateDisplay();
-            } else {
-                notEditing = true;
-            }
-        });
-        $checkbox.on('change', function () {
-            updateDisplay();
-        });
+      
 
 
         // Actions
-        function updateDisplay() {
-            var isChecked = $checkbox.is(':checked');
+        function updateDisplay(obj) {
+            var isChecked = $(obj).find(".hidden").is(':checked');
 
             // Set the button's state
-            $widget.data('state', (isChecked) ? "on" : "off");
+            $(obj).data('state', (isChecked) ? "on" : "off");
 
             // Set the button's icon
-            $widget.find('.state-icon')
+            $(obj).find('.state-icon')
                 .removeClass()
-                .addClass('state-icon ' + settings[$widget.data('state')].icon);
+                .addClass('state-icon ' + settings[$(obj).data('state')].icon);
 
             // Update the button's color
             if (isChecked) {
-                $widget.addClass(style + color + ' active');
-                $widget.removeClass(  ' inactive');
+                $(obj).addClass(style + color + ' active');
+                $(obj).removeClass(' inactive');
             } else {
-                $widget.removeClass(style + color + ' active');
-                $widget.addClass(' inactive');
+                $(obj).removeClass(style + color + ' active');
+                $(obj).addClass(' inactive');
             }
         }
 
@@ -216,24 +211,60 @@ function fillList(dataForQnList,target,editButton) {
                 $checkbox.prop('checked', !$checkbox.is(':checked'));
             }
 
-            updateDisplay();
+            updateDisplay($widget);
 
             // Inject the icon if applicable
             if ($widget.find('.state-icon').length == 0) {
                 $widget.prepend('<span class="state-icon ' + settings[$widget.data('state')].icon + '"></span>');
             }
+
+
+            // Event Handlers
+
+            $widget.find('span').on('click', function () {
+                if (notEditing) {
+                    var checkBox = $(this).parent().find(".hidden");
+                    $(checkBox).prop('checked', !$(checkBox).is(':checked'));
+                    $(checkBox).triggerHandler('change');
+                    updateDisplay($(this).parent());
+                } else {
+                    notEditing = true;
+                }
+            });
+            $checkbox.on('change', function () {
+                updateDisplay($(this).parent());
+            });
         }
         init();
     });
 }
 
+//hide the questions in all question list that already exists in the questionaire list of questions
+function hideQuestionsAppearingInQuestionaire() {
+    $("#allQuestions li").each(function (idx, li) {
+        var idToHide = $(li).attr("id");
+        var toHide = $(".qnQns").find("#" + idToHide);
+        var test = jQuery.type(toHide);
+        if ($(toHide).prop("nodeName") == "LI") {
+            $(li).toggle(false);
+        } else {
+            $(li).toggle(true);
+        }
+    });
+}
+
+
+
 function displayQuestionnaireQuestions() {
+  
+
     //update dropdownlist background
     setSelectBackground();
+    var idl = $('.qnaire').find(":selected").attr("name");
     //create call and pull the questions out
     var headersToProcess = {
         requestType: "getQuestionaireFromList",
-        ListID: $('.qnaire').find(":selected").html()
+        ListID: idl
     };
     $.ajax({
         url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
@@ -246,7 +277,8 @@ function displayQuestionnaireQuestions() {
             var res = resultOfGeneration.Result;
             if (res.toString() == "Success") {
                 $(".qnQns").html("");
-                fillList(resultOfGeneration.qnQns, $(".qnQns"),false);
+                fillList(resultOfGeneration.qnQns, $(".qnQns"), false);
+                hideQuestionsAppearingInQuestionaire();
             } else {
                 alert(resultOfGeneration.Result);
             }
@@ -273,12 +305,12 @@ function filterCurrentList(elment) {
 function selectAll(target) {
     if (target == 'qns') {
         //get the list and get all the options
-        $("#allQuestions li.inactive").each(function (idx, li) {
+        $("#allQuestions li.inactive span").each(function (idx, li) {
            $(li).triggerHandler('click');
         });
         
     } else if (target == 'qnaire') {
-        $(".qnQns li.inactive").each(function (idx, li) {
+        $(".qnQns li.inactive span").each(function (idx, li) {
             $(li).triggerHandler('click');
         });
     }
@@ -287,12 +319,12 @@ function selectAll(target) {
 function deSelectAll(target) {
     if (target == 'qns') {
         //get the list and get all the options
-        $("#allQuestions li.active").each(function (idx, li) {
+        $("#allQuestions li.active span").each(function (idx, li) {
             $(li).triggerHandler('click');
         });
 
     } else if (target == 'qnaire') {
-        $("#sortable li.active").each(function (idx, li) {
+        $("#sortable li.active span").each(function (idx, li) {
             $(li).triggerHandler('click');
         });
     }
@@ -329,10 +361,12 @@ function newQuestionnaire() {
 
 //Clear questionaire fields
 function clearQnEditorFields() {
-    $('#qnEditor input').each(function (idx, obj) {
+    $('#qnEditor .qnVal').each(function (idx, obj) {
         $(obj).val("");
+         
     });
     var update = false;
+   
 }
 
 // Delete questionnaire
@@ -362,27 +396,51 @@ function deleteQuestionnaire() {
 //Variable to store condition on create or update question
 var update = true;
 
+//toggle qn editor
+function toggleQnEditor() {
+    //var state = $("#qnEditor").hasClass('in')  ;
+    var state = $("#qnEditor").hasClass('in');
+
+    if (!state || update == true) {
+        $("#editQuestionTitle").html("New Question Details");
+
+        $('#qnEditor').collapse("show");
+        clearQnEditorFields();
+        toggleListGreyOut(true);
+        update = false;
+    } else {
+        $('#qnEditor').collapse("hide");
+        clearQnEditorFields();
+        toggleListGreyOut(false)
+    }
+    
+}
+
 //disable entire list
-function disableAll() {
-    $widget.addClass(style + color + ' active');
-    $widget.removeClass(' inactive');
+function toggleListGreyOut(display) {
+    $("#cover").toggle(display);
 }
 
 //When the edit question button is pressed
 function editQuestionShow(me) {
-
+    toggleListGreyOut(true);
     var qn = $(me).parent().text();
     var qnType = $(me).parent().find(".qType").val();
     var qnValues = $(me).parent().find(".qValues").val();
     $("#detailsQn").val(qn);
     $("#detailsQnType").val(qnType);
     $("#detailsQnValues").val(qnValues);
+    $("#editQuestionTitle").html("Edit Question Details");
     update = true;
-    $('#qnEditor').collapse("toggle");
+    $('#qnEditor').collapse("show");
 
-    $(me).parent().attr('disabled', true).addClass('ui-state-disabled');
 }
-
+//close question editor
+function closeEditor() {
+    clearQnEditorFields();
+    toggleListGreyOut(false);
+    update = false;
+}
 // Update or create a Question
 function updateOrCreate() {
     var resultOfGeneration = "";
@@ -437,18 +495,20 @@ function AddQtoQuestionnaire() {
     var ids = [];
     var questions = [];
     var count = 1;
-    $.each($("#allQuestions li.active"), function (idx,li) {
-        ids.push($(li).clone(true));
+    $.each($("#allQuestions li.active "), function (idx, li) {
+        $(this).toggle("hide");
+        $(li).find("span").triggerHandler("click");
+        var listobj = $(li).clone(true);
+        var listobjBtn = $(listobj).find(".btn");
+        $(listobjBtn).remove();
+        ids.push(listobj);
     });
     // Write HTML <li> & append to sortable ul
     for (i = 0; i < ids.length; i++) {
         var item = ids[i];
         $('#sortable').append(item);
     }
-    // Uncheck the newly added items from questionnaire
-    $.each($("#sortable li.active"), function (idx, li) {
-        $(li).triggerHandler('click');
-    });
+  
 }
 
 // Update Questionnaire

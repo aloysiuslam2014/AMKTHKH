@@ -322,30 +322,43 @@
                             <div class="input-group" id="searchQns">
                             <input type="text" class="form-control maxWidth" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)"/>
                             <span class="input-group-btn">
-                            <button type="button" id="createNewQuestion" data-toggle="collapse" data-target="#qnEditor" onclick="clearQnEditorFields(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create New Question</button>
+                            <button type="button" id="createNewQuestion" onclick="toggleQnEditor(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create New Question</button>
                             </span>
                                 </div>
-                                <div class=" " style="border: solid 1pt; border-radius: 2px; height: 75%; overflow-y: auto;margin-top:2px;">
-                                    <div id="cover" style="background-color:grey;opacity:0.5;margin-top: 93px;width: 100%;height:inherit; padding-right:30px;position:absolute"></div>
-                                   
+                            <div class=" " style="border: solid 1pt; border-radius: 2px; height: 75%; overflow-y: auto; margin-top: 2px;">
+                               
+                               <div id="cover" style="  width: 100%; height: inherit; padding-right: 30px; position: absolute;display:none">
+                                     <div style="background-color: grey; opacity: 0.5; position:absolute;width: calc(100% - 30px);height: calc(100% - 30px);"></div>
+                                </div>
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
-                                    
                                 </ul>
-                                     <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px;width: 100%;height:inherit; padding-right:30px">
-                                          <div class="panel-body questionEditor" style="background-color: ivory;border-style: solid;border-width: 1px;">
-                                              <h3 id="editQuestionTitle">Question Details</h3>
-                                              <div>Question:<textarea  id="detailsQn" rows="3" cols="30">  </textarea></div>
-                                              <div>Question Response Type: <input type="text" id="detailsQnType" /></div>
-                                              <div>Question Value: <input type="text" id="detailsQnValues" /></div>
-                                              <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="clearQnEditorFields(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Close</button>
-                                              <button type="button" id="updateOrCreateQn"   onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Save Question</button>
+                                <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px">
+                                    <div class="panel-body questionEditor" style="background-color: ivory; border-style: solid; border-width: 1px;">
+                                        <h3 id="editQuestionTitle">Question Details</h3>
+                                        <div>Question:<textarea id="detailsQn"  class="qnVal" rows="3" cols="80">  </textarea></div>
+                                        <div>Question Response Type:
+                                            <select id="detailsQnType" class="qnVal" >
+                                                <option value="" selected="selected">Select a type</option>
+                                                <option value="ddList">Drop-down list</option> 
+                                                <option value="checkbox">Checkbox</option>
+                                                <option value="radio">Radiobutton</option>
+                                                <option value="text">Text Field</option>
+                                            </select>
 
-                                          </div>
-                                     </div>
+                                        </div>
+                                        <div>Question Values:
+                                            <textarea  id="detailsQnValues" class="qnVal"  rows="2" cols="60"></textarea>
+
+                                        </div>
+                                        <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Close</button>
+                                        <button type="button" id="updateOrCreateQn" onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span>Save Question</button>
+
+                                    </div>
+                                </div>
                             </div>
-                           
+
                             <div class="btn btn-group">
-                                <button type="button" id="selectAll" onclick="selectAll('qns'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span> Select All</button>
+                                <button type="button" id="selectAll" onclick="selectAll('qns'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
                                 <button type="button" id="deSelectAll" onclick="deSelectAll('qns');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
                             </div><br />
                             <div class="btn btn-group">
