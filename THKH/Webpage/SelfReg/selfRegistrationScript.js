@@ -119,11 +119,11 @@ function checkIfExistingVisitor() {
 
             success: function (returner) {
                 resultOfGeneration = JSON.parse(returner);
-                var res = resultOfGeneration.Msg;
-                if (resultOfGeneration.Msg === "new") {
+                if (resultOfGeneration.Visit === "new") {
                     showVisitDetails();
                 }
                 else {
+                    $('#newusercontent input').removeClass('required');
                     showExistContent(snric);
                 }
                 $('#nricsInput').attr('value', snric);
@@ -313,12 +313,28 @@ function hideTags() {
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
     var answers = '{';
-    $.each($("#selfregistration input.answer"), function (index, value) { // Still Buggy
+    $("#selfregistration .answer").each(function (index, value) {
+        var element = $(this);
         var id = $(value).attr('id');
         if (id == null) {
             id = $(value).attr('name');
         }
-        answers += id + ':' + $(value).val() + ',';
+        var type = element.prop('type');
+        if (type != null & type == 'radio') {
+            var check = element.attr('checked');
+            if (check) {
+                answers += id + ':' + element.val() + ',';
+            }
+        } if (type != null & type == 'text') {
+            answers += id + ':' + element.val() + ',';
+        } if (type != null & type == 'select-one') {
+            answers += id + ':' + element.val() + ',';
+        } if (type != null & type == 'checkbox') {
+            var check = element.is(":checked");
+            if (check) {
+                answers += id + ':' + element.val() + ',';
+            }
+        }
     });
     answers = answers.substring(0, answers.length - 1) + '}';
     var jsonString = JSON.stringify(answers);

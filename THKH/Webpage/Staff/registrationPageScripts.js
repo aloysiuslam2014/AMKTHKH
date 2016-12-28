@@ -26,29 +26,43 @@ function callCheck (){
             if (resultOfGeneration.Result === "Success") {
                 // ASHX returns all the visitor information
                 // Populate fields if visitor exists by spliting string into array of values & populating
-                var string = resultOfGeneration.Msg;
-                var arr = string.split(",");
-                if (arr.length > 5) {
-                    var dateString = arr[4].replace(/-/g, "/").toString() + " 0:01 AM";
+                var visitorString = resultOfGeneration.Visitor;
+                var visitString = resultOfGeneration.Visit;
+                var questionnaireAns = resultOfGeneration.Questionnaire;
+                var visitorArr = visitorString.split(",");
+                var visitArr = visitString.split(",");
+                var questionnaireArr = questionnaireAns.split(",");
+                if (visitorArr.length > 0) {
+                    var dateString = visitorArr[4].replace(/-/g, "/").toString() + " 0:01 AM";
                     // Populate fields if data exists
-                    $("#nric").attr('value', arr[0]);
-                    $("#namesInput").attr('value', arr[1]);
-                    $("#sexinput").attr('value', arr[2]);
-                    $("#nationalsInput").attr('value', arr[3]);
+                    $("#nric").attr('value', visitorArr[0]);
+                    $("#namesInput").attr('value', visitorArr[1]);
+                    $("#sexinput").attr('value', visitorArr[2]);
+                    $("#nationalsInput").attr('value', visitorArr[3]);
                     $("#daterange").attr('value', dateString);
-                    $("#addresssInput").attr('value', arr[10]);
-                    $("#postalsInput").attr('value', arr[11]);
-                    $("#mobilesInput").attr('value', arr[6]);
-                    $("#altInput").attr('value', arr[8]);
-                    $("#homesInput").attr('value', arr[7]);
-                    $("#emailsInput").attr('value', arr[9]);
-                    $("#visitbookingtime").attr('value', arr[13]);
-                    $("#patientNric").attr('value', arr[14]);
-                    $("#patientName").attr('value', arr[16]);
-                    $('#pInput').val(arr[17]); // Purpose of visit "Visit Patient" or "Other Purpose"
-                    $("#purposeInput").attr('value', arr[18]);
-                    $("#visLoc").attr('value', arr[19]);
-                } else {
+                    $("#addresssInput").attr('value', visitorArr[10]);
+                    $("#postalsInput").attr('value', visitorArr[11]);
+                    $("#mobilesInput").attr('value', visitorArr[6]);
+                    $("#altInput").attr('value', visitorArr[8]);
+                    $("#homesInput").attr('value', visitorArr[7]);
+                    $("#emailsInput").attr('value', visitorArr[9]);
+                } if (visitArr.length > 0) {
+                    $("#visitbookingtime").attr('value', visitArr[0]);
+                    $("#patientNric").attr('value', visitArr[1]);
+                    $("#patientName").attr('value', visitArr[3]);
+                    $('#pInput').val(visitArr[4]); // Purpose of visit "Visit Patient" or "Other Purpose"
+                    $("#purposeInput").attr('value', visitArr[5]);
+                    $("#visLoc").attr('value', visitArr[6]);
+                    $("#bedno").attr('value', visitArr[7]);
+                } if (questionnaireArr.length > 0) {
+                    for (i = 0; i < questionnaireArr.length; i++) {
+                        var value = questionnaireArr[i];
+                        var arr = value.split(':');
+                        $("input[name='" + arr[0] + "'][value='" + arr[1] + "']").prop("checked", true);
+                        $("#" + arr[0]).attr('value', arr[1]);
+                    }  
+                }
+                else {
                     // Clear fields
                     clearFields();
                 }
@@ -255,15 +269,31 @@ function checkExistOrNew() {
 
 // Get Questionnaire Answers by .answer class gives back a JSON String
 function getQuestionnaireAnswers() {
-    var answers = '{';
-    $.each($("#registration input.answer"), function (index, value) { 
+    var answers = '';
+    $("#registration .answer").each(function (index, value) {
+        var element = $(this);
         var id = $(value).attr('id');
         if (id == null) {
             id = $(value).attr('name');
         }
-        answers += id + ':' + $(value).val() + ',';
+        var type = element.prop('type');
+        if (type != null & type == 'radio') {
+            var check = element.attr('checked');
+            if (check) {
+                answers += id + ':' + element.val() + ',';
+            }
+        } if (type != null & type == 'text') {
+            answers += id + ':' + element.val() + ',';
+        } if (type != null & type == 'select-one') {
+            answers += id + ':' + element.val() + ',';
+        } if (type != null & type == 'checkbox') {
+            var check = element.is(":checked");
+            if (check) {
+                answers += id + ':' + element.val() + ',';
+            }
+        }
     });
-    answers = answers.substring(0, answers.length - 1) + '}';
+    answers = answers.substring(0, answers.length - 1);
     var jsonString = JSON.stringify(answers);
     return jsonString;
 }
@@ -371,22 +401,22 @@ function loadActiveForm() {
                 var values = object.QuestionAnswers;
                 var questionNum = object.QuestionNumber;
                 if (type === "ddList") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label>" + question + "</label><label id='" + questionNum + "' style='color: red'>*</label>"
                         + "<div class='form-group'>"
                             + "<select class='form-control required answer' name='" + questionNum + "'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
-                        htmlString += "<option value='" + valArr[j] + "'>" + valArr[j] + "</option>";
+                        htmlString += "<option class='answer' name='" + questionNum + "' value='" + valArr[j] + "'>" + valArr[j] + "</option>";
                     }
                     htmlString += "</select></div>";
                 }
                 if (type === "radio") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label>" + question + "</label><label id='" + questionNum + "' style='color: red'>*</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
                         htmlString += "<div class='radio'><label><input class='answer' type='radio' name='" + questionNum + "' value='" + valArr[j] + "'";
-                        if(j == 0){
+                        if (j == 0) {
                             htmlString += " checked";
                         }
                         htmlString += "/> " + valArr[j] + "</label></div>";
@@ -394,7 +424,7 @@ function loadActiveForm() {
                     htmlString += "</div>";
                 }
                 if (type === "checkbox") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label>" + question + "</label><label style='color: red'>*</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -405,7 +435,7 @@ function loadActiveForm() {
                     htmlString += "<label for='" + questionNum + "'>" + question + "</label>"
                                     + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                                     + "<div class='form-group'>"
-                                    + "<input type='text' runat='server' class='form-control required answer' name='" + questionNum + "' />"
+                                    + "<input type='text' runat='server' id='" + questionNum + "' class='form-control required answer' name='" + questionNum + "' />"
                                     + "</div>";
                 }
             }
