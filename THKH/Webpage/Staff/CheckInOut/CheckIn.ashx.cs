@@ -204,7 +204,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         private String getVisitorDetails(String nric) {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@returnValue", SqlDbType.VarChar, -1);
             respon.Direction = ParameterDirection.Output;
@@ -243,21 +243,27 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             try
             {
-                msg += "," + getVisitDetails(nric);
+                var tempMsg = getVisitDetails(nric);
+                msg += "\"," + tempMsg;
+                var arr = tempMsg.Split(',');
+                var qAID = arr[arr.Length - 2];
+                msg += "\"," + getSubmittedQuestionnaireResponse(qAID);
             }
             catch (Exception ex) {
                 successString.Replace("Success", "Failure");
                 msg = ex.Message;
+                successString += "\"}";
+                return successString;
             }
             successString += msg;
-            successString += "\"}";
+            successString += "}";
             return successString;
         }
 
         private String getVisitDetails(String nric)
         {
             SqlConnection cnn;
-            String successString = "";
+            String successString = "\"Visit\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
             respon.Direction = ParameterDirection.Output;
@@ -283,8 +289,43 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
-        private String getSubmittedQuestionnaireResponse() {
-            return "";
+        private String getSubmittedQuestionnaireResponse(String qAID) {
+            SqlConnection cnn;
+            String successString = "\"Questionnaire\":";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_QUESTIONNARIE_RESPONSE]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pQA_ID", qAID);
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        successString += reader.GetString(0);
+                    }
+                }
+                else {
+                    successString += "none";
+                }
+                successString.Replace("{", String.Empty);
+                successString.Replace("}", String.Empty);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            return successString;
         }
 
         // Write to Visitor & Visit Table
