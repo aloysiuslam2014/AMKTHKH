@@ -33,7 +33,18 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             }
             if (typeOfRequest == "addQuestion")
             {
-                successString = addQuestion();
+                var qn = context.Request.Form["question"];
+                var qnType = context.Request.Form["questionType"];
+                var qnVals = context.Request.Form["questionValues"];
+                successString = addQuestion(qn,qnType,qnVals);
+            }
+            if (typeOfRequest == "updateQuestion")
+            {
+                var qnId = context.Request.Form["qnId"];
+                var qn = context.Request.Form["question"];
+                var qnType = context.Request.Form["questionType"];
+                var qnVals = context.Request.Form["questionValues"];
+                successString = updateQuestion(qnId,qn, qnType, qnVals);
             }
             if (typeOfRequest == "deleteQuestion")
             {
@@ -221,7 +232,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Adds new question
-        private String addQuestion()
+        private String addQuestion(String qn,String qnType,String qnValues)
         {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":";
@@ -233,6 +244,47 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 SqlCommand command = new SqlCommand("[dbo].[ADD_QUESTION]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 // Add params Question, Question Type, Question Values
+                command.Parameters.AddWithValue("@pQuestion", qn);
+                command.Parameters.AddWithValue("@pQnsType", qnType);
+                command.Parameters.AddWithValue("@pQnsValue", qnValues);
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                command.ExecuteNonQuery();
+                successString += respon.Value;
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "}";
+            return successString;
+        }
+
+        // Updates a question
+        private String updateQuestion(String qnId,String qn, String qnType, String qnValues)
+        {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTION]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                // Add params Question, Question Type, Question Values
+                command.Parameters.AddWithValue("@pQQ_ID", Int32.Parse( qnId));
+                command.Parameters.AddWithValue("@pQuestion", qn);
+                command.Parameters.AddWithValue("@pQnsType", qnType);
+                command.Parameters.AddWithValue("@pQnsValue", qnValues);
                 command.Parameters.Add(respon);
                 cnn.Open();
 

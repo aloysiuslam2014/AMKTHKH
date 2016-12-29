@@ -400,8 +400,10 @@
                                             <div class="modal-body" style="text-align: center;">
 
                                                 <div class="form-group">
-
+                                                    <label>Terminal Name:</label>
                                                     <input type="text" class="form-control text-center" id="terminalNameInput" placeholder="Enter Terminal Name" />
+                                                    <label>Bed's attached to terminal</label>
+                                                    <input type="text" class="form-control text-center" id="beds" placeholder="Enter Bed Numbers seperated by comma" />
                                                 </div>
 
                                                 <button type="button" class="btn btn-success btn-block" id="addNewTerminal"><span class="glyphicon glyphicon-off"></span>Add New Terminal</button>

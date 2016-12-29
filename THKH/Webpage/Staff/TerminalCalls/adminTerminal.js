@@ -33,7 +33,7 @@
         //create looped ajax call to delete terminal
         
 
-            var headersToProcess = { action: "addTerminal", id: terminalNameInput.value };
+        var headersToProcess = { action: "addTerminal", id: terminalNameInput.value, bedList: beds.value };
             $.ajax({
                 url: './TerminalCalls/TerminalCheck.ashx',
                 method: 'post',

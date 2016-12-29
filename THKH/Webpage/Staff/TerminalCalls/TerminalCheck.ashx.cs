@@ -36,8 +36,9 @@ namespace THKH.Webpage.Staff.TerminalCalls
             }
             else if (action.Equals("addTerminal"))
             {
+                var bedNoList = context.Request.Form["bedList"];
 
-                success = addTerminal(msgg);
+                success = addTerminal(msgg,bedNoList);
 
             }
            
@@ -134,7 +135,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             return success;
         }
 
-        private bool addTerminal(string id)
+        private bool addTerminal(string id,String bedNoList)
         {
             bool success = false;
 
@@ -149,6 +150,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 SqlCommand command = new SqlCommand("[dbo].[ADD_TERMINAL]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pTName", id);
+                command.Parameters.AddWithValue("@pBedNoList", bedNoList);
 
                 command.Parameters.Add(respon);
                 cnn.Open();

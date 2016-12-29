@@ -6,6 +6,12 @@ $.extend($.expr[':'], {
     }
 });
 
+//if the user clicked the qn edit button or not. To prevent li from activating if the edit button was pressed
+var notEditing = true;
+//To determine if the user is selected edit or create
+var isCreateQn = false;
+//When editing store the selected id of the question to be edited
+var editID="";
 // Draggable questions for ordering purposes
 $(function () {
     $("#sortable").sortable({
@@ -109,8 +115,7 @@ function setSelectBackground() {
     }
 }
 
-//if the user clicked the qn edit button or not. To prevent li from activating if the edit button was pressed
-var notEditing = true;
+
 //creates lists and appends to qn list
 function fillList(dataForQnList,target,editButton) {
     //clear existing list objects
@@ -292,8 +297,9 @@ function displayQuestionnaireQuestions() {
 function filterCurrentList(elment) {
 
     var value = $(elment).val();
-    if (elment == '' || elment == ' ') {
+    if (value == '' || value == ' ') {
         $('#allQuestions > li').show();
+        hideQuestionsAppearingInQuestionaire();
     } else {
         $('#allQuestions > li:not(:containsi(' + value + '))').hide();
         $('#allQuestions > li:containsi(' + value + ')').show();
@@ -403,7 +409,7 @@ function toggleQnEditor() {
 
     if (!state || update == true) {
         $("#editQuestionTitle").html("New Question Details");
-
+        isCreateQn = true;
         $('#qnEditor').collapse("show");
         clearQnEditorFields();
         toggleListGreyOut(true);
@@ -423,10 +429,12 @@ function toggleListGreyOut(display) {
 
 //When the edit question button is pressed
 function editQuestionShow(me) {
+    isCreateQn = false;
     toggleListGreyOut(true);
     var qn = $(me).parent().text();
     var qnType = $(me).parent().find(".qType").val();
     var qnValues = $(me).parent().find(".qValues").val();
+    editID = $(me).parent().attr("id");
     $("#detailsQn").val(qn);
     $("#detailsQnType").val(qnType);
     $("#detailsQnValues").val(qnValues);
@@ -440,13 +448,29 @@ function closeEditor() {
     clearQnEditorFields();
     toggleListGreyOut(false);
     update = false;
+    $('#qnEditor').collapse("hide");
 }
-// Update or create a Question
+
+// Update or create a Question depending on condition
 function updateOrCreate() {
+    if (isCreateQn) {
+        var headersToProcess = {
+            requestType: "addQuestion",
+            question: $("#detailsQn").val(),
+            questionType: $("#detailsQnType").val(),
+            questionValues: $("#detailsQnValues").val()
+        };
+    } else {
+        var headersToProcess = {
+            requestType: "updateQuestion",
+            qnId: editID,
+            question: $("#detailsQn").val(),
+            questionType: $("#detailsQnType").val(),
+            questionValues: $("#detailsQnValues").val()
+        };
+    }
     var resultOfGeneration = "";
-    var headersToProcess = {
-        requestType: "addQuestion"
-    };
+
     $.ajax({
         url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
         method: 'post',
@@ -455,8 +479,14 @@ function updateOrCreate() {
 
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.Msg;
-
+            var res = resultOfGeneration.Result;
+            if (res == "Success") {
+                formManagementInit();
+                closeEditor();
+                
+            } else {
+                alert("An error has occured. Please Contact the administrator");
+            }
         },
         error: function (err) {
             alert(err.Msg);
