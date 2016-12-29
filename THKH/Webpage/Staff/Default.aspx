@@ -487,7 +487,7 @@
             <!-- UserManagement -->
             <div class="tab-pane maxHeight" id="UserManagement">
                 <div class="row inheritHeight">
-                    <div class="col-sm-4 panel inheritHeight">
+                    <div class="col-sm-4 inheritHeight">
                         <h3 style="color: midnightblue">Existing Users</h3>
                         <div class="input-group" id="searchUser">
                             <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterCurrentList(this)"/>
@@ -508,8 +508,29 @@
                          
                        
                     </div>
-                    <div>
-                     Display Staff Information  
+                    <div class="row" style="overflow-y:auto">
+                     <div><label class="form-control">Email</label><input id="staffEmail" class="form-control"/></div>
+                     <div><label class="form-control">First Name</label><input id="staffFirstName" class="form-control"/></div>
+                     <div><label class="form-control">Last Name</label><input id="staffLastName" class="form-control"/></div>
+                     <div><label class="form-control">NRIC</label><input id="staffNric" class="form-control"/></div>
+                     <div><label class="form-control">Address</label><input id="staffAddress" class="form-control"/></div>
+                     <div><label class="form-control">Postal Code</label><input id="staffPostal" class="form-control"/></div>
+                     <div><label class="form-control">Contact Number(Home):</label><input id="staffHomeNum" class="form-control"/></div>
+                     <div><label class="form-control">Contact Number(Alt):</label><input id="staffAltNum" class="form-control"/></div>
+                     <div><label class="form-control">Contact Number(Mobile):</label><input id="staffMobileNum" class="form-control"/></div>
+                     <div><label class="form-control">Sex</label>
+                         <select id="staffSex" class="form-control">
+                             <option value="">Select an option</option>
+                             <option value="male">Male</option>
+                             <option value="female">Female</option>
+                         </select>
+                     </div>
+                     <div><label class="form-control">Nationality</label><input id="staffNationality" class="form-control"/></div>
+                     <div><label class="form-control">Date Of Birth</label><input id="staffDOB" class="form-control"/></div>
+                     <div><label class="form-control">Age</label><input id="staffAge" class="form-control"/></div>
+                     <div><label class="form-control">Race</label><input id="staffRace" class="form-control"/></div>
+                     <div><label class="form-control">Position Title</label><input id="staffTitle" class="form-control"/></div>
+                     <div><label class="form-control">Permission</label><input id="staffPerms" class="form-control"/></div>
                     </div>
                 </div>
             </div>
