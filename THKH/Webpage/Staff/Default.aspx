@@ -130,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <h4 id="emptyFields" style="color: red">Please fill in all the required fields (*).</h4>
+                
                 <div class="row">
                     <div id="newusercontent" class="col-sm-6" runat="server">
                         <div class="jumbotron" style="text-align: left">
@@ -146,14 +146,17 @@
                             <label for="mobileinput">Mobile Number</label><label for="namesinput" id="comp12" style="color: red">*</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required" id="mobilesInput" />
+                                <label for="mobilesInput" id="mobWarning" style="color:red">Invalid Phone Number Format!</label>
                             </div>
                             <label for="homeinput">Home Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control" id="homesInput" />
+                                <label for="homesInput" id="homeWarning" style="color:red">Invalid Phone Number Format!</label>
                             </div>
                             <label for="altInput">Alternate Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control" id="altInput" />
+                                <label for="altInput" id="altWarning" style="color:red">Invalid Phone Number Format!</label>
                             </div>
                             <label for="addressinput">Address</label><label for="addressinput" id="comp2" style="color: red">*</label>
                             <div class="form-group">
@@ -198,7 +201,6 @@
                             <div id="patientpurposevisit" class="container-fluid" runat="server">
                                 <%--Show this only when Visit Purpose is "Visit Patient"--%>
                                 <label for="patientName">Patient Name</label>
-                                <%--AJAX Call to search for Patient Name--%>
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="patientName" />
                                 </div>
@@ -211,8 +213,11 @@
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
+                                <label></label>
                                 <div class="form-group">
                                     <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Validate Patient</button>
+                                    <label for="validatePatientButton" id="patientStatusGreen" style="color:green">Patient Found!</label>
+                                    <label for="validatePatientButton" id="patientStatusRed" style="color:red">Patient Not Found!</label>
                                 </div>
                             </div>
                             <div id="otherpurposevisit" class="container-fluid" runat="server">
@@ -255,6 +260,7 @@
                                 <input type="hidden" name="declare" value="false" />
                                 <label for="declaration" id="declabel" style="color: red">Please check this option to continue</label>
                             </div>
+                            <h4 id="emptyFields" style="color: red">Please fill in all the required fields (*).</h4>
                             <button class="btn btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button>
                         </div>
                     </div>

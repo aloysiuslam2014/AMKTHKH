@@ -62,6 +62,11 @@ function NewSelfReg() {
     });
 }
 
+// Reload Page & Clear Cache
+function reloadPage() {
+    location.reload(true);
+}
+
 // ensure patient info is valid
 function validatePatient() {
     // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
@@ -81,15 +86,18 @@ function validatePatient() {
                 var resultOfGeneration = JSON.parse(returner);
                 if (resultOfGeneration.Result === "Success") {
                     if (resultOfGeneration.Msg === "0") {
-                        alert("Error: Patient Not Found! Please Sign in at the Hospital Directly.");
+                        $("#patientStatusRed").css("display", "block");
+                        $("#patientStatusGreen").css("display", "none");
                     } else {
-                        alert("Patient Found! Please fill up the rest of the form.");
+                        $("#patientStatusGreen").css("display", "block");
+                        $("#patientStatusRed").css("display", "none");
                         patientValidated = true;
                         checkIfExistingVisitor();
                     }
                     
                 } else {
-                    alert("Error: " + resultOfGeneration.Msg);
+                    $("#patientStatusRed").css("display", "block");
+                    $("#patientStatusGreen").css("display", "none");
                 }
             },
             error: function (err) {
@@ -256,12 +264,44 @@ $(function () {
 });
 
 // Validate NRIC format
-$("#nricsInput").on("input", function () {
-    var validNric = validateNRIC($("#nricsInput").val());
+$("#selfRegNric").on("input", function () {
+    var validNric = validateNRIC($("#selfRegNric").val());
     if (validNric !== false) {
         $("#nricWarning").css("display", "none");
+        $("#submitNric").css("display", "block");
     } else {
         $("#nricWarning").css("display", "block");
+        $("#submitNric").css("display", "none");
+    }
+});
+
+// Validate mobile phone number format
+$("#mobilesInput").on("input", function () {
+    var validNric = validatePhone($("#mobilesInput").val());
+    if (validNric !== false) {
+        $("#mobWarning").css("display", "none");
+    } else {
+        $("#mobWarning").css("display", "block");
+    }
+});
+
+// Validate home phone number format
+$("#homesInput").on("input", function () {
+    var validNric = validatePhone($("#homesInput").val());
+    if (validNric !== false) {
+        $("#homeWarning").css("display", "none");
+    } else {
+        $("#homeWarning").css("display", "block");
+    }
+});
+
+// Validate alt phone number format
+$("#altInput").on("input", function () {
+    var validNric = validatePhone($("#altInput").val());
+    if (validNric !== false) {
+        $("#altWarning").css("display", "none");
+    } else {
+        $("#altWarning").css("display", "block");
     }
 });
 
@@ -296,17 +336,22 @@ function amendVisitorDetails() {
 // hide all warnings on page load
 function hideTags() {
     $('#emptyNricWarning').css("display", "none");
+    $('#nricWarning').css("display", "none");
     $('#visitDetailsDiv').css("display", "none");
     $('#staticinfocontainer').css("display", "none");
     $('#changeddetailsdeclaration').css("display", "none");
     $('#newusercontent').css("display", "none");
-    $("#nricWarning").css("display", "none");
     $("#nricexistlabel").css("display", "none");
     $("#patientpurposevisit").css("display", "none");
     $("#otherpurposevisit").css("display", "none");
     $("#nricnotexistlabel").css("display", "none");
     $("#submitNewEntry").css("display", "none");
     $('#emptyFields').css("display", "none");
+    $("#mobWarning").css("display", "none");
+    $("#homeWarning").css("display", "none");
+    $("#altWarning").css("display", "none");
+    $("#patientStatusGreen").css("display", "none");
+    $("#patientStatusRed").css("display", "none");
     loadActiveForm();
 }
 

@@ -76,6 +76,17 @@
                     <div class="navbar-header ">
                         <a class="navbar-brand"><b>Thye Hua Kwan Hospital</b></a>
                     </div>
+                    <%--<div class="collapse navbar-collapse" id="navbar">
+                    <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a>
+                            <div>
+                                <button runat="server" class="btn btn-default" onclick="reloadPage();"><span class="glyphicon glyphicon-refresh"></span> New Registration</button>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                        </div>--%>
                 </div>
             </nav>
             <br />
@@ -95,6 +106,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-block btn-success" id="submitNric" onclick="showVisitDetails(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
+                                <h4 id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID! Please register at the Front Counter.</h4>
                             </div>
                         </div>
                     </div>
@@ -125,13 +137,16 @@
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
-                                <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Validate Patient</button>
+                                    <div class="form-group">
+                                        <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Validate Patient</button>
+                                        <label for="validatePatientButton" id="patientStatusGreen" style="color:green">Patient Found! Please fill up the rest of the form.</label>
+                                    <label for="validatePatientButton" id="patientStatusRed" style="color:red">Patient Not Found! Please Register at the Front Counter.</label>
+                                    </div>
                                 </div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
                                     <label for="visLoc">Visit Location</label> 
                                     <div class="form-group">
                                     <select class="form-control" id="visLoc">
-                                        <option name="none" value="">-- Select One --</option>
                                         <option name="canteen" value="canteen">Canteen</option>
                                         </select>
                                     </div>
@@ -142,19 +157,23 @@
                                 </div>
                                 <label for="visitbookingdate">Visit Date</label><label for="visitbookingdate" id="comp21" style="color: red">*</label>
                                 <%--Visit Time--%>
+                            <div class="form-group">
                                     <div class="input-group date" id="visitbookingdatediv">
                                     <input type='text' id="visitbookingdate" class="form-control required" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
+                                </div>
                                 <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
                                 <%--Visit Time--%>
+                            <div class="form-group">
                                     <div class="input-group date" id="visitbookingtimediv">
                                     <input type='text' id="visitbookingtime" class="form-control required" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
                                     </span>
+                                </div>
                                 </div>
                     </div>
                         </div>
@@ -172,19 +191,22 @@
                                     </div>
                                     <label for="nricsInput">NRIC</label><label for="existnric" id="comp2" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="nricsInput" /><label for="nricsInput" id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID!</label>
+                                        <input type="text" runat="server" class="form-control required" id="nricsInput" />
                                     </div>
-                                    <label for="mobileinput">Mobile Number</label><label for="mobileinput" id="comp0" style="color:red">*</label>
+                                    <label for="mobileinput">Mobile Number</label><label for="mobilesinput" id="comp0" style="color:red">*</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="mobilesInput" />
+                                        <label for="mobilesInput" id="mobWarning" style="color:red">Invalid Phone Number Format!</label>
                                     </div>
                                     <label for="homeinput">Home Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="homesInput" />
+                                        <label for="homesInput" id="homeWarning" style="color:red">Invalid Phone Number Format!</label>
                                     </div>
                                     <label for="altInput">Alternate Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="altInput" />
+                                        <label for="altInput" id="altWarning" style="color:red">Invalid Phone Number Format!</label>
                                     </div>
                                     <label for="addressinput">Address</label><label for="existnric" id="comp4" style="color:red">*</label>
                                     <div class="form-group">

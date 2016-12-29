@@ -1,4 +1,5 @@
-﻿function validateNRIC(str) {
+﻿// validation of NRIC
+function validateNRIC(str) {
     if (str.length != 9)
         return false;
 
@@ -34,6 +35,15 @@
     else if (icArray[0] == "F" || icArray[0] == "G") { theAlpha = fg[temp]; }
 
     return (icArray[8] === theAlpha);
+}
+
+// Validation of phone number
+function validatePhone(txtPhone) {
+    var filter = /^[0-9-+]+$/;
+    if (filter.test(txtPhone)) {
+        return true;
+    }
+    return false;
 }
 
 // Check for required fields in Assisted Registration page

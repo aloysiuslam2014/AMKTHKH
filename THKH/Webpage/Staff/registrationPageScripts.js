@@ -100,14 +100,20 @@ function validatePatient() {
                     $("#patientNric").attr('value', arr[0]);
                     $("#patientName").attr('value', arr[1]);
                     $("#bedno").attr('value', arr[2]);
+                    $("#patientStatusGreen").css("display", "block");
+                    $("#patientStatusRed").css("display", "none");
                 }else {
                     alert("Patient Not Found!");
+                    $("#patientStatusGreen").css("display", "none");
+                    $("#patientStatusRed").css("display", "block");
                 }
             } else {
-                alert("Error: " + resultOfGeneration.Msg);
+                $("#patientStatusRed").css("display", "block");
+                $("#patientStatusGreen").css("display", "none");
             }
         },
         error: function (err) {
+            alert("Error: " + err.msg + ". Please contact the adminsitrator.");
         },
     });
 }
@@ -258,6 +264,36 @@ $("#nric").on("input", function () {
     }
 });
 
+// Validate mobile phone number format
+$("#mobilesInput").on("input", function () {
+    var validNric = validatePhone($("#mobilesInput").val());
+    if (validNric !== false) {
+        $("#mobWarning").css("display", "none");
+    } else {
+        $("#mobWarning").css("display", "block");
+    }
+});
+
+// Validate home phone number format
+$("#homesInput").on("input", function () {
+    var validNric = validatePhone($("#homesInput").val());
+    if (validNric !== false) {
+        $("#homeWarning").css("display", "none");
+    } else {
+        $("#homeWarning").css("display", "block");
+    }
+});
+
+// Validate alt phone number format
+$("#altInput").on("input", function () {
+    var validNric = validatePhone($("#altInput").val());
+    if (validNric !== false) {
+        $("#altWarning").css("display", "none");
+    } else {
+        $("#altWarning").css("display", "block");
+    }
+});
+
 // Check if visitor record exists in database
 function checkExistOrNew() {
     //// Call to ASHX page
@@ -342,7 +378,6 @@ function getFormattedDate(date) {
 function hideTags() {
     $("#invalidTempWarning").css("display", "none");
     $("#emptyFields").css("display", "none");
-    //$("#nricWarning").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
     $('#tempWarning').css("display", "none");
     $("#patientpurposevisit").css("display", "none");
@@ -351,6 +386,11 @@ function hideTags() {
     $("#newusercontent").css("display", "none");
     $("#staticinfocontainer").css("display", "none");
     $("#nricWarnDiv").css("display", "none");
+    $("#mobWarning").css("display", "none");
+    $("#homeWarning").css("display", "none");
+    $("#altWarning").css("display", "none");
+    $("#patientStatusGreen").css("display", "none");
+    $("#patientStatusRed").css("display", "none");
     loadActiveForm();
 }
 
