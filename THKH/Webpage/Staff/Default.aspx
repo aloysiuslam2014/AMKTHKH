@@ -18,7 +18,7 @@
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
 
-     
+
 
 
 
@@ -72,7 +72,9 @@
                         <a href="#PassManagement" data-toggle="tab">Pass Management
                         </a>
                     </li>
-                    <%  }if (accessRightsStr.Contains('6')){%>
+                    <%  }
+                    if (accessRightsStr.Contains('6'))
+                    {%>
                     <li>
                         <a href="#ContactTracing" data-toggle="tab">Contact Tracing
                         </a>
@@ -110,18 +112,18 @@
                             <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required" type="text" autofocus />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
+                                    <button class="btn btn-warning" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Check NRIC</button>
                                 </span>
                             </div>
                             <h4 id="emptyNricWarning" style="color: red">Please enter your NRIC/Identification Number!</h4>
                             <div id="nricWarnDiv">
                                 <h4 id="nricWarning" style="color: red">Non-Singapore Based NRIC/ID!</h4>
                                 <div class="checkbox">
-                                <label for="ignoreNric"></label>
-                                <input type="checkbox" id="ignoreNric" name="declare" value="true" />Allow Anyway<br />
-                                <label for="ignoreNric" id="ignoreNricLbl" style="color: red">Please check this option to continue</label>
+                                    <label for="ignoreNric"></label>
+                                    <input type="checkbox" id="ignoreNric" name="declare" value="true" />Allow Anyway<br />
+                                    <label for="ignoreNric" id="ignoreNricLbl" style="color: red">Please check this option to continue</label>
                                 </div>
-                                </div>
+                            </div>
                             <br />
                             <label class="control-label" for="temp">Temperature</label><label for="temp" id="comp0" style="color: red">*</label>
                             <input runat="server" id="temp" class="form-control required" type="text" onchange="checkTemp(); false;" />
@@ -130,7 +132,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div id="newusercontent" class="col-sm-6" runat="server">
                         <div class="jumbotron" style="text-align: left">
@@ -146,17 +148,17 @@
                             <label for="mobileinput">Mobile Number</label><label for="namesinput" id="comp12" style="color: red">*</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required" id="mobilesInput" />
-                                <label for="mobilesInput" id="mobWarning" style="color:red">Invalid Phone Number Format!</label>
+                                <label for="mobilesInput" id="mobWarning" style="color: red">Invalid Phone Number Format!</label>
                             </div>
                             <label for="homeinput">Home Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control" id="homesInput" />
-                                <label for="homesInput" id="homeWarning" style="color:red">Invalid Phone Number Format!</label>
+                                <label for="homesInput" id="homeWarning" style="color: red">Invalid Phone Number Format!</label>
                             </div>
                             <label for="altInput">Alternate Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control" id="altInput" />
-                                <label for="altInput" id="altWarning" style="color:red">Invalid Phone Number Format!</label>
+                                <label for="altInput" id="altWarning" style="color: red">Invalid Phone Number Format!</label>
                             </div>
                             <label for="addressinput">Address</label><label for="addressinput" id="comp2" style="color: red">*</label>
                             <div class="form-group">
@@ -215,9 +217,9 @@
                                 </div>
                                 <label></label>
                                 <div class="form-group">
-                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Validate Patient</button>
-                                    <label for="validatePatientButton" id="patientStatusGreen" style="color:green">Patient Found!</label>
-                                    <label for="validatePatientButton" id="patientStatusRed" style="color:red">Patient Not Found!</label>
+                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span>Validate Patient</button>
+                                    <label for="validatePatientButton" id="patientStatusGreen" style="color: green">Patient Found!</label>
+                                    <label for="validatePatientButton" id="patientStatusRed" style="color: red">Patient Not Found!</label>
                                 </div>
                             </div>
                             <div id="otherpurposevisit" class="container-fluid" runat="server">
@@ -261,7 +263,7 @@
                                 <label for="declaration" id="declabel" style="color: red">Please check this option to continue</label>
                             </div>
                             <h4 id="emptyFields" style="color: red">Please fill in all the required fields (*).</h4>
-                            <button class="btn btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button>
+                            <button class="btn btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span>Submit</button>
                         </div>
                     </div>
                 </div>
@@ -285,10 +287,10 @@
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="qnaireid" placeholder="Enter a Questionnaire Name" />
                                         </div>
-                                        <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span> Add Questionnaire</button>
+                                        <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span>Add Questionnaire</button>
                                     </div>
                                     <div class="modal-footer" style="text-align: center !important;">
-                                        <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                        <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -300,23 +302,23 @@
 
                             </select>
                             <span class="input-group-btn">
-                                <button class="btn btn-primary" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span> New Questionnaire</button>
-                                <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span> Set Active</button>
+                                <button class="btn btn-primary" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span>New Questionnaire</button>
+                                <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span>Set Active</button>
                             </span>
                         </div>
                         <div class="list-group" style="overflow: auto; height: 70%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="questionnaireQuestionsToDisplay">
                             <%--Draggable Questions--%>
                             <ul class="list-group checked-list-box qnQns" id="sortable">
-                                
                             </ul>
                         </div>
                         <div class="btn btn-group">
-                            <button type="button"   onclick="selectAll('qnaire'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span> Select All</button>
-                            <button type="button"   onclick="deSelectAll('qnaire');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
-                        </div><br />
+                            <button type="button" onclick="selectAll('qnaire'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
+                            <button type="button" onclick="deSelectAll('qnaire');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                        </div>
+                        <br />
                         <div class="btn btn-group">
-                            <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Remove Questions</button>
-                            <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Update Questionnaire</button>
+                            <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Remove Questions</button>
+                            <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>Update Questionnaire</button>
                         </div>
                     </div>
 
@@ -326,34 +328,36 @@
                             <h3 style="color: midnightblue">Available Question(s)</h3>
                             <%--Checkbox Questions--%>
                             <div class="input-group" id="searchQns">
-                            <input type="text" class="form-control maxWidth" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)"/>
-                            <span class="input-group-btn">
-                            <button type="button" id="createNewQuestion" onclick="toggleQnEditor(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Create New Question</button>
-                            </span>
-                                </div>
+                                <input type="text" class="form-control maxWidth" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)" />
+                                <span class="input-group-btn">
+                                    <button type="button" id="createNewQuestion" onclick="toggleQnEditor(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Create New Question</button>
+                                </span>
+                            </div>
                             <div class=" " style="border: solid 1pt; border-radius: 2px; height: 75%; overflow-y: auto; margin-top: 2px;">
-                               
-                               <div id="cover" style="  width: 100%; height: inherit; padding-right: 30px; position: absolute;display:none">
-                                     <div style="background-color: grey; opacity: 0.5; position:absolute;width: calc(100% - 30px);height: calc(100% - 30px);"></div>
+
+                                <div id="cover" style="width: 100%; height: inherit; padding-right: 30px; position: absolute; display: none">
+                                    <div style="background-color: grey; opacity: 0.5; position: absolute; width: calc(100% - 30px); height: calc(100% - 30px);"></div>
                                 </div>
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
                                 </ul>
                                 <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px">
                                     <div class="panel-body questionEditor" style="background-color: ivory; border-style: solid; border-width: 1px;">
                                         <h3 id="editQuestionTitle">Question Details</h3>
-                                        <div>Question:<textarea id="detailsQn"  class="qnVal" rows="3" cols="80">  </textarea></div>
-                                        <div>Question Response Type:
-                                            <select id="detailsQnType" class="qnVal" >
+                                        <div>Question:<textarea id="detailsQn" class="qnVal" rows="3" cols="80">  </textarea></div>
+                                        <div>
+                                            Question Response Type:
+                                            <select id="detailsQnType" class="qnVal">
                                                 <option value="" selected="selected">Select a type</option>
-                                                <option value="ddList">Drop-down list</option> 
+                                                <option value="ddList">Drop-down list</option>
                                                 <option value="checkbox">Checkbox</option>
                                                 <option value="radio">Radiobutton</option>
                                                 <option value="text">Text Field</option>
                                             </select>
 
                                         </div>
-                                        <div>Question Values:
-                                            <textarea  id="detailsQnValues" class="qnVal"  rows="2" cols="60"></textarea>
+                                        <div>
+                                            Question Values:
+                                            <textarea id="detailsQnValues" class="qnVal" rows="2" cols="60"></textarea>
 
                                         </div>
                                         <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Close</button>
@@ -365,10 +369,11 @@
 
                             <div class="btn btn-group">
                                 <button type="button" id="selectAll" onclick="selectAll('qns'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
-                                <button type="button" id="deSelectAll" onclick="deSelectAll('qns');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
-                            </div><br />
+                                <button type="button" id="deSelectAll" onclick="deSelectAll('qns');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                            </div>
+                            <br />
                             <div class="btn btn-group">
-                                <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add to Questionnaire</button>                           
+                                <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Add to Questionnaire</button>
                             </div>
                         </div>
                     </div>
@@ -490,74 +495,107 @@
                     <div class="col-sm-4 inheritHeight">
                         <h3 style="color: midnightblue">Existing Users</h3>
                         <div class="input-group" id="searchUser">
-                            <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterCurrentList(this)"/>
+                            <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterCurrentList(this)" />
                             <span class="input-group-btn">
-                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span> Select All</button>
-                                <button type="button" id="" onclick="deSelectAllUsers();false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
+                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
+                                <button type="button" id="" onclick="deSelectAllUsers();false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
                             </span>
-                                </div>
-                          
-                            <div class=" " style="border: solid 1pt; border-radius: 2px; height: 74%; overflow-y: auto;margin-top:2px;">
-                                <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
-                                    <li class="list-group-item" id="">user 1</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span> Delete Selected User(s)</button>
-                            </div>
-                         
-                       
+                        </div>
+
+                        <div class=" " style="border: solid 1pt; border-radius: 2px; height: 74%; overflow-y: auto; margin-top: 2px;">
+                            <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
+                                <li class="list-group-item" id="">user 1</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span>Delete Selected User(s)</button>
+                        </div>
                     </div>
-                    <div class="row" style="overflow-y:auto">
-                     <div><label class="form-control">Email</label><input id="staffEmail" class="form-control"/></div>
-                     <div><label class="form-control">First Name</label><input id="staffFirstName" class="form-control"/></div>
-                     <div><label class="form-control">Last Name</label><input id="staffLastName" class="form-control"/></div>
-                     <div><label class="form-control">NRIC</label><input id="staffNric" class="form-control"/></div>
-                     <div><label class="form-control">Address</label><input id="staffAddress" class="form-control"/></div>
-                     <div><label class="form-control">Postal Code</label><input id="staffPostal" class="form-control"/></div>
-                     <div><label class="form-control">Contact Number(Home):</label><input id="staffHomeNum" class="form-control"/></div>
-                     <div><label class="form-control">Contact Number(Alt):</label><input id="staffAltNum" class="form-control"/></div>
-                     <div><label class="form-control">Contact Number(Mobile):</label><input id="staffMobileNum" class="form-control"/></div>
-                     <div><label class="form-control">Sex</label>
-                         <select id="staffSex" class="form-control">
-                             <option value="">Select an option</option>
-                             <option value="male">Male</option>
-                             <option value="female">Female</option>
-                         </select>
-                     </div>
-                     <div><label class="form-control">Nationality</label><input id="staffNationality" class="form-control"/></div>
-                     <div><label class="form-control">Date Of Birth</label><input id="staffDOB" class="form-control"/></div>
-                     <div><label class="form-control">Age</label><input id="staffAge" class="form-control"/></div>
-                     <div><label class="form-control">Race</label><input id="staffRace" class="form-control"/></div>
-                     <div><label class="form-control">Position Title</label><input id="staffTitle" class="form-control"/></div>
-                     <div><label class="form-control">Permission</label><input id="staffPerms" class="form-control"/></div>
+
+                    <div class="row" style="overflow-y: auto">
+                        <div class="col-md-6">
+                            <label>Email</label>
+                            <div class="form-group">
+                                <input id="staffEmail" class="form-control" /></div>
+                            <label>First Name</label>
+                            <div class="form-group">
+                                <input id="staffFirstName" class="form-control" /></div>
+                            <label>Last Name</label>
+                            <div class="form-group">
+                                <input id="staffLastName" class="form-control" /></div>
+                            <label>NRIC</label>
+                            <div class="form-group">
+                                <input id="staffNric" class="form-control" /></div>
+                            <label>Address</label>
+                            <div class="form-group">
+                                <input id="staffAddress" class="form-control" /></div>
+                            <label>Postal Code</label>
+                            <div class="form-group">
+                                <input id="staffPostal" class="form-control" /></div>
+                            <label>Contact Number(Mobile)</label>
+                            <div class="form-group">
+                                <input id="staffMobileNum" class="form-control" /></div>
+                            <label>Contact Number(Home)</label>
+                            <div class="form-group">
+                                <input id="staffHomeNum" class="form-control" /></div>
+                            </div>
+                        <div class="col-md-6">
+                            <label>Contact Number(Alt)</label>
+                            <div class="form-group">
+                                <input id="staffAltNum" class="form-control" /></div>
+                            <label>Sex</label>
+                            <div class="form-group">
+                                <select id="staffSex" class="form-control">
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                </select>
+                            </div>
+                            <label>Nationality</label>
+                            <div class="form-group">
+                                <input id="staffNationality" class="form-control" /></div>
+                            <label>Date Of Birth</label>
+                            <div class="form-group">
+                                <input id="staffDOB" class="form-control" /></div>
+                            <label>Age</label>
+                            <div class="form-group">
+                                <input id="staffAge" class="form-control" /></div>
+                            <label>Race</label>
+                            <div class="form-group">
+                                <input id="staffRace" class="form-control" /></div>
+                            <label>Position Title</label>
+                            <div class="form-group">
+                                <input id="staffTitle" class="form-control" /></div>
+                            <label>Permission</label>
+                            <div class="form-group">
+                                <input id="staffPerms" class="form-control" /></div>
+                        </div>
                     </div>
-                </div>
+    </div>
             </div>
             <%}
                 if (accessRightsStr.Contains('5'))
                 { %>
-            <!-- End of UserManagement -->
+    <!-- End of UserManagement -->
 
-            <!-- PassManagement -->
-            <div class="tab-pane maxHeight" id="PassManagement">
-                <h1>This is the test page potato pirates!</h1>
-
-
-            </div>
-            <!-- End of PassManagement -->
-
-            <%}
-                if (accessRightsStr.Contains('6'))
-                { %>
-            <!-- ContactTracing -->
-            <div class="tab-pane maxHeight" id="ContactTracing">
-                <h1>This is the test page potato pirates!</h1>
+    <!-- PassManagement -->
+    <div class="tab-pane maxHeight" id="PassManagement">
+        <h1>This is the test page potato pirates!</h1>
 
 
-            </div> 
-            <!-- End of ContactTracing -->
-            <%} %>
+    </div>
+    <!-- End of PassManagement -->
+
+    <%}
+        if (accessRightsStr.Contains('6'))
+        { %>
+    <!-- ContactTracing -->
+    <div class="tab-pane maxHeight" id="ContactTracing">
+        <h1>This is the test page potato pirates!</h1>
+
+
+    </div>
+    <!-- End of ContactTracing -->
+    <%} %>
         </div>
     </div>
 
