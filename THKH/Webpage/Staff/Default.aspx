@@ -593,7 +593,77 @@
         { %>
     <!-- ContactTracing -->
     <div class="tab-pane maxHeight" id="ContactTracing">
-        <h1>This is the test page potato pirates!</h1>
+         <div class="row inheritHeight">
+                    <!-- query input portion -->
+                    <div class="col-sm-6 panel" style="height: 95%;">
+                        <h3 style="color: midnightblue">Build Queries</h3>
+                        <div class="form-group">
+                            <div class="input-group date" id="querystartdatetime">
+                                <input type='text' id="qstartdatetime" class="form-control required" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+
+                            <div class="input-group date" id="queryenddatetime">
+                                <input type='text' id="qenddatetime" class="form-control required" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#querystartdatetime').datetimepicker();
+                                });
+                                $(function () {
+                                    $('#queryenddatetime').datetimepicker();
+                                });
+                            </script>
+
+                            <div class="input-group" id="querybedrange">
+                                <input type="text" class="form-control" id="querybeds" placeholder="Select Bed Range, e.g. 1-4,7,10 " />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" id="addDateTimeRange" onclick="addDateTimeRange;"><span class="glyphicon glyphicon-plus"></span>Add Query</button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="list-group" style="overflow: auto; height: 70%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="queriesToDisplay">
+                            <ul class="list-group checked-list-box queries" id="querylist">
+                            </ul>
+                        </div>
+
+                        <div class="btn btn-group">
+                            <button type="button" onclick="selectAll('queries'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
+                            <button type="button" onclick="deSelectAll('queries');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                        </div>
+                        <br />
+                        <div class="btn btn-group">
+                            <button type="button" id="delQueriesFromList" onclick="removeQueriesFromList(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>&nbsp;Remove Queries</button>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2 panel" style="height: 95%;top:33%">
+                        <div class="form-group" >
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning" onclick="submitQueries(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Generate Report</button>
+                        </span>
+                        <br>
+                        <label><input type="checkbox" class="form-control" id="byRegistration" name="checkbox" value="value">By Registered Visit</label>
+                        <br>
+                        <label><input type="checkbox" class="form-control" id="byScan" name="checkbox" value="value">By Scanned Location</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 panel" style="height: 95%;">
+                        <h3 style="color: midnightblue">Query Results</h3>
+                        <div class="list-group" style="overflow: auto; height: 85%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="queryResult">
+                            <ul class="list-group checked-list-box results" id="resultList">
+                            </ul>
+                        </div>
+                    </div>
+             </div>
 
 
     </div>
@@ -607,6 +677,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/QuestionaireManagement/loadQuestionaire.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/registrationPageScripts.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
     <script type="text/javascript">
         var user = '<%= Session["username"].ToString() %>';
     </script>
