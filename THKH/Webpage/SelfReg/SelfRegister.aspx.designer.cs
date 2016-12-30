@@ -166,15 +166,6 @@ namespace THKH.Webpage.SelfReg {
         protected global::System.Web.UI.HtmlControls.HtmlInputText postalsInput;
         
         /// <summary>
-        /// nationalsInput control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText nationalsInput;
-        
-        /// <summary>
         /// staticinfocontainer control.
         /// </summary>
         /// <remarks>

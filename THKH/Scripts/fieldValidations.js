@@ -40,6 +40,9 @@ function validateNRIC(str) {
 // Validation of phone number
 function validatePhone(txtPhone) {
     var filter = /^[0-9-+]+$/;
+    if (txtPhone == "") {
+        return true;
+    }
     if (filter.test(txtPhone)) {
         return true;
     }

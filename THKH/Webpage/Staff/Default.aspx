@@ -112,7 +112,7 @@
                             <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required" type="text" autofocus />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Check NRIC</button>
+                                    <button class="btn btn-warning" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
                                 </span>
                             </div>
                             <h4 id="emptyNricWarning" style="color: red">Please enter your NRIC/Identification Number!</h4>
@@ -177,7 +177,10 @@
                             </div>
                             <label for="nationalinput">Nationality</label><label for="nationalinput" id="comp5" style="color: red">*</label>
                             <div class="form-group">
-                                <input type="text" runat="server" class="form-control required" id="nationalsInput" />
+                                <%--<input type="text" runat="server" class="form-control required" id="nationalsInput" />--%>
+                                <select class="form-control required" id="nationalsInput">
+                                    <option value="">-- Select One --</option>
+                                </select>
                             </div>
                             <label for="daterange">Date of Birth</label><label for="daterange" id="comp6" style="color: red">*</label>
                             <div class="input-group date" id="datetimepicker">
@@ -191,10 +194,10 @@
                     <div id="staticinfocontainer" class="col-sm-6" style="text-align: left" runat="server">
                         <div class="jumbotron" style="text-align: left">
                             <h3 style="color: midnightblue">Visit Details</h3>
-                            <label for="pInput">Visit Purpose</label>
+                            <label for="pInput">Visit Purpose</label><label for="pInput" id="comp69" style="color: red">*</label>
                             <%--Check for Purpose of Visit--%>
                             <div class="form-group">
-                                <select class="form-control" id="pInput" onchange="purposePanels()" name="pInput">
+                                <select class="form-control required" id="pInput" onchange="purposePanels()" name="pInput">
                                     <option value="">-- Select One --</option>
                                     <option value="Visit Patient">Visit Patient</option>
                                     <option value="Other Purpose">Other Purpose</option>
@@ -262,7 +265,7 @@
                                 <input type="hidden" name="declare" value="false" />
                                 <label for="declaration" id="declabel" style="color: red">Please check this option to continue</label>
                             </div>
-                            <h4 id="emptyFields" style="color: red">Please fill in all the required fields (*).</h4>
+                            <h4 id="emptyFields" style="color: red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                             <button class="btn btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span>Submit</button>
                         </div>
                     </div>

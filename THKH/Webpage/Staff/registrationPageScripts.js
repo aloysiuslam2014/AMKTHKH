@@ -4,10 +4,14 @@ $(document).ready(function () {
     // ajax call here
 });
 
-//var user = '<%=Session["username"].ToString()%>';
 $('#navigatePage a:first').tab('show');
 $('#regPageNavigation a:first').tab('show');
 w3IncludeHTML();
+
+// Variable to check if all fields are valid
+var validMob = true;
+var validAlt = true;
+var validHom = true;
 
 // Check for visitor details & any online self registration information
 function callCheck (){
@@ -27,44 +31,57 @@ function callCheck (){
                 // ASHX returns all the visitor information
                 // Populate fields if visitor exists by spliting string into array of values & populating
                 var visitorString = resultOfGeneration.Visitor;
-                var visitString = resultOfGeneration.Visit;
-                var questionnaireAns = resultOfGeneration.Questionnaire;
-                var visitorArr = visitorString.split(",");
-                var visitArr = visitString.split(",");
-                var questionnaireArr = questionnaireAns.split(",");
-                if (visitorArr.length > 0) {
-                    var dateString = visitorArr[4].replace(/-/g, "/").toString() + " 0:01 AM";
-                    // Populate fields if data exists
-                    $("#nric").attr('value', visitorArr[0]);
-                    $("#namesInput").attr('value', visitorArr[1]);
-                    $("#sexinput").attr('value', visitorArr[2]);
-                    $("#nationalsInput").attr('value', visitorArr[3]);
-                    $("#daterange").attr('value', dateString);
-                    $("#addresssInput").attr('value', visitorArr[10]);
-                    $("#postalsInput").attr('value', visitorArr[11]);
-                    $("#mobilesInput").attr('value', visitorArr[6]);
-                    $("#altInput").attr('value', visitorArr[8]);
-                    $("#homesInput").attr('value', visitorArr[7]);
-                    $("#emailsInput").attr('value', visitorArr[9]);
-                } if (visitArr.length > 0) {
-                    $("#visitbookingtime").attr('value', visitArr[0]);
-                    $("#patientNric").attr('value', visitArr[1]);
-                    $("#patientName").attr('value', visitArr[3]);
-                    $('#pInput').val(visitArr[4]); // Purpose of visit "Visit Patient" or "Other Purpose"
-                    $("#purposeInput").attr('value', visitArr[5]);
-                    $("#visLoc").attr('value', visitArr[6]);
-                    $("#bedno").attr('value', visitArr[7]);
-                } if (questionnaireArr.length > 0) {
-                    for (i = 0; i < questionnaireArr.length; i++) {
-                        var value = questionnaireArr[i];
-                        var arr = value.split(':');
-                        $("input[name='" + arr[0] + "'][value='" + arr[1] + "']").prop("checked", true);
-                        $("#" + arr[0]).attr('value', arr[1]);
-                    }  
-                }
-                else {
-                    // Clear fields
+                if (resultOfGeneration.Visitor === "new") {
                     clearFields();
+                } else {
+                    var visitString = resultOfGeneration.Visit;
+                    var questionnaireAns = resultOfGeneration.Questionnaire;
+                    var visitorArr = [];
+                    var visitArr = [];
+                    var questionnaireArr = [];
+                    if (resultOfGeneration.Visit != null) {
+                        visitString.split(",");
+                    }
+                    if (resultOfGeneration.Visitor != null) {
+                        visitorArr = visitorString.split(",");
+                    }
+                    if (resultOfGeneration.Questionnaire != null) {
+                        questionnaireAns.split(",");
+                    }
+                    if (visitorArr.length > 0) {
+                        var dateString = visitorArr[4].replace(/-/g, "/").toString() + " 0:01 AM";
+                        // Populate fields if data exists
+                        $("#nric").attr('value', visitorArr[0]);
+                        $("#namesInput").attr('value', visitorArr[1]);
+                        $("#sexinput").attr('value', visitorArr[2]);
+                        $("#nationalsInput").attr('value', visitorArr[3]);
+                        $("#daterange").attr('value', dateString);
+                        $("#addresssInput").attr('value', visitorArr[10]);
+                        $("#postalsInput").attr('value', visitorArr[11]);
+                        $("#mobilesInput").attr('value', visitorArr[6]);
+                        $("#altInput").attr('value', visitorArr[8]);
+                        $("#homesInput").attr('value', visitorArr[7]);
+                        $("#emailsInput").attr('value', visitorArr[9]);
+                    } if (visitArr.length > 0) {
+                        $("#visitbookingtime").attr('value', visitArr[0]);
+                        $("#patientNric").attr('value', visitArr[1]);
+                        $("#patientName").attr('value', visitArr[3]);
+                        $('#pInput').val(visitArr[4]); // Purpose of visit "Visit Patient" or "Other Purpose"
+                        $("#purposeInput").attr('value', visitArr[5]);
+                        $("#visLoc").attr('value', visitArr[6]);
+                        $("#bedno").attr('value', visitArr[7]);
+                    } if (questionnaireArr.length > 0) {
+                        for (i = 0; i < questionnaireArr.length; i++) {
+                            var value = questionnaireArr[i];
+                            var arr = value.split(':');
+                            $("input[name='" + arr[0] + "'][value='" + arr[1] + "']").prop("checked", true);
+                            $("#" + arr[0]).attr('value', arr[1]);
+                        }
+                    }
+                    else {
+                        // Clear fields
+                        clearFields();
+                    }
                 }
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
@@ -201,24 +218,30 @@ function NewAssistReg() {
 }
 
 function clearFields() {
-    $("#nric").attr('value', "");
-    $("#namesInput").attr('value', "");
-    $("#sexinput").attr('value', "");
-    $("#nationalsInput").attr('value', "");
-    $("#daterange").attr('value', "");
-    $("#addresssInput").attr('value', "");
-    $("#postalsInput").attr('value', "");
-    $("#mobilesInput").attr('value', "");
-    $("#altInput").attr('value', "");
-    $("#homesInput").attr('value', "");
-    $("#emailsInput").attr('value', "");
-    $("#visitbookingtime").attr('value', "");
-    $("#visitbookingdate").attr('value', "");
-    $("#patientNric").attr('value', "");
-    $("#patientName").attr('value', "");
-    $('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
-    $("#purposeInput").attr('value', "");
-    $("#visLoc").attr('value', "");
+    //$("#nric").attr('value', "");
+    //$("#namesInput").attr('value', "");
+    //$("#sexinput").attr('value', "");
+    //$("#nationalsInput").val("");
+    //$("#daterange").attr('value', "");
+    //$("#addresssInput").attr('value', "");
+    //$("#postalsInput").attr('value', "");
+    //$("#mobilesInput").attr('value', "");
+    //$("#altInput").attr('value', "");
+    //$("#homesInput").attr('value', "");
+    //$("#emailsInput").attr('value', "");
+    //$("#visitbookingtime").attr('value', "");
+    //$("#visitbookingdate").attr('value', "");
+    //$("#patientNric").attr('value', "");
+    //$("#patientName").attr('value', "");
+    //$('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
+    //$("#purposeInput").attr('value', "");
+    //$("#visLoc").attr('value', "");
+    //$("#temp").attr('value', "");
+    //$("#bedno").attr('value', "");
+    //loadActiveForm();
+    $('#registration input').each(function () {
+        var element = $(this).attr('value', "");
+    });
 }
 
 // Display appropriate panels according to visit purpose
@@ -240,7 +263,12 @@ function purposePanels() {
 function checkRequiredFields() {
     var valid = true;
     $.each($("#main input.required"), function (index, value) {
-        if (!$(value).val()) {
+        var element = $(value).val();
+        if (!element || element == "") {
+            valid = false;
+            $(value).css('background', '#f3f78a');
+        }
+        if (!validMob || !validHom || !validAlt) {
             valid = false;
         }
     });
@@ -269,8 +297,10 @@ $("#mobilesInput").on("input", function () {
     var validNric = validatePhone($("#mobilesInput").val());
     if (validNric !== false) {
         $("#mobWarning").css("display", "none");
+        validMob = true;
     } else {
         $("#mobWarning").css("display", "block");
+        validMob = false;
     }
 });
 
@@ -279,8 +309,10 @@ $("#homesInput").on("input", function () {
     var validNric = validatePhone($("#homesInput").val());
     if (validNric !== false) {
         $("#homeWarning").css("display", "none");
+        validHom = true;
     } else {
         $("#homeWarning").css("display", "block");
+        validHom = false;
     }
 });
 
@@ -289,14 +321,15 @@ $("#altInput").on("input", function () {
     var validNric = validatePhone($("#altInput").val());
     if (validNric !== false) {
         $("#altWarning").css("display", "none");
+        validAlt = true;
     } else {
         $("#altWarning").css("display", "block");
+        validAlt = false;
     }
 });
 
 // Check if visitor record exists in database
 function checkExistOrNew() {
-    //// Call to ASHX page
         $("#emptyNricWarning").css("display", "none");
         callCheck();
         $("#newusercontent").css("display", "block");
@@ -391,6 +424,7 @@ function hideTags() {
     $("#altWarning").css("display", "none");
     $("#patientStatusGreen").css("display", "none");
     $("#patientStatusRed").css("display", "none");
+    populateNationalities();
     loadActiveForm();
 }
 
@@ -491,4 +525,209 @@ function loadActiveForm() {
         error: function (err) {
         },
     });
+}
+
+// Populates Nationality Field
+function populateNationalities() {
+    var nationalities = [
+        'Singaporean',
+        'Afghan',
+        'Albanian',
+        'Algerian',
+        'American',
+        'Andorran',
+        'Angolan',
+        'Antiguans',
+        'Argentinean',
+        'Armenian',
+        'Australian',
+        'Austrian',
+        'Azerbaijani',
+        'Bahamian',
+        'Bahraini',
+        'Bangladeshi',
+        'Barbadian',
+        'Barbudans',
+        'Batswana',
+        'Belarusian',
+        'Belgian',
+        'Belizean',
+        'Beninese',
+        'Bhutanese',
+        'Bolivian',
+        'Bosnian',
+        'Brazilian',
+        'British',
+        'Bruneian',
+        'Bulgarian',
+        'Burkinabe',
+        'Burmese',
+        'Burundian',
+        'Cambodian',
+        'Cameroonian',
+        'Canadian',
+        'Cape Verdean',
+        'Central African',
+        'Chadian',
+        'Chilean',
+        'Chinese',
+        'Colombian',
+        'Comoran',
+        'Congolese',
+        'Costa Rican',
+        'Croatian',
+        'Cuban',
+        'Cypriot',
+        'Czech',
+        'Danish',
+        'Djibouti',
+        'Dominican',
+        'Dutch',
+        'East Timorese',
+        'Ecuadorean',
+        'Egyptian',
+        'Emirian',
+        'Equatorial Guinean',
+        'Eritrean',
+        'Estonian',
+        'Ethiopian',
+        'Fijian',
+        'Filipino',
+        'Finnish',
+        'French',
+        'Gabonese',
+        'Gambian',
+        'Georgian',
+        'German',
+        'Ghanaian',
+        'Greek',
+        'Grenadian',
+        'Guatemalan',
+        'Guinea-Bissauan',
+        'Guinean',
+        'Guyanese',
+        'Haitian',
+        'Herzegovinian',
+        'Honduran',
+        'Hungarian',
+        'I-Kiribati',
+        'Icelander',
+        'Indian',
+        'Indonesian',
+        'Iranian',
+        'Iraqi',
+        'Irish',
+        'Israeli',
+        'Italian',
+        'Ivorian',
+        'Jamaican',
+        'Japanese',
+        'Jordanian',
+        'Kazakhstani',
+        'Kenyan',
+        'Kittian and Nevisian',
+        'Kuwaiti',
+        'Kyrgyz',
+        'Laotian',
+        'Latvian',
+        'Lebanese',
+        'Liberian',
+        'Libyan',
+        'Liechtensteiner',
+        'Lithuanian',
+        'Luxembourger',
+        'Macedonian',
+        'Malagasy',
+        'Malawian',
+        'Malaysian',
+        'Maldivan',
+        'Malian',
+        'Maltese',
+        'Marshallese',
+        'Mauritanian',
+        'Mauritian',
+        'Mexican',
+        'Micronesian',
+        'Moldovan',
+        'Monacan',
+        'Mongolian',
+        'Moroccan',
+        'Mosotho',
+        'Motswana',
+        'Mozambican',
+        'Namibian',
+        'Nauruan',
+        'Nepalese',
+        'New Zealander',
+        'Nicaraguan',
+        'Nigerian',
+        'Nigerien',
+        'North Korean',
+        'Northern Irish',
+        'Norwegian',
+        'Omani',
+        'Pakistani',
+        'Palauan',
+        'Panamanian',
+        'Papua New Guinean',
+        'Paraguayan',
+        'Peruvian',
+        'Polish',
+        'Portuguese',
+        'Qatari',
+        'Romanian',
+        'Russian',
+        'Rwandan',
+        'Saint Lucian',
+        'Salvadoran',
+        'Samoan',
+        'San Marinese',
+        'Sao Tomean',
+        'Saudi',
+        'Scottish',
+        'Senegalese',
+        'Serbian',
+        'Seychellois',
+        'Sierra Leonean',
+        'Slovakian',
+        'Slovenian',
+        'Solomon Islander',
+        'Somali',
+        'South African',
+        'South Korean',
+        'Spanish',
+        'Sri Lankan',
+        'Sudanese',
+        'Surinamer',
+        'Swazi',
+        'Swedish',
+        'Swiss',
+        'Syrian',
+        'Taiwanese',
+        'Tajik',
+        'Tanzanian',
+        'Thai',
+        'Togolese',
+        'Tongan',
+        'Trinidadian/Tobagonian',
+        'Tunisian',
+        'Turkish',
+        'Tuvaluan',
+        'Ugandan',
+        'Ukrainian',
+        'Uruguayan',
+        'Uzbekistani',
+        'Venezuelan',
+        'Vietnamese',
+        'Welsh',
+        'Yemenite',
+        'Zambian',
+'Zimbabwean'];
+    for (var i = 0; i < nationalities.length; i++) {
+        var optin = document.createElement("option");
+        $(optin).attr("style", "background:white");
+        $(optin).attr("name", nationalities[i]);
+        $(optin).html(nationalities[i]);
+        $('#nationalsInput').append(optin);
+    }
 }

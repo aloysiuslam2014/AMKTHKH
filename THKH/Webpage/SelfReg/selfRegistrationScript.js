@@ -1,5 +1,7 @@
-﻿/// <reference path="selfRegistrationScript.js" />
-
+﻿// Variable to check if all fields are valid
+var validMob = true;
+var validAlt = true;
+var validHom = true;
 var patientValidated = false;
 
 // write to form information DB
@@ -67,6 +69,13 @@ function reloadPage() {
     location.reload(true);
 }
 
+// Enter Button Trigger
+$("#submitNric").keyup(function (event) {
+    if (event.keyCode == 13) {
+        $("#submitNric").click();
+    }
+});
+
 // ensure patient info is valid
 function validatePatient() {
     // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
@@ -88,16 +97,24 @@ function validatePatient() {
                     if (resultOfGeneration.Msg === "0") {
                         $("#patientStatusRed").css("display", "block");
                         $("#patientStatusGreen").css("display", "none");
+                        $("#patientStatusNone").css("display", "none");
+                        $('#newusercontent').css("display", "none");
+                        $('#staticinfocontainer').css("display", "none");
                     } else {
                         $("#patientStatusGreen").css("display", "block");
                         $("#patientStatusRed").css("display", "none");
+                        $("#patientStatusNone").css("display", "none");
                         patientValidated = true;
+                        $("#userDetails").css("display", "block");
                         checkIfExistingVisitor();
                     }
                     
                 } else {
                     $("#patientStatusRed").css("display", "block");
                     $("#patientStatusGreen").css("display", "none");
+                    $("#patientStatusNone").css("display", "none");
+                    $('#newusercontent').css("display", "none");
+                    $('#staticinfocontainer').css("display", "none");
                 }
             },
             error: function (err) {
@@ -106,6 +123,7 @@ function validatePatient() {
         });
     } else {
         // Display warning
+        $("#patientStatusNone").css("display", "block");
     }
 }
 
@@ -169,7 +187,12 @@ function showNricWarning() {
 function checkRequiredFields() {
     var valid = true;
     $.each($("#selfregistration input.required"), function (index, value) {
-        if (!$(value).val()) {
+        var element = $(value).val();
+        if (!element || element == "") {
+            valid = false;
+            $(value).css('background', '#f3f78a');
+        }
+        if (!validMob || !validHom || !validAlt) {
             valid = false;
         }
     });
@@ -234,10 +257,10 @@ function showExistContent() {
 // Display Submit Button according to whether the user has checked the declaration checkbox
 function declarationValidation() {
     if ($("#declaration").prop('checked') === true && patientValidated === true) {
-        $("#declabel").css("display", "none");
+        //$("#declabel").css("display", "none");
         $("#submitNewEntry").css("display", "block");
     } else {
-        $("#declabel").css("display", "block");
+        //$("#declabel").css("display", "block");
         $("#submitNewEntry").css("display", "none");
     }
 }
@@ -313,14 +336,20 @@ function purposePanels() {
         $("#otherpurposevisit").css("display", "none");
         $('#newusercontent').css("display", "none");
         $('#staticinfocontainer').css("display", "none");
+        $('#newusercontent').css("display", "none");
+        $('#staticinfocontainer').css("display", "none");
     } else if (purpose === "Other Purpose") {
+        $("#userDetails").css("display", "block");
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "block");
         patientValidated = true;
         checkIfExistingVisitor(); 
     } else {
+        $("#userDetails").css("display", "none");
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "none");
+        $('#newusercontent').css("display", "none");
+        $('#staticinfocontainer').css("display", "none");
         $('#newusercontent').css("display", "none");
         $('#staticinfocontainer').css("display", "none");
     }
@@ -330,6 +359,8 @@ function purposePanels() {
 function amendVisitorDetails() {
     if ($("#changed").prop('checked') === true) {
         $('#newusercontent').css("display", "block");
+    } else {
+        $('#newusercontent').css("display", "none");
     }
 }
 
@@ -352,6 +383,9 @@ function hideTags() {
     $("#altWarning").css("display", "none");
     $("#patientStatusGreen").css("display", "none");
     $("#patientStatusRed").css("display", "none");
+    $("#patientStatusNone").css("display", "none");
+    $("#userDetails").css("display", "none");
+    populateNationalities();
     loadActiveForm();
 }
 
@@ -461,4 +495,209 @@ function loadActiveForm() {
         error: function (err) {
         },
     });
+}
+
+// Populates Nationality Field
+function populateNationalities() {
+    var nationalities = [
+        'Singaporean',
+        'Afghan',
+        'Albanian',
+        'Algerian',
+        'American',
+        'Andorran',
+        'Angolan',
+        'Antiguans',
+        'Argentinean',
+        'Armenian',
+        'Australian',
+        'Austrian',
+        'Azerbaijani',
+        'Bahamian',
+        'Bahraini',
+        'Bangladeshi',
+        'Barbadian',
+        'Barbudans',
+        'Batswana',
+        'Belarusian',
+        'Belgian',
+        'Belizean',
+        'Beninese',
+        'Bhutanese',
+        'Bolivian',
+        'Bosnian',
+        'Brazilian',
+        'British',
+        'Bruneian',
+        'Bulgarian',
+        'Burkinabe',
+        'Burmese',
+        'Burundian',
+        'Cambodian',
+        'Cameroonian',
+        'Canadian',
+        'Cape Verdean',
+        'Central African',
+        'Chadian',
+        'Chilean',
+        'Chinese',
+        'Colombian',
+        'Comoran',
+        'Congolese',
+        'Costa Rican',
+        'Croatian',
+        'Cuban',
+        'Cypriot',
+        'Czech',
+        'Danish',
+        'Djibouti',
+        'Dominican',
+        'Dutch',
+        'East Timorese',
+        'Ecuadorean',
+        'Egyptian',
+        'Emirian',
+        'Equatorial Guinean',
+        'Eritrean',
+        'Estonian',
+        'Ethiopian',
+        'Fijian',
+        'Filipino',
+        'Finnish',
+        'French',
+        'Gabonese',
+        'Gambian',
+        'Georgian',
+        'German',
+        'Ghanaian',
+        'Greek',
+        'Grenadian',
+        'Guatemalan',
+        'Guinea-Bissauan',
+        'Guinean',
+        'Guyanese',
+        'Haitian',
+        'Herzegovinian',
+        'Honduran',
+        'Hungarian',
+        'I-Kiribati',
+        'Icelander',
+        'Indian',
+        'Indonesian',
+        'Iranian',
+        'Iraqi',
+        'Irish',
+        'Israeli',
+        'Italian',
+        'Ivorian',
+        'Jamaican',
+        'Japanese',
+        'Jordanian',
+        'Kazakhstani',
+        'Kenyan',
+        'Kittian and Nevisian',
+        'Kuwaiti',
+        'Kyrgyz',
+        'Laotian',
+        'Latvian',
+        'Lebanese',
+        'Liberian',
+        'Libyan',
+        'Liechtensteiner',
+        'Lithuanian',
+        'Luxembourger',
+        'Macedonian',
+        'Malagasy',
+        'Malawian',
+        'Malaysian',
+        'Maldivan',
+        'Malian',
+        'Maltese',
+        'Marshallese',
+        'Mauritanian',
+        'Mauritian',
+        'Mexican',
+        'Micronesian',
+        'Moldovan',
+        'Monacan',
+        'Mongolian',
+        'Moroccan',
+        'Mosotho',
+        'Motswana',
+        'Mozambican',
+        'Namibian',
+        'Nauruan',
+        'Nepalese',
+        'New Zealander',
+        'Nicaraguan',
+        'Nigerian',
+        'Nigerien',
+        'North Korean',
+        'Northern Irish',
+        'Norwegian',
+        'Omani',
+        'Pakistani',
+        'Palauan',
+        'Panamanian',
+        'Papua New Guinean',
+        'Paraguayan',
+        'Peruvian',
+        'Polish',
+        'Portuguese',
+        'Qatari',
+        'Romanian',
+        'Russian',
+        'Rwandan',
+        'Saint Lucian',
+        'Salvadoran',
+        'Samoan',
+        'San Marinese',
+        'Sao Tomean',
+        'Saudi',
+        'Scottish',
+        'Senegalese',
+        'Serbian',
+        'Seychellois',
+        'Sierra Leonean',
+        'Slovakian',
+        'Slovenian',
+        'Solomon Islander',
+        'Somali',
+        'South African',
+        'South Korean',
+        'Spanish',
+        'Sri Lankan',
+        'Sudanese',
+        'Surinamer',
+        'Swazi',
+        'Swedish',
+        'Swiss',
+        'Syrian',
+        'Taiwanese',
+        'Tajik',
+        'Tanzanian',
+        'Thai',
+        'Togolese',
+        'Tongan',
+        'Trinidadian/Tobagonian',
+        'Tunisian',
+        'Turkish',
+        'Tuvaluan',
+        'Ugandan',
+        'Ukrainian',
+        'Uruguayan',
+        'Uzbekistani',
+        'Venezuelan',
+        'Vietnamese',
+        'Welsh',
+        'Yemenite',
+        'Zambian',
+'Zimbabwean'];
+    for (var i = 0; i < nationalities.length; i++) {
+        var optin = document.createElement("option");
+        $(optin).attr("style", "background:white");
+        $(optin).attr("name", nationalities[i]);
+        $(optin).html(nationalities[i]);
+        $('#nationalsInput').append(optin);
+    }
 }

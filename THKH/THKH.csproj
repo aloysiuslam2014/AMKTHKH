@@ -208,6 +208,7 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="Webpage\Staff\UserManagement\loadUsers.js" />
     <None Include="Properties\PublishProfiles\Stepwise-is480.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -229,6 +230,7 @@
     <Content Include="Webpage\Staff\CheckInOut\checkIn.ashx" />
     <Content Include="Webpage\Staff\TerminalCalls\TerminalCheck.ashx" />
     <Content Include="Webpage\Staff\QuestionaireManagement\questionaireManagement.ashx" />
+    <Content Include="Webpage\Staff\UserManagement\userManagement.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -271,6 +273,9 @@
     </Compile>
     <Compile Include="Webpage\Staff\TerminalCalls\TerminalCheck.ashx.cs">
       <DependentUpon>TerminalCheck.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Webpage\Staff\UserManagement\userManagement.ashx.cs">
+      <DependentUpon>userManagement.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

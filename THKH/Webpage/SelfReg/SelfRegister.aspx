@@ -76,17 +76,17 @@
                     <div class="navbar-header ">
                         <a class="navbar-brand"><b>Thye Hua Kwan Hospital</b></a>
                     </div>
-                    <%--<div class="collapse navbar-collapse" id="navbar">
+                    <div class="collapse navbar-collapse" id="navbar">
                     <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a>
                             <div>
-                                <button runat="server" class="btn btn-default" onclick="reloadPage();"><span class="glyphicon glyphicon-refresh"></span> New Registration</button>
+                                <input type="button" runat="server" class="btn btn-default" onclick="reloadPage(); false;"><span class="glyphicon glyphicon-refresh"></span> New Registration</input>
                             </div>
                         </a>
                     </li>
                 </ul>
-                        </div>--%>
+                        </div>
                 </div>
             </nav>
             <br />
@@ -141,6 +141,7 @@
                                         <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Validate Patient</button>
                                         <label for="validatePatientButton" id="patientStatusGreen" style="color:green">Patient Found! Please fill up the rest of the form.</label>
                                     <label for="validatePatientButton" id="patientStatusRed" style="color:red">Patient Not Found! Please Register at the Front Counter.</label>
+                                        <label for="validatePatientButton" id="patientStatusNone" style="color:red">Please the details of the patient your are visiting! If you are unsure, please approach the front desk personnel for assistance.</label>
                                     </div>
                                 </div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
@@ -178,8 +179,17 @@
                     </div>
                         </div>
                     <div class="row">
+                        <div id="userDetails" class="jumbotron">
+                        <div id="changeddetailsdeclaration" style="text-align:left">
+                            <label for="changeddetails">I have changed my contact details since the last visit</label>
+                                <div class="form-group">
+                                <div class="checkbox" id="changeddetails">
+                                    <label for="yesopt">
+                                    <input type="checkbox" id="changed" onchange="amendVisitorDetails(); false;" name="yesopt" value="Yes" />Yes</label>
+                                </div></div>
+                                    </div>
                         <div id="newusercontent" runat="server">
-                            <div class="jumbotron" style="text-align:left">
+                            <div style="text-align:left">
                                     <h3>Personal Details</h3>
                                     <label for="namesinput">Full Name</label><label for="existnric" id="comp1" style="color:red">*</label>
                                     <div class="form-group">
@@ -225,7 +235,10 @@
                                     </div>
                                     <label for="nationalinput">Nationality</label><label for="existnric" id="comp6" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="nationalsInput" />
+                                        <%--<input type="text" runat="server" class="form-control required" id="nationalsInput" />--%>
+                                        <select class="form-control required" id="nationalsInput">
+                                            <option value="">-- Select One --</option>
+                                        </select>
                                     </div>
                                     <label for="daterange">Date of Birth</label><label for="existnric" id="comp7" style="color:red">*</label>
                                     <div class="input-group date" id="datetimepicker">
@@ -235,18 +248,12 @@
                                         </span>
                                     </div>
                                 </div>
+                                </div>
                             </div>
+                        </div>
+                    <div class="row">
                         <div id="staticinfocontainer" runat="server">
-                            <div class="jumbotron" style="text-align:left">
-                                <div id="changeddetailsdeclaration">
-                            <label for="changeddetails">I have changed my contact details since the last visit</label> <%--Visitor Fever Declaration, can be a checkbox or an input field or a button--%>
-                                <div class="form-group">
-                                <div class="checkbox" id="changeddetails">
-                                    <label for="yesopt">
-                                    <input type="checkbox" id="changed" onchange="amendVisitorDetails(); false;" name="yesopt" value="Yes" />Yes</label>
-                                </div></div>
-                                    </div>
-                            
+                            <div class="jumbotron" style="text-align:left">                            
                                 <h3>Health Screening Questionnaire</h3>
                                <div id="questionaireForm">
                                     <!-- load questionaires here -->
@@ -256,7 +263,7 @@
                             <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation(); false;" value="true" />I declare that the above information given is accurate</label><br />
                                     <input type="hidden" name="declare" value="false" />
                             <label for="declaration" id="declabel" style="color:red">Please validate your patient details & check this option to continue</label>
-                                    <h4 id="emptyFields" style="color:red">Please fill in all the required fields (*).</h4>
+                                    <h4 id="emptyFields" style="color:red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         </div>
                         <button class="btn btn-block btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button> <%--Copy to Tables without confirmation--%>
 
