@@ -78,7 +78,7 @@ function callCheck (){
                             $("#" + arr[0]).attr('value', arr[1]);
                         }
                     }
-                    else {
+                    else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
                         // Clear fields
                         clearFields();
                     }
@@ -157,6 +157,17 @@ function checkTemp() {
     
 }
 
+// Show Success Modal
+function showSuccessModal() {
+    $('#successModal').modal({ backdrop: 'static', keyboard: false });
+    $('#successModal').modal('show');
+}
+
+// Hide Success Modal
+function hideSuccessModal() {
+    $('#successModal').modal('hide');
+}
+
 // ASHX page call to write info to DB
 function NewAssistReg() {
     var username = user; 
@@ -205,8 +216,9 @@ function NewAssistReg() {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
                 var today = new Date();
-                alert("Visitor successfully checked-in at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
+                showSuccessModal();
                 clearFields();
+                hideTags();
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
@@ -218,30 +230,27 @@ function NewAssistReg() {
 }
 
 function clearFields() {
-    //$("#nric").attr('value', "");
-    //$("#namesInput").attr('value', "");
-    //$("#sexinput").attr('value', "");
-    //$("#nationalsInput").val("");
-    //$("#daterange").attr('value', "");
-    //$("#addresssInput").attr('value', "");
-    //$("#postalsInput").attr('value', "");
-    //$("#mobilesInput").attr('value', "");
-    //$("#altInput").attr('value', "");
-    //$("#homesInput").attr('value', "");
-    //$("#emailsInput").attr('value', "");
-    //$("#visitbookingtime").attr('value', "");
-    //$("#visitbookingdate").attr('value', "");
-    //$("#patientNric").attr('value', "");
-    //$("#patientName").attr('value', "");
-    //$('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
-    //$("#purposeInput").attr('value', "");
-    //$("#visLoc").attr('value', "");
-    //$("#temp").attr('value', "");
-    //$("#bedno").attr('value', "");
-    //loadActiveForm();
-    $('#registration input').each(function () {
-        var element = $(this).attr('value', "");
-    });
+    $("#nric").attr('value', "");
+    $("#namesInput").attr('value', "");
+    $("#sexinput").attr('value', "");
+    $("#nationalsInput").val("");
+    $("#daterange").attr('value', "");
+    $("#addresssInput").attr('value', "");
+    $("#postalsInput").attr('value', "");
+    $("#mobilesInput").attr('value', "");
+    $("#altInput").attr('value', "");
+    $("#homesInput").attr('value', "");
+    $("#emailsInput").attr('value', "");
+    $("#visitbookingtime").attr('value', "");
+    $("#visitbookingdate").attr('value', "");
+    $("#patientNric").attr('value', "");
+    $("#patientName").attr('value', "");
+    $('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
+    $("#purposeInput").attr('value', "");
+    $("#visLoc").attr('value', "");
+    $("#temp").attr('value', "");
+    $("#bedno").attr('value', "");
+    loadActiveForm();
 }
 
 // Display appropriate panels according to visit purpose

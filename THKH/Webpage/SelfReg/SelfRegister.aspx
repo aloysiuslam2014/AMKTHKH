@@ -81,7 +81,7 @@
                     <li>
                         <a>
                             <div>
-                                <input type="button" runat="server" class="btn btn-default" onclick="reloadPage(); false;"><span class="glyphicon glyphicon-refresh"></span> New Registration</input>
+                                <button type="button" runat="server" class="btn btn-primary" onclick="reloadPage(); false;"><span class="glyphicon glyphicon-refresh"></span> New Registration</button>
                             </div>
                         </a>
                     </li>
@@ -101,12 +101,33 @@
                                 <h4 class="modal-title" id="memberModalLabel">Please enter your NRIC/Identification Number to Begin</h4>
                             </div>
                             <div class="modal-body text-center">
-                                    NRIC: <input type="text" id="selfRegNric" class="form-control" autofocus/>
+                                <div class="input-group">
+                                          <span class="input-group-addon" id="basic-addon">NRIC/FIN</span>
+                                          <input type="text" class="form-control" id="selfRegNric" aria-describedby="basic-addon" />
+                                        </div>    
                                 <h4 id="emptyNricWarning">Please enter your NRIC/Identification Number!</h4>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-block btn-success" id="submitNric" onclick="showVisitDetails(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
                                 <h4 id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID! Please register at the Front Counter.</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <a data-controls-modal="successModal" data-backdrop="static" data-keyboard="false" href="#/"></a>
+                <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title" id="memberModalLabel1" style="color:darkblue">Online Registration Recorded</h4>
+                            </div>
+                            <div class="modal-body text-center">
+                                    <label>Your online registration has been recorded at <%=DateTime.Now %>.</label>
+                                    <label> Please confirm your registration at the Hospital Front Desk.</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-block btn-danger" id="closeSuccessButton" onclick="reloadPage(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
                             </div>
                         </div>
                     </div>
@@ -141,7 +162,7 @@
                                         <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Validate Patient</button>
                                         <label for="validatePatientButton" id="patientStatusGreen" style="color:green">Patient Found! Please fill up the rest of the form.</label>
                                     <label for="validatePatientButton" id="patientStatusRed" style="color:red">Patient Not Found! Please Register at the Front Counter.</label>
-                                        <label for="validatePatientButton" id="patientStatusNone" style="color:red">Please the details of the patient your are visiting! If you are unsure, please approach the front desk personnel for assistance.</label>
+                                        <label for="validatePatientButton" id="patientStatusNone" style="color:red">Please fill in the details of the patient your are visiting! If you are unsure, please approach the front desk personnel for assistance.</label>
                                     </div>
                                 </div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
