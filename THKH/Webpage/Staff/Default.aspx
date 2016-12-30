@@ -145,7 +145,7 @@
                             </div>
                             <label for="mobileinput">Mobile Number</label><label for="namesinput" id="comp12" style="color: red">*</label>
                             <div class="form-group">
-                                <input type="text" runat="server" class="form-control required" id="mobilesInput" />
+                                <input type="text" runat="server" class="form-control  required" id="mobilesInput" />
                                 <label for="mobilesInput" id="mobWarning" style="color:red">Invalid Phone Number Format!</label>
                             </div>
                             <label for="homeinput">Home Number</label>
