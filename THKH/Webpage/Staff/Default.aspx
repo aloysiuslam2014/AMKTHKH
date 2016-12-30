@@ -87,7 +87,7 @@
                         <form id="logbtn" runat="server">
                             <div>
                                 <label>Welcome, <%= Session["username"].ToString()%></label>
-                                <asp:Button ID="logout" class="btn" Text="logout" OnClick="logout_Click" runat="server" />
+                                <asp:Button ID="logout" class="btn btn-danger" Text="logout" OnClick="logout_Click" runat="server" />
                             </div>
                         </form>
 
@@ -103,6 +103,24 @@
             <%if (accessRightsStr.Contains('1'))
                 { %>
             <div class="tab-pane maxHeight" id="registration">
+                <a data-controls-modal="successModal" data-backdrop="static" data-keyboard="false" href="#/"></a>
+                <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title" id="memberModalLabel1" style="color:darkblue">Registration Successful</h4>
+                            </div>
+                            <div class="modal-body text-center">
+                                    <label>Visit data recorded at <%=DateTime.Now %>.</label>
+                                    <label>Visitor has been checked in.</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-block btn-danger" id="closeSuccessButton" onclick="hideSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
@@ -112,7 +130,7 @@
                             <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required" type="text" autofocus />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
+                                    <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
                                 </span>
                             </div>
                             <h4 id="emptyNricWarning" style="color: red">Please enter your NRIC/Identification Number!</h4>
@@ -284,16 +302,18 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header" style="padding: 0px 50px; text-align: center;">
+                                        <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
                                         <h4 style="color: midnightblue">Add New Questionnaire</h4>
                                     </div>
                                     <div class="modal-body" style="padding: 40px 50px; text-align: center;">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="qnaireid" placeholder="Enter a Questionnaire Name" />
+                                        <div class="input-group">
+                                          <span class="input-group-addon" id="basic-addon">Questionnaire Name</span>
+                                          <input type="text" class="form-control" id="qnaireid" aria-describedby="basic-addon" />
                                         </div>
-                                        <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span>Add Questionnaire</button>
-                                    </div>
+                                        </div>
                                     <div class="modal-footer" style="text-align: center !important;">
                                         <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
+                                    <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span>Add Questionnaire</button>
                                     </div>
                                 </div>
                             </div>

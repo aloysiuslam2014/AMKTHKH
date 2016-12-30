@@ -52,9 +52,9 @@ function NewSelfReg() {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
                 var today = new Date();
-                alert("Your online registration has been recorded at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
+                //alert("Your online registration has been recorded at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
+                showSuccessModal();
                 clearFields();
-                window.location.reload();
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
@@ -107,8 +107,7 @@ function validatePatient() {
                         patientValidated = true;
                         $("#userDetails").css("display", "block");
                         checkIfExistingVisitor();
-                    }
-                    
+                    }   
                 } else {
                     $("#patientStatusRed").css("display", "block");
                     $("#patientStatusGreen").css("display", "none");
@@ -122,8 +121,12 @@ function validatePatient() {
             },
         });
     } else {
-        // Display warning
         $("#patientStatusNone").css("display", "block");
+        $("#patientStatusRed").css("display", "none");
+        $("#patientStatusGreen").css("display", "none");
+        $("#userDetails").css("display", "none");
+        $('#newusercontent').css("display", "none");
+        $('#staticinfocontainer').css("display", "none");
     }
 }
 
@@ -210,6 +213,12 @@ function showModal() {
     $('#myModal').modal('show');
 }
 
+// Show Success Modal
+function showSuccessModal() {
+    $('#successModal').modal({ backdrop: 'static', keyboard: false });
+    $('#successModal').modal('show');
+}
+
 // Hide Modal
 function hideModal() {
     $('#myModal').modal('hide');
@@ -292,9 +301,11 @@ $("#selfRegNric").on("input", function () {
     if (validNric !== false) {
         $("#nricWarning").css("display", "none");
         $("#submitNric").css("display", "block");
+        $("#submitNric").prop('disabled', false);
     } else {
         $("#nricWarning").css("display", "block");
         $("#submitNric").css("display", "none");
+        $("#submitNric").prop('disabled', true);
     }
 });
 
@@ -385,6 +396,8 @@ function hideTags() {
     $("#patientStatusRed").css("display", "none");
     $("#patientStatusNone").css("display", "none");
     $("#userDetails").css("display", "none");
+    $("#submitNric").prop('disabled', true);
+    $("#submitNric").css("display", "none");
     populateNationalities();
     loadActiveForm();
 }
