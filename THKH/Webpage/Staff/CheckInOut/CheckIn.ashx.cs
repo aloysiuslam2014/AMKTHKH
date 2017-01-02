@@ -244,10 +244,18 @@ namespace THKH.Webpage.Staff.CheckInOut
             try
             {
                 var tempMsg = getVisitDetails(nric);
-                msg += "\"," + tempMsg;
-                var arr = tempMsg.Split(',');
-                var qAID = arr[arr.Length - 2];
-                msg += "\"," + getSubmittedQuestionnaireResponse(qAID);
+                if (tempMsg != "\"Visit\":\"none\"}")
+                {
+                    msg += "\"," + tempMsg;
+                    var arr = tempMsg.Split(',');
+                    var qAID = arr[arr.Length - 2];
+                    msg += "\"," + getSubmittedQuestionnaireResponse(qAID);
+                }
+                else {
+                    successString += msg;
+                    successString += "\"}";
+                    return successString;
+                }
             }
             catch (Exception ex) {
                 successString.Replace("Success", "Failure");
@@ -276,7 +284,17 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                String response = respon.Value.ToString();
+                if (response.Length > 4)
+                {
+                    successString += response;
+                }
+                else
+                {
+                    successString += "none";
+                    successString += "\"}";
+                    return successString;
+                }
             }
             catch (Exception ex)
             {

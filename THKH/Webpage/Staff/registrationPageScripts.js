@@ -269,8 +269,8 @@ function clearFields() {
     //$("#visLoc").attr('value', "");
     //$("#temp").attr('value', "");
     //$("#bedno").attr('value', "");
-    $("#registration .form-control .form-group").each(function (index, value) { // need to fix
-        $(this).attr('value', '');
+    $("#registration .regInput").each(function (idx, obj) {
+        $(obj).val("");
     });
     loadActiveForm();
 }
@@ -508,7 +508,7 @@ function loadActiveForm() {
                 if (type === "ddList") {
                     htmlString += "<label>" + question + "</label><label id='" + questionNum + "' style='color: red'>*</label>"
                         + "<div class='form-group'>"
-                            + "<select class='form-control required answer' name='" + questionNum + "'>";
+                            + "<select class='form-control required answer regInput' name='" + questionNum + "'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
                         htmlString += "<option class='answer' name='" + questionNum + "' value='" + valArr[j] + "'>" + valArr[j] + "</option>";
@@ -520,7 +520,7 @@ function loadActiveForm() {
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
-                        htmlString += "<div class='radio'><label><input class='answer' type='radio' name='" + questionNum + "' value='" + valArr[j] + "'";
+                        htmlString += "<div class='radio'><label><input class='answer regInput' type='radio' name='" + questionNum + "' value='" + valArr[j] + "'";
                         if (j == 0) {
                             htmlString += " checked";
                         }
@@ -533,14 +533,14 @@ function loadActiveForm() {
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
-                        htmlString += "<div class='checkbox'><label><input class='answer' type='checkbox' name='" + questionNum + "' value='" + valArr[j] + "'> " + valArr[j] + "</label></div>";
+                        htmlString += "<div class='checkbox'><label><input class='answer regInput' type='checkbox' name='" + questionNum + "' value='" + valArr[j] + "'> " + valArr[j] + "</label></div>";
                     }
                     htmlString += "</div>";
                 } if (type === "text") {
                     htmlString += "<label for='" + questionNum + "'>" + question + "</label>"
                                     + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                                     + "<div class='form-group'>"
-                                    + "<input type='text' runat='server' id='" + questionNum + "' class='form-control required answer' name='" + questionNum + "' />"
+                                    + "<input type='text' runat='server' id='" + questionNum + "' class='form-control required answer regInput' name='" + questionNum + "' />"
                                     + "</div>";
                 }
             }
