@@ -41,18 +41,57 @@ $(function () {
 
 // Show Modal
 function showAddQuestionnaireModal() {
-    $('#addQuestionnaire').modal('show');
+    $('#addQuestionnaire').modal('show'); 
+    $('.modal-backdrop').appendTo('#formManagement');
+    //$('body').removeClass("modal-open")
+    //$('body').css("padding-right", "");
+    //$('#addQuestionnaire').css('position', 'absolute');
+    //$('#addQuestionnaire').css('width', 'inherit');
+    //$('#addQuestionnaire').css('height', 'inherit');
     $('#qnaireid').focus();
 }
 
-// Hide Modal
+// Show Active Questionnaire Success
+function showSetActiveSuccess() {
+    $('#setActiveSuccess').modal('show');
+}
+
+// Hide Active Questionnaire Success
+function closeActiveSuccess() {
+    $('#setActiveSuccess').modal('hide');
+}
+
+// Show Add Questionnaire Success
+function showAddQuestionnaireSuccess() {
+    $('#addQuestionnaireSuccess').modal('show');
+}
+
+// Hide Add Questionnaire Success
+function closeAddQuestionnaireSuccess() {
+    $('#addQuestionnaireSuccess').modal('hide');
+}
+
+// Hide Add Questionnaire Modal
 function hideAddQuestionnaireModal() {
     $('#addQuestionnaire').modal('hide');
+    hideFormManagementTags();
+}
+
+// Show Update Questionnaire Success Modal
+function showUpdateSuccess() {
+    $('#updateQuestionnaireSuccess').modal('show');
+}
+
+// Hide Update Questionnaire Success Modal
+function closeUpdateSuccess() {
+    $('#updateQuestionnaireSuccess').modal('hide');
+    hideFormManagementTags();
 }
 
 // Get questionaireList and Question list
 function formManagementInit() {
     //if (!initialLoadCompleted) {
+    hideFormManagementTags();
         var resultOfGeneration = "";
         var headersToProcess = {
             requestType: "initialize"
@@ -344,30 +383,41 @@ function deSelectAll(target) {
 function newQuestionnaire() {
     var resultOfGeneration = "";
     var qname = $("#qnaireid").val();
-    var headersToProcess = {
-        requestType: "addQuestionnaire", qName: qname
-    };
-    $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
-        method: 'post',
-        data: headersToProcess,
+    if (qname !== "") {
+        var headersToProcess = {
+            requestType: "addQuestionnaire", qName: qname
+        };
+        $.ajax({
+            url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+            method: 'post',
+            data: headersToProcess,
 
 
-        success: function (returner) {
-            resultOfGeneration = JSON.parse(returner);
-            if (resultOfGeneration.Result === "Success") {
-                alert("Questionnaire " + qname + " Added!");
-                selectNewQuestionnaire(qname);
-                hideAddQuestionnaireModal();
-            } else {
-                alert("Questionnaire name already exists! Please use a unique name.");
-            }
-        },
-        error: function (err) {
-            alert(err.Msg);
-        },
-    });
-
+            success: function (returner) {
+                resultOfGeneration = JSON.parse(returner);
+                if (resultOfGeneration.Result === "Success") {
+                    if (resultOfGeneration.Msg === "1") {
+                        selectNewQuestionnaire(qname);
+                        hideAddQuestionnaireModal();
+                        showAddQuestionnaireSuccess();
+                        $("#emptyQuestionnaireWarning").css("display", "none");
+                        $("#questionnaireWarning").css("display", "none");
+                    } else {
+                        $("#questionnaireWarning").css("display", "block");
+                        $("#emptyQuestionnaireWarning").css("display", "none");
+                    }    
+                } else {
+                    alert("SQL Error: Please contact the administrator");
+                }
+            },
+            error: function (err) {
+                alert(err.Msg);
+            },
+        });
+    } else {
+        $("#emptyQuestionnaireWarning").css("display", "block");
+        $("#questionnaireWarning").css("display", "none");
+    }
 }
 
 // Selects newly created questionnaire after adding
@@ -388,7 +438,6 @@ function clearQnEditorFields() {
          
     });
     var update = false;
-   
 }
 
 // Delete questionnaire
@@ -406,13 +455,12 @@ function deleteQuestionnaire() {
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Msg;
-
+            // Success Message
         },
         error: function (err) {
             alert(err.Msg);
         },
     });
-
 }
 
 //Variable to store condition on create or update question
@@ -466,50 +514,58 @@ function closeEditor() {
     toggleListGreyOut(false);
     update = false;
     $('#qnEditor').collapse("hide");
+    hideFormManagementTags();
 }
 
 // Update or create a Question depending on condition
 function updateOrCreate() {
-    if (isCreateQn) {
-        var headersToProcess = {
-            requestType: "addQuestion",
-            question: $("#detailsQn").val(),
-            questionType: $("#detailsQnType").val(),
-            questionValues: $("#detailsQnValues").val()
-        };
+    var question = $("#detailsQn").val();
+    var questionType = $("#detailsQnType").val();
+    var questionVal = $("#detailsQnValues").val();
+    if (question !== "" & questionType !== "") {
+        if (isCreateQn) {
+            var headersToProcess = {
+                requestType: "addQuestion",
+                question: question,
+                questionType: questionType,
+                questionValues: questionVal
+            };
+        } else {
+            var headersToProcess = {
+                requestType: "updateQuestion",
+                qnId: editID,
+                question: question,
+                questionType: questionType,
+                questionValues: questionVal
+            };
+        }
+        var resultOfGeneration = "";
+
+        $.ajax({
+            url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+            method: 'post',
+            data: headersToProcess,
+
+
+            success: function (returner) {
+                resultOfGeneration = JSON.parse(returner);
+                var res = resultOfGeneration.Result;
+                if (res == "Success") {
+                    $("#emptyQuestionWarning").css("display", "none");
+                    formManagementInit();
+                    closeEditor();
+
+                } else {
+                    alert("An error has occured. Please Contact the administrator");
+                }
+            },
+            error: function (err) {
+                alert(err.Msg);
+            },
+        });
     } else {
-        var headersToProcess = {
-            requestType: "updateQuestion",
-            qnId: editID,
-            question: $("#detailsQn").val(),
-            questionType: $("#detailsQnType").val(),
-            questionValues: $("#detailsQnValues").val()
-        };
+        $("#emptyQuestionWarning").css("display", "block");
     }
-    var resultOfGeneration = "";
-
-    $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
-        method: 'post',
-        data: headersToProcess,
-
-
-        success: function (returner) {
-            resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.Result;
-            if (res == "Success") {
-                formManagementInit();
-                closeEditor();
-                
-            } else {
-                alert("An error has occured. Please Contact the administrator");
-            }
-        },
-        error: function (err) {
-            alert(err.Msg);
-        },
-    });
-
 }
 
 // Delete Question
@@ -583,7 +639,7 @@ function updateQuestionnaire() {
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Msg;
-            alert("Questionnaire Updated!");
+            showUpdateSuccess();
             questionnaireEdited = false;
         },
         error: function (err) {
@@ -622,7 +678,7 @@ function setActiveQuestionnaire() {
             var resultOfGeneration = JSON.parse(returner);
             //load the selected questionaire questions
             selectActiveQuestionnaire();
-            alert(qnaireId + " set as active!");
+            
         },
         error: function (err) {
             alert(err.Msg);
@@ -663,6 +719,7 @@ function selectActiveQuestionnaire() {
                     $('#qnaires').append(optin);
                 }
                 setSelectBackground();
+                showSetActiveSuccess();
             } else {
                 alert(resultOfGeneration.Result);
             }
@@ -671,4 +728,12 @@ function selectActiveQuestionnaire() {
             alert(err.Msg);
         },
     });
+}
+
+// Hides all Form Management Warnings
+function hideFormManagementTags() {
+    $("#emptyQuestionnaireWarning").css("display", "none");
+    $("#questionnaireWarning").css("display", "none");
+    $("#emptyQuestionWarning").css("display", "none");
+    $("#questionWarning").css("display", "none");
 }

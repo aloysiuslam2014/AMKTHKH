@@ -105,11 +105,12 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
 
                 command.ExecuteNonQuery();
                 var result = Int32.Parse(respon.Value.ToString());
-                if (result == 1)
+                if (result == 1 || result == 0)
                 {
                     successString += "\"" + result.ToString();
                 }
-                else {
+                else
+                {
                     successString.Replace("Success", "Failure");
                 }
             }
