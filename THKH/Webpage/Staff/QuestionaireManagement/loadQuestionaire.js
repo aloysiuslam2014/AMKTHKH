@@ -15,7 +15,7 @@ var editID = "";
 // variable to indicate if questionnaire has been modified
 var questionnaireEdited = false;
 // only initializes the form management page once
-var initialLoadCompleted = false;
+//var initialLoadCompleted = false;
 
 // Draggable questions for ordering purposes
 $(function () {
@@ -52,7 +52,7 @@ function hideAddQuestionnaireModal() {
 
 // Get questionaireList and Question list
 function formManagementInit() {
-    if (!initialLoadCompleted) {
+    //if (!initialLoadCompleted) {
         var resultOfGeneration = "";
         var headersToProcess = {
             requestType: "initialize"
@@ -68,7 +68,7 @@ function formManagementInit() {
                 var res = resultOfGeneration.Result;
                 if (res.toString() == "Success") {
                     initialiseData(resultOfGeneration);
-                    initialLoadCompleted = true;
+                    //initialLoadCompleted = true;
                 } else {
                     alert(resultOfGeneration.Result);
                 }
@@ -77,7 +77,7 @@ function formManagementInit() {
                 alert(err.Msg);
             },
         });
-    }
+    //}
 }
 
 // Inserts the data into the appropriate fields <Populate Dropdown List>

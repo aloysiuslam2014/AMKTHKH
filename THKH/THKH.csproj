@@ -127,6 +127,7 @@
     <Content Include="Webpage\SQL Script\THKHDB_20Dec16.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_21Dec16.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_26Dec16.sql" />
+    <Content Include="Webpage\Staff\ContactTracing\query.js" />
     <Content Include="Webpage\Staff\default.js" />
     <Content Include="Webpage\Staff\QuestionaireManagement\loadQuestionaire.js" />
     <Content Include="Webpage\Staff\TerminalCalls\adminTerminal.js" />
@@ -278,9 +279,7 @@
       <DependentUpon>userManagement.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Webpage\Staff\ContactTracing\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
