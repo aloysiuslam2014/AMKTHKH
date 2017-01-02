@@ -144,7 +144,7 @@
                             </div>
                             <br />
                             <label class="control-label" for="temp">Temperature</label><label for="temp" id="comp0" style="color: red">*</label>
-                            <input runat="server" id="temp" class="form-control required" type="text" onchange="checkTemp(); false;" />
+                            <input runat="server" id="temp" class="form-control required" type="text" />
                             <h4 id="tempWarning" style="color: red">Visitor's Temperature is above 37.6 Degrees Celcius!</h4>
                             <h4 id="invalidTempWarning" style="color: red">Please enter a valid temperature in the following format: "36.7"</h4>
                         </div>

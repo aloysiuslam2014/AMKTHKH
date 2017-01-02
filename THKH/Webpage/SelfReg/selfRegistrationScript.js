@@ -148,8 +148,8 @@ function checkIfExistingVisitor() {
 
             success: function (returner) {
                 resultOfGeneration = JSON.parse(returner);
-                if (resultOfGeneration.Visit === "new") {
-                    showVisitDetails();
+                if (resultOfGeneration.Visitor === "new") {
+                    showNewContent();
                 }
                 else {
                     $('#newusercontent input').removeClass('required');

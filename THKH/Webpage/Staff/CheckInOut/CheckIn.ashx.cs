@@ -336,7 +336,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
             String msg = "";
             try
             {
@@ -358,7 +358,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                msg += respon.Value;
+                msg += respon.Value + "\"";
             }
             catch (Exception ex)
             {
@@ -401,7 +401,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                msg += respon.Value;
+                msg += ",\"Visit\":\"" + respon.Value + "\"";
             }
             catch (Exception ex)
             {
@@ -413,7 +413,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Close();
             }
             successString += msg;
-            successString += "\"}";
+            successString += "}";
             return successString;
         }
 
@@ -480,7 +480,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Now);
+                command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
                 command.Parameters.AddWithValue("@pPatientNRIC", pNric);
                 command.Parameters.AddWithValue("@pVisitorNRIC", nric);
                 command.Parameters.AddWithValue("@pPatientFullName", pName);

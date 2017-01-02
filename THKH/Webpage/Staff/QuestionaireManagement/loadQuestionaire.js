@@ -535,7 +535,7 @@ function closeEditor() {
 
 // Update or create a Question depending on condition
 function updateOrCreate() {
-    var question = $("#detailsQn").val();
+    var question = filterText($("#detailsQn").val());
     var questionType = $("#detailsQnType").val();
     var questionVal = $("#detailsQnValues").val();
     if (question !== "" & questionType !== "") {

@@ -12,6 +12,7 @@ w3IncludeHTML();
 var validMob = true;
 var validAlt = true;
 var validHom = true;
+var validTemp = true;
 
 // Check for visitor details & any online self registration information
 function callCheck (){
@@ -48,7 +49,7 @@ function callCheck (){
                     if (resultOfGeneration.Questionnaire != null) {
                         questionnaireArr = questionnaireAns.split(",");
                     }
-                    if (visitorArr.length > 0) {
+                    if (visitorArr.length > 1) {
                         // Populate fields if data exists
                         $("#nric").attr('value', visitorArr[0]);
                         $("#namesInput").attr('value', visitorArr[1]);
@@ -61,7 +62,7 @@ function callCheck (){
                         $("#altInput").attr('value', visitorArr[8]);
                         $("#homesInput").attr('value', visitorArr[7]);
                         $("#emailsInput").attr('value', visitorArr[9]);
-                    } if (visitArr.length > 0) {
+                    } if (visitArr.length > 1) {
                         $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10)); // Error
                         $("#visitbookingtime").val(visitArr[0].toString().substring(11)); // Error
                         $("#patientNric").attr('value', visitArr[1]);
@@ -78,7 +79,7 @@ function callCheck (){
                         $("#purposeInput").attr('value', visitArr[5]);
                         $("#visLoc").attr('value', visitArr[6]);
                         $("#bedno").attr('value', visitArr[7]);
-                    } if (questionnaireArr.length > 0) {
+                    } if (questionnaireArr.length > 1) {
                         for (i = 0; i < questionnaireArr.length; i++) {
                             var value = questionnaireArr[i];
                             var arr = value.split(':');
@@ -148,22 +149,27 @@ $("#temp").on("input", function () {
     if (temper == "") {
         $('#tempWarning').css("display", "none");
         $("#invalidTempWarning").css("display", "none");
+        validTemp = false;
     } else {
         try {
             var temperature = parseFloat(temper);
             if (temperature > 37.6) {
                 $('#tempWarning').css("display", "block");
                 $("#invalidTempWarning").css("display", "none");
+                validTemp = false;
             } else if (isNaN(temperature) || temperature < 35.0) {
                 $("#invalidTempWarning").css("display", "block");
                 $('#tempWarning').css("display", "none");
+                validTemp = false;
             }
             else {
                 $('#tempWarning').css("display", "none");
                 $("#invalidTempWarning").css("display", "none");
+                validTemp = true;
             }
         } catch (ex) {
             $('#tempWarning').css("display", "block");
+            validTemp = false;
         }
     }
 });
@@ -202,7 +208,9 @@ function NewAssistReg() {
     var otherPurpose = $("#purposeInput").val();
     var bedno = $("#bedno").val();
     var qListID = $("#qnlistid").val();
-    var appTime = Date.now();
+    var visTime = $("#visitbookingtime").val();
+    var visDate = $("#visitbookingdate").val();
+    var appTime = visDate + " " + visTime;
     var fever = $("#fever").val();
     var symptoms = $("#pimple").val();
     var influenza = $("#flu").val();
@@ -261,7 +269,7 @@ function clearFields() {
     //$("#visLoc").attr('value', "");
     //$("#temp").attr('value', "");
     //$("#bedno").attr('value', "");
-    $("#registration .form-control").each(function (index, value) {
+    $("#registration .form-control .form-group").each(function (index, value) { // need to fix
         $(this).attr('value', '');
     });
     loadActiveForm();
@@ -285,16 +293,16 @@ function purposePanels() {
 // For field validations
 function checkRequiredFields() {
     var valid = true;
-    $.each($("#main input.required"), function (index, value) {
+    $.each($("#registration input.required"), function (index, value) {
         var element = $(value).val();
         if (!element || element == "") {
             valid = false;
             $(value).css('background', '#f3f78a');
         }
-        if (!validMob || !validHom || !validAlt) {
-            valid = false;
-        }
     });
+    if (!validMob || !validHom || !validAlt || !validTemp) {
+        valid = false;
+    }
     if (valid) {
         $('#emptyFields').css("display", "none");
         NewAssistReg();
