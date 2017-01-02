@@ -136,26 +136,30 @@ function validatePatient() {
 }
 
 // Check visitor's temperature
-function checkTemp() { 
-    var temper = temp.value;
-    try{
-        var temperature = parseFloat(temper);
-        if (temperature > 37.6) {
+$("#temp").on("input", function () {
+    var temper = $("#temp").val();
+    if (temper == "") {
+        $('#tempWarning').css("display", "none");
+        $("#invalidTempWarning").css("display", "none");
+    } else {
+        try {
+            var temperature = parseFloat(temper);
+            if (temperature > 37.6) {
+                $('#tempWarning').css("display", "block");
+                $("#invalidTempWarning").css("display", "none");
+            } else if (isNaN(temperature) || temperature < 35.0) {
+                $("#invalidTempWarning").css("display", "block");
+                $('#tempWarning').css("display", "none");
+            }
+            else {
+                $('#tempWarning').css("display", "none");
+                $("#invalidTempWarning").css("display", "none");
+            }
+        } catch (ex) {
             $('#tempWarning').css("display", "block");
-            $("#invalidTempWarning").css("display", "none");
-        } if (temperature < 35.0) {
-            $("#invalidTempWarning").css("display", "block");
-            $('#tempWarning').css("display", "none");
         }
-        else {
-            $('#tempWarning').css("display", "none");
-            $("#invalidTempWarning").css("display", "none");
-        }
-    }catch(ex){
-        $('#tempWarning').css("display", "block");
     }
-    
-}
+});
 
 // Show Success Modal
 function showSuccessModal() {

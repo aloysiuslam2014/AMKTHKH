@@ -109,11 +109,11 @@
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h4 class="modal-title" id="memberModalLabel1" style="color:darkblue">Registration Successful</h4>
+                                <h4 class="modal-title" id="memberModalLabel1" style="color:midnightblue">Registration Successful</h4>
                             </div>
                             <div class="modal-body text-center">
                                     <label>Visit data recorded at <%=DateTime.Now %>.</label>
-                                    <label>Visitor has been checked in.</label>
+                                    <label style="color:green">Visitor has been checked in!</label>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-block btn-danger" id="closeSuccessButton" onclick="hideSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
@@ -308,8 +308,10 @@
                                     <div class="modal-body" style="padding: 40px 50px; text-align: center;">
                                         <div class="input-group">
                                           <span class="input-group-addon" id="basic-addon">Questionnaire Name</span>
-                                          <input type="text" class="form-control" id="qnaireid" aria-describedby="basic-addon" />
+                                          <input type="text" class="form-control" id="qnaireid" aria-describedby="basic-addon" />      
                                         </div>
+                                        <label id="emptyQuestionnaireWarning" style="color:red">Please enter a questionnaire name!</label>
+                                            <label id="questionnaireWarning" style="color:red">Questionnaire name already exists! Please use a unique name.</label>
                                         </div>
                                     <div class="modal-footer" style="text-align: center !important;">
                                         <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
@@ -343,6 +345,65 @@
                             <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Remove Questions</button>
                             <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>Update Questionnaire</button>
                         </div>
+                        <div class="modal fade" id="updateQuestionnaireSuccess" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="padding: 0px 50px; text-align: center;">
+                                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                                <h4 style="color:midnightblue">Success</h4>
+
+                                            </div>
+                                            <div class="modal-body" style="text-align: center;">
+                                                <label style="color:green">Questionnaire Updated!</label>
+                                            </div>
+                                            <div class="modal-footer" style="text-align: center !important;">
+                                                <button type="button" id="closeUpdateQuestionnaire" onclick="closeUpdateSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                        <div class="modal fade" id="setActiveSuccess" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="padding: 0px 50px; text-align: center;">
+                                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                                <h4 style="color:midnightblue">Success</h4>
+                                            </div>
+                                            <div class="modal-body" style="text-align: center;">
+                                                <label style="color:green">Questionnaire set as Active!</label>
+                                            </div>
+                                            <div class="modal-footer" style="text-align: center !important;">
+                                                <button type="button" id="closeActiveSuccess" onclick="closeActiveSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                        <div class="modal fade" id="addQuestionnaireSuccess" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="padding: 0px 50px; text-align: center;">
+                                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                                <h4 style="color:midnightblue">Success</h4>
+
+                                            </div>
+                                            <div class="modal-body" style="text-align: center;">
+                                                <label style="color:green">Questionnaire Added!</label>
+                                            </div>
+                                            <div class="modal-footer" style="text-align: center !important;">
+                                                <button type="button" id="closeAddQuestionnaireSuccess" onclick="closeAddQuestionnaireSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                     </div>
 
                     <!-- questions to be added portion -->
@@ -353,7 +414,7 @@
                             <div class="input-group" id="searchQns">
                                 <input type="text" class="form-control maxWidth" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)" />
                                 <span class="input-group-btn">
-                                    <button type="button" id="createNewQuestion" onclick="toggleQnEditor(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Create New Question</button>
+                                    <button type="button" id="createNewQuestion" onclick="toggleQnEditor(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> New Question</button>
                                 </span>
                             </div>
                             <div class=" " style="border: solid 1pt; border-radius: 2px; height: 75%; overflow-y: auto; margin-top: 2px;">
@@ -383,9 +444,10 @@
                                             <textarea id="detailsQnValues" class="qnVal" rows="2" cols="60"></textarea>
 
                                         </div>
-                                        <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Close</button>
-                                        <button type="button" id="updateOrCreateQn" onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span>Save Question</button>
-
+                                        <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Close</button>
+                                        <button type="button" id="updateOrCreateQn" onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Save Question</button>
+                                        <label id="emptyQuestionWarning" style="color:red">Please enter a question/answer type!</label>
+                                        <label id="questionWarning" style="color:red">Question name already exists! Please use a unique name.</label>
                                     </div>
                                 </div>
                             </div>
@@ -421,24 +483,25 @@
                                         <!-- Modal content-->
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
-
-                                                <h4>Add New Terminal </h4>
+                                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                                <h4 style="color:midnightblue">Add New Terminal </h4>
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
 
                                                 <div class="form-group">
-                                                    <label>Terminal Name:</label>
+                                                    <label>Terminal Name</label>
                                                     <input type="text" class="form-control text-center" id="terminalNameInput" placeholder="Enter Terminal Name" />
-                                                    <label>Bed's attached to terminal</label>
+                                                    <label>Bed's attached to Terminal</label>
                                                     <input type="text" class="form-control text-center" id="beds" placeholder="Enter Bed Numbers seperated by comma" />
                                                 </div>
 
-                                                <button type="button" class="btn btn-success btn-block" id="addNewTerminal"><span class="glyphicon glyphicon-off"></span>Add New Terminal</button>
+                                                
 
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">
-                                                <button type="button" id="adminCloseTerminal" class="btn btn-danger btn-default "><span class="glyphicon glyphicon-remove"></span>Cancel</button>
+                                                <button type="button" id="adminCloseTerminal" class="btn btn-danger btn-default "><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                            <button type="button" class="btn btn-success" id="addNewTerminal"><span class="glyphicon glyphicon-off"></span> Add New Terminal</button>
                                             </div>
                                         </div>
 
@@ -452,7 +515,7 @@
 
                                             <div class="modal-body" id="prompText" style="text-align: center;">
 
-                                                <h2>Successfully Added New Terminal</h2>
+                                                <label style="color:green">Successfully Added New Terminal</label>
 
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">
