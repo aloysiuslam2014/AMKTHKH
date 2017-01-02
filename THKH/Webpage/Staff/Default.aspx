@@ -48,7 +48,7 @@
                         if (accessRightsStr.Contains('2'))
                         {%>
                     <li>
-                        <a href="#formManagement" data-toggle="tab" onclick="formManagementInit()">Form Management
+                        <a href="#formManagement" data-toggle="tab" onclick="loadFormManagementOnce()">Form Management
                         </a>
                     </li>
                     <%  }
@@ -62,7 +62,7 @@
                         if (accessRightsStr.Contains('4'))
                         {%>
                     <li>
-                        <a href="#UserManagement" data-toggle="tab">User Management
+                        <a href="#UserManagement" data-toggle="tab" onclick="loadUsersOnce()">User Management
                         </a>
                     </li>
                     <%  }
@@ -518,7 +518,7 @@
                     <div class="col-sm-4 inheritHeight">
                         <h3 style="color: midnightblue">Existing Users</h3>
                         <div class="input-group" id="searchUser">
-                            <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterCurrentList(this)" />
+                            <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterUserList(this)" />
                             <span class="input-group-btn">
                                 <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
                                 <button type="button" id="" onclick="deSelectAllUsers();false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
@@ -527,7 +527,7 @@
 
                         <div class=" " style="border: solid 1pt; border-radius: 2px; height: 74%; overflow-y: auto; margin-top: 2px;">
                             <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
-                                <li class="list-group-item" id="">user 1</li>
+                                
                             </ul>
                         </div>
                         <div>
@@ -535,63 +535,67 @@
                         </div>
                     </div>
 
-                    <div class="row" style="overflow-y: auto">
-                        <div class="col-md-6">
-                            <label>Email</label>
-                            <div class="form-group">
-                                <input id="staffEmail" class="form-control" /></div>
-                            <label>First Name</label>
-                            <div class="form-group">
-                                <input id="staffFirstName" class="form-control" /></div>
-                            <label>Last Name</label>
-                            <div class="form-group">
-                                <input id="staffLastName" class="form-control" /></div>
-                            <label>NRIC</label>
-                            <div class="form-group">
-                                <input id="staffNric" class="form-control" /></div>
-                            <label>Address</label>
-                            <div class="form-group">
-                                <input id="staffAddress" class="form-control" /></div>
-                            <label>Postal Code</label>
-                            <div class="form-group">
-                                <input id="staffPostal" class="form-control" /></div>
-                            <label>Contact Number(Mobile)</label>
-                            <div class="form-group">
-                                <input id="staffMobileNum" class="form-control" /></div>
-                            <label>Contact Number(Home)</label>
-                            <div class="form-group">
-                                <input id="staffHomeNum" class="form-control" /></div>
+                    <div class="col-sm-8 row" style="overflow-y: auto">
+                        <h3 style="color: midnightblue">User details</h3>
+                        <div style="margin-top:45px">
+                            <div class="col-md-6">
+                                <label>Email</label>
+                                <div class="form-group">
+                                    <input id="staffEmail" class="form-control" /></div>
+                                <label>First Name</label>
+                                <div class="form-group">
+                                    <input id="staffFirstName" class="form-control" /></div>
+                                <label>Last Name</label>
+                                <div class="form-group">
+                                    <input id="staffLastName" class="form-control" /></div>
+                                <label>NRIC</label>
+                                <div class="form-group">
+                                    <input id="staffNric" class="form-control" /></div>
+                                <label>Address</label>
+                                <div class="form-group">
+                                    <input id="staffAddress" class="form-control" /></div>
+                                <label>Postal Code</label>
+                                <div class="form-group">
+                                    <input id="staffPostal" class="form-control" /></div>
+                                <label>Contact Number(Mobile)</label>
+                                <div class="form-group">
+                                    <input id="staffMobileNum" class="form-control" /></div>
+                                <label>Contact Number(Home)</label>
+                                <div class="form-group">
+                                    <input id="staffHomeNum" class="form-control" /></div>
+                                </div>
+                            <div class="col-md-6">
+                                <label>Contact Number(Alt)</label>
+                                <div class="form-group">
+                                    <input id="staffAltNum" class="form-control" /></div>
+                                <label>Sex</label>
+                                <div class="form-group">
+                                    <select id="staffSex" class="form-control">
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                    </select>
+                                </div>
+                                <label>Nationality</label>
+                                <div class="form-group">
+                                    <input id="staffNationality" class="form-control" /></div>
+                                <label>Date Of Birth</label>
+                                <div class="form-group">
+                                    <input id="staffDOB" class="form-control" /></div>
+                                <label>Age</label>
+                                <div class="form-group">
+                                    <input id="staffAge" class="form-control" /></div>
+                                <label>Race</label>
+                                <div class="form-group">
+                                    <input id="staffRace" class="form-control" /></div>
+                                <label>Position Title</label>
+                                <div class="form-group">
+                                    <input id="staffTitle" class="form-control" /></div>
+                                <label>Permission</label>
+                                <div class="form-group">
+                                    <input id="staffPerms" class="form-control" /></div>
                             </div>
-                        <div class="col-md-6">
-                            <label>Contact Number(Alt)</label>
-                            <div class="form-group">
-                                <input id="staffAltNum" class="form-control" /></div>
-                            <label>Sex</label>
-                            <div class="form-group">
-                                <select id="staffSex" class="form-control">
-                                    <option value="M">Male</option>
-                                    <option value="F">Female</option>
-                                </select>
-                            </div>
-                            <label>Nationality</label>
-                            <div class="form-group">
-                                <input id="staffNationality" class="form-control" /></div>
-                            <label>Date Of Birth</label>
-                            <div class="form-group">
-                                <input id="staffDOB" class="form-control" /></div>
-                            <label>Age</label>
-                            <div class="form-group">
-                                <input id="staffAge" class="form-control" /></div>
-                            <label>Race</label>
-                            <div class="form-group">
-                                <input id="staffRace" class="form-control" /></div>
-                            <label>Position Title</label>
-                            <div class="form-group">
-                                <input id="staffTitle" class="form-control" /></div>
-                            <label>Permission</label>
-                            <div class="form-group">
-                                <input id="staffPerms" class="form-control" /></div>
                         </div>
+                        <button type="button" value="Save" class="btn btn-success">Save</button>
                     </div>
     </div>
             </div>
@@ -704,6 +708,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/QuestionaireManagement/loadQuestionaire.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/registrationPageScripts.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/UserManagement/loadUsers.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
     <script type="text/javascript">
         var user = '<%= Session["username"].ToString() %>';
