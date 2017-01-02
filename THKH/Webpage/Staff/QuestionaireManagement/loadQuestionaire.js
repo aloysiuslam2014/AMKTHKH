@@ -15,7 +15,7 @@ var editID = "";
 // variable to indicate if questionnaire has been modified
 var questionnaireEdited = false;
 // only initializes the form management page once
-//var initialLoadCompleted = false;
+var initialLoadCompleted = false;
 
 // Draggable questions for ordering purposes
 $(function () {
@@ -38,6 +38,12 @@ $(function () {
         }
     });
 });
+
+//removes double quotes from the text and replaces with single quotes
+function filterText(textToFilter) {
+    var res = textToFilter.replace(/"/g, "'");
+    return res;
+}
 
 // Show Modal
 function showAddQuestionnaireModal() {
@@ -86,6 +92,15 @@ function showUpdateSuccess() {
 function closeUpdateSuccess() {
     $('#updateQuestionnaireSuccess').modal('hide');
     hideFormManagementTags();
+}
+
+//loads the page only once
+function loadFormManagementOnce() {
+    if (!initialLoadCompleted) {
+        formManagementInit();
+    } else {
+        initialLoadCompleted = true;
+    }
 }
 
 // Get questionaireList and Question list
@@ -336,7 +351,7 @@ function displayQuestionnaireQuestions() {
     });
 }
 
-// 
+//Filter the list of available questions
 function filterCurrentList(elment) {
 
     var value = $(elment).val();
@@ -496,6 +511,7 @@ function editQuestionShow(me) {
     isCreateQn = false;
     toggleListGreyOut(true);
     var qn = $(me).parent().text();
+    var qn = qn.substring(0, qn.length - 4);
     var qnType = $(me).parent().find(".qType").val();
     var qnValues = $(me).parent().find(".qValues").val();
     editID = $(me).parent().attr("id");
