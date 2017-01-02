@@ -40,22 +40,21 @@ function callCheck (){
                     var visitArr = [];
                     var questionnaireArr = [];
                     if (resultOfGeneration.Visit != null) {
-                        visitString.split(",");
+                        visitArr = visitString.split(",");
                     }
                     if (resultOfGeneration.Visitor != null) {
                         visitorArr = visitorString.split(",");
                     }
                     if (resultOfGeneration.Questionnaire != null) {
-                        questionnaireAns.split(",");
+                        questionnaireArr = questionnaireAns.split(",");
                     }
                     if (visitorArr.length > 0) {
-                        var dateString = visitorArr[4].replace(/-/g, "/").toString() + " 0:01 AM";
                         // Populate fields if data exists
                         $("#nric").attr('value', visitorArr[0]);
                         $("#namesInput").attr('value', visitorArr[1]);
                         $("#sexinput").attr('value', visitorArr[2]);
-                        $("#nationalsInput").attr('value', visitorArr[3]);
-                        $("#daterange").attr('value', dateString);
+                        $("#nationalsInput").val(visitorArr[3]);
+                        $("#daterange").val(visitorArr[4].toString()); // Error
                         $("#addresssInput").attr('value', visitorArr[10]);
                         $("#postalsInput").attr('value', visitorArr[11]);
                         $("#mobilesInput").attr('value', visitorArr[6]);
@@ -63,10 +62,19 @@ function callCheck (){
                         $("#homesInput").attr('value', visitorArr[7]);
                         $("#emailsInput").attr('value', visitorArr[9]);
                     } if (visitArr.length > 0) {
-                        $("#visitbookingtime").attr('value', visitArr[0]);
+                        $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10)); // Error
+                        $("#visitbookingtime").val(visitArr[0].toString().substring(11)); // Error
                         $("#patientNric").attr('value', visitArr[1]);
                         $("#patientName").attr('value', visitArr[3]);
+                        var visPurpose = visitArr[4];
                         $('#pInput').val(visitArr[4]); // Purpose of visit "Visit Patient" or "Other Purpose"
+                        if (visPurpose == "Visit Patient") {
+                            $("#patientpurposevisit").css("display", "block");
+                            $("#otherpurposevisit").css("display", "none");
+                        } else if (visPurpose == "Other Purpose") {
+                            $("#patientpurposevisit").css("display", "none");
+                            $("#otherpurposevisit").css("display", "block");
+                        }
                         $("#purposeInput").attr('value', visitArr[5]);
                         $("#visLoc").attr('value', visitArr[6]);
                         $("#bedno").attr('value', visitArr[7]);
@@ -79,7 +87,6 @@ function callCheck (){
                         }
                     }
                     else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
-                        // Clear fields
                         clearFields();
                     }
                 }
@@ -234,26 +241,29 @@ function NewAssistReg() {
 }
 
 function clearFields() {
-    $("#nric").attr('value', "");
-    $("#namesInput").attr('value', "");
-    $("#sexinput").attr('value', "");
-    $("#nationalsInput").val("");
-    $("#daterange").attr('value', "");
-    $("#addresssInput").attr('value', "");
-    $("#postalsInput").attr('value', "");
-    $("#mobilesInput").attr('value', "");
-    $("#altInput").attr('value', "");
-    $("#homesInput").attr('value', "");
-    $("#emailsInput").attr('value', "");
-    $("#visitbookingtime").attr('value', "");
-    $("#visitbookingdate").attr('value', "");
-    $("#patientNric").attr('value', "");
-    $("#patientName").attr('value', "");
-    $('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
-    $("#purposeInput").attr('value', "");
-    $("#visLoc").attr('value', "");
-    $("#temp").attr('value', "");
-    $("#bedno").attr('value', "");
+    //$("#nric").attr('value', "");
+    //$("#namesInput").attr('value', "");
+    //$("#sexinput").attr('value', "");
+    //$("#nationalsInput").val("");
+    //$("#daterange").attr('value', "");
+    //$("#addresssInput").attr('value', "");
+    //$("#postalsInput").attr('value', "");
+    //$("#mobilesInput").attr('value', "");
+    //$("#altInput").attr('value', "");
+    //$("#homesInput").attr('value', "");
+    //$("#emailsInput").attr('value', "");
+    //$("#visitbookingtime").attr('value', "");
+    //$("#visitbookingdate").attr('value', "");
+    //$("#patientNric").attr('value', "");
+    //$("#patientName").attr('value', "");
+    //$('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
+    //$("#purposeInput").attr('value', "");
+    //$("#visLoc").attr('value', "");
+    //$("#temp").attr('value', "");
+    //$("#bedno").attr('value', "");
+    $("#registration .form-control").each(function (index, value) {
+        $(this).attr('value', '');
+    });
     loadActiveForm();
 }
 

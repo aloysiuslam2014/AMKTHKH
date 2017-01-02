@@ -426,7 +426,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
             String msg = "";
             try
             {
@@ -448,7 +448,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                msg += respon.Value;
+                msg += respon.Value + "\"";
             }
             catch (Exception ex)
             {
@@ -493,7 +493,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                msg += respon.Value;
+                msg += ",\"Visit\":\"" + respon.Value + "\"";
             }
             catch (Exception ex)
             {
@@ -516,7 +516,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 msg = ex.Message;
             }
             successString += msg;
-            successString += "\"}";
+            successString += "}";
             return successString;
         }
 
@@ -526,7 +526,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = "";
+            String successString = ",\"Questionnaire\":\"";
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[INSERT_QUESTIONNARIE_RESPONSE]", cnn);
@@ -538,13 +538,11 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                successString += respon.Value +"\"";
             }
             catch (Exception ex)
             {
                 throw ex;
-                //successString += ex.Message;
-                //return successString;
             }
             finally
             {
@@ -558,20 +556,20 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = ""; 
+            String successString = ",\"CheckIn\":\""; 
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[CONFIRM_CHECK_IN]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", nric);
-                command.Parameters.AddWithValue("@pActualTimeVisit", DateTime.Now);
+                command.Parameters.AddWithValue("@pActualTimeVisit", DateTime.Now); // Take from DB side
                 command.Parameters.AddWithValue("@pStaffEmail", staffuser);
                 command.Parameters.AddWithValue("@pTemperature", temp);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                successString += respon.Value + "\"";
             }
             catch (Exception ex)
             {
