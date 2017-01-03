@@ -13,6 +13,7 @@ var validMob = true;
 var validAlt = true;
 var validHom = true;
 var validTemp = true;
+var validPos = true;
 
 // Check for visitor details & any online self registration information
 function callCheck (){
@@ -100,6 +101,17 @@ function callCheck (){
         },
     });
     dataFound = true;
+}
+
+// Check nationality input field
+function checkNationals() {
+    if ($("#nationalsInput").val() == '') {
+        $("#natWarning").css("display", "block");
+        return false;
+    } else {
+        $("#natWarning").css("display", "none");
+    }
+    return true;
 }
 
 // ensure patient info is valid
@@ -237,6 +249,7 @@ function NewAssistReg() {
                 var today = new Date();
                 showSuccessModal();
                 clearFields();
+                $('input:checkbox[name=declare]').attr('checked', false);
                 hideTags();
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
@@ -249,31 +262,10 @@ function NewAssistReg() {
 }
 
 function clearFields() {
-    //$("#nric").attr('value', "");
-    //$("#namesInput").attr('value', "");
-    //$("#sexinput").attr('value', "");
-    //$("#nationalsInput").val("");
-    //$("#daterange").attr('value', "");
-    //$("#addresssInput").attr('value', "");
-    //$("#postalsInput").attr('value', "");
-    //$("#mobilesInput").attr('value', "");
-    //$("#altInput").attr('value', "");
-    //$("#homesInput").attr('value', "");
-    //$("#emailsInput").attr('value', "");
-    //$("#visitbookingtime").attr('value', "");
-    //$("#visitbookingdate").attr('value', "");
-    //$("#patientNric").attr('value', "");
-    //$("#patientName").attr('value', "");
-    //$('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
-    //$("#purposeInput").attr('value', "");
-    //$("#visLoc").attr('value', "");
-    //$("#temp").attr('value', "");
-    //$("#bedno").attr('value', "");
     $("#registration .regInput").each(function (idx, obj) {
         if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp")
-        $(obj).val("");
+        $(obj).prop('value','');
     });
-    
 }
 
 // Display appropriate panels according to visit purpose
@@ -282,13 +274,19 @@ function purposePanels() {
     if (purpose === "Visit Patient") {
         $("#patientpurposevisit").css("display", "block");
         $("#otherpurposevisit").css("display", "none");
+        $("#purWarning").css("display", "none");
+        return true;
     } else if (purpose === "Other Purpose") {
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "block");
+        $("#purWarning").css("display", "none");
+        return true;
     } else {
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "none");
+        $("#purWarning").css("display", "block");
     }
+    return false;
 }
 
 // For field validations
@@ -301,7 +299,7 @@ function checkRequiredFields() {
             $(value).css('background', '#f3f78a');
         }
     });
-    if (!validMob || !validHom || !validAlt || !validTemp) {
+    if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !checkNationals() || !purposePanels()) {
         valid = false;
     }
     if (valid) {
@@ -333,6 +331,18 @@ $("#mobilesInput").on("input", function () {
     } else {
         $("#mobWarning").css("display", "block");
         validMob = false;
+    }
+});
+
+// Validate postal code number format
+$("#postalsInput").on("input", function () {
+    var validNric = validatePhone($("#postalsInput").val());
+    if (validNric !== false) {
+        $("#posWarning").css("display", "none");
+        validPos = true;
+    } else {
+        $("#posWarning").css("display", "block");
+        validPos = false;
     }
 });
 
@@ -456,6 +466,9 @@ function hideTags() {
     $("#altWarning").css("display", "none");
     $("#patientStatusGreen").css("display", "none");
     $("#patientStatusRed").css("display", "none");
+    $("#posWarning").css("display", "none");
+    $("#natWarning").css("display", "none");
+    $("#purWarning").css("display", "none");
     populateNationalities();
     loadActiveForm();
 }

@@ -2,6 +2,8 @@
 var validMob = true;
 var validAlt = true;
 var validHom = true;
+var validPos = true;
+var existUser = false;
 var patientValidated = false;
 
 // write to form information DB
@@ -52,9 +54,7 @@ function NewSelfReg() {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
                 var today = new Date();
-                //alert("Your online registration has been recorded at " + today.getDay() + "/" + today.getMonth() + "/" + today.getYear() + " " + today.getHours() + ":" + today.getMinutes());
                 showSuccessModal();
-                clearFields();
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
@@ -62,6 +62,17 @@ function NewSelfReg() {
         error: function (err) {
         },
     });
+}
+
+// Check nationality input field
+function checkNationals() {
+    if ($("#nationalsInput").val() == '') {    
+        $("#natWarning").css("display", "block");
+        return false;
+    } else {
+        $("#natWarning").css("display", "none");
+    }
+    return true;
 }
 
 // Reload Page & Clear Cache
@@ -150,9 +161,11 @@ function checkIfExistingVisitor() {
                 resultOfGeneration = JSON.parse(returner);
                 if (resultOfGeneration.Visitor === "new") {
                     showNewContent();
+                    existUser = false;
                 }
                 else {
                     $('#newusercontent input').removeClass('required');
+                    existUser = true;
                     showExistContent(snric);
                 }
                 $('#nricsInput').attr('value', snric);
@@ -189,16 +202,20 @@ function showNricWarning() {
 // Check if required fields are filled
 function checkRequiredFields() {
     var valid = true;
+    var nationalitycheck = true;
+    if (existUser !== true) {
+        nationalitycheck = checkNationals();
+    }
     $.each($("#selfregistration input.required"), function (index, value) {
         var element = $(value).val();
         if (!element || element == "") {
             valid = false;
             $(value).css('background', '#f3f78a');
         }
-        if (!validMob || !validHom || !validAlt) {
-            valid = false;
-        }
     });
+    if (!validMob || !validHom || !validAlt || !validPos || !nationalitycheck) {
+        valid = false;
+    }
     if (valid) {
         $('#emptyFields').css("display", "none");
         NewSelfReg();
@@ -228,26 +245,6 @@ function hideModal() {
 function showVisitDetails() {
     $('#visitDetailsDiv').css("display", "block");
     hideModal();
-}
-
-function clearFields() {
-    $("#nricsInput").attr('value', "");
-    $("#namesInput").attr('value', "");
-    $("#sexinput").attr('value', "");
-    $("#nationalsInput").attr('value', "");
-    $("#daterange").attr('value', "");
-    $("#addresssInput").attr('value', "");
-    $("#postalsInput").attr('value', "");
-    $("#mobilesInput").attr('value', "");
-    $("#altInput").attr('value', "");
-    $("#homesInput").attr('value', "");
-    $("#emailsInput").attr('value', "");
-    $("#visitbookingtime").attr('value', ""); // Need to split to date & time
-    $("#patientNric").attr('value', "");
-    $("#patientName").attr('value', "");
-    $('#pInput').val(""); // Purpose of visit "Visit Patient" or "Other Purpose"
-    $("#purposeInput").attr('value', "");
-    $("#visLoc").attr('value', "");
 }
 
 // Show new visitor registration form
@@ -316,6 +313,18 @@ $("#mobilesInput").on("input", function () {
         $("#mobWarning").css("display", "none");
     } else {
         $("#mobWarning").css("display", "block");
+    }
+});
+
+// Validate postal code number format
+$("#postalsInput").on("input", function () {
+    var validNric = validatePhone($("#postalsInput").val());
+    if (validNric !== false) {
+        $("#posWarning").css("display", "none");
+        validPos = true;
+    } else {
+        $("#posWarning").css("display", "block");
+        validPos = false;
     }
 });
 
@@ -398,13 +407,15 @@ function hideTags() {
     $("#userDetails").css("display", "none");
     $("#submitNric").prop('disabled', true);
     $("#submitNric").css("display", "none");
+    $("#posWarning").css("display", "none");
+    $("#natWarning").css("display", "none");
     populateNationalities();
     loadActiveForm();
 }
 
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
-    var answers = '{';
+    var answers = '';
     $("#selfregistration .answer").each(function (index, value) {
         var element = $(this);
         var id = $(value).attr('id');
@@ -428,7 +439,7 @@ function getQuestionnaireAnswers() {
             }
         }
     });
-    answers = answers.substring(0, answers.length - 1) + '}';
+    answers = answers.substring(0, answers.length - 1);
     var jsonString = JSON.stringify(answers);
     return jsonString;
 }

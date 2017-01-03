@@ -185,6 +185,7 @@
                             <label for="postalinput">Postal Code</label><label for="postalinput" id="comp3" style="color: red">*</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="postalsInput" />
+                                <label for="postalsInput" id="posWarning" style="color: red">Invalid Postal Code Format!</label>
                             </div>
                             <label for="sexinput">Gender</label><label for="sexinput" id="comp4" style="color: red">*</label>
                             <div class="form-group">
@@ -195,10 +196,10 @@
                             </div>
                             <label for="nationalinput">Nationality</label><label for="nationalinput" id="comp5" style="color: red">*</label>
                             <div class="form-group">
-                                <%--<input type="text" runat="server" class="form-control required" id="nationalsInput" />--%>
-                                <select class="form-control required regInput" id="nationalsInput">
+                                <select class="form-control required regInput" onchange="checkNationals(); false;" id="nationalsInput">
                                     <option value="">-- Select One --</option>
                                 </select>
+                                <label for="nationalsInput" id="natWarning" style="color: red">Please select a nationality!</label>
                             </div>
                             <label for="daterange">Date of Birth</label><label for="daterange" id="comp6" style="color: red">*</label>
                             <div class="input-group date" id="datetimepicker">
@@ -220,6 +221,7 @@
                                     <option value="Visit Patient">Visit Patient</option>
                                     <option value="Other Purpose">Other Purpose</option>
                                 </select>
+                                <label for="pInput" id="purWarning" style="color: red">Please select a Visit Purpose!</label>
                             </div>
                             <div id="patientpurposevisit" class="container-fluid" runat="server">
                                 <%--Show this only when Visit Purpose is "Visit Patient"--%>

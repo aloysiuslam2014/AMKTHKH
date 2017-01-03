@@ -246,6 +246,7 @@
                                     <label for="postalinput">Postal Code</label><label for="existnric" id="comp5" style="color:red">*</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="postalsInput" />
+                                        <label for="postalsInput" id="posWarning" style="color: red">Invalid Postal Code Format!</label>
                                     </div>
                                     <label for="sexinput">Gender:</label><label for="existnric" id="comp19" style="color:red">*</label>
                                     <div class="form-group">
@@ -256,10 +257,10 @@
                                     </div>
                                     <label for="nationalinput">Nationality</label><label for="existnric" id="comp6" style="color:red">*</label>
                                     <div class="form-group">
-                                        <%--<input type="text" runat="server" class="form-control required" id="nationalsInput" />--%>
-                                        <select class="form-control required" id="nationalsInput">
+                                        <select class="form-control required" onchange="checkNationals(); false;" id="nationalsInput">
                                             <option value="">-- Select One --</option>
                                         </select>
+                                        <label for="nationalsInput" id="natWarning" style="color: red">Please select a nationality!</label>
                                     </div>
                                     <label for="daterange">Date of Birth</label><label for="existnric" id="comp7" style="color:red">*</label>
                                     <div class="input-group date" id="datetimepicker">
