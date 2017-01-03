@@ -52,21 +52,21 @@ function callCheck (){
                     if (visitorArr.length > 1) {
                         // Populate fields if data exists
                         $("#nric").attr('value', visitorArr[0]);
-                        $("#namesInput").attr('value', visitorArr[1]);
-                        $("#sexinput").attr('value', visitorArr[2]);
+                        $("#namesInput").prop('value', visitorArr[1]);
+                        $("#sexinput").prop('value', visitorArr[2].trim());
                         $("#nationalsInput").val(visitorArr[3]);
                         $("#daterange").val(visitorArr[4].toString()); // Error
-                        $("#addresssInput").attr('value', visitorArr[10]);
-                        $("#postalsInput").attr('value', visitorArr[11]);
-                        $("#mobilesInput").attr('value', visitorArr[6]);
-                        $("#altInput").attr('value', visitorArr[8]);
-                        $("#homesInput").attr('value', visitorArr[7]);
-                        $("#emailsInput").attr('value', visitorArr[9]);
+                        $("#addresssInput").prop('value', visitorArr[10]);
+                        $("#postalsInput").prop('value', visitorArr[11]);
+                        $("#mobilesInput").prop('value', visitorArr[6]);
+                        $("#altInput").prop('value', visitorArr[8]);
+                        $("#homesInput").prop('value', visitorArr[7]);
+                        $("#emailsInput").prop('value', visitorArr[9]);
                     } if (visitArr.length > 1) {
                         $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10)); // Error
                         $("#visitbookingtime").val(visitArr[0].toString().substring(11)); // Error
-                        $("#patientNric").attr('value', visitArr[1]);
-                        $("#patientName").attr('value', visitArr[3]);
+                        $("#patientNric").prop('value', visitArr[1]);
+                        $("#patientName").prop('value', visitArr[3]);
                         var visPurpose = visitArr[4];
                         $('#pInput').val(visitArr[4]); // Purpose of visit "Visit Patient" or "Other Purpose"
                         if (visPurpose == "Visit Patient") {
@@ -76,15 +76,15 @@ function callCheck (){
                             $("#patientpurposevisit").css("display", "none");
                             $("#otherpurposevisit").css("display", "block");
                         }
-                        $("#purposeInput").attr('value', visitArr[5]);
-                        $("#visLoc").attr('value', visitArr[6]);
-                        $("#bedno").attr('value', visitArr[7]);
+                        $("#purposeInput").prop('value', visitArr[5]);
+                        $("#visLoc").prop('value', visitArr[6]);
+                        $("#bedno").prop('value', visitArr[7]);
                     } if (questionnaireArr.length > 1) {
                         for (i = 0; i < questionnaireArr.length; i++) {
                             var value = questionnaireArr[i];
                             var arr = value.split(':');
                             $("input[name='" + arr[0] + "'][value='" + arr[1] + "']").prop("checked", true);
-                            $("#" + arr[0]).attr('value', arr[1]);
+                            $("#" + arr[0]).prop('value', arr[1]);
                         }
                     }
                     else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
@@ -122,9 +122,9 @@ function validatePatient() {
                 var string = resultOfGeneration.Msg;
                 var arr = string.split(",");
                 if (arr.length > 2) {
-                    $("#patientNric").attr('value', arr[0]);
-                    $("#patientName").attr('value', arr[1]);
-                    $("#bedno").attr('value', arr[2]);
+                    $("#patientNric").prop('value', arr[0]);
+                    $("#patientName").prop('value', arr[1]);
+                    $("#bedno").prop('value', arr[2]);
                     $("#patientStatusGreen").css("display", "block");
                     $("#patientStatusRed").css("display", "none");
                 }else {
@@ -273,7 +273,7 @@ function clearFields() {
         if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp")
         $(obj).val("");
     });
-    loadActiveForm();
+    
 }
 
 // Display appropriate panels according to visit purpose
@@ -484,6 +484,7 @@ $('#ignoreNric').on('change', function () {
 // Loads & displays the active questionnaire from the DB for Assisted Reg
 function loadActiveForm() {
     $("#questionaireForm").html("");
+    var k = $("#questionaireForm");
     var headersToProcess = {
         requestType: "form"
     };
