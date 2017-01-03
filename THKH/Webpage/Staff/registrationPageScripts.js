@@ -270,6 +270,7 @@ function clearFields() {
     //$("#temp").attr('value', "");
     //$("#bedno").attr('value', "");
     $("#registration .regInput").each(function (idx, obj) {
+        if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp")
         $(obj).val("");
     });
     loadActiveForm();
