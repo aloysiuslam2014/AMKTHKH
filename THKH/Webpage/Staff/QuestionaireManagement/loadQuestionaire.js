@@ -547,38 +547,44 @@ function updateOrCreate() {
                 questionValues: questionVal
             };
         } else {
-            var headersToProcess = {
-                requestType: "updateQuestion",
-                qnId: editID,
-                question: question,
-                questionType: questionType,
-                questionValues: questionVal
-            };
+            var valid = /^[,]*$/.test(questionVal.toString());
+            if (questionType !== "text" & (questionVal == "" || /^[,]*$/.test(questionVal.toString()))) {
+                $("#questionValWarning").css("display", "block");
+            } else {
+                var headersToProcess = {
+                    requestType: "updateQuestion",
+                    qnId: editID,
+                    question: question,
+                    questionType: questionType,
+                    questionValues: questionVal
+                };
+            }
+            var resultOfGeneration = "";
+
+            $.ajax({
+                url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+                method: 'post',
+                data: headersToProcess,
+
+
+                success: function (returner) {
+                    resultOfGeneration = JSON.parse(returner);
+                    var res = resultOfGeneration.Result;
+                    if (res == "Success") {
+                        $("#emptyQuestionWarning").css("display", "none");
+                        $("#questionValWarning").css("display", "none");
+                        formManagementInit();
+                        closeEditor();
+
+                    } else {
+                        alert("An error has occured. Please Contact the administrator");
+                    }
+                },
+                error: function (err) {
+                    alert(err.Msg);
+                },
+            });
         }
-        var resultOfGeneration = "";
-
-        $.ajax({
-            url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
-            method: 'post',
-            data: headersToProcess,
-
-
-            success: function (returner) {
-                resultOfGeneration = JSON.parse(returner);
-                var res = resultOfGeneration.Result;
-                if (res == "Success") {
-                    $("#emptyQuestionWarning").css("display", "none");
-                    formManagementInit();
-                    closeEditor();
-
-                } else {
-                    alert("An error has occured. Please Contact the administrator");
-                }
-            },
-            error: function (err) {
-                alert(err.Msg);
-            },
-        });
     } else {
         $("#emptyQuestionWarning").css("display", "block");
     }
@@ -752,4 +758,5 @@ function hideFormManagementTags() {
     $("#questionnaireWarning").css("display", "none");
     $("#emptyQuestionWarning").css("display", "none");
     $("#questionWarning").css("display", "none");
+    $("#questionValWarning").css("display", "none");
 }

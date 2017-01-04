@@ -185,6 +185,7 @@
                             <label for="postalinput">Postal Code</label><label for="postalinput" id="comp3" style="color: red">*</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="postalsInput" />
+                                <label for="postalsInput" id="posWarning" style="color: red">Invalid Postal Code Format!</label>
                             </div>
                             <label for="sexinput">Gender</label><label for="sexinput" id="comp4" style="color: red">*</label>
                             <div class="form-group">
@@ -195,10 +196,10 @@
                             </div>
                             <label for="nationalinput">Nationality</label><label for="nationalinput" id="comp5" style="color: red">*</label>
                             <div class="form-group">
-                                <%--<input type="text" runat="server" class="form-control required" id="nationalsInput" />--%>
-                                <select class="form-control required regInput" id="nationalsInput">
+                                <select class="form-control required regInput" onchange="checkNationals(); false;" id="nationalsInput">
                                     <option value="">-- Select One --</option>
                                 </select>
+                                <label for="nationalsInput" id="natWarning" style="color: red">Please select a nationality!</label>
                             </div>
                             <label for="daterange">Date of Birth</label><label for="daterange" id="comp6" style="color: red">*</label>
                             <div class="input-group date" id="datetimepicker">
@@ -220,6 +221,7 @@
                                     <option value="Visit Patient">Visit Patient</option>
                                     <option value="Other Purpose">Other Purpose</option>
                                 </select>
+                                <label for="pInput" id="purWarning" style="color: red">Please select a Visit Purpose!</label>
                             </div>
                             <div id="patientpurposevisit" class="container-fluid" runat="server">
                                 <%--Show this only when Visit Purpose is "Visit Patient"--%>
@@ -426,27 +428,26 @@
                                 <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px">
                                     <div class="panel-body questionEditor" style="background-color: ivory; border-style: solid; border-width: 1px;">
                                         <h3 id="editQuestionTitle">Question Details</h3>
-                                        <div>Question:<textarea id="detailsQn" class="qnVal" rows="3" cols="80">  </textarea></div>
+                                        <div>Question<textarea id="detailsQn" class="form-control qnVal" rows="3" cols="80">  </textarea></div>
                                         <div>
-                                            Question Response Type:
-                                            <select id="detailsQnType" class="qnVal">
-                                                <option value="" selected="selected">Select a type</option>
+                                            Question Response Type
+                                            <select id="detailsQnType" class="form-control qnVal">
+                                                <option value="" selected="selected">-- Select a type --</option>
                                                 <option value="ddList">Drop-down list</option>
                                                 <option value="checkbox">Checkbox</option>
-                                                <option value="radio">Radiobutton</option>
+                                                <option value="radio">Radio Button</option>
                                                 <option value="text">Text Field</option>
                                             </select>
-
                                         </div>
                                         <div>
-                                            Question Values:
-                                            <textarea id="detailsQnValues" class="qnVal" rows="2" cols="60"></textarea>
-
-                                        </div>
+                                            Question Values
+                                            <textarea id="detailsQnValues" class="form-control qnVal" rows="2" cols="60"></textarea>
+                                        </div><br />
                                         <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Close</button>
                                         <button type="button" id="updateOrCreateQn" onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Save Question</button>
                                         <label id="emptyQuestionWarning" style="color:red">Please enter a question/answer type!</label>
                                         <label id="questionWarning" style="color:red">Question name already exists! Please use a unique name.</label>
+                                        <label id="questionValWarning" style="color:red">Question type requires a response value! Please enter at least 1 response value.</label>
                                     </div>
                                 </div>
                             </div>

@@ -360,7 +360,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_VISITOR_PROFILE]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNRIC", nric);
+                command.Parameters.AddWithValue("@pNRIC", nric.ToUpper());
                 command.Parameters.AddWithValue("@pFullName", fname);
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
@@ -407,8 +407,8 @@ namespace THKH.Webpage.Staff.CheckInOut
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
-                command.Parameters.AddWithValue("@pPatientNRIC", pNric);
-                command.Parameters.AddWithValue("@pVisitorNRIC", nric);
+                command.Parameters.AddWithValue("@pPatientNRIC", pNric.ToUpper());
+                command.Parameters.AddWithValue("@pVisitorNRIC", nric.ToUpper());
                 command.Parameters.AddWithValue("@pPatientFullName", pName);
                 command.Parameters.AddWithValue("@pPurpose", purpose);
                 command.Parameters.AddWithValue("@pReason", otherPurpose);
@@ -450,7 +450,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISITOR_PROFILE]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNRIC", nric);
+                command.Parameters.AddWithValue("@pNRIC", nric.ToUpper());
                 command.Parameters.AddWithValue("@pFullName", fname);
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
@@ -499,8 +499,8 @@ namespace THKH.Webpage.Staff.CheckInOut
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
-                command.Parameters.AddWithValue("@pPatientNRIC", pNric);
-                command.Parameters.AddWithValue("@pVisitorNRIC", nric);
+                command.Parameters.AddWithValue("@pPatientNRIC", pNric.ToUpper());
+                command.Parameters.AddWithValue("@pVisitorNRIC", nric.ToUpper());
                 command.Parameters.AddWithValue("@pPatientFullName", pName);
                 command.Parameters.AddWithValue("@pPurpose", purpose);
                 command.Parameters.AddWithValue("@pReason", otherPurpose);
@@ -579,7 +579,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 SqlCommand command = new SqlCommand("[dbo].[CONFIRM_CHECK_IN]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNric", nric);
+                command.Parameters.AddWithValue("@pNric", nric.ToUpper());
                 command.Parameters.AddWithValue("@pActualTimeVisit", DateTime.Now); // Take from DB side
                 command.Parameters.AddWithValue("@pStaffEmail", staffuser);
                 command.Parameters.AddWithValue("@pTemperature", temp);

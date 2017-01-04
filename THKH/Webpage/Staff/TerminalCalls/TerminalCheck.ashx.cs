@@ -429,7 +429,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_MOVEMENT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pLocationId", locationId);
-                command.Parameters.AddWithValue("@pNRIC", locationId);
+                command.Parameters.AddWithValue("@pNRIC", userId);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
