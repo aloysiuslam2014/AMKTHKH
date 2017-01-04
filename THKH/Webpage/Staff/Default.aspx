@@ -428,27 +428,26 @@
                                 <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px">
                                     <div class="panel-body questionEditor" style="background-color: ivory; border-style: solid; border-width: 1px;">
                                         <h3 id="editQuestionTitle">Question Details</h3>
-                                        <div>Question:<textarea id="detailsQn" class="qnVal" rows="3" cols="80">  </textarea></div>
+                                        <div>Question<textarea id="detailsQn" class="form-control qnVal" rows="3" cols="80">  </textarea></div>
                                         <div>
-                                            Question Response Type:
-                                            <select id="detailsQnType" class="qnVal">
-                                                <option value="" selected="selected">Select a type</option>
+                                            Question Response Type
+                                            <select id="detailsQnType" class="form-control qnVal">
+                                                <option value="" selected="selected">-- Select a type --</option>
                                                 <option value="ddList">Drop-down list</option>
                                                 <option value="checkbox">Checkbox</option>
-                                                <option value="radio">Radiobutton</option>
+                                                <option value="radio">Radio Button</option>
                                                 <option value="text">Text Field</option>
                                             </select>
-
                                         </div>
                                         <div>
-                                            Question Values:
-                                            <textarea id="detailsQnValues" class="qnVal" rows="2" cols="60"></textarea>
-
-                                        </div>
+                                            Question Values
+                                            <textarea id="detailsQnValues" class="form-control qnVal" rows="2" cols="60"></textarea>
+                                        </div><br />
                                         <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Close</button>
                                         <button type="button" id="updateOrCreateQn" onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Save Question</button>
                                         <label id="emptyQuestionWarning" style="color:red">Please enter a question/answer type!</label>
                                         <label id="questionWarning" style="color:red">Question name already exists! Please use a unique name.</label>
+                                        <label id="questionValWarning" style="color:red">Question type requires a response value! Please enter at least 1 response value.</label>
                                     </div>
                                 </div>
                             </div>

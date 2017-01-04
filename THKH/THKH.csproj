@@ -215,6 +215,7 @@
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <Content Include="Webpage\Staff\UserManagement\loadUsers.js" />
     <None Include="Properties\PublishProfiles\Stepwise-is480.pubxml" />
+    <None Include="Properties\PublishProfiles\Triage20 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
