@@ -592,7 +592,7 @@
                             </span>
                         </div>
 
-                        <div class=" " style="border: solid 1pt; border-radius: 2px; height: 74%; overflow-y: auto; margin-top: 2px;">
+                        <div class=" " style="border: solid 1pt;margin-bottom: 25px; border-radius: 2px; height: 77%; overflow-y: auto; margin-top: 2px;">
                             <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
                                 
                             </ul>
@@ -603,8 +603,9 @@
                     </div>
 
                     <div class="col-sm-8 row" style="overflow-y: auto">
-                        <h3 style="">User details</h3>
-                        <div style="margin-top:45px">
+                        <h2 id="userMode">Create New User</h2>
+                        <h3 style="margin-top: 0;margin-bottom: 0;">User details</h3>
+                        <div>
                             <div class="col-md-6">
                                 <label>Email</label>
                                 <div class="form-group">
@@ -662,7 +663,10 @@
                                     <input id="staffPerms" class="form-control" /></div>
                             </div>
                         </div>
-                        <button type="button" value="Save" class="btn btn-success">Save</button>
+                        <div class="btn-group">
+                        <button type="button"  class="btn btn-warning" onclick="prepareForNewUser();">Create New User/Clear All Fields</button>
+                        <button type="button" class="btn btn-success" onclick="saveUser();">Save</button>
+                            </div>
                     </div>
     </div>
             </div>
