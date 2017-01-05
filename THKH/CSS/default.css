@@ -75,7 +75,9 @@ body{
 /*Above are general settings*/
 
 /*For Content settings*/
-
+.btn-group{
+   margin: 8px 12px;
+}
 
 .vertical-center {
   display: flex;
