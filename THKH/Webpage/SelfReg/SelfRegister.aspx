@@ -72,20 +72,16 @@
     <form id="selfregistration" runat="server">
         <div id="maincontainer" class="container-fluid" runat="server">
             <nav class="navbar navbar-default navbar-fixed-top">
-                <div class="container-fluid contentNav">
+                <div class="container-fluid contentNav" style="width:100%;">
                     <div class="navbar-header ">
                         <a class="navbar-brand"><b>Thye Hua Kwan Hospital</b></a>
                     </div>
                     <div class="collapse navbar-collapse" id="navbar">
-                    <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a>
-                            <div>
+                    
+                            <div class="nav navbar-nav navbar-right" style="margin-top:5px">
                                 <button type="button" runat="server" class="btn btn-primary" onclick="reloadPage(); false;"><span class="glyphicon glyphicon-refresh"></span> New Registration</button>
                             </div>
-                        </a>
-                    </li>
-                </ul>
+                        
                         </div>
                 </div>
             </nav>
