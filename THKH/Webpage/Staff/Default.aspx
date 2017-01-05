@@ -720,7 +720,7 @@
                      <div class="input-group col-sm-4" id="querybedrange">
                          <input type="text" class="form-control" id="querybeds" placeholder="Beds: 1-4,7,10 " />
                          <span class="input-group-btn">
-                             <button class="btn btn-primary" id="addDateTimeRange" onclick="addDateTimeRange;"><span class="glyphicon glyphicon-plus"></span>Add Query</button>
+                             <button class="btn btn-primary" id="addDateTimeRange" onclick="addDateTimeRange();"><span class="glyphicon glyphicon-plus"></span>Add Query</button>
                          </span>
                      </div>
                  </div>
