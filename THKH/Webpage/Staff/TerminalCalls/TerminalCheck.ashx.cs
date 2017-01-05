@@ -37,8 +37,9 @@ namespace THKH.Webpage.Staff.TerminalCalls
             else if (action.Equals("addTerminal"))
             {
                 var bedNoList = context.Request.Form["bedList"];
+                var infectious = context.Request.Form["isInfectious"];
 
-                success = addTerminal(msgg,bedNoList);
+                success = addTerminal(msgg,bedNoList, infectious);
 
             }
            
@@ -135,7 +136,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
             return success;
         }
 
-        private bool addTerminal(string id,String bedNoList)
+        private bool addTerminal(string id,String bedNoList,String infectious)
         {
             bool success = false;
 
@@ -150,6 +151,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 SqlCommand command = new SqlCommand("[dbo].[ADD_TERMINAL]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pTName", id);
+                command.Parameters.AddWithValue("@pTControl", infectious);
                 command.Parameters.AddWithValue("@pBedNoList", bedNoList);
 
                 command.Parameters.Add(respon);

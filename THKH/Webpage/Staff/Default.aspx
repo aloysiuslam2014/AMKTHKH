@@ -82,17 +82,16 @@
                     <%  }%>
                 </ul>
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a id="logAnchor" href="#">
-                        <form id="logbtn" runat="server">
+               
+                        <form id="logbtn" class="nav navbar-nav navbar-right" style="margin-top: 10px;" runat="server">
                             <div>
                                 <label>Welcome, <%= Session["username"].ToString()%></label>
                                 <asp:Button ID="logout" class="btn btn-danger" Text="logout" OnClick="logout_Click" runat="server" />
                             </div>
                         </form>
 
-                    </a></li>
-                </ul>
+                     
+               
             </div>
         </div>
     </nav>
@@ -125,7 +124,7 @@
                 <div class="row">
                     <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
                         <div class="jumbotron" style="text-align: left">
-                            <h3 style="color: midnightblue">Search for Visitor</h3>
+                            <h3 style="">Search for Visitor</h3>
                             <label class="control-label" for="nric">Visitor's NRIC:</label>
                             <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus />
@@ -154,7 +153,7 @@
                 <div class="row">
                     <div id="newusercontent" class="col-sm-6" runat="server">
                         <div class="jumbotron" style="text-align: left">
-                            <h3 style="color: midnightblue">Personal Details</h3>
+                            <h3 style="">Personal Details</h3>
                             <label for="namesinput">Full Name</label><label for="namesinput" id="comp1" style="color: red">*</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="namesInput" />
@@ -212,7 +211,7 @@
                     </div>
                     <div id="staticinfocontainer" class="col-sm-6" style="text-align: left" runat="server">
                         <div class="jumbotron" style="text-align: left">
-                            <h3 style="color: midnightblue">Visit Details</h3>
+                            <h3 style="">Visit Details</h3>
                             <label for="pInput">Visit Purpose</label><label for="pInput" id="comp69" style="color: red">*</label>
                             <%--Check for Purpose of Visit--%>
                             <div class="form-group">
@@ -274,7 +273,7 @@
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
                             </div>
-                            <h3 style="color: midnightblue">Health Screening Questionnaire</h3>
+                            <h3 style="">Health Screening Questionnaire</h3>
                             <div id="questionaireForm">
                                 <!-- load questionaires here from JS -->
                             </div>
@@ -298,13 +297,13 @@
             <div class="tab-pane maxHeight " id="formManagement">
                 <div class="row inheritHeight">
                     <!-- questionaire portion -->
-                    <div class="col-sm-6 panel" style="height: 95%;">
+                    <div class="col-sm-6 panel"  style="height: 100%;margin-bottom:0">
                         <div class="modal fade" id="addQuestionnaire" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                         <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                        <h4 style="color: midnightblue">Add New Questionnaire</h4>
+                                        <h4 style="">Add New Questionnaire</h4>
                                     </div>
                                     <div class="modal-body" style="padding: 40px 50px; text-align: center;">
                                         <div class="input-group">
@@ -321,7 +320,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 style="color: midnightblue">Select a Questionnaire to Begin</h3>
+                        <h3 style="">Select a Questionnaire to Begin</h3>
                         <div class="input-group" id="qnaireSelection">
                             <select class="form-control qnaire" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
                                 <option value="">-- No Questionnaires Created --</option>
@@ -337,12 +336,12 @@
                             <ul class="list-group checked-list-box qnQns" id="sortable">
                             </ul>
                         </div>
-                        <div class="btn btn-group">
+                        <div class=" btn-group">
                             <button type="button" onclick="selectAll('qnaire'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
                             <button type="button" onclick="deSelectAll('qnaire');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
                         </div>
                         <br />
-                        <div class="btn btn-group">
+                        <div class=" btn-group">
                             <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Remove Questions</button>
                             <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>Update Questionnaire</button>
                         </div>
@@ -408,9 +407,9 @@
                     </div>
 
                     <!-- questions to be added portion -->
-                    <div class="col-sm-6 panel" style="height: 95%;">
+                    <div class="col-sm-6 panel" style="height: 100%;margin-bottom:0">
                         <div class="list-group" style="height: 94%;" id="questionnaireQuestions">
-                            <h3 style="color: midnightblue">Available Question(s)</h3>
+                            <h3 style="">Available Question(s)</h3>
                             <%--Checkbox Questions--%>
                             <div class="input-group" id="searchQns">
                                 <input type="text" class="form-control maxWidth" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)" />
@@ -426,7 +425,7 @@
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
                                 </ul>
                                 <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px">
-                                    <div class="panel-body questionEditor" style="background-color: ivory; border-style: solid; border-width: 1px;">
+                                    <div class="panel-body questionEditor" style="background-color: #343637; border-style: solid; border-width: 1px;">
                                         <h3 id="editQuestionTitle">Question Details</h3>
                                         <div>Question<textarea id="detailsQn" class="form-control qnVal" rows="3" cols="80">  </textarea></div>
                                         <div>
@@ -452,12 +451,12 @@
                                 </div>
                             </div>
 
-                            <div class="btn btn-group">
+                            <div class="btn-group">
                                 <button type="button" id="selectAll" onclick="selectAll('qns'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
                                 <button type="button" id="deSelectAll" onclick="deSelectAll('qns');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
                             </div>
                             <br />
-                            <div class="btn btn-group">
+                            <div class="btn-group">
                                 <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Add to Questionnaire</button>
                             </div>
                         </div>
@@ -584,7 +583,7 @@
             <div class="tab-pane maxHeight" id="UserManagement">
                 <div class="row inheritHeight">
                     <div class="col-sm-4 inheritHeight">
-                        <h3 style="color: midnightblue">Existing Users</h3>
+                        <h3 style="">Existing Users</h3>
                         <div class="input-group" id="searchUser">
                             <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterUserList(this)" />
                             <span class="input-group-btn">
@@ -604,7 +603,7 @@
                     </div>
 
                     <div class="col-sm-8 row" style="overflow-y: auto">
-                        <h3 style="color: midnightblue">User details</h3>
+                        <h3 style="">User details</h3>
                         <div style="margin-top:45px">
                             <div class="col-md-6">
                                 <label>Email</label>
@@ -688,7 +687,7 @@
          <div class="row inheritHeight">
              <!-- query input portion -->
              <div class="col-sm-6 panel" style="height: 95%;">
-                 <h3 style="color: midnightblue">Build Queries</h3>
+                 <h3 style="">Build Queries</h3>
                  <div class="form-group">
 
                      <div class="col-sm-4">
@@ -731,12 +730,12 @@
                      </ul>
                  </div>
 
-                 <div class="btn btn-group">
+                 <div class="btn-group">
                      <button type="button" onclick="selectAll('queries'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
                      <button type="button" onclick="deSelectAll('queries');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
                  </div>
                  <br />
-                 <div class="btn btn-group">
+                 <div class="btn-group">
                      <button type="button" id="delQueriesFromList" onclick="removeQueriesFromList(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>&nbsp;Remove Queries</button>
                  </div>
              </div>
@@ -756,7 +755,7 @@
              </div>
 
              <div class="col-sm-4 panel" style="height: 95%;">
-                 <h3 style="color: midnightblue">Query Results</h3>
+                 <h3 style="">Query Results</h3>
                  <div class="list-group" style="overflow: auto; height: 85%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="queryResult">
                      <ul class="list-group checked-list-box results" id="resultList">
                      </ul>
