@@ -110,7 +110,7 @@ function updateCheckIn() {
             data: headersToProcess,
             success: function (returner) {
                 var result = String(returner)
-                if (result == "succes") {
+                if (result == "success") {
                     userWelcome.innerText = "Welcome! " + userNric.value;
                 } else {
                     userWelcome.innerText = "You have not registered at the counter. Please head to Lobby front desk for assistance.";
