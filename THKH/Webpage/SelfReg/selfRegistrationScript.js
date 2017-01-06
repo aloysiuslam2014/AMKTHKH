@@ -37,12 +37,13 @@ function NewSelfReg() {
     var visitLoc = $("#visLoc").val();
     var qListID = $("#qnlistid").val();
     var qAnswers = getQuestionnaireAnswers();
+    var amend = $("#amend").val();
 
     var headersToProcess = {
         fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
         AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose, pName: pName, pNric: pNric,
         otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza,
-        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers
+        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers, amend: amend
     };
     $.ajax({
         url: '../Staff/CheckInOut/checkIn.ashx',
@@ -73,6 +74,24 @@ function checkNationals() {
         $("#natWarning").css("display", "none");
     }
     return true;
+}
+
+// Check if DOB is after today
+function checkDOB() {
+    var input = $("#daterange").val();
+    var now = new Date();
+    if (input > now) {
+        alert("Birthday is after today!");
+    }
+}
+
+// Check if Requested Visit Time is before or after today (Supposed to be today)
+function checkVisDate() {
+    var input = $("#visitbookingdate").val();
+    var now = new Date();
+    if (input < now) {
+        alert("Visit is before today!");
+    }
 }
 
 // Reload Page & Clear Cache
@@ -276,6 +295,7 @@ $(function () {
     $('#datetimepicker').datetimepicker({
         // dateFormat: 'dd-mm-yy',
         defaultDate: new Date(),
+        maxDate: 'now',
         format: 'DD-MM-YYYY'
     });
     $('#visitbookingtimediv').datetimepicker(
@@ -379,8 +399,11 @@ function purposePanels() {
 function amendVisitorDetails() {
     if ($("#changed").prop('checked') === true) {
         $('#newusercontent').css("display", "block");
+        $('#newusercontent input').addClass('required');
+        $("#amend").attr('value', 1);
     } else {
         $('#newusercontent').css("display", "none");
+        $('#newusercontent input').removeClass('required');
     }
 }
 

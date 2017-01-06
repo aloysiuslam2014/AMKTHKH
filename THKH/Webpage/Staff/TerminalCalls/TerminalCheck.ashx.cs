@@ -139,9 +139,83 @@ namespace THKH.Webpage.Staff.TerminalCalls
         private bool addTerminal(string id,String bedNoList,String infectious)
         {
             bool success = false;
-
+            String formattedBedNoList = "";
+            if (bedNoList.Contains('-'))
+            {
+                if (bedNoList.Contains(','))
+                {
+                    // Split by , then by - then increment
+                    String[] bedranges = bedNoList.Split(',');
+                    foreach (String s in bedranges)
+                    {
+                        String[] lowerUpperBedLimit = s.Split('-');
+                        if (lowerUpperBedLimit.Length == 2)
+                        {
+                            int firstNumber = Int32.Parse(lowerUpperBedLimit[0]);
+                            int secondNumber = Int32.Parse(lowerUpperBedLimit[1]);
+                            if (firstNumber > secondNumber)
+                            {
+                                for (int i = secondNumber; i < firstNumber; i++)
+                                {
+                                    formattedBedNoList += i + ",";
+                                }
+                            }
+                            else if (secondNumber > firstNumber)
+                            {
+                                for (int i = firstNumber; i < secondNumber; i++)
+                                {
+                                    formattedBedNoList += i + ",";
+                                }
+                            }
+                            else
+                            {
+                                formattedBedNoList += firstNumber;
+                            }
+                        }
+                        else
+                        {
+                            // Throw Format Exception
+                        }
+                    }
+                }
+                else
+                {
+                    // split by - then increment
+                    String[] lowerUpperBedLimit = bedNoList.Split('-');
+                    if (lowerUpperBedLimit.Length == 2)
+                    {
+                        int firstNumber = Int32.Parse(lowerUpperBedLimit[0]);
+                        int secondNumber = Int32.Parse(lowerUpperBedLimit[1]);
+                        if (firstNumber > secondNumber)
+                        {
+                            for (int i = secondNumber; i < firstNumber; i++)
+                            {
+                                formattedBedNoList += i + ",";
+                            }
+                        }
+                        else if (secondNumber > firstNumber)
+                        {
+                            for (int i = firstNumber; i < secondNumber; i++)
+                            {
+                                formattedBedNoList += i + ",";
+                            }
+                        }
+                        else
+                        {
+                            formattedBedNoList += firstNumber;
+                        }
+                    }
+                    else
+                    {
+                        // Throw Format Exception
+                    }
+                }
+            }
+            else {
+                formattedBedNoList = bedNoList;
+            }
+            
             SqlConnection cnn;
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
           
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -152,7 +226,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pTName", id);
                 command.Parameters.AddWithValue("@pTControl", infectious);
-                command.Parameters.AddWithValue("@pBedNoList", bedNoList);
+                command.Parameters.AddWithValue("@pBedNoList", formattedBedNoList);
 
                 command.Parameters.Add(respon);
                 cnn.Open();
@@ -170,7 +244,7 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 var d = ex;//to read any errors
             }
 
-            if (respon.Value.ToString().Equals("1"))
+            if (respon != null & respon.Value.ToString().Equals("1"))
             {
                 success = true;
             }
@@ -458,8 +532,6 @@ namespace THKH.Webpage.Staff.TerminalCalls
             
             DataTable dataTable = new DataTable();
             SqlConnection cnn;
-            //connectionString = "Data Source=ALOYSIUS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             try
             {

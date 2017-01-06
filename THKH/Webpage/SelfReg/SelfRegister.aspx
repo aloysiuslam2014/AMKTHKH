@@ -203,6 +203,7 @@
                                 <div class="checkbox" id="changeddetails">
                                     <label for="yesopt">
                                     <input type="checkbox" id="changed" onchange="amendVisitorDetails(); false;" name="yesopt" value="Yes" />Yes</label>
+                                    <input type="hidden" runat="server" class="form-control" id="amend" value="0" />
                                 </div></div>
                                     </div>
                         <div id="newusercontent" runat="server">
@@ -260,7 +261,7 @@
                                     </div>
                                     <label for="daterange">Date of Birth</label><label for="existnric" id="comp7" style="color:red">*</label>
                                     <div class="input-group date" id="datetimepicker">
-                                        <input type='text'id="daterange" class="form-control required" />
+                                        <input type='text'id="daterange" class="form-control required" onchange="checkDOB(); false;" />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>

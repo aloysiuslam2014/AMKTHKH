@@ -63,11 +63,12 @@ namespace THKH.Webpage.Staff.CheckInOut
                                         .Replace('+', '_')
                                         .Replace('/', '-')
                                         .TrimEnd('=');
+                var amend = context.Request.Form["amend"];
 
                 // Write to Visitor_Profile & Visit Table
                 successString = selfReg(nric, age, fname, address, postal, mobtel, alttel, hometel,
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
-            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, qListID, qAns, qaid);
+            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, qListID, qAns, qaid, amend);
         }
         if (typeOfRequest == "patient") {
                 var pName = context.Request.Form["pName"];
@@ -349,7 +350,7 @@ namespace THKH.Webpage.Staff.CheckInOut
         // Write to Visitor & Visit Table
         private String selfReg(String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String qListID, String qAns, String qaid) {
+            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String qListID, String qAns, String qaid, String amend) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -372,6 +373,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
+                command.Parameters.AddWithValue("@pAmend", Int32.Parse(amend));
                 command.Parameters.Add(respon);
                 cnn.Open();
 

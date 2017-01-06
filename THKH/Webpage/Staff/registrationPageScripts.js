@@ -425,6 +425,7 @@ $(function () {
     $('#datetimepicker').datetimepicker({
         // dateFormat: 'dd-mm-yy',
         defaultDate: new Date(),
+        maxDate: 'now',
         format: 'DD-MM-YYYY'
     });
     $('#visitbookingtimediv').datetimepicker(
@@ -437,6 +438,7 @@ $(function () {
         {
             // dateFormat: 'dd-mm-yy',
             defaultDate: new Date(),
+            maxDate: 'now',
             format: 'DD-MM-YYYY'
         });
 });
