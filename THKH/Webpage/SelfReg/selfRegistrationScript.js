@@ -378,10 +378,12 @@ function purposePanels() {
         $('#staticinfocontainer').css("display", "none");
         $('#newusercontent').css("display", "none");
         $('#staticinfocontainer').css("display", "none");
+        $('#otherpurposevisit input').removeClass('required');
     } else if (purpose === "Other Purpose") {
         $("#userDetails").css("display", "block");
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "block");
+        $('#otherpurposevisit input').addClass('required');
         patientValidated = true;
         checkIfExistingVisitor(); 
     } else {
@@ -392,6 +394,7 @@ function purposePanels() {
         $('#staticinfocontainer').css("display", "none");
         $('#newusercontent').css("display", "none");
         $('#staticinfocontainer').css("display", "none");
+        $('#otherpurposevisit input').removeClass('required');
     }
 }
 
@@ -439,6 +442,19 @@ function hideTags() {
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
     var answers = '';
+    var jsonObject = "{\"Main\":[";
+    var questions = [];
+    var qIds = [];
+    var allAnswers = [];
+    // Get label values
+    $("#selfregistration .question").each(function (index, value) {
+        var question = $(this).text();
+        var id = $(this).attr('for');
+        qIds.push(id);
+        questions.push(question);
+    });
+    
+    // get question answers
     $("#selfregistration .answer").each(function (index, value) {
         var element = $(this);
         var id = $(value).attr('id');
@@ -449,21 +465,46 @@ function getQuestionnaireAnswers() {
         if (type != null & type == 'radio') {
             var check = element.attr('checked');
             if (check) {
-                answers += id + ':' + element.val() + ',';
+                //answers += id + ':' + element.val() + ',';
+                allAnswers.push(id + ':' + element.val());
             }
         } if (type != null & type == 'text') {
-            answers += id + ':' + element.val() + ',';
+            //answers += id + ':' + element.val() + ',';
+            allAnswers.push(id + ':' + element.val());
         } if (type != null & type == 'select-one') {
-            answers += id + ':' + element.val() + ',';
+            //answers += id + ':' + element.val() + ',';
+            allAnswers.push(id + ':' + element.val());
         } if (type != null & type == 'checkbox') {
             var check = element.is(":checked");
             if (check) {
-                answers += id + ':' + element.val() + ',';
+                //answers += id + ':' + element.val() + ',';
+                allAnswers.push(id + ':' + element.val());
             }
         }
     });
-    answers = answers.substring(0, answers.length - 1);
-    var jsonString = JSON.stringify(answers);
+
+    // construct json answers
+    for (var i = 0; i < qIds.length; i++) {
+        var currentQid = qIds[i];
+        var answerObject = "{\"qid\":\"" + currentQid + "\",\"question\":\"" + questions[i] + "\",\"answer\":\"";
+        for (var j = 0; j < allAnswers.length; j++) {
+            var row = allAnswers[j];
+            var arr = row.split(':');
+            var id = arr[0];
+            if (id == currentQid) {
+                var ans = arr[1];
+                answerObject += ans + ",";
+            }
+        }
+        answerObject = answerObject.substring(0, answerObject.length - 1);
+        answerObject += "\"},";
+        jsonObject += answerObject;
+    }
+    jsonObject = jsonObject.substring(0, jsonObject.length - 1);
+    jsonObject += "]}";
+    //answers = answers.substring(0, answers.length - 1);
+    //var jsonString = JSON.stringify(answers);
+    var jsonString = JSON.stringify(jsonObject);
     return jsonString;
 }
 
@@ -492,7 +533,7 @@ function loadActiveForm() {
                 var values = object.QuestionAnswers;
                 var questionNum = object.QuestionNumber;
                 if (type === "ddList") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>"
                             + "<select class='form-control required answer' id='" + questionNum + "'>";
                     var valArr = values.split(",");
@@ -502,7 +543,7 @@ function loadActiveForm() {
                     htmlString += "</select></div>";
                 }
                 if (type === "radio") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -515,7 +556,7 @@ function loadActiveForm() {
                     htmlString += "</div>";
                 }
                 if (type === "checkbox") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -523,7 +564,7 @@ function loadActiveForm() {
                     }
                     htmlString += "</div>";
                 } if (type === "text") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label>"
                                     + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                                     + "<div class='form-group'>"
                                     + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "' />"

@@ -116,7 +116,7 @@
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h4 class="modal-title" id="memberModalLabel1" style="color:darkblue">Online Registration Recorded</h4>
+                                <h4 class="modal-title" id="memberModalLabel1" style="color:white">Online Registration Recorded</h4>
                             </div>
                             <div class="modal-body text-center">
                                     <label>Your online registration has been recorded at <%=DateTime.Now %>.</label>
@@ -162,13 +162,13 @@
                                     </div>
                                 </div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
-                                    <label for="visLoc">Visit Location</label> 
+                                    <label for="visLoc">Visit Location</label><label for="visLoc" id="comp231" style="color: red">*</label>
                                     <div class="form-group">
                                     <select class="form-control" id="visLoc">
                                         <option name="canteen" value="canteen">Canteen</option>
                                         </select>
                                     </div>
-                                    <label for="purposeInput">Purpose of Visit</label> 
+                                    <label for="purposeInput">Purpose of Visit</label><label for="purposeInput" id="comp221" style="color: red">*</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="purposeInput" />
                                     </div>
