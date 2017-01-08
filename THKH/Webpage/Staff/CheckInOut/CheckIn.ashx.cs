@@ -117,7 +117,54 @@ namespace THKH.Webpage.Staff.CheckInOut
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
             fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature, qListID, qAns, qaid);
             }
+            if (typeOfRequest == "facilities") {
+                successString = getFacilities();
+            }
             context.Response.Write(successString);// String to return to front-end
+        }
+
+        private String getFacilities() {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Facilities\":\"";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_ALL_FACILITIES]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                int count = 1;
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        if (count > 1)
+                        {
+                            successString += ",";
+                        }
+                        successString += reader.GetString(1);
+                        count++;
+                    }
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "\"}";
+            return successString;
         }
 
         private String loadForm() {

@@ -76,6 +76,17 @@ function checkNationals() {
     return true;
 }
 
+// Check visit location input field
+function checkLocation() {
+    if ($("#visLoc").val() == '') {
+        $("#locWarning").css("display", "block");
+        return false;
+    } else {
+        $("#locWarning").css("display", "none");
+    }
+    return true;
+}
+
 // Check if DOB is after today
 function checkDOB() {
     var input = $("#daterange").val();
@@ -433,9 +444,11 @@ function hideTags() {
     $("#userDetails").css("display", "none");
     $("#submitNric").prop('disabled', true);
     $("#submitNric").css("display", "none");
+    $("#locWarning").css("display", "none");
     $("#posWarning").css("display", "none");
     $("#natWarning").css("display", "none");
     populateNationalities();
+    loadFacilities();
     loadActiveForm();
 }
 
@@ -506,6 +519,40 @@ function getQuestionnaireAnswers() {
     //var jsonString = JSON.stringify(answers);
     var jsonString = JSON.stringify(jsonObject);
     return jsonString;
+}
+
+// Loads all facilities in the hospital
+function loadFacilities() {
+    var headersToProcess = {
+        requestType: "facilities"
+    };
+    $.ajax({
+        url: '../Staff/CheckInOut/checkIn.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Result === "Success") {
+                var facString = resultOfGeneration.Facilities;
+                if (facString !== null) {
+                    var arr = facString.split(",");
+                    for (s in arr) {
+                        var optin = document.createElement("option");
+                        $(optin).attr("style", "background:white");
+                        $(optin).attr("name", arr[s]);
+                        $(optin).html(arr[s]);
+                        $('#visLoc').append(optin);
+                    }
+                }
+            } else {
+                alert("Error: " + resultOfGeneration.Facilities);
+            }
+        },
+        error: function (err) {
+        },
+    });
 }
 
 // Loads & displays the active questionnaire from the DB for Self-Reg

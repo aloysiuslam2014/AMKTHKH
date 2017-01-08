@@ -165,8 +165,9 @@
                                     <label for="visLoc">Visit Location</label><label for="visLoc" id="comp231" style="color: red">*</label>
                                     <div class="form-group">
                                     <select class="form-control" id="visLoc">
-                                        <option name="canteen" value="canteen">Canteen</option>
+                                        <option value="">-- Select One --</option>
                                         </select>
+                                        <label for="visLoc" id="locWarning" style="color: red">Please select a visit location!</label>
                                     </div>
                                     <label for="purposeInput">Purpose of Visit</label><label for="purposeInput" id="comp221" style="color: red">*</label>
                                     <div class="form-group">

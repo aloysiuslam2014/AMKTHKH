@@ -249,7 +249,7 @@
                                 <label for="visLoc">Intended Visit Location</label>
                                 <div class="form-group">
                                     <select class="form-control" id="visLoc">
-                                        <option name="canteen" value="canteen">Canteen</option>
+                                        <option value="">-- Select One --</option>
                                     </select>
                                 </div>
                                 <label for="purposeInput">Purpose of Visit</label>
