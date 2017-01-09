@@ -48,7 +48,8 @@ function callCheck (){
                         visitorArr = visitorString.split(",");
                     }
                     if (resultOfGeneration.Questionnaire != null) {
-                        questionnaireArr = questionnaireAns.split(",");
+                        // Logic to handle JSON
+                        questionnaireArr = JSON.parse(resultOfGeneration.Questionnaire).Main;
                     }
                     if (visitorArr.length > 1) {
                         // Populate fields if data exists
@@ -82,10 +83,13 @@ function callCheck (){
                         $("#bedno").prop('value', visitArr[7]);
                     } if (questionnaireArr.length > 1) {
                         for (i = 0; i < questionnaireArr.length; i++) {
-                            var value = questionnaireArr[i];
-                            var arr = value.split(':');
-                            $("input[name='" + arr[0] + "'][value='" + arr[1] + "']").prop("checked", true);
-                            $("#" + arr[0]).prop('value', arr[1]);
+                            var jsonAnswerObject = questionnaireArr[i];
+                            var qid = jsonAnswerObject.qid;
+                            var answer = jsonAnswerObject.answer
+                            //$("#" + qid).prop('value', answer);
+                            $('#' + qid).val(answer);
+                            $("input[name='" + qid + "'][value='" + answer + "']").prop("checked", true);
+                            $("input[id='" + qid + "']").prop("value", answer);
                         }
                     }
                     else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
@@ -101,6 +105,40 @@ function callCheck (){
         },
     });
     dataFound = true;
+}
+
+// Loads all facilities in the hospital
+function loadFacilities() {
+    var headersToProcess = {
+        requestType: "facilities"
+    };
+    $.ajax({
+        url: '../Staff/CheckInOut/checkIn.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Result === "Success") {
+                var facString = resultOfGeneration.Facilities;
+                if (facString !== null) {
+                    var arr = facString.split(",");
+                    for (s in arr) {
+                        var optin = document.createElement("option");
+                        $(optin).attr("style", "background:white");
+                        $(optin).attr("name", arr[s]);
+                        $(optin).html(arr[s]);
+                        $('#visLoc').append(optin);
+                    }
+                }
+            } else {
+                alert("Error: " + resultOfGeneration.Facilities);
+            }
+        },
+        error: function (err) {
+        },
+    });
 }
 
 // Check nationality input field
@@ -289,6 +327,17 @@ function purposePanels() {
     return false;
 }
 
+// Check visit location input field
+function checkLocation() {
+    if ($("#visLoc").val() == '') {
+        $("#locWarning").css("display", "block");
+        return false;
+    } else {
+        $("#locWarning").css("display", "none");
+    }
+    return true;
+}
+
 // For field validations
 function checkRequiredFields() {
     var valid = true;
@@ -378,10 +427,23 @@ function checkExistOrNew() {
         $("#staticinfocontainer").css("display", "block");
 }
 
-// Get Questionnaire Answers by .answer class gives back a JSON String
+// Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
     var answers = '';
-    $("#registration .answer").each(function (index, value) {
+    var jsonObject = "{\"Main\":[";
+    var questions = [];
+    var qIds = [];
+    var allAnswers = [];
+    // Get label values
+    $("#selfregistration .question").each(function (index, value) {
+        var question = $(this).text();
+        var id = $(this).attr('for');
+        qIds.push(id);
+        questions.push(question);
+    });
+
+    // get question answers
+    $("#selfregistration .answer").each(function (index, value) {
         var element = $(this);
         var id = $(value).attr('id');
         if (id == null) {
@@ -391,21 +453,40 @@ function getQuestionnaireAnswers() {
         if (type != null & type == 'radio') {
             var check = element.attr('checked');
             if (check) {
-                answers += id + ':' + element.val() + ',';
+                allAnswers.push(id + ':' + element.val());
             }
         } if (type != null & type == 'text') {
-            answers += id + ':' + element.val() + ',';
+            allAnswers.push(id + ':' + element.val());
         } if (type != null & type == 'select-one') {
-            answers += id + ':' + element.val() + ',';
+            allAnswers.push(id + ':' + element.val());
         } if (type != null & type == 'checkbox') {
             var check = element.is(":checked");
             if (check) {
-                answers += id + ':' + element.val() + ',';
+                allAnswers.push(id + ':' + element.val());
             }
         }
     });
-    answers = answers.substring(0, answers.length - 1);
-    var jsonString = JSON.stringify(answers);
+
+    // construct json answers
+    for (var i = 0; i < qIds.length; i++) {
+        var currentQid = qIds[i];
+        var answerObject = "{\"qid\":\"" + currentQid + "\",\"question\":\"" + questions[i] + "\",\"answer\":\"";
+        for (var j = 0; j < allAnswers.length; j++) {
+            var row = allAnswers[j];
+            var arr = row.split(':');
+            var id = arr[0];
+            if (id == currentQid) {
+                var ans = arr[1];
+                answerObject += ans + ",";
+            }
+        }
+        answerObject = answerObject.substring(0, answerObject.length - 1);
+        answerObject += "\"},";
+        jsonObject += answerObject;
+    }
+    jsonObject = jsonObject.substring(0, jsonObject.length - 1);
+    jsonObject += "]}";
+    var jsonString = JSON.stringify(jsonObject);
     return jsonString;
 }
 
@@ -425,6 +506,7 @@ $(function () {
     $('#datetimepicker').datetimepicker({
         // dateFormat: 'dd-mm-yy',
         defaultDate: new Date(),
+        maxDate: 'now',
         format: 'DD-MM-YYYY'
     });
     $('#visitbookingtimediv').datetimepicker(
@@ -437,6 +519,7 @@ $(function () {
         {
             // dateFormat: 'dd-mm-yy',
             defaultDate: new Date(),
+            maxDate: 'now',
             format: 'DD-MM-YYYY'
         });
 });
@@ -469,6 +552,8 @@ function hideTags() {
     $("#posWarning").css("display", "none");
     $("#natWarning").css("display", "none");
     $("#purWarning").css("display", "none");
+    $("#locWarning").css("display", "none");
+    loadFacilities();
     populateNationalities();
     loadActiveForm();
 }
@@ -521,21 +606,21 @@ function loadActiveForm() {
                 var values = object.QuestionAnswers;
                 var questionNum = object.QuestionNumber;
                 if (type === "ddList") {
-                    htmlString += "<label>" + question + "</label><label id='" + questionNum + "' style='color: red'>*</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>"
-                            + "<select class='form-control required answer regInput' name='" + questionNum + "'>";
+                            + "<select class='form-control required answer' id='" + questionNum + "'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
-                        htmlString += "<option class='answer' name='" + questionNum + "' value='" + valArr[j] + "'>" + valArr[j] + "</option>";
+                        htmlString += "<option value='" + valArr[j] + "'>" + valArr[j] + "</option>";
                     }
                     htmlString += "</select></div>";
                 }
                 if (type === "radio") {
-                    htmlString += "<label>" + question + "</label><label id='" + questionNum + "' style='color: red'>*</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
-                        htmlString += "<div class='radio'><label><input class='answer regInput' type='radio' name='" + questionNum + "' value='" + valArr[j] + "'";
+                        htmlString += "<div class='radio'><label><input class='answer' type='radio' name='" + questionNum + "' value='" + valArr[j] + "'";
                         if (j == 0) {
                             htmlString += " checked";
                         }
@@ -544,18 +629,18 @@ function loadActiveForm() {
                     htmlString += "</div>";
                 }
                 if (type === "checkbox") {
-                    htmlString += "<label>" + question + "</label><label style='color: red'>*</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
-                        htmlString += "<div class='checkbox'><label><input class='answer regInput' type='checkbox' name='" + questionNum + "' value='" + valArr[j] + "'> " + valArr[j] + "</label></div>";
+                        htmlString += "<div class='checkbox'><label><input class='answer' type='checkbox' name='" + questionNum + "' value='" + valArr[j] + "'> " + valArr[j] + "</label></div>";
                     }
                     htmlString += "</div>";
                 } if (type === "text") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label>"
                                     + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                                     + "<div class='form-group'>"
-                                    + "<input type='text' runat='server' id='" + questionNum + "' class='form-control required answer regInput' name='" + questionNum + "' />"
+                                    + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "' />"
                                     + "</div>";
                 }
             }

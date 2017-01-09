@@ -63,11 +63,12 @@ namespace THKH.Webpage.Staff.CheckInOut
                                         .Replace('+', '_')
                                         .Replace('/', '-')
                                         .TrimEnd('=');
+                var amend = context.Request.Form["amend"];
 
                 // Write to Visitor_Profile & Visit Table
                 successString = selfReg(nric, age, fname, address, postal, mobtel, alttel, hometel,
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
-            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, qListID, qAns, qaid);
+            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, qListID, qAns, qaid, amend);
         }
         if (typeOfRequest == "patient") {
                 var pName = context.Request.Form["pName"];
@@ -116,7 +117,54 @@ namespace THKH.Webpage.Staff.CheckInOut
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
             fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature, qListID, qAns, qaid);
             }
+            if (typeOfRequest == "facilities") {
+                successString = getFacilities();
+            }
             context.Response.Write(successString);// String to return to front-end
+        }
+
+        private String getFacilities() {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Facilities\":\"";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_ALL_FACILITIES]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                int count = 1;
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        if (count > 1)
+                        {
+                            successString += ",";
+                        }
+                        successString += reader.GetString(1);
+                        count++;
+                    }
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "\"}";
+            return successString;
         }
 
         private String loadForm() {
@@ -349,7 +397,7 @@ namespace THKH.Webpage.Staff.CheckInOut
         // Write to Visitor & Visit Table
         private String selfReg(String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String qListID, String qAns, String qaid) {
+            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String qListID, String qAns, String qaid, String amend) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -372,6 +420,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
+                command.Parameters.AddWithValue("@pAmend", Int32.Parse(amend));
                 command.Parameters.Add(respon);
                 cnn.Open();
 

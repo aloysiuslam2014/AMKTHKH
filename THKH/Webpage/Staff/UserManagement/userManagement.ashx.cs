@@ -55,6 +55,7 @@ namespace THKH.Webpage.Staff.UserManagement
             {
                 SqlCommand command = new SqlCommand("[dbo].[GET_STAFFS]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                //command.Parameters.AddWithValue('@pNric', nric);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
@@ -66,7 +67,7 @@ namespace THKH.Webpage.Staff.UserManagement
                    
                     while (reader.Read())
                     {
-
+                        responseJson = new ExpandoObject();
                         responseJson.email = reader.GetString(0);
                         responseJson.firstName = reader.GetString(1);
                         responseJson.lastName = reader.GetString(2);
@@ -84,7 +85,7 @@ namespace THKH.Webpage.Staff.UserManagement
             {
                 jsonObj.Msg = "Failed";
                 jsonObj.Result = ex.Message;
-                successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
+                successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); 
                 return successString;
             }
             finally
@@ -121,7 +122,6 @@ namespace THKH.Webpage.Staff.UserManagement
 
                     while (reader.Read())
                     {
-
                         responseJson.email = reader.GetString(0);
                         responseJson.firstName = reader.GetString(1);
                         responseJson.lastName = reader.GetString(2);

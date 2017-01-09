@@ -17,6 +17,7 @@
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
+    <link href="~/CSS/passManagement.css" rel="stylesheet" />
 
 
 
@@ -249,7 +250,7 @@
                                 <label for="visLoc">Intended Visit Location</label>
                                 <div class="form-group">
                                     <select class="form-control" id="visLoc">
-                                        <option name="canteen" value="canteen">Canteen</option>
+                                        <option value="">-- Select One --</option>
                                     </select>
                                 </div>
                                 <label for="purposeInput">Purpose of Visit</label>
@@ -663,29 +664,101 @@
                                     <input id="staffPerms" class="form-control" /></div>
                             </div>
                         </div>
-                        <div class="btn-group">
-                        <button type="button"  class="btn btn-warning" onclick="prepareForNewUser();">Create New User/Clear All Fields</button>
-                        <button type="button" class="btn btn-success" onclick="saveUser();">Save</button>
-                            </div>
+                        
+                        <div class="btn-group">   
+                                        
+                            <button type="button"  class="btn btn-warning" onclick="prepareForNewUser();">Create New User/Clear All Fields</button>
+                            <button type="button" class="btn btn-success" onclick="saveUser();">Save</button>
+                            
+                        </div>
                     </div>
     </div>
             </div>
             <%}
                 if (accessRightsStr.Contains('5'))
                 { %>
-    <!-- End of UserManagement -->
+            <!-- End of UserManagement -->
 
-    <!-- PassManagement -->
-    <div class="tab-pane maxHeight" id="PassManagement">
-        <h1>This is the test page potato pirates!</h1>
+            <!-- PassManagement -->
+            <div class="tab-pane maxHeight" id="PassManagement">
+                <div id="passBodySample" style="width: 100%; height: inherit; margin: 0;" class="panel">
+                    <div id="optionsForPass" class="col-sm-4 panel panel-primary inheritHeight" style="padding: 0">
+                        <div class="panel-heading" >
+                            <h3 style="margin:0">Edit Pass Settings </h3>
+                        </div>
+                        <div class="panel-body">
+                         <div class="row">
+                               <h3 style="margin: 0;">Select Size of pass:</h3>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" onclick="changePassDimen('210mm','297mm');">A4</button>
+                                <button type="button" class="btn btn-primary" onclick="changePassDimen('148mm','210mm');">A5</button>
+                                <button type="button" class="btn btn-primary" onclick="changePassDimen('105mm','148mm');">A6</button>
+                                <button type="button" class="btn btn-primary" onclick="changePassDimen('74mm','105mm');">A7</button>
+                                <button type="button" class="btn btn-primary" onclick="changePassDimen('52mm','74mm');">A8</button>
+                            </div>
+                             <div class="btn-group">
+                                <button type="button" class="btn btn-primary" onclick="toggleOrientation();">Toggle Pass Orientation</button>
+                                
+                            </div>
+                             <br />
+                             <div class=" row" style="width: 50%;margin:auto">
+                                 <span class="form-control">Or Set a Custom Size(in mm):</span>
+                                 <input type="text" class="form-control text-center" id="customSizePass" placeholder="E.g 150mm*180MM" />
+                             </div>
+                             <br />
+                            <button type="button" class="btn btn-success" onclick="customDimenstions();">Custom Size</button>
+                             </div>
+                            <hr />
+                            <div class="row">
+                                <h3 style="margin-top: 0;">Add Text</h3>
+                                Source of the text to be displayed:
+                                <br />
+                                  <select id="source" class="form-control" style="width: 50%;margin: auto;" onchange="ifCustom();">
+
+                                      <option value="First Name">First Name</option>
+                                      <option value="Last Name">Last Name</option>
+                                      <option value="Mobile Number">Mobile Number</option>
+                                      <option value="Date Of Birth">Date Of Birth</option>
+                                      <option value=""></option>
+                                      <option value="custom">Custom Text</option>
+                                  </select>
+                                <input type="text" id="customText" placeholder="Custom Text Here" class="text-center" style="display:none" />
+                                <br />
+                                <button type="button" class="btn btn-success " id="addText"  onclick="addTextToPass();">Add Text</button>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <h3 style="margin-top: 0;">Add Barcode</h3>
+                                <button type="button" class="btn btn-primary"  id="addBarcode" onclick="addBarCodeToPassLayout()">Add Barcode</button>
+                            </div>
+                            <hr />
+                            <div>
+                                <h3 style="margin-top: 0;">Add Image</h3>
+                                <button type="button" class="btn btn-primary" id="addBgImg" onclick="$('#imageUpload').click();">Add Image</button>
+                                <input type="file" id="imageUpload" onchange="createImageAndAdd(this)" class="hidden"/>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="sampleOutput" class="col-sm-8 row inheritHeight panel" style="background-color: initial">
+                        <div class="panel-heading">
+                            <h3 style="margin:0">Sample Pass Output</h3>
+                        </div>
+                        <div class= " panel-body vertical-center center-block " style="background-color:darkslategray;overflow-y:auto;text-align: center; height: 93%;">
+                            <div id="passLayout" class=" " style="background-color:white;border:1px solid ;height: 50.8mm; width: 89mm;margin:auto">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
-    </div>
-    <!-- End of PassManagement -->
+            </div>
+            <!-- End of PassManagement -->
 
-    <%}
-        if (accessRightsStr.Contains('6'))
-        { %>
+            <%}
+                if (accessRightsStr.Contains('6'))
+                { %>
     <!-- ContactTracing -->
     <div class="tab-pane maxHeight" id="ContactTracing">
          <div class="row inheritHeight">
@@ -781,6 +854,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/registrationPageScripts.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/UserManagement/loadUsers.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/PassManagement/passManage.js") %>"></script>
     <script type="text/javascript">
         var user = '<%= Session["username"].ToString() %>';
     </script>

@@ -37,12 +37,13 @@ function NewSelfReg() {
     var visitLoc = $("#visLoc").val();
     var qListID = $("#qnlistid").val();
     var qAnswers = getQuestionnaireAnswers();
+    var amend = $("#amend").val();
 
     var headersToProcess = {
         fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
         AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose, pName: pName, pNric: pNric,
         otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza,
-        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers
+        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers, amend: amend
     };
     $.ajax({
         url: '../Staff/CheckInOut/checkIn.ashx',
@@ -73,6 +74,35 @@ function checkNationals() {
         $("#natWarning").css("display", "none");
     }
     return true;
+}
+
+// Check visit location input field
+function checkLocation() {
+    if ($("#visLoc").val() == '') {
+        $("#locWarning").css("display", "block");
+        return false;
+    } else {
+        $("#locWarning").css("display", "none");
+    }
+    return true;
+}
+
+// Check if DOB is after today
+function checkDOB() {
+    var input = $("#daterange").val();
+    var now = new Date();
+    if (input > now) {
+        alert("Birthday is after today!");
+    }
+}
+
+// Check if Requested Visit Time is before or after today (Supposed to be today)
+function checkVisDate() {
+    var input = $("#visitbookingdate").val();
+    var now = new Date();
+    if (input < now) {
+        alert("Visit is before today!");
+    }
 }
 
 // Reload Page & Clear Cache
@@ -276,6 +306,7 @@ $(function () {
     $('#datetimepicker').datetimepicker({
         // dateFormat: 'dd-mm-yy',
         defaultDate: new Date(),
+        maxDate: 'now',
         format: 'DD-MM-YYYY'
     });
     $('#visitbookingtimediv').datetimepicker(
@@ -358,10 +389,12 @@ function purposePanels() {
         $('#staticinfocontainer').css("display", "none");
         $('#newusercontent').css("display", "none");
         $('#staticinfocontainer').css("display", "none");
+        $('#otherpurposevisit input').removeClass('required');
     } else if (purpose === "Other Purpose") {
         $("#userDetails").css("display", "block");
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "block");
+        $('#otherpurposevisit input').addClass('required');
         patientValidated = true;
         checkIfExistingVisitor(); 
     } else {
@@ -372,6 +405,7 @@ function purposePanels() {
         $('#staticinfocontainer').css("display", "none");
         $('#newusercontent').css("display", "none");
         $('#staticinfocontainer').css("display", "none");
+        $('#otherpurposevisit input').removeClass('required');
     }
 }
 
@@ -379,8 +413,11 @@ function purposePanels() {
 function amendVisitorDetails() {
     if ($("#changed").prop('checked') === true) {
         $('#newusercontent').css("display", "block");
+        $('#newusercontent input').addClass('required');
+        $("#amend").attr('value', 1);
     } else {
         $('#newusercontent').css("display", "none");
+        $('#newusercontent input').removeClass('required');
     }
 }
 
@@ -407,15 +444,30 @@ function hideTags() {
     $("#userDetails").css("display", "none");
     $("#submitNric").prop('disabled', true);
     $("#submitNric").css("display", "none");
+    $("#locWarning").css("display", "none");
     $("#posWarning").css("display", "none");
     $("#natWarning").css("display", "none");
     populateNationalities();
+    loadFacilities();
     loadActiveForm();
 }
 
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
     var answers = '';
+    var jsonObject = "{\"Main\":[";
+    var questions = [];
+    var qIds = [];
+    var allAnswers = [];
+    // Get label values
+    $("#selfregistration .question").each(function (index, value) {
+        var question = $(this).text();
+        var id = $(this).attr('for');
+        qIds.push(id);
+        questions.push(question);
+    });
+    
+    // get question answers
     $("#selfregistration .answer").each(function (index, value) {
         var element = $(this);
         var id = $(value).attr('id');
@@ -426,22 +478,81 @@ function getQuestionnaireAnswers() {
         if (type != null & type == 'radio') {
             var check = element.attr('checked');
             if (check) {
-                answers += id + ':' + element.val() + ',';
+                //answers += id + ':' + element.val() + ',';
+                allAnswers.push(id + ':' + element.val());
             }
         } if (type != null & type == 'text') {
-            answers += id + ':' + element.val() + ',';
+            //answers += id + ':' + element.val() + ',';
+            allAnswers.push(id + ':' + element.val());
         } if (type != null & type == 'select-one') {
-            answers += id + ':' + element.val() + ',';
+            //answers += id + ':' + element.val() + ',';
+            allAnswers.push(id + ':' + element.val());
         } if (type != null & type == 'checkbox') {
             var check = element.is(":checked");
             if (check) {
-                answers += id + ':' + element.val() + ',';
+                //answers += id + ':' + element.val() + ',';
+                allAnswers.push(id + ':' + element.val());
             }
         }
     });
-    answers = answers.substring(0, answers.length - 1);
-    var jsonString = JSON.stringify(answers);
+
+    // construct json answers
+    for (var i = 0; i < qIds.length; i++) {
+        var currentQid = qIds[i];
+        var answerObject = "{\"qid\":\"" + currentQid + "\",\"question\":\"" + questions[i] + "\",\"answer\":\"";
+        for (var j = 0; j < allAnswers.length; j++) {
+            var row = allAnswers[j];
+            var arr = row.split(':');
+            var id = arr[0];
+            if (id == currentQid) {
+                var ans = arr[1];
+                answerObject += ans + ",";
+            }
+        }
+        answerObject = answerObject.substring(0, answerObject.length - 1);
+        answerObject += "\"},";
+        jsonObject += answerObject;
+    }
+    jsonObject = jsonObject.substring(0, jsonObject.length - 1);
+    jsonObject += "]}";
+    //answers = answers.substring(0, answers.length - 1);
+    //var jsonString = JSON.stringify(answers);
+    var jsonString = JSON.stringify(jsonObject);
     return jsonString;
+}
+
+// Loads all facilities in the hospital
+function loadFacilities() {
+    var headersToProcess = {
+        requestType: "facilities"
+    };
+    $.ajax({
+        url: '../Staff/CheckInOut/checkIn.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Result === "Success") {
+                var facString = resultOfGeneration.Facilities;
+                if (facString !== null) {
+                    var arr = facString.split(",");
+                    for (s in arr) {
+                        var optin = document.createElement("option");
+                        $(optin).attr("style", "background:white");
+                        $(optin).attr("name", arr[s]);
+                        $(optin).html(arr[s]);
+                        $('#visLoc').append(optin);
+                    }
+                }
+            } else {
+                alert("Error: " + resultOfGeneration.Facilities);
+            }
+        },
+        error: function (err) {
+        },
+    });
 }
 
 // Loads & displays the active questionnaire from the DB for Self-Reg
@@ -469,7 +580,7 @@ function loadActiveForm() {
                 var values = object.QuestionAnswers;
                 var questionNum = object.QuestionNumber;
                 if (type === "ddList") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>"
                             + "<select class='form-control required answer' id='" + questionNum + "'>";
                     var valArr = values.split(",");
@@ -479,7 +590,7 @@ function loadActiveForm() {
                     htmlString += "</select></div>";
                 }
                 if (type === "radio") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -492,7 +603,7 @@ function loadActiveForm() {
                     htmlString += "</div>";
                 }
                 if (type === "checkbox") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -500,7 +611,7 @@ function loadActiveForm() {
                     }
                     htmlString += "</div>";
                 } if (type === "text") {
-                    htmlString += "<label for='" + questionNum + "'>" + question + "</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label>"
                                     + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
                                     + "<div class='form-group'>"
                                     + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "' />"
