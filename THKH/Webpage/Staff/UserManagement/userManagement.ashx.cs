@@ -84,7 +84,7 @@ namespace THKH.Webpage.Staff.UserManagement
             {
                 jsonObj.Msg = "Failed";
                 jsonObj.Result = ex.Message;
-                successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
+                successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); 
                 return successString;
             }
             finally

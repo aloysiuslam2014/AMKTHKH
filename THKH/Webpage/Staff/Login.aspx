@@ -28,7 +28,7 @@
             <tr><br /><br /></tr>
             <tr><td colspan="2" align="center">
                 <br />
-                <div class="btn btn-group">
+                <div class="btn-group">
                 <asp:Button type="submit" Text="Login" runat="server" id="loginSubmit" OnClick="loginSubmit_Click" class="btn btn-success" />
                 <asp:Button type="submit" Text="Check-In Terminal" runat="server" id="checkInTerminal" OnClick="checkInTerminal_Click" class="btn btn-primary" />
                 </div>

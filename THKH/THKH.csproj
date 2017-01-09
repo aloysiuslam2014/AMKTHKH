@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GenCode128, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ExternalClass\GenCode128.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -82,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\hospital logo transparent.png" />
     <Content Include="Assets\hospitalLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -92,6 +97,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="CSS\passManagement.css" />
     <Content Include="CSS\adminTerminal.css" />
     <Content Include="CSS\asScrollbar.css" />
     <Content Include="CSS\default.css" />
@@ -99,6 +105,7 @@
     <Content Include="CSS\formManagement.css" />
     <Content Include="CSS\login.css" />
     <Content Include="CSS\terminal.css" />
+    <Content Include="ExternalClass\GenCode128.dll" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -133,6 +140,7 @@
     <Content Include="Webpage\SQL Script\THKHDB_7Jan17.sql" />
     <Content Include="Webpage\Staff\ContactTracing\query.js" />
     <Content Include="Webpage\Staff\default.js" />
+    <Content Include="Webpage\Staff\PassManagement\passManage.js" />
     <Content Include="Webpage\Staff\QuestionaireManagement\loadQuestionaire.js" />
     <Content Include="Webpage\Staff\TerminalCalls\adminTerminal.js" />
     <Content Include="Webpage\Staff\TerminalCheckIn.aspx" />
@@ -237,6 +245,7 @@
     <Content Include="Webpage\Staff\TerminalCalls\TerminalCheck.ashx" />
     <Content Include="Webpage\Staff\QuestionaireManagement\questionaireManagement.ashx" />
     <Content Include="Webpage\Staff\UserManagement\userManagement.ashx" />
+    <Content Include="Webpage\Staff\PassManagement\passMgmt.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -266,6 +275,9 @@
     </Compile>
     <Compile Include="Webpage\Staff\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Webpage\Staff\PassManagement\passMgmt.ashx.cs">
+      <DependentUpon>passMgmt.ashx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Staff\QuestionaireManagement\questionaireManagement.ashx.cs">
       <DependentUpon>questionaireManagement.ashx</DependentUpon>
