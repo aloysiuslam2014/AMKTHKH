@@ -121,6 +121,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="maxLimitModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title" id="memberModalLabel2" style="color:darkred">Warning</h4>
+                            </div>
+                            <div class="modal-body text-center">
+                                    <label>Visitor Limit for this Bed has been Reached!</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-block btn-danger" id="closeMaxLimitButton" onclick="hideMaxLimitModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
