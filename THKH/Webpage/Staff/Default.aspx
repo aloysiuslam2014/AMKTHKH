@@ -722,15 +722,15 @@
                      </script>
                 
                      <div class="input-group col-sm-4" id="querybedrange">
-                         <input type="text" class="form-control" id="querybeds" placeholder="Beds: 1-4,7,10 " />
+                         <%--<input  type="text" class="form-control" id="querybeds" placeholder="Beds: 1-4,7,10 " />--%>
                          <span class="input-group-btn">
-                             <button class="btn btn-primary" id="addDateTimeRange" onclick="addDateTimeRange();"><span class="glyphicon glyphicon-plus"></span>Add Query</button>
+                                <button class="btn btn-primary" id="addDateTimeRange" onclick="getValidTerminals();">Find Valid Terminals</button>
                          </span>
                      </div>
                  </div>
 
-                 <div class="list-group" style="overflow: auto; height: 70%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="queriesToDisplay">
-                     <ul class="list-group checked-list-box queries" id="querylist">
+                 <div class="list-group" style="overflow: auto; height: 70%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="terminalsToDisplay">
+                     <ul class="list-group checked-list-box queries" id="validTerminalList" style="overflow-x: hidden">
                      </ul>
                  </div>
 
@@ -744,16 +744,16 @@
                  </div>
              </div>
 
-             <div class="col-sm-2 panel" style="height: 95%; top: 33%">
+             <div class="col-sm-2 panel" style="height: 50%; margin-top: 55px">
                  <div class="form-group">
                      <span class="input-group-btn">
                          <button class="btn btn-warning" onclick="submitQueries(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
                      </span>
                      <br />
-                     <label>
+                     <label hidden>
                          <input type="checkbox" class="form-control" id="byRegistration" name="checkbox" value="value" />By Registered Visit</label>
                      <br />
-                     <label>
+                     <label hidden>
                          <input type="checkbox" class="form-control" id="byScan" name="checkbox" value="value" />By Scanned Location</label>
                  </div>
              </div>
