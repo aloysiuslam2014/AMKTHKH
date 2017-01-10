@@ -149,7 +149,7 @@
     <Content Include="Webpage\SQL Script\AddVisitor.sql" />
     <Content Include="Webpage\SQL Script\thkhdb create procedures.sql" />
     <Content Include="Webpage\SQL Script\thkhdb create tables.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_26Dec16.sql" />
+    <Content Include="Webpage\SQL Script\THKHDB_10Jan17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_2Jan17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_7Jan17.sql" />
     <Content Include="Webpage\Staff\ContactTracing\query.js" />
@@ -237,6 +237,7 @@
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <Content Include="Webpage\Staff\UserManagement\loadUsers.js" />
     <None Include="Properties\PublishProfiles\Stepwise-is480.pubxml" />
+    <None Include="Properties\PublishProfiles\stepwiseis480 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Triage20 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -262,7 +263,9 @@
     <Content Include="Webpage\Staff\PassManagement\passMgmt.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

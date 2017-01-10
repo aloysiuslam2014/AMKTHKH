@@ -38,6 +38,7 @@ function getAllUsers() {
 
 //Initialize all uers
 function initUsersList(data) {
+    populateNationalities();
     var target = $("#usersLis");
         //clear existing list objects
     $(target).html("");
@@ -124,6 +125,8 @@ function initUsersList(data) {
                         $(checkBox).triggerHandler('change');
                         if ($(checkBox).is(':checked')) {
                             getUserDetails($(this));  //Get the user details only checkbox is not checked. If deselecting dont get the user
+                        } else {
+                            clearStaffFields();
                         }
                         updateDisplay($(this));
                   
@@ -170,6 +173,7 @@ function deSelectAllUsers() {
 
 //get a selected users details
 function getUserDetails(listObj) {
+    populateNationalities();
     var headersToProcess = {
         email:$(listObj).attr("id"),
         requestType: "getUser"
@@ -178,7 +182,6 @@ function getUserDetails(listObj) {
         url: './UserManagement/userManagement.ashx',
         method: 'post',
         data: headersToProcess,
-
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
@@ -269,4 +272,220 @@ function addUser() {
             alert("Error: " + err.msg + ". Please contact the adminsitrator.");
         },
     });
+}
+
+
+function clearStaffFields() {
+    $('#userInfo .userInput').each(function (idx, obj) {
+        $(obj).prop("value", "");
+
+    });
+    var update = false;
+}
+
+
+// Populates Nationality Field
+function populateNationalities() {
+    var nationalities = [
+        'Singaporean',
+        'Afghan',
+        'Albanian',
+        'Algerian',
+        'American',
+        'Andorran',
+        'Angolan',
+        'Antiguans',
+        'Argentinean',
+        'Armenian',
+        'Australian',
+        'Austrian',
+        'Azerbaijani',
+        'Bahamian',
+        'Bahraini',
+        'Bangladeshi',
+        'Barbadian',
+        'Barbudans',
+        'Batswana',
+        'Belarusian',
+        'Belgian',
+        'Belizean',
+        'Beninese',
+        'Bhutanese',
+        'Bolivian',
+        'Bosnian',
+        'Brazilian',
+        'British',
+        'Bruneian',
+        'Bulgarian',
+        'Burkinabe',
+        'Burmese',
+        'Burundian',
+        'Cambodian',
+        'Cameroonian',
+        'Canadian',
+        'Cape Verdean',
+        'Central African',
+        'Chadian',
+        'Chilean',
+        'Chinese',
+        'Colombian',
+        'Comoran',
+        'Congolese',
+        'Costa Rican',
+        'Croatian',
+        'Cuban',
+        'Cypriot',
+        'Czech',
+        'Danish',
+        'Djibouti',
+        'Dominican',
+        'Dutch',
+        'East Timorese',
+        'Ecuadorean',
+        'Egyptian',
+        'Emirian',
+        'Equatorial Guinean',
+        'Eritrean',
+        'Estonian',
+        'Ethiopian',
+        'Fijian',
+        'Filipino',
+        'Finnish',
+        'French',
+        'Gabonese',
+        'Gambian',
+        'Georgian',
+        'German',
+        'Ghanaian',
+        'Greek',
+        'Grenadian',
+        'Guatemalan',
+        'Guinea-Bissauan',
+        'Guinean',
+        'Guyanese',
+        'Haitian',
+        'Herzegovinian',
+        'Honduran',
+        'Hungarian',
+        'I-Kiribati',
+        'Icelander',
+        'Indian',
+        'Indonesian',
+        'Iranian',
+        'Iraqi',
+        'Irish',
+        'Israeli',
+        'Italian',
+        'Ivorian',
+        'Jamaican',
+        'Japanese',
+        'Jordanian',
+        'Kazakhstani',
+        'Kenyan',
+        'Kittian and Nevisian',
+        'Kuwaiti',
+        'Kyrgyz',
+        'Laotian',
+        'Latvian',
+        'Lebanese',
+        'Liberian',
+        'Libyan',
+        'Liechtensteiner',
+        'Lithuanian',
+        'Luxembourger',
+        'Macedonian',
+        'Malagasy',
+        'Malawian',
+        'Malaysian',
+        'Maldivan',
+        'Malian',
+        'Maltese',
+        'Marshallese',
+        'Mauritanian',
+        'Mauritian',
+        'Mexican',
+        'Micronesian',
+        'Moldovan',
+        'Monacan',
+        'Mongolian',
+        'Moroccan',
+        'Mosotho',
+        'Motswana',
+        'Mozambican',
+        'Namibian',
+        'Nauruan',
+        'Nepalese',
+        'New Zealander',
+        'Nicaraguan',
+        'Nigerian',
+        'Nigerien',
+        'North Korean',
+        'Northern Irish',
+        'Norwegian',
+        'Omani',
+        'Pakistani',
+        'Palauan',
+        'Panamanian',
+        'Papua New Guinean',
+        'Paraguayan',
+        'Peruvian',
+        'Polish',
+        'Portuguese',
+        'Qatari',
+        'Romanian',
+        'Russian',
+        'Rwandan',
+        'Saint Lucian',
+        'Salvadoran',
+        'Samoan',
+        'San Marinese',
+        'Sao Tomean',
+        'Saudi',
+        'Scottish',
+        'Senegalese',
+        'Serbian',
+        'Seychellois',
+        'Sierra Leonean',
+        'Slovakian',
+        'Slovenian',
+        'Solomon Islander',
+        'Somali',
+        'South African',
+        'South Korean',
+        'Spanish',
+        'Sri Lankan',
+        'Sudanese',
+        'Surinamer',
+        'Swazi',
+        'Swedish',
+        'Swiss',
+        'Syrian',
+        'Taiwanese',
+        'Tajik',
+        'Tanzanian',
+        'Thai',
+        'Togolese',
+        'Tongan',
+        'Trinidadian/Tobagonian',
+        'Tunisian',
+        'Turkish',
+        'Tuvaluan',
+        'Ugandan',
+        'Ukrainian',
+        'Uruguayan',
+        'Uzbekistani',
+        'Venezuelan',
+        'Vietnamese',
+        'Welsh',
+        'Yemenite',
+        'Zambian',
+        'Zimbabwean'];
+        for (var i = 0; i < nationalities.length; i++) {
+            var optin = document.createElement("option");
+            $(optin).attr("style", "background:white");
+            $(optin).attr("name", nationalities[i]);
+            $(optin).attr("value", nationalities[i].toUpperCase());
+            $(optin).html(nationalities[i]);
+            $('#staffNationality').append(optin);
+    }
 }

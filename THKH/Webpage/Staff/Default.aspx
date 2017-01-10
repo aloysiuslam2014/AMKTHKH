@@ -123,6 +123,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="maxLimitModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title" id="memberModalLabel2" style="color:darkred">Warning</h4>
+                            </div>
+                            <div class="modal-body text-center">
+                                    <label>Visitor Limit for this Bed has been Reached!</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-block btn-danger" id="closeMaxLimitButton" onclick="hideMaxLimitModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
@@ -231,15 +247,12 @@
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control regInput" id="patientName" />
                                 </div>
-                                <label for="patientNric">Patient NRIC</label>
-                                <div class="form-group">
-                                    <input type="text" runat="server" class="form-control regInput" id="patientNric" />
-                                </div>
                                 <label for="bedno">Bed Number</label>
                                 <%--Bed Number--%>
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control regInput" id="bedno" />
                                 </div>
+                                <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
                                 <label></label>
                                 <div class="form-group">
                                     <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span>Validate Patient</button>
@@ -280,6 +293,7 @@
                             <div id="questionaireForm">
                                 <!-- load questionaires here from JS -->
                             </div>
+                            <input type="hidden" runat="server" class="form-control regInput" id="qaid" />
                             <div class="checkbox">
                                 <label for="declaration"></label>
                                 <input type="checkbox" id="declaration" name="declare" class="regInput" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate<br />
@@ -427,7 +441,7 @@
                                 </div>
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
                                 </ul>
-                                <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px">
+                                <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px;">
                                     <div class="panel-body questionEditor" style="background-color: #343637; border-style: solid; border-width: 1px;">
                                         <h3 id="editQuestionTitle">Question Details</h3>
                                         <div>Question<textarea id="detailsQn" class="form-control qnVal" rows="3" cols="80">  </textarea></div>
@@ -605,40 +619,40 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-8 row" style="overflow-y: auto">
+                    <div class="col-sm-8 row" id= "userInfo" style="overflow-y: auto">
                         <h2 id="userMode">Create New User</h2>
                         <h3 style="margin-top: 0;margin-bottom: 0;">User details</h3>
                         <div>
                             <div class="col-md-6">
                                 <label>Email</label>
                                 <div class="form-group">
-                                    <input id="staffEmail" class="form-control" /></div>
+                                    <input id="staffEmail" class="form-control userInput" /></div>
                                 <label>First Name</label>
                                 <div class="form-group">
-                                    <input id="staffFirstName" class="form-control" /></div>
+                                    <input id="staffFirstName" class="form-control userInput" /></div>
                                 <label>Last Name</label>
                                 <div class="form-group">
-                                    <input id="staffLastName" class="form-control" /></div>
+                                    <input id="staffLastName" class="form-control userInput" /></div>
                                 <label>NRIC</label>
                                 <div class="form-group">
-                                    <input id="staffNric" class="form-control" /></div>
+                                    <input id="staffNric" class="form-control userInput" /></div>
                                 <label>Address</label>
                                 <div class="form-group">
-                                    <input id="staffAddress" class="form-control" /></div>
+                                    <input id="staffAddress" class="form-control userInput" /></div>
                                 <label>Postal Code</label>
                                 <div class="form-group">
-                                    <input id="staffPostal" class="form-control" /></div>
+                                    <input id="staffPostal" class="form-control userInput" /></div>
                                 <label>Contact Number(Mobile)</label>
                                 <div class="form-group">
-                                    <input id="staffMobileNum" class="form-control" /></div>
+                                    <input id="staffMobileNum" class="form-control userInput" /></div>
                                 <label>Contact Number(Home)</label>
                                 <div class="form-group">
-                                    <input id="staffHomeNum" class="form-control" /></div>
+                                    <input id="staffHomeNum" class="form-control userInput" /></div>
                                 </div>
                             <div class="col-md-6">
                                 <label>Contact Number(Alt)</label>
                                 <div class="form-group">
-                                    <input id="staffAltNum" class="form-control" /></div>
+                                    <input id="staffAltNum" class="form-control userInput" /></div>
                                 <label>Sex</label>
                                 <div class="form-group">
                                     <select id="staffSex" class="form-control">
@@ -647,29 +661,36 @@
                                     </select>
                                 </div>
                                 <label>Nationality</label>
+
                                 <div class="form-group">
-                                    <input id="staffNationality" class="form-control" /></div>
+                                     <select class="form-control required regInput userInput" onchange="checkNationals(); false;" id="staffNationality" >
+                                        <option value=""></option>
+                                    </select>
+                                </div>
                                 <label>Date Of Birth</label>
                                 <div class="form-group">
-                                    <input id="staffDOB" class="form-control" /></div>
+                                    <input id="staffDOB" class="form-control userInput" /></div>
                                 <label>Age</label>
                                 <div class="form-group">
-                                    <input id="staffAge" class="form-control" /></div>
+                                    <input id="staffAge" class="form-control userInput" /></div>
                                 <label>Race</label>
                                 <div class="form-group">
-                                    <input id="staffRace" class="form-control" /></div>
+                                    <input id="staffRace" class="form-control userInput" /></div>
                                 <label>Position Title</label>
                                 <div class="form-group">
-                                    <input id="staffTitle" class="form-control" /></div>
+                                    <input id="staffTitle" class="form-control userInput" /></div>
                                 <label>Permission</label>
                                 <div class="form-group">
-                                    <input id="staffPerms" class="form-control" /></div>
+                                    <input id="staffPerms" class="form-control userInput" /></div>
                             </div>
                         </div>
-                        <div class="btn-group">
-                        <button type="button"  class="btn btn-warning" onclick="prepareForNewUser();">Create New User/Clear All Fields</button>
-                        <button type="button" class="btn btn-success" onclick="saveUser();">Save</button>
-                            </div>
+                        
+                        <div class="btn-group">   
+                                        
+                            <button type="button"  class="btn btn-warning" onclick="prepareForNewUser();">Create New User/Clear All Fields</button>
+                            <button type="button" class="btn btn-success" onclick="saveUser();">Save</button>
+                            
+                        </div>
                     </div>
     </div>
             </div>

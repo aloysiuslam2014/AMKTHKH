@@ -313,7 +313,7 @@ $(function () {
         {
             // dateFormat: 'dd-mm-yy',
             defaultDate: new Date(),
-            format: 'HH:mm'
+            format: 'HH:mm' // Change to 15 Min Intervals
         });
     $('#visitbookingdatediv').datetimepicker(
         {
