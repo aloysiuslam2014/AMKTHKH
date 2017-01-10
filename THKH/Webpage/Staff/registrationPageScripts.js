@@ -226,8 +226,11 @@ $("#temp").on("input", function () {
 
 // Show Success Modal
 function showSuccessModal() {
+    $('#successModal').on('shown.bs.modal', function () {
+        getPassState();
+    })
     $('#successModal').modal({ backdrop: 'static', keyboard: false });
-    $('#successModal').modal('show');
+ 
 }
 
 // Hide Success Modal
@@ -285,8 +288,10 @@ function NewAssistReg() {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
                 var today = new Date();
+                
                 showSuccessModal();
-                clearFields();
+                //after showin then we load the pass go to the method show success modal to see
+              //clearfields moved to passManage.js
                 $('input:checkbox[name=declare]').attr('checked', false);
                 hideTags();
             } else {

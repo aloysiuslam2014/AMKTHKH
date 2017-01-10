@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <title>Welcome <%= Session["username"].ToString()%> | Ang Mo Kio - Thye Hwa Kuan</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/html2canvas.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/moment.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery-ui.min.js") %>"></script>
@@ -18,6 +19,7 @@
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
     <link href="~/CSS/passManagement.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" 	href="~/CSS/jquery-ui.css"/>
 
 
 
@@ -111,7 +113,7 @@
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
                                 <h4 class="modal-title" id="memberModalLabel1" style="color:midnightblue">Registration Successful</h4>
                             </div>
-                            <div class="modal-body text-center">
+                            <div class="modal-body text-center" id="userSuccess">
                                     <label>Visit data recorded at <%=DateTime.Now %>.</label>
                                     <label style="color:green">Visitor has been checked in!</label>
                             </div>
@@ -151,7 +153,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="userData">
                     <div id="newusercontent" class="col-sm-6" runat="server">
                         <div class="jumbotron" style="text-align: left">
                             <h3 style="">Personal Details</h3>
@@ -683,7 +685,7 @@
                         <div class="panel-heading" >
                             <h3 style="margin:0">Edit Pass Settings </h3>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" style="overflow-y:auto">
                          <div class="row">
                                <h3 style="margin: 0;">Select Size of pass:</h3>
                             <div class="btn-group">
@@ -712,11 +714,24 @@
                                 <br />
                                   <select id="source" class="form-control" style="width: 50%;margin: auto;" onchange="ifCustom();">
 
-                                      <option value="First Name">First Name</option>
-                                      <option value="Last Name">Last Name</option>
-                                      <option value="Mobile Number">Mobile Number</option>
-                                      <option value="Date Of Birth">Date Of Birth</option>
-                                      <option value=""></option>
+                                      <option value="namesInput">Full Name</option>
+                                      <option value="emailsInput">Email</option>
+                                      <option value="mobilesInput">Mobile Number</option>
+                                      <option value="homesInput">Home Number</option>
+                                      <option value="altInput">Alternate Number</option>
+                                      <option value="addressInput">Address</option>
+                                      <option value="postalsInput">Postal</option>
+                                      <option value="sexinput">sex</option>
+                                      <option value="nationsInput">Nationality</option>
+                                      <option value="daterange">Date Of Birth</option>
+                                      <option value="pInput">Purpose Of Visit</option>
+                                      <option value="visitbookingdate">Visit Date</option>
+                                      <option value="visitbookingtime">Visit Time</option>
+                                      <option value="patientName">Patient Name</option>
+                                      <option value="patientNric">Patient Nric</option>
+                                      <option value="bedno">Bed Number</option>
+                                      <option value="visLoc">Viit Location</option>
+                                      <option value="purposeInput">Purpose</option>
                                       <option value="custom">Custom Text</option>
                                   </select>
                                 <input type="text" id="customText" placeholder="Custom Text Here" class="text-center" style="display:none" />
@@ -741,10 +756,13 @@
                         <div class="panel-heading">
                             <h3 style="margin:0">Sample Pass Output</h3>
                         </div>
-                        <div class= " panel-body vertical-center center-block " style="background-color:darkslategray;overflow-y:auto;text-align: center; height: 93%;">
-                            <div id="passLayout" class=" " style="background-color:white;border:1px solid ;height: 50.8mm; width: 89mm;margin:auto">
+                        <div class= " panel-body vertical-center center-block " style="background-color:darkslategray;overflow-y:auto;text-align: center; height: 86%;">
+                            <div id="passLayout" class=" " style="background-color:white;border:1px solid ;height: 192px; width: 336px;margin:auto">
                                 
                             </div>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="button" class="btn btn-success" onclick="savePassState()">Save Pass Format</button>
                         </div>
                     </div>
                 </div>

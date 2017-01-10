@@ -5,3 +5,13 @@
      padding:1px;
      position:absolute !important;
 }
+
+ui-icon {
+    width: 12px !important;
+    height: 12px !important;
+    background-image: url(images/ui-icons_222222_256x240.png);
+}
+
+.forceAbsolute{
+    position:absolute !important;
+}
