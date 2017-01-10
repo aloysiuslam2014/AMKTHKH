@@ -680,10 +680,13 @@
                                     <input id="staffPerms" class="form-control" /></div>
                             </div>
                         </div>
-                        <div class="btn-group">
-                        <button type="button"  class="btn btn-warning" onclick="prepareForNewUser();">Create New User/Clear All Fields</button>
-                        <button type="button" class="btn btn-success" onclick="saveUser();">Save</button>
-                            </div>
+                        
+                        <div class="btn-group">   
+                                        
+                            <button type="button"  class="btn btn-warning" onclick="prepareForNewUser();">Create New User/Clear All Fields</button>
+                            <button type="button" class="btn btn-success" onclick="saveUser();">Save</button>
+                            
+                        </div>
                     </div>
     </div>
             </div>
