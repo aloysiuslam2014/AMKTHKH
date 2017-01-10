@@ -399,6 +399,10 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
+            List<String> qids = new List<string>();
+            List<String> questions = new List<string>();
+            List<String> qnTypes = new List<string>();
+            List<String> qnValues = new List<string>();
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[GET_SELECTED_QUESTIONNARIE]", cnn);
@@ -412,26 +416,62 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 int count = 1;
                 if (reader.HasRows)
                 {
-                    successString += "[";
+                    //successString += "[";
                     while (reader.Read())
                     {
-                        if (count > 1)
-                        {
-                            successString += ",";
-                        }
-                        successString += "{";
+                        //if (count > 1)
+                        //{
+                        //    successString += ",";
+                        //}
+                        //successString += "{";
                         // Get Question ID
-                        successString += "\"qId\":\""+reader.GetInt32(0)+"\",";
+                        //successString += "\"qId\":\""+reader.GetInt32(0)+"\",";
+                        qids.Add(reader.GetInt32(0).ToString());
                         // Get Question
-                        successString += "\"question\":\"" + reader.GetString(1) + "\",";
+                        //successString += "\"question\":\"" + reader.GetString(1) + "\",";
+                        questions.Add(reader.GetString(1));
                         // Get Question Type
-                        successString += "\"qnType\":\"" + reader.GetString(2) + "\",";
+                        //successString += "\"qnType\":\"" + reader.GetString(2) + "\",";
+                        qnTypes.Add(reader.GetString(2));
                         // Get Question Value
-                        successString += "\"values\":\"" + reader.GetString(3)  + "\"";
-                        successString += "}";
+                        //successString += "\"values\":\"" + reader.GetString(3)  + "\"";
+                        qnValues.Add(reader.GetString(3));
+                        //successString += "}";
                         count++;
                     }
-                    successString += "]";
+                    //successString += "]";
+                }
+                successString += respon.Value;
+                reader.Close();
+                cnn.Close();
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += "\"" + ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            String order = "";
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_SELECTED_QUESTIONNARIE_ORDER]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                // Add params
+                command.Parameters.AddWithValue("@pQ_QuestionList_ID", idList);
+                command.Parameters.Add(respon);
+                cnn.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                int count = 1;
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        order += reader.GetString(0);
+                        count++;
+                    }
                 }
                 successString += respon.Value;
                 reader.Close();
@@ -447,6 +487,29 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             {
                 cnn.Close();
             }
+            String[] orderArr = order.Split(',');
+            successString += "[";
+            for (int j = 0; j < orderArr.Length; j++)
+            {
+                String thisQid = orderArr[j];
+                for (int i = 0; i < questions.Count(); i++)
+                {
+                    String listQid = qids[i];
+                    if (thisQid == listQid) {
+                        if (j > 0)
+                        {
+                            successString += ",";
+                        }
+                        successString += "{";
+                        successString += "\"qId\":\"" + listQid + "\",";
+                        successString += "\"question\":\"" + questions[i] + "\",";
+                        successString += "\"qnType\":\"" + qnTypes[i] + "\",";
+                        successString += "\"values\":\"" + qnValues[i] + "\"";
+                        successString += "}";
+                    }
+                }
+            }
+            successString += "]";
             successString += "}";
             return successString;
         }

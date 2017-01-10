@@ -576,7 +576,15 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             try
             {
-                msg += CheckIn(staffuser, nric, temperature);
+                int num = checkNumCheckedIn(bedno);
+                if (num < 3) // May need to change to DB side
+                {
+                    msg += CheckIn(staffuser, nric, temperature);
+                }
+                else {
+                    successString.Replace("Success", "Failure");
+                    msg = "Visitor Limit Reached!";
+                }
             }
             catch (Exception ex) {
                 successString.Replace("Success", "Failure");
@@ -618,6 +626,35 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
+        private int checkNumCheckedIn(String bedno) {
+            SqlConnection cnn;
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            String successString = "";
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pBedNo", bedno);
+                command.Parameters.AddWithValue("@pLimit", 3); // Dynamic in the future
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                command.ExecuteNonQuery();
+                successString += respon.Value;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            return Int32.Parse(successString);
+        }
+
         private String CheckIn(String staffuser,String nric, String temp) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -641,14 +678,11 @@ namespace THKH.Webpage.Staff.CheckInOut
             catch (Exception ex)
             {
                 throw ex;
-                //successString += ex.Message;
-                //return successString;
             }
             finally
             {
                 cnn.Close();
             }
-            // Need some logic to check whether there are already 3 visitors
             return successString;
         }
 

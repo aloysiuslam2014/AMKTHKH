@@ -235,6 +235,17 @@ function hideSuccessModal() {
     $('#successModal').modal('hide');
 }
 
+// Show Max Limit Modal
+function showMaxLimitModal() {
+    $('#maxLimitModal').modal({ backdrop: 'static', keyboard: false });
+    $('#maxLimitModal').modal('show');
+}
+
+// Hide Max Limit Modal
+function hideMaxLimitModal() {
+    $('#maxLimitModal').modal('hide');
+}
+
 // ASHX page call to write info to DB
 function NewAssistReg() {
     var username = user; 
@@ -284,11 +295,19 @@ function NewAssistReg() {
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
-                var today = new Date();
-                showSuccessModal();
-                clearFields();
-                $('input:checkbox[name=declare]').attr('checked', false);
-                hideTags();
+                if (resultOfGeneration.Msg === "Visitor Limit Reached!") {
+                    // Show Error Modal!
+                    showMaxLimitModal();
+                    clearFields();
+                    $('input:checkbox[name=declare]').attr('checked', false);
+                    hideTags();
+                } else {
+                    var today = new Date();
+                    showSuccessModal();
+                    clearFields();
+                    $('input:checkbox[name=declare]').attr('checked', false);
+                    hideTags();
+                }
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
@@ -513,7 +532,7 @@ $(function () {
         {
             // dateFormat: 'dd-mm-yy',
             defaultDate: new Date(),
-            format: 'HH:mm'
+            format: 'HH:mm' // Change to 15 Min Intervals
         });
     $('#visitbookingdatediv').datetimepicker(
         {
