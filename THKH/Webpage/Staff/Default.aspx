@@ -245,14 +245,14 @@
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control regInput" id="patientName" />
                                 </div>
-                                <label for="patientNric">Patient NRIC</label>
-                                <div class="form-group">
-                                    <input type="text" runat="server" class="form-control regInput" id="patientNric" />
-                                </div>
                                 <label for="bedno">Bed Number</label>
                                 <%--Bed Number--%>
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control regInput" id="bedno" />
+                                </div>
+                                <label for="patientNric">Patient NRIC</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control regInput" id="patientNric" />
                                 </div>
                                 <label></label>
                                 <div class="form-group">
@@ -441,7 +441,7 @@
                                 </div>
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
                                 </ul>
-                                <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px">
+                                <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px;">
                                     <div class="panel-body questionEditor" style="background-color: #343637; border-style: solid; border-width: 1px;">
                                         <h3 id="editQuestionTitle">Question Details</h3>
                                         <div>Question<textarea id="detailsQn" class="form-control qnVal" rows="3" cols="80">  </textarea></div>

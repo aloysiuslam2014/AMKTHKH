@@ -498,7 +498,6 @@ function toggleQnEditor() {
         clearQnEditorFields();
         toggleListGreyOut(false)
     }
-    
 }
 
 //disable entire list
