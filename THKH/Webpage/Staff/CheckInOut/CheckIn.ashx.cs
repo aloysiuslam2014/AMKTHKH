@@ -263,7 +263,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 String response = respon.Value.ToString();
-                if (response.Length > 4)
+                if (!response.Contains("Visitor not found"))
                 {
                     msg += response;
                 }
@@ -535,7 +535,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                                             .Replace('+', '_')
                                             .Replace('/', '-')
                                             .TrimEnd('=');
-                    msg += writeQuestionnaireResponse(qaid, qListID, qAns);
+                    msg += writeQuestionnaireResponse(newQaid, qListID, qAns);
 
                 }
                 else
