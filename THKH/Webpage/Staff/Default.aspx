@@ -441,7 +441,7 @@
                                 </div>
                                 <ul class="list-group checked-list-box maxHeight" id="allQuestions" style="">
                                 </ul>
-                                <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 93px; width: 100%; height: inherit; padding-right: 30px;">
+                                <div id="qnEditor" class="panel-collapse collapse placeAboveOtherDivs" style="margin-top: 0; width: 100%; padding-right: 32px;position: absolute;top: 97px;">
                                     <div class="panel-body questionEditor" style="background-color: #343637; border-style: solid; border-width: 1px;">
                                         <h3 id="editQuestionTitle">Question Details</h3>
                                         <div>Question<textarea id="detailsQn" class="form-control qnVal" rows="3" cols="80">  </textarea></div>
