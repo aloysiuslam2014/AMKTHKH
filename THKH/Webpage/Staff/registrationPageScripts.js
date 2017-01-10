@@ -302,13 +302,22 @@ function NewAssistReg() {
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
-                var today = new Date();
-                
-                showSuccessModal();
-                //after showin then we load the pass go to the method show success modal to see
-              //clearfields moved to passManage.js
-                $('input:checkbox[name=declare]').attr('checked', false);
-                hideTags();
+                if (resultOfGeneration.Msg === "Visitor Limit Reached!") {
+                    // Show Error Modal!
+                    showMaxLimitModal();
+                    clearFields();
+                    $('input:checkbox[name=declare]').attr('checked', false);
+                    hideTags();
+                } else {
+                    var today = new Date();
+
+                    showSuccessModal();
+                    //after showin then we load the pass go to the method show success modal to see
+                    //clearfields moved to passManage.js
+                    $('input:checkbox[name=declare]').attr('checked', false);
+                    hideTags();
+                }
+              
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
