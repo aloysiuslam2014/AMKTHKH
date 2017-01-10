@@ -181,7 +181,7 @@ namespace THKH.Webpage.Staff {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText patientNric;
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden patientNric;
         
         /// <summary>
         /// otherpurposevisit control.
@@ -200,5 +200,14 @@ namespace THKH.Webpage.Staff {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText purposeInput;
+        
+        /// <summary>
+        /// qaid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden qaid;
     }
 }

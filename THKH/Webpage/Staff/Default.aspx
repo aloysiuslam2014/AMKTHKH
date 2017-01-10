@@ -250,10 +250,7 @@
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control regInput" id="bedno" />
                                 </div>
-                                <label for="patientNric">Patient NRIC</label>
-                                <div class="form-group">
-                                    <input type="text" runat="server" class="form-control regInput" id="patientNric" />
-                                </div>
+                                <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
                                 <label></label>
                                 <div class="form-group">
                                     <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span>Validate Patient</button>
@@ -294,6 +291,7 @@
                             <div id="questionaireForm">
                                 <!-- load questionaires here from JS -->
                             </div>
+                            <input type="hidden" runat="server" class="form-control regInput" id="qaid" />
                             <div class="checkbox">
                                 <label for="declaration"></label>
                                 <input type="checkbox" id="declaration" name="declare" class="regInput" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate<br />

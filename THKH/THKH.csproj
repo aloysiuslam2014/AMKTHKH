@@ -135,7 +135,7 @@
     <Content Include="Webpage\SQL Script\AddVisitor.sql" />
     <Content Include="Webpage\SQL Script\thkhdb create procedures.sql" />
     <Content Include="Webpage\SQL Script\thkhdb create tables.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_26Dec16.sql" />
+    <Content Include="Webpage\SQL Script\THKHDB_10Jan17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_2Jan17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_7Jan17.sql" />
     <Content Include="Webpage\Staff\ContactTracing\query.js" />
