@@ -38,6 +38,7 @@ function callCheck (){
                 } else {
                     var visitString = resultOfGeneration.Visit;
                     var questionnaireAns = resultOfGeneration.Questionnaire;
+                    //var qaid = resultOfGeneration.QAID;
                     var visitorArr = [];
                     var visitArr = [];
                     var questionnaireArr = [];
@@ -81,6 +82,7 @@ function callCheck (){
                         $("#purposeInput").prop('value', visitArr[5]);
                         $("#visLoc").prop('value', visitArr[6]);
                         $("#bedno").prop('value', visitArr[7]);
+                        $("#qaid").prop('value', visitArr[8]);
                     } if (questionnaireArr.length > 1) {
                         for (i = 0; i < questionnaireArr.length; i++) {
                             var jsonAnswerObject = questionnaireArr[i];
@@ -91,6 +93,7 @@ function callCheck (){
                             $("input[name='" + qid + "'][value='" + answer + "']").prop("checked", true);
                             $("input[id='" + qid + "']").prop("value", answer);
                         }
+                        //$("#qaid").prop('value', qaid);
                     }
                     else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
                         clearFields();
@@ -226,13 +229,27 @@ $("#temp").on("input", function () {
 
 // Show Success Modal
 function showSuccessModal() {
+    $('#successModal').on('shown.bs.modal', function () {
+        getPassState();
+    })
     $('#successModal').modal({ backdrop: 'static', keyboard: false });
-    $('#successModal').modal('show');
+ 
 }
 
 // Hide Success Modal
 function hideSuccessModal() {
     $('#successModal').modal('hide');
+}
+
+// Show Max Limit Modal
+function showMaxLimitModal() {
+    $('#maxLimitModal').modal({ backdrop: 'static', keyboard: false });
+    $('#maxLimitModal').modal('show');
+}
+
+// Hide Max Limit Modal
+function hideMaxLimitModal() {
+    $('#maxLimitModal').modal('hide');
 }
 
 // ASHX page call to write info to DB
@@ -268,12 +285,13 @@ function NewAssistReg() {
     var remarks = $("#remarksinput").val();
     var visitLoc = $("#visLoc").val();
     var qAnswers = getQuestionnaireAnswers();
+    var qaid = $("#qaid").val();
 
     var headersToProcess = {
         staffUser:username,fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
         AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose,pName: pName, pNric: pNric,
         otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza,
-        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp, qListID: qListID, qAnswers: qAnswers
+        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp, qListID: qListID, qAnswers: qAnswers, qaid: qaid
     };
     $.ajax({
         url: './CheckInOut/checkIn.ashx',
@@ -284,11 +302,22 @@ function NewAssistReg() {
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
-                var today = new Date();
-                showSuccessModal();
-                clearFields();
-                $('input:checkbox[name=declare]').attr('checked', false);
-                hideTags();
+                if (resultOfGeneration.Msg === "Visitor Limit Reached!") {
+                    // Show Error Modal!
+                    showMaxLimitModal();
+                    clearFields();
+                    $('input:checkbox[name=declare]').attr('checked', false);
+                    hideTags();
+                } else {
+                    var today = new Date();
+
+                    showSuccessModal();
+                    //after showin then we load the pass go to the method show success modal to see
+                    //clearfields moved to passManage.js
+                    $('input:checkbox[name=declare]').attr('checked', false);
+                    hideTags();
+                }
+              
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
@@ -513,7 +542,7 @@ $(function () {
         {
             // dateFormat: 'dd-mm-yy',
             defaultDate: new Date(),
-            format: 'HH:mm'
+            format: 'HH:mm' // Change to 15 Min Intervals
         });
     $('#visitbookingdatediv').datetimepicker(
         {
@@ -554,7 +583,7 @@ function hideTags() {
     $("#purWarning").css("display", "none");
     $("#locWarning").css("display", "none");
     loadFacilities();
-    populateNationalities();
+    populateRegNationalities();
     loadActiveForm();
 }
 
@@ -659,7 +688,7 @@ function loadActiveForm() {
 }
 
 // Populates Nationality Field
-function populateNationalities() {
+function populateRegNationalities() {
     var nationalities = [
         'Singaporean',
         'Afghan',

@@ -106,16 +106,11 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var visitLocation = context.Request.Form["visitLocation"];
                 var qListID = context.Request.Form["qListID"];
                 var qAns = context.Request.Form["qAnswers"];
-                long ticks = DateTime.Now.Ticks;
-                byte[] bytes = BitConverter.GetBytes(ticks);
-                string qaid = Convert.ToBase64String(bytes) // Find a way to generate UNIQUE numbers!!!
-                                        .Replace('+', '_')
-                                        .Replace('/', '-')
-                                        .TrimEnd('=');
+                var qAnsId = context.Request.Form["qaid"];
 
                 successString = AssistReg(staffUser,nric, age, fname, address, postal, mobtel, alttel, hometel,
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
-            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature, qListID, qAns, qaid);
+            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature, qListID, qAns, qAnsId);
             }
             if (typeOfRequest == "facilities") {
                 successString = getFacilities();
@@ -268,7 +263,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 String response = respon.Value.ToString();
-                if (response.Length > 4)
+                if (!response.Contains("Visitor not found"))
                 {
                     msg += response;
                 }
@@ -357,6 +352,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         private String getSubmittedQuestionnaireResponse(String qAID) {
             SqlConnection cnn;
+            //String successString = "\"QAID\":\"" + qAID + "\",\"Questionnaire\":";
             String successString = "\"Questionnaire\":";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
@@ -531,7 +527,21 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             try
             {
-                msg += writeQuestionnaireResponse(qaid, qListID, qAns);
+                if (qaid == "")
+                {
+                    long ticks = DateTime.Now.Ticks;
+                    byte[] bytes = BitConverter.GetBytes(ticks);
+                    string newQaid = Convert.ToBase64String(bytes) // Find a way to generate UNIQUE numbers!!!
+                                            .Replace('+', '_')
+                                            .Replace('/', '-')
+                                            .TrimEnd('=');
+                    msg += writeQuestionnaireResponse(newQaid, qListID, qAns);
+
+                }
+                else
+                {
+                    msg += writeQuestionnaireResponse(qaid, qListID, qAns);
+                }
             }
             catch (Exception ex)
             {
@@ -576,7 +586,15 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             try
             {
-                msg += CheckIn(staffuser, nric, temperature);
+                int num = checkNumCheckedIn(bedno);
+                if (num < 3) // May need to change to DB side
+                {
+                    msg += CheckIn(staffuser, nric, temperature);
+                }
+                else {
+                    successString.Replace("Success", "Failure");
+                    msg = "Visitor Limit Reached!";
+                }
             }
             catch (Exception ex) {
                 successString.Replace("Success", "Failure");
@@ -618,6 +636,35 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
+        private int checkNumCheckedIn(String bedno) {
+            SqlConnection cnn;
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            String successString = "";
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pBedNo", bedno);
+                command.Parameters.AddWithValue("@pLimit", 3); // Dynamic in the future
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                command.ExecuteNonQuery();
+                successString += respon.Value;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            return Int32.Parse(successString);
+        }
+
         private String CheckIn(String staffuser,String nric, String temp) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -641,14 +688,11 @@ namespace THKH.Webpage.Staff.CheckInOut
             catch (Exception ex)
             {
                 throw ex;
-                //successString += ex.Message;
-                //return successString;
             }
             finally
             {
                 cnn.Close();
             }
-            // Need some logic to check whether there are already 3 visitors
             return successString;
         }
 
