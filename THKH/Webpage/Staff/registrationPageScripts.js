@@ -464,7 +464,7 @@ function getQuestionnaireAnswers() {
     var qIds = [];
     var allAnswers = [];
     // Get label values
-    $("#selfregistration .question").each(function (index, value) {
+    $("#questionaireForm .question").each(function (index, value) {
         var question = $(this).text();
         var id = $(this).attr('for');
         qIds.push(id);
@@ -472,7 +472,7 @@ function getQuestionnaireAnswers() {
     });
 
     // get question answers
-    $("#selfregistration .answer").each(function (index, value) {
+    $("#questionaireForm .answer").each(function (index, value) {
         var element = $(this);
         var id = $(value).attr('id');
         if (id == null) {

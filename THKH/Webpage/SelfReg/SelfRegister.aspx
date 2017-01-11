@@ -220,7 +220,7 @@
                                     </div>
                                     <label for="nricsInput">NRIC</label><label for="existnric" id="comp2" style="color:red">*</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="nricsInput" />
+                                        <input type="text" runat="server" class="form-control required" id="nricsInput" readonly />
                                     </div>
                                     <label for="mobileinput">Mobile Number</label><label for="mobilesinput" id="comp0" style="color:red">*</label>
                                     <div class="form-group">

@@ -491,6 +491,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             respon.Direction = ParameterDirection.Output;
             String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
             String msg = "";
+            string qAid = qaid;
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISITOR_PROFILE]", cnn);
@@ -527,20 +528,20 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             try
             {
-                if (qaid == "")
+                if (qAid == "")
                 {
                     long ticks = DateTime.Now.Ticks;
                     byte[] bytes = BitConverter.GetBytes(ticks);
-                    string newQaid = Convert.ToBase64String(bytes) // Find a way to generate UNIQUE numbers!!!
+                    qAid = Convert.ToBase64String(bytes) // Find a way to generate UNIQUE numbers!!!
                                             .Replace('+', '_')
                                             .Replace('/', '-')
                                             .TrimEnd('=');
-                    msg += writeQuestionnaireResponse(newQaid, qListID, qAns);
+                    msg += writeQuestionnaireResponse(qAid, qListID, qAns);
 
                 }
                 else
                 {
-                    msg += writeQuestionnaireResponse(qaid, qListID, qAns);
+                    msg += updateQuestionnaireResponse(qAid, qListID, qAns);
                 }
             }
             catch (Exception ex)
@@ -565,7 +566,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pReason", otherPurpose);
                 command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
                 command.Parameters.AddWithValue("@pBedNo", bedno);
-                command.Parameters.AddWithValue("@pQaID", qaid);
+                command.Parameters.AddWithValue("@pQaID", qAid);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
@@ -624,6 +625,36 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 successString += respon.Value +"\"";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            return successString;
+        }
+
+        private String updateQuestionnaireResponse(String qaid, String qListID, String qAns)
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            String successString = ",\"Questionnaire\":\"";
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTIONNARIE_RESPONSE]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pQA_ID", qaid);
+                command.Parameters.AddWithValue("@pQA_JSON", qAns);
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                command.ExecuteNonQuery();
+                successString += respon.Value + "\"";
             }
             catch (Exception ex)
             {
