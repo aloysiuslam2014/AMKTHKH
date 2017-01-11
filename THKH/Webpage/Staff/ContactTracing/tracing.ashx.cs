@@ -19,13 +19,22 @@ namespace THKH.Webpage.Staff.ContactTracing
         {
             context.Response.ContentType = "text/plain";
             var action = context.Request.Form["action"];
-            var returnoputput="";
+            var returnoutput="";
             if (action.Equals("getValidTerminals"))
             {
                 var query = context.Request.Form["queries"];
-                returnoputput =  getValidTerminals(query);
+                returnoutput =  getValidTerminals(query);
             }
-            context.Response.Write(returnoputput);
+            if (action.Equals("traceByReg"))
+            {
+                var query = context.Request.Form["queries"];
+                returnoutput = traceByReg(query);
+            }
+            context.Response.Write(returnoutput);
+        }
+
+        public String traceByReg(String query) {
+            return "Incomplete ashx code";
         }
 
         public String getValidTerminals(String query)

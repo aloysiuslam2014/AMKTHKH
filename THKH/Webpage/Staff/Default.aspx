@@ -797,10 +797,53 @@
                 { %>
     <!-- ContactTracing -->
     <div class="tab-pane maxHeight" id="ContactTracing">
-         <div class="row inheritHeight">
+        <div style="display:inline;margin:5px">
+            <button type="button" onclick="toggleToByReg(); false;" class="btn btn-warning">By Registered Intent</button>
+            <button type="button" onclick="toggleToByMove(); false;" class="btn btn-warning">By Terminal Scan</button>
+        </div>
+        <div class="row" id="byRegistration">
+            <h3 style="">Query by Registered Intent</h3>
+            <div class="form-group col-sm-2"></div>
+            <div class="form-group col-sm-8">
+                <div class="col-sm-4">
+                    <div class="input-group date" id="ri_querystartdatetime">
+                        <input type='text' id="ri_qstartdatetime" class="form-control required" placeholder="Start DateTime" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="input-group date" id="ri_queryenddatetime">
+                        <input type='text' id="ri_qenddatetime" class="form-control required" placeholder="End DateTime" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    $(function () {
+                        $('#ri_querystartdatetime').datetimepicker();
+                    });
+                    $(function () {
+                        $('#ri_queryenddatetime').datetimepicker();
+                    });
+                </script>
+
+                <div class="input-group col-sm-4" id="ri_querybedrange">
+                    <input type="text" class="form-control" id="ri_querybeds" placeholder="Beds: 1-4,7,10 " />
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning" id="traceByReg" onclick="traceByReg();"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+         <div class="row" id="byMovement" style="display:none">
              <!-- query input portion -->
              <div class="col-sm-6 panel" style="height: 95%;">
-                 <h3 style="">Build Queries</h3>
+                 <h3 style="">Query by Terminal Scan</h3>
                  <div class="form-group">
 
                      <div class="col-sm-4">
@@ -831,7 +874,6 @@
                      </script>
                 
                      <div class="input-group col-sm-4" id="querybedrange">
-                         <%--<input  type="text" class="form-control" id="querybeds" placeholder="Beds: 1-4,7,10 " />--%>
                          <span class="input-group-btn">
                                 <button class="btn btn-primary" id="addDateTimeRange" onclick="getValidTerminals();">Find Valid Terminals</button>
                          </span>
@@ -858,12 +900,6 @@
                      <span class="input-group-btn">
                          <button class="btn btn-warning" onclick="submitQueries(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
                      </span>
-                     <br />
-                     <label hidden>
-                         <input type="checkbox" class="form-control" id="byRegistration" name="checkbox" value="value" />By Registered Visit</label>
-                     <br />
-                     <label hidden>
-                         <input type="checkbox" class="form-control" id="byScan" name="checkbox" value="value" />By Scanned Location</label>
                  </div>
              </div>
 

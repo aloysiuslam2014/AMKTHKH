@@ -261,6 +261,7 @@
     <Content Include="Webpage\Staff\QuestionaireManagement\questionaireManagement.ashx" />
     <Content Include="Webpage\Staff\UserManagement\userManagement.ashx" />
     <Content Include="Webpage\Staff\PassManagement\passMgmt.ashx" />
+    <Content Include="Webpage\Staff\ContactTracing\tracing.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config">
@@ -278,6 +279,9 @@
     </Compile>
     <Compile Include="Webpage\Staff\CheckInOut\checkIn.ashx.cs">
       <DependentUpon>checkIn.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Webpage\Staff\ContactTracing\tracing.ashx.cs">
+      <DependentUpon>tracing.ashx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Staff\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
