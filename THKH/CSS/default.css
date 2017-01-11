@@ -125,5 +125,6 @@ body{
 }
 .userDetails{
     height:300px;
+    overflow-y:auto;
 }
 /*End registration self register portion*/
