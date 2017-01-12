@@ -151,10 +151,12 @@
     <Content Include="Webpage\SQL Script\thkhdb create procedures.sql" />
     <Content Include="Webpage\SQL Script\thkhdb create tables.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_10Jan17.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_2Jan17.sql" />
+    <Content Include="Webpage\SQL Script\THKHDB_12Jan17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_7Jan17.sql" />
     <Content Include="Webpage\Staff\ContactTracing\query.js" />
-    <Content Include="Webpage\Staff\default.js" />
+    <Content Include="Webpage\Staff\default.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Webpage\Staff\PassManagement\passManage.js" />
     <Content Include="Webpage\Staff\QuestionaireManagement\loadQuestionaire.js" />
     <Content Include="Webpage\Staff\TerminalCalls\adminTerminal.js" />

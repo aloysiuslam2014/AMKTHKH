@@ -26,8 +26,30 @@
 
 
 </head>
-<body onload="hideTags()">
+<body onload="">
     <% var accessRightsStr = Session["accessRights"].ToString(); %>
+    <script type="text/javascript">
+        $(function () {
+
+
+            $(document).ready(function () {// once ready then we toglle based  on ajax calls
+                $("#loadingGif").toggle(false);
+                hideTags();
+                $(document).ajaxStart(function () {
+                    $("#loadingGif").toggle(true);
+                });
+                //or...
+                $(document).ajaxComplete(function () {
+                    $("#loadingGif").toggle(false);
+                });
+            });
+        });
+    </script>
+     <!-- Loading Gif Here -->
+     <div id="loadingGif" style="width:100%;height:100%;background-color:black;opacity:0.5;position: absolute;top: 0;left: 0;z-index: 10000;">
+        <img src="../../Assets/cube.svg" style="position: absolute;left: calc(50% - 99px);top: calc(50% - 99px);"/>
+
+    </div>
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
 
@@ -72,7 +94,7 @@
                         if (accessRightsStr.Contains('5'))
                         {%>
                     <li>
-                        <a href="#PassManagement" data-toggle="tab">Pass Management
+                        <a href="#PassManagement" data-toggle="tab" onclick="loadPassState()">Pass Management
                         </a>
                     </li>
                     <%  }
@@ -111,7 +133,7 @@
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h4 class="modal-title" id="memberModalLabel1" style="color:midnightblue">Registration Successful</h4>
+                                <h4 class="modal-title" id="memberModalLabel1">Registration Successful</h4>
                             </div>
                             <div class="modal-body text-center" id="userSuccess">
                                     <label>Visit data recorded at <%=DateTime.Now %>.</label>
@@ -369,7 +391,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4 style="color:midnightblue">Success</h4>
+                                                <h4>Success</h4>
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
@@ -389,7 +411,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4 style="color:midnightblue">Success</h4>
+                                                <h4>Success</h4>
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
                                                 <label style="color:green">Questionnaire set as Active!</label>
@@ -408,7 +430,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4 style="color:midnightblue">Success</h4>
+                                                <h4>Success</h4>
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
@@ -500,7 +522,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4 style="color:midnightblue">Add New Terminal </h4>
+                                                <h4>Add New Terminal </h4>
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
@@ -682,7 +704,7 @@
                                     <input id="staffTitle" class="form-control userInput" /></div>
                                 <label>Permission</label>
                                 <div class="form-group">
-                                    <input id="staffPerms" class="form-control userInput" /></div>
+                                    <input id="staffPerms" class="form-control userInput" /></div> 
                             </div>
                         </div>
                         
@@ -959,11 +981,7 @@
     <script type="text/javascript">
         var user = '<%= Session["username"].ToString() %>';
     </script>
-    <!-- Loading Gif Here -->
-     <div id="loadingGif" style="width:100%;height:100%;background-color:black;opacity:0.5;position: absolute;top: 0;left: 0;z-index: 10000;">
-        <img src="../../Assets/cube.svg" style="position: absolute;left: calc(50% - 99px);top: calc(50% - 99px);"/>
-
-    </div>
+   
 </body>
    
 </html>
