@@ -14,10 +14,10 @@
 
         success: function (returner) {
             var byRegResults = JSON.parse(returner);
-            var byRegResultsJson = byRegResults.Msg;
-            var visitors = byRegResultsJson.users;
-            var visitDetails = byRegResultsJson.visitdetails;
-            writebyRegResultsTable(visitors, visitDetails);
+            var byRegResultsJson = byRegResults.Msg[0];
+            var visitors = byRegResultsJson.visitors;
+            var visitDetails = byRegResultsJson.visitorDetails;
+            writeByRegResultsTable(visitors, visitorDetails);
         },
         error: function (err) {
             alert("There was a problem retrieving valid terminals.");
@@ -25,8 +25,26 @@
     });
 }
 
-function writebyRegResultsTable(visitors, visitDetails) {
-    alert("This should be a table appearing after querying");
+function writeByRegResultsTable(visitors, visitorDetails) {
+    var visitors = [];
+    visitors = JSON.parse(visitors);
+    
+    for (index = 0; index < visitors.length; ++index) {
+        var v = visitors[i];
+        var vparams = ["nric", "fullName", "gender", "nationality", "dateOfBirth", "race", "mobileTel", "homeTel", "altTel", "email", "homeAddress", "postalCode", "time_stamp", "confirm", "amend"];
+
+
+        //visitor
+        var row = document.createElement("tr");
+
+        for (rowindex = 0; rowindex < vparams.length; ++rowindex) {
+            var cell = document.createElement("td");
+            $(cell).html(v[vparams[rowindex]]);
+            $(row).append(cell);
+        }
+
+        $("#ri_resultTable_body").append(row);
+    }
 }
 
 function getValidTerminals() {
