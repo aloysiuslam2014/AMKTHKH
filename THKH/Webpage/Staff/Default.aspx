@@ -704,7 +704,7 @@
                                     <input id="staffTitle" class="form-control userInput" /></div>
                                 <label>Permission</label>
                                 <div class="form-group">
-                                    <input id="staffPerms" class="form-control userInput" /></div>
+                                    <input id="staffPerms" class="form-control userInput" /></div> 
                             </div>
                         </div>
                         
