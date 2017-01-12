@@ -26,8 +26,30 @@
 
 
 </head>
-<body onload="hideTags()">
+<body onload="">
     <% var accessRightsStr = Session["accessRights"].ToString(); %>
+    <script type="text/javascript">
+        $(function () {
+
+
+            $(document).ready(function () {// once ready then we toglle based  on ajax calls
+                $("#loadingGif").toggle(false);
+                hideTags();
+                $(document).ajaxStart(function () {
+                    $("#loadingGif").toggle(true);
+                });
+                //or...
+                $(document).ajaxComplete(function () {
+                    $("#loadingGif").toggle(false);
+                });
+            });
+        });
+    </script>
+     <!-- Loading Gif Here -->
+     <div id="loadingGif" style="width:100%;height:100%;background-color:black;opacity:0.5;position: absolute;top: 0;left: 0;z-index: 10000;">
+        <img src="../../Assets/cube.svg" style="position: absolute;left: calc(50% - 99px);top: calc(50% - 99px);"/>
+
+    </div>
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
 
@@ -491,7 +513,7 @@
                     <div class="col-md-8 col-md-offset-2 inheritHeight flexDisplay">
                         <div class="panel  panel-primary maxWidth  removeBtmMargin">
                             <div class="panel-heading" style="font-size: 36px;">Terminals</div>
-                            <div class="panel-body maxHeightWithButtonSpaceBelow">
+                            <div class="panel-body " style="height:calc(100% - 140px)">
 
                                 <div class="modal fade" id="addTerminalModal" role="dialog">
                                     <div class="modal-dialog">
@@ -572,19 +594,20 @@
                                         <!-- auto generated -->
                                     </ul>
                                 </div>
-
-
-                            </div>
-                            <div>
-                                <button id="addTerminal" class="btn-primary btn-lg">Add Terminal</button>
-                                <button id="deactivateTerminal" class="btn-primary btn-lg">Deactivate Selected Terminal</button>
-                                <button id="deleteTerminal" class="btn-primary btn-lg">Delete Selected Terminal</button>
+                                   <div>
+                                <button id="addTerminal" class="btn-primary btn">Add Terminal</button>
+                                <button id="deactivateTerminal" class="btn-primary btn">Deactivate Selected Terminal</button>
+                                <button id="deleteTerminal" class="btn-primary btn">Delete Selected Terminal</button>
 
                             </div>
                             <div>
-                                <button id="deactivateAll" class="btn-primary btn-lg">Deactivate All Terminals</button>
-                                <button id="deleteAll" class="btn-primary btn-lg">Delete All Terminals</button>
+                                <button id="deactivateAll" class="btn-primary btn">Deactivate All Terminals</button>
+                                <button id="deleteAll" class="btn-primary btn">Delete All Terminals</button>
                             </div>
+
+
+                            </div>
+                         
                         </div>
                     </div>
                 </div>
@@ -704,9 +727,9 @@
                 <div id="passBodySample" style="width: 100%; height: inherit; margin: 0;" class="panel">
                     <div id="optionsForPass" class="col-sm-4 panel panel-primary inheritHeight" style="padding: 0">
                         <div class="panel-heading" >
-                            <h3 style="margin:0">Edit Pass Settings </h3>
+                            <h4 style="margin:0">Edit Pass Settings </h4>
                         </div>
-                        <div class="panel-body" style="overflow-y:auto">
+                        <div class="panel-body" style="overflow-y:auto;height: calc(100% - 40px);">
                          <div class="row">
                                <h3 style="margin: 0;">Select Size of pass:</h3>
                             <div class="btn-group">
@@ -773,18 +796,20 @@
 
                         </div>
                     </div>
-                    <div id="sampleOutput" class="col-sm-8 row inheritHeight panel" style="background-color: initial">
+                    <div id="sampleOutput" style="background-color: initial; padding: 0; position: relative;" class=" col-sm-8 inheritHeight panel">
                         <div class="panel-heading">
-                            <h3 style="margin:0">Sample Pass Output</h3>
+                            <h4 style="margin: 0">Sample Pass Output</h4>
                         </div>
-                        <div class= " panel-body vertical-center center-block " style="background-color:darkslategray;overflow-y:auto;text-align: center; height: 86%;">
-                            <div id="passLayout" class=" " style="background-color:white;border:1px solid ;height: 192px; width: 336px;margin:auto">
-                                
+                        <div style="background-color: darkslategray; overflow-y: auto; text-align: center; height: calc(100% - 40px); position: relative; padding: 0;" class=" panel-body vertical-center center-block ">
+                            <button type="button" class="btn btn-success" onclick="savePassState()" style=" position: absolute; top: 0; left: calc(50% - 70px);  ">Save Pass Format</button>
+                            <div id="passLayout" class=" " style="background-color: white; border: 1px solid; height: 197px; width: 280px; margin: auto;margin-top:40px">
                             </div>
+
+                            <div>
+                            </div>
+
                         </div>
-                        <div class="panel-footer">
-                            <button type="button" class="btn btn-success" onclick="savePassState()">Save Pass Format</button>
-                        </div>
+
                     </div>
                 </div>
 
@@ -930,5 +955,7 @@
     <script type="text/javascript">
         var user = '<%= Session["username"].ToString() %>';
     </script>
+   
 </body>
+   
 </html>
