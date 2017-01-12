@@ -26,12 +26,15 @@ function loadPassState() {
             var res = resultOfGeneration.Result;
             if (res.toString() == "Success") {
                 var passSetup = resultOfGeneration.Msg;
-                var passLayout = passSetup.divState;
-                var elementPositionsJson = JSON.parse(passSetup.positions);
-                //var testtt = elementPositionsJson["barcode"];
+                if (passSetup != null) { //pass configurations exist
+                    var passLayout = passSetup.divState;
+                    var elementPositionsJson = JSON.parse(passSetup.positions);
+                    //var testtt = elementPositionsJson["barcode"];
+
+                    var layout = $(passLayout).html();
+                    $("#passLayout").append(layout);
+                }
                
-                var layout = $(passLayout).html();
-                $("#passLayout").append(layout);
                
             } else {
                 alert(resultOfGeneration.Msg);
