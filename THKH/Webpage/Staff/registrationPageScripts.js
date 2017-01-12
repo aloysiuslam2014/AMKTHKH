@@ -42,15 +42,14 @@ function callCheck (){
                     var visitorArr = [];
                     var visitArr = [];
                     var questionnaireArr = [];
-                    if (resultOfGeneration.Visit != null) {
+                    if (resultOfGeneration.Visit != null & resultOfGeneration.Visit != "0") {
                         visitArr = visitString.split(",");
                     }
                     if (resultOfGeneration.Visitor != null) {
                         visitorArr = visitorString.split(",");
-                    }
-                    if (resultOfGeneration.Questionnaire != null) {
-                        // Logic to handle JSON
-                        questionnaireArr = JSON.parse(resultOfGeneration.Questionnaire).Main;
+                        if (resultOfGeneration.Questionnaire != null) {
+                            questionnaireArr = JSON.parse(resultOfGeneration.Questionnaire).Main;
+                        }
                     }
                     if (visitorArr.length > 1) {
                         // Populate fields if data exists
