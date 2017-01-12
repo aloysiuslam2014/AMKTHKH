@@ -50,7 +50,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             respon.Direction = ParameterDirection.Output;
             SqlParameter visitors = new SqlParameter("@Visitors", System.Data.SqlDbType.VarChar);
             respon.Direction = ParameterDirection.Output;
-            SqlParameter visitorDetails = new SqlParameter("@Visitor Details", System.Data.SqlDbType.VarChar);
+            SqlParameter visitorDetails = new SqlParameter("@Visitor_Details", System.Data.SqlDbType.VarChar);
             respon.Direction = ParameterDirection.Output;
 
             try
