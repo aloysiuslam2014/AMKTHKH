@@ -774,7 +774,7 @@
                                       <option value="patientName">Patient Name</option>
                                       <option value="patientNric">Patient Nric</option>
                                       <option value="bedno">Bed Number</option>
-                                      <option value="visLoc">Viit Location</option>
+                                      <option value="visLoc">Visit Location</option>
                                       <option value="purposeInput">Purpose</option>
                                       <option value="custom">Custom Text</option>
                                   </select>
