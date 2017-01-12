@@ -98,9 +98,8 @@ function closeUpdateSuccess() {
 function loadFormManagementOnce() {
     if (!initialLoadCompleted) {
         formManagementInit();
-    } else {
         initialLoadCompleted = true;
-    }
+    } 
 }
 
 // Get questionaireList and Question list
@@ -545,7 +544,8 @@ function updateOrCreate() {
                 questionType: questionType,
                 questionValues: questionVal
             };
-        } else {
+        }
+        else {
             var valid = /^[,]*$/.test(questionVal.toString());
             if (questionType !== "text" & (questionVal == "" || /^[,]*$/.test(questionVal.toString()))) {
                 $("#questionValWarning").css("display", "block");
@@ -560,30 +560,32 @@ function updateOrCreate() {
             }
             var resultOfGeneration = "";
 
-            $.ajax({
-                url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
-                method: 'post',
-                data: headersToProcess,
-
-
-                success: function (returner) {
-                    resultOfGeneration = JSON.parse(returner);
-                    var res = resultOfGeneration.Result;
-                    if (res == "Success") {
-                        $("#emptyQuestionWarning").css("display", "none");
-                        $("#questionValWarning").css("display", "none");
-                        formManagementInit();
-                        closeEditor();
-
-                    } else {
-                        alert("An error has occured. Please Contact the administrator");
-                    }
-                },
-                error: function (err) {
-                    alert(err.Msg);
-                },
-            });
         }
+
+
+        $.ajax({
+            url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+            method: 'post',
+            data: headersToProcess,
+
+
+            success: function (returner) {
+                resultOfGeneration = JSON.parse(returner);
+                var res = resultOfGeneration.Result;
+                if (res == "Success") {
+                    $("#emptyQuestionWarning").css("display", "none");
+                    $("#questionValWarning").css("display", "none");
+                    formManagementInit();
+                    closeEditor();
+
+                } else {
+                    alert("An error has occured. Please Contact the administrator");
+                }
+            },
+            error: function (err) {
+                alert(err.Msg);
+            },
+        });
     } else {
         $("#emptyQuestionWarning").css("display", "block");
     }

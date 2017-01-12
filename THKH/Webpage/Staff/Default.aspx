@@ -491,7 +491,7 @@
                     <div class="col-md-8 col-md-offset-2 inheritHeight flexDisplay">
                         <div class="panel  panel-primary maxWidth  removeBtmMargin">
                             <div class="panel-heading" style="font-size: 36px;">Terminals</div>
-                            <div class="panel-body maxHeightWithButtonSpaceBelow">
+                            <div class="panel-body " style="height:calc(100% - 140px)">
 
                                 <div class="modal fade" id="addTerminalModal" role="dialog">
                                     <div class="modal-dialog">
@@ -572,19 +572,20 @@
                                         <!-- auto generated -->
                                     </ul>
                                 </div>
-
-
-                            </div>
-                            <div>
-                                <button id="addTerminal" class="btn-primary btn-lg">Add Terminal</button>
-                                <button id="deactivateTerminal" class="btn-primary btn-lg">Deactivate Selected Terminal</button>
-                                <button id="deleteTerminal" class="btn-primary btn-lg">Delete Selected Terminal</button>
+                                   <div>
+                                <button id="addTerminal" class="btn-primary btn">Add Terminal</button>
+                                <button id="deactivateTerminal" class="btn-primary btn">Deactivate Selected Terminal</button>
+                                <button id="deleteTerminal" class="btn-primary btn">Delete Selected Terminal</button>
 
                             </div>
                             <div>
-                                <button id="deactivateAll" class="btn-primary btn-lg">Deactivate All Terminals</button>
-                                <button id="deleteAll" class="btn-primary btn-lg">Delete All Terminals</button>
+                                <button id="deactivateAll" class="btn-primary btn">Deactivate All Terminals</button>
+                                <button id="deleteAll" class="btn-primary btn">Delete All Terminals</button>
                             </div>
+
+
+                            </div>
+                         
                         </div>
                     </div>
                 </div>
@@ -704,9 +705,9 @@
                 <div id="passBodySample" style="width: 100%; height: inherit; margin: 0;" class="panel">
                     <div id="optionsForPass" class="col-sm-4 panel panel-primary inheritHeight" style="padding: 0">
                         <div class="panel-heading" >
-                            <h3 style="margin:0">Edit Pass Settings </h3>
+                            <h4 style="margin:0">Edit Pass Settings </h4>
                         </div>
-                        <div class="panel-body" style="overflow-y:auto">
+                        <div class="panel-body" style="overflow-y:auto;height: calc(100% - 40px);">
                          <div class="row">
                                <h3 style="margin: 0;">Select Size of pass:</h3>
                             <div class="btn-group">
@@ -773,18 +774,20 @@
 
                         </div>
                     </div>
-                    <div id="sampleOutput" class="col-sm-8 row inheritHeight panel" style="background-color: initial">
+                    <div id="sampleOutput" style="background-color: initial; padding: 0; position: relative;" class=" col-sm-8 inheritHeight panel">
                         <div class="panel-heading">
-                            <h3 style="margin:0">Sample Pass Output</h3>
+                            <h4 style="margin: 0">Sample Pass Output</h4>
                         </div>
-                        <div class= " panel-body vertical-center center-block " style="background-color:darkslategray;overflow-y:auto;text-align: center; height: 86%;">
-                            <div id="passLayout" class=" " style="background-color:white;border:1px solid ;height: 192px; width: 336px;margin:auto">
-                                
+                        <div style="background-color: darkslategray; overflow-y: auto; text-align: center; height: calc(100% - 40px); position: relative; padding: 0;" class=" panel-body vertical-center center-block ">
+                            <button type="button" class="btn btn-success" onclick="savePassState()" style=" position: absolute; top: 0; left: calc(50% - 70px);  ">Save Pass Format</button>
+                            <div id="passLayout" class=" " style="background-color: white; border: 1px solid; height: 197px; width: 280px; margin: auto;margin-top:40px">
                             </div>
+
+                            <div>
+                            </div>
+
                         </div>
-                        <div class="panel-footer">
-                            <button type="button" class="btn btn-success" onclick="savePassState()">Save Pass Format</button>
-                        </div>
+
                     </div>
                 </div>
 
@@ -797,10 +800,53 @@
                 { %>
     <!-- ContactTracing -->
     <div class="tab-pane maxHeight" id="ContactTracing">
-         <div class="row inheritHeight">
+        <div style="display:inline;margin:5px">
+            <button type="button" onclick="toggleToByReg(); false;" class="btn btn-warning">By Registered Intent</button>
+            <button type="button" onclick="toggleToByMove(); false;" class="btn btn-warning">By Terminal Scan</button>
+        </div>
+        <div class="row" id="byRegistration">
+            <h3 style="">Query by Registered Intent</h3>
+            <div class="form-group col-sm-2"></div>
+            <div class="form-group col-sm-8">
+                <div class="col-sm-4">
+                    <div class="input-group date" id="ri_querystartdatetime">
+                        <input type='text' id="ri_qstartdatetime" class="form-control required" placeholder="Start DateTime" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="input-group date" id="ri_queryenddatetime">
+                        <input type='text' id="ri_qenddatetime" class="form-control required" placeholder="End DateTime" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    $(function () {
+                        $('#ri_querystartdatetime').datetimepicker();
+                    });
+                    $(function () {
+                        $('#ri_queryenddatetime').datetimepicker();
+                    });
+                </script>
+
+                <div class="input-group col-sm-4" id="ri_querybedrange">
+                    <input type="text" class="form-control" id="ri_querybeds" placeholder="Beds: 1-4,7,10 " />
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning" id="traceByReg" onclick="traceByReg();"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+         <div class="row" id="byMovement" style="display:none">
              <!-- query input portion -->
              <div class="col-sm-6 panel" style="height: 95%;">
-                 <h3 style="">Build Queries</h3>
+                 <h3 style="">Query by Terminal Scan</h3>
                  <div class="form-group">
 
                      <div class="col-sm-4">
@@ -831,7 +877,6 @@
                      </script>
                 
                      <div class="input-group col-sm-4" id="querybedrange">
-                         <%--<input  type="text" class="form-control" id="querybeds" placeholder="Beds: 1-4,7,10 " />--%>
                          <span class="input-group-btn">
                                 <button class="btn btn-primary" id="addDateTimeRange" onclick="getValidTerminals();">Find Valid Terminals</button>
                          </span>
@@ -858,12 +903,6 @@
                      <span class="input-group-btn">
                          <button class="btn btn-warning" onclick="submitQueries(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
                      </span>
-                     <br />
-                     <label hidden>
-                         <input type="checkbox" class="form-control" id="byRegistration" name="checkbox" value="value" />By Registered Visit</label>
-                     <br />
-                     <label hidden>
-                         <input type="checkbox" class="form-control" id="byScan" name="checkbox" value="value" />By Scanned Location</label>
                  </div>
              </div>
 
@@ -894,5 +933,11 @@
     <script type="text/javascript">
         var user = '<%= Session["username"].ToString() %>';
     </script>
+    <!-- Loading Gif Here -->
+     <div id="loadingGif" style="width:100%;height:100%;background-color:black;opacity:0.5;position: absolute;top: 0;left: 0;z-index: 10000;">
+        <img src="../../Assets/cube.svg" style="position: absolute;left: calc(50% - 99px);top: calc(50% - 99px);"/>
+
+    </div>
 </body>
+   
 </html>

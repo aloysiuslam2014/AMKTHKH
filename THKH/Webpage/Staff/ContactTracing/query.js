@@ -1,4 +1,35 @@
-﻿function getValidTerminals() {
+﻿function traceByReg() {
+    $("traceByRegResultTable").remove();
+    var ri_dateStart = $("#ri_qstartdatetime").val();
+    var ri_dateEnd = $("#ri_qenddatetime").val();
+    var ri_querybeds = $("#ri_querybeds").val();
+
+    byRegQueryParams = ri_dateStart + '~' + ri_dateEnd + '~' + ri_querybeds;
+
+    var headersToProcess = { action: "traceByReg", queries: byRegQueryParams };
+    $.ajax({
+        url: './ContactTracing/tracing.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+        success: function (returner) {
+            var byRegResults = JSON.parse(returner);
+            var byRegResultsJson = byRegResults.Msg;
+            var visitors = byRegResultsJson.users;
+            var visitDetails = byRegResultsJson.visitdetails;
+            writebyRegResultsTable(visitors, visitDetails);
+        },
+        error: function (err) {
+            alert("There was a problem retrieving valid terminals.");
+        },
+    });
+}
+
+function writebyRegResultsTable(visitors, visitDetails) {
+    alert("This should be a table appearing after querying");
+}
+
+function getValidTerminals() {
     $(validTerminalList).html("");
     var dateStart = $("#qstartdatetime").val();// value in real time // DOM-live value , Static-web value
     var dateEnd = $("#qenddatetime").val();
@@ -12,7 +43,7 @@
         data: headersToProcess,
 
         success: function (returner) {
-            terminalQuery = JSON.parse(returner);
+            var terminalQuery = JSON.parse(returner);
             var terminalarr = [];
             terminalarr = terminalQuery.Msg;
             for (index = 0; index < terminalarr.length; ++index) {
@@ -144,6 +175,16 @@ function writeTerminalResult(terminal, startdate, enddate) {
     $(listDiv).append(endd_div);
     $(listObj).append(listDiv);
     $("#validTerminalList").append(listObj);
+}
+
+function toggleToByReg() {
+    $("#byRegistration").toggle(true);
+    $("#byMovement").toggle(false);
+}
+
+function toggleToByMove() {
+    $("#byRegistration").toggle(false);
+    $("#byMovement").toggle(true);
 }
 
 function addDateTimeRange() {

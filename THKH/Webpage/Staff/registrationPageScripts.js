@@ -98,6 +98,9 @@ function callCheck (){
                         clearFields();
                     }
                 }
+                $('#main').animate({
+                    scrollTop: $("#userData").offset().top
+                }, 1000);
             } else {
                 alert("Error: " + resultOfGeneration.Msg);
             }
