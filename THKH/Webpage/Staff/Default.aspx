@@ -94,7 +94,7 @@
                         if (accessRightsStr.Contains('5'))
                         {%>
                     <li>
-                        <a href="#PassManagement" data-toggle="tab">Pass Management
+                        <a href="#PassManagement" data-toggle="tab" onclick="loadPassState()">Pass Management
                         </a>
                     </li>
                     <%  }
@@ -704,7 +704,7 @@
                                     <input id="staffTitle" class="form-control userInput" /></div>
                                 <label>Permission</label>
                                 <div class="form-group">
-                                    <input id="staffPerms" class="form-control userInput" /></div>
+                                    <input id="staffPerms" class="form-control userInput" /></div> 
                             </div>
                         </div>
                         
