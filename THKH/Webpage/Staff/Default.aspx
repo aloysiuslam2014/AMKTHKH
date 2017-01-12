@@ -35,7 +35,7 @@
             $(document).ready(function () {// once ready then we toglle based  on ajax calls
                 $("#loadingGif").toggle(false);
                 hideTags();
-                $(document).ajaxSuccess(function () {
+                $(document).ajaxStart(function () {
                     $("#loadingGif").toggle(true);
                 });
                 //or...
