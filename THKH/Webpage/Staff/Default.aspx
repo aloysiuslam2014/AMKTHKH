@@ -26,7 +26,7 @@
 
 
 </head>
-<body onload="hideTags()">
+<body onload="">
     <% var accessRightsStr = Session["accessRights"].ToString(); %>
     <script type="text/javascript">
         $(function () {
@@ -34,7 +34,7 @@
 
             $(document).ready(function () {// once ready then we toglle based  on ajax calls
                 $("#loadingGif").toggle(false);
-
+                hideTags();
                 $(document).ajaxSuccess(function () {
                     $("#loadingGif").toggle(true);
                 });
