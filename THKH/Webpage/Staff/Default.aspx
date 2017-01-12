@@ -133,7 +133,7 @@
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h4 class="modal-title" id="memberModalLabel1" style="color:midnightblue">Registration Successful</h4>
+                                <h4 class="modal-title" id="memberModalLabel1">Registration Successful</h4>
                             </div>
                             <div class="modal-body text-center" id="userSuccess">
                                     <label>Visit data recorded at <%=DateTime.Now %>.</label>
@@ -391,7 +391,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4 style="color:midnightblue">Success</h4>
+                                                <h4>Success</h4>
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
@@ -411,7 +411,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4 style="color:midnightblue">Success</h4>
+                                                <h4>Success</h4>
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
                                                 <label style="color:green">Questionnaire set as Active!</label>
@@ -430,7 +430,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4 style="color:midnightblue">Success</h4>
+                                                <h4>Success</h4>
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
@@ -522,7 +522,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4 style="color:midnightblue">Add New Terminal </h4>
+                                                <h4>Add New Terminal </h4>
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
