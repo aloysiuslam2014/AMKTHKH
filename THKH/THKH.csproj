@@ -86,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\cube.svg" />
     <Content Include="Assets\hospital logo transparent.png" />
     <Content Include="Assets\hospitalLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

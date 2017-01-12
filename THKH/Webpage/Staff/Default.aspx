@@ -933,5 +933,11 @@
     <script type="text/javascript">
         var user = '<%= Session["username"].ToString() %>';
     </script>
+    <!-- Loading Gif Here -->
+     <div id="loadingGif" style="width:100%;height:100%;background-color:black;opacity:0.5;position: absolute;top: 0;left: 0;z-index: 10000;">
+        <img src="../../Assets/cube.svg" style="position: absolute;left: calc(50% - 99px);top: calc(50% - 99px);"/>
+
+    </div>
 </body>
+   
 </html>
