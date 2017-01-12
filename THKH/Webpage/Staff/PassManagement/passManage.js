@@ -10,6 +10,42 @@ function convertDvToImg() {
     });
 }
 
+function loadPassState() {
+    var headersToProcess = {
+        requestType: "getPassState"
+
+    };
+    $.ajax({
+        url: '../Staff/PassManagement/passMgmt.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Result;
+            if (res.toString() == "Success") {
+                var passSetup = resultOfGeneration.Msg;
+                var passLayout = passSetup.divState;
+                var elementPositionsJson = JSON.parse(passSetup.positions);
+                //var testtt = elementPositionsJson["barcode"];
+               
+                var layout = $(passLayout).html();
+                $("#passLayout").append(layout);
+               
+            } else {
+                alert(resultOfGeneration.Msg);
+            }
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+
+    });
+
+
+}
+
 function getPassState() {
     var headersToProcess = {
         requestType: "getPassState"
@@ -74,6 +110,7 @@ function savePassState() {
         },
     });
 }
+
 
 
 function createPassAppendParent(parent, target, datapositions) {

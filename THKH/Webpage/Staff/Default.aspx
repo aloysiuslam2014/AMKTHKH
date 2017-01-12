@@ -94,7 +94,7 @@
                         if (accessRightsStr.Contains('5'))
                         {%>
                     <li>
-                        <a href="#PassManagement" data-toggle="tab">Pass Management
+                        <a href="#PassManagement" data-toggle="tab" onclick="loadPassState()">Pass Management
                         </a>
                     </li>
                     <%  }
