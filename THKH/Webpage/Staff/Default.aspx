@@ -806,8 +806,8 @@
         </div>
         <div class="row" id="byRegistration">
             <h3 style="">Query by Registered Intent</h3>
-            <div class="form-group col-sm-2"></div>
-            <div class="form-group col-sm-8">
+           
+            <div class="form-group col-sm-offset-2 col-sm-8">
                 <div class="col-sm-4">
                     <div class="input-group date" id="ri_querystartdatetime">
                         <input type='text' id="ri_qstartdatetime" class="form-control required" placeholder="Start DateTime" />
@@ -841,7 +841,33 @@
                         <button class="btn btn-warning" id="traceByReg" onclick="traceByReg();"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
                     </span>
                 </div>
+                
             </div>
+            <div class="form-group col-sm-12" id="ri_results" style="overflow-x">
+                    <table id ="ri_resultTable" class="table table-bordered" style:"padding-left:10px padding-right:10px">
+                        <thead>
+                            <tr>
+                                <th>nric</th>
+                                <th>fullName</th>
+                                <th>gender</th>
+                                <th>nationality</th>
+                                <th>dateOfBirth</th>
+                                <th>race</th>
+                                <th>mobileTel</th>
+                                <th>homeTel</th>
+                                <th>altTel</th>
+                                <th>email</th>
+                                <th>homeAddress</th>
+                                <th>postalCode</th>
+                                <th>time_stamp</th>
+                                <th>confirm</th>
+                                <th>amend</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ri_resultTable_body">
+                        </tbody>
+                    </table>
+                </div>
         </div>
          <div class="row" id="byMovement" style="display:none">
              <!-- query input portion -->

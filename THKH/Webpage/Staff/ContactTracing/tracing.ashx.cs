@@ -34,7 +34,58 @@ namespace THKH.Webpage.Staff.ContactTracing
         }
 
         public String traceByReg(String query) {
-            return "Incomplete ashx code";
+            String result = "";
+            String[] queryParts = query.Split('~');
+            DateTime ri_dateStart = DateTime.Parse(queryParts[0]);
+            DateTime ri_dateEnd = DateTime.Parse(queryParts[1]);
+            String bedNo = queryParts[2];
+
+            dynamic json = new ExpandoObject();
+            dynamic innerItem = new ExpandoObject();
+            ArrayList byBedNoResults = new ArrayList();
+
+            SqlConnection cnn;
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            SqlParameter visitors = new SqlParameter("@Visitors", System.Data.SqlDbType.VarChar);
+            respon.Direction = ParameterDirection.Output;
+            SqlParameter visitorDetails = new SqlParameter("@Visitor Details", System.Data.SqlDbType.VarChar);
+            respon.Direction = ParameterDirection.Output;
+
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_TRACE_BEDNO]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pStart_Date", ri_dateStart);
+                command.Parameters.AddWithValue("@pEnd_Date", ri_dateEnd);
+                command.Parameters.AddWithValue("@pBed_No", bedNo);
+
+                command.Parameters.Add(respon);
+                command.Parameters.Add(visitors);
+                command.Parameters.Add(visitorDetails);
+                cnn.Open();
+                command.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                json.Result = "Failed";
+                json.Msg = ex.Message;
+            }
+
+            String response_visitors = visitors.Value.ToString();
+            String response_visitorDetails = visitorDetails.Value.ToString();
+            innerItem.visitors = response_visitors;
+            innerItem.visitorDetails = response_visitorDetails;
+            byBedNoResults.Add(innerItem);
+
+            json.Result = "Success";
+            json.Msg = byBedNoResults;
+
+            result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
+
+            return result;
         }
 
         public String getValidTerminals(String query)
