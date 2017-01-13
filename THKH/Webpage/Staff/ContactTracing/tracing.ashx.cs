@@ -48,11 +48,12 @@ namespace THKH.Webpage.Staff.ContactTracing
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            SqlParameter visitors = new SqlParameter("@Visitors", System.Data.SqlDbType.VarChar);
-            respon.Direction = ParameterDirection.Output;
-            SqlParameter visitorDetails = new SqlParameter("@Visitor_Details", System.Data.SqlDbType.VarChar);
-            respon.Direction = ParameterDirection.Output;
-
+            SqlParameter visitors = new SqlParameter("@Visitors", System.Data.SqlDbType.NVarChar);
+            visitors.Direction = ParameterDirection.Output;
+            visitors.Size = 4000;
+            SqlParameter visitorDetails = new SqlParameter("@Visitor_Details", System.Data.SqlDbType.NVarChar);
+            visitorDetails.Direction = ParameterDirection.Output;
+            visitorDetails.Size = 4000;
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[GET_TRACE_BEDNO]", cnn);

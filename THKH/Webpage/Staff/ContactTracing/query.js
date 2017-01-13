@@ -17,7 +17,7 @@
             var byRegResultsJson = byRegResults.Msg[0];
             var visitors = byRegResultsJson.visitors;
             var visitDetails = byRegResultsJson.visitorDetails;
-            writeByRegResultsTable(visitors, visitorDetails);
+            writeByRegResultsTable(visitors, visitDetails);
         },
         error: function (err) {
             alert("There was a problem retrieving valid terminals.");
@@ -25,12 +25,12 @@
     });
 }
 
-function writeByRegResultsTable(visitors, visitorDetails) {
-    var visitors = [];
-    visitors = JSON.parse(visitors);
-    
+function writeByRegResultsTable(visitorsx, visitorDetails) {
+    var visitors  ;
+    visitors = JSON.parse(visitorsx);
+    visitors = visitors.Visitors;
     for (index = 0; index < visitors.length; ++index) {
-        var v = visitors[i];
+        var v = visitors[index];
         var vparams = ["nric", "fullName", "gender", "nationality", "dateOfBirth", "race", "mobileTel", "homeTel", "altTel", "email", "homeAddress", "postalCode", "time_stamp", "confirm", "amend"];
 
 
