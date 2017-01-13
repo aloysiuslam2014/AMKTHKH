@@ -14,6 +14,7 @@ var validAlt = true;
 var validHom = true;
 var validTemp = true;
 var validPos = true;
+var regCompleted = true;
 
 // Check for visitor details & any online self registration information
 function callCheck (){
@@ -312,10 +313,11 @@ function NewAssistReg() {
                     hideTags();
                 } else {
                     var today = new Date();
-
+                    regCompleted = true;
                     showSuccessModal();
                     //after showin then we load the pass go to the method show success modal to see
                     //clearfields moved to passManage.js
+                    clearFields();
                     $('input:checkbox[name=declare]').attr('checked', false);
                     hideTags();
                 }
@@ -328,13 +330,22 @@ function NewAssistReg() {
             alert(err.Msg);
         },
     });
+    $('input[id="ignoreNric"]').prop('checked', false);
 }
 
 function clearFields() {
-    $("#registration .regInput").each(function (idx, obj) {
-        if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp")
-        $(obj).prop('value','');
-    });
+    if (regCompleted) {
+        $("#registration .regInput").each(function (idx, obj) {
+            $(obj).prop("value", "");
+        });
+        regCompleted = false;
+    } else {
+        $("#registration .regInput").each(function (idx, obj) {
+            if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp") {
+                $(obj).prop("value", "");
+            }
+        });
+    }
 }
 
 // Display appropriate panels according to visit purpose

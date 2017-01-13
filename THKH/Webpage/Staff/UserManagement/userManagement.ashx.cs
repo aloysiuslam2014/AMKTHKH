@@ -39,6 +39,9 @@ namespace THKH.Webpage.Staff.UserManagement
             if (requestType == "addUser") {
 
             }
+            if (requestType == "getPermissions") {
+                successString = getPermissions();
+            }
             context.Response.Write(successString);
         }
 
@@ -306,6 +309,56 @@ namespace THKH.Webpage.Staff.UserManagement
                 cnn.Close();
             }
             successString += "}";
+            return successString;
+        }
+
+        private String getPermissions()
+        {
+            SqlConnection cnn;
+            String successString = "";//result and msg 
+            dynamic jsonObj = new ExpandoObject();
+            dynamic responseJson = new ExpandoObject();
+            ArrayList contentOf = new ArrayList();
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_USER_PERMISSIONS]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                //command.Parameters.AddWithValue('@pNric', nric);
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                jsonObj.Msg = "Success";
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        responseJson = new ExpandoObject();
+                        responseJson.accessID = reader.GetInt32(0);
+                        responseJson.accessName = reader.GetString(1);
+                        contentOf.Add(responseJson);
+                    }
+
+                }
+                jsonObj.Result = contentOf;
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                jsonObj.Msg = "Failure";
+                jsonObj.Result = ex.Message;
+                successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj);
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
             return successString;
         }
 

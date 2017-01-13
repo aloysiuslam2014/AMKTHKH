@@ -3,6 +3,7 @@ var loadedUsers = false;
 //Load users once
 function loadUsersOnce() {
     if (!loadedUsers) {
+        loadPermissionsField();
         getAllUsers();
     } else {
         loadedUsers = true;
@@ -15,7 +16,7 @@ function getAllUsers() {
         requestType: "loadUsers"
     };
     $.ajax({
-        url: './UserManagement/userManagement.ashx',
+        url: '../Staff/UserManagement/userManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -179,7 +180,7 @@ function getUserDetails(listObj) {
         requestType: "getUser"
     };
     $.ajax({
-        url: './UserManagement/userManagement.ashx',
+        url: '../Staff/UserManagement/UserManagement/userManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -213,11 +214,12 @@ function getUserDetails(listObj) {
 }
 // Update User Data
 function updateUser() {
+    var permissions = getPermissionInput();
     var headersToProcess = {
         pName: pName, bedno: bedno, requestType: "updateUser"
     };
     $.ajax({
-        url: './userManagement.ashx',
+        url: '../Staff/UserManagement/userManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -235,10 +237,10 @@ function updateUser() {
 // Delete Selected User
 function deleteUser() {
     var headersToProcess = {
-        pName: pName, bedno: bedno, requestType: "deleteUser"
+        requestType: "deleteUser"
     };
     $.ajax({
-        url: './userManagement.ashx',
+        url: '../Staff/UserManagement/userManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -255,11 +257,13 @@ function deleteUser() {
 
 // Add new user
 function addUser() {
+    var permissions = getPermissionInput();
+
     var headersToProcess = {
-        pName: pName, bedno: bedno, requestType: "addUser"
+        requestType: "addUser"
     };
     $.ajax({
-        url: './userManagement.ashx',
+        url: '../Staff/UserManagement/userManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -283,6 +287,18 @@ function clearStaffFields() {
     var update = false;
 }
 
+function getPermissionInput() {
+    var permissions = "";
+    $("#permiss .perm").each(function (index, value) {
+        var element = $(this);
+        var id = $(value).attr('id');
+        var check = element.is(":checked");
+        if (check) {
+            permissions += id;
+        }
+    });
+    return permissions;
+}
 
 // Populates Nationality Field
 function populateNationalities() {
@@ -488,4 +504,41 @@ function populateNationalities() {
             $(optin).html(nationalities[i]);
             $('#staffNationality').append(optin);
     }
+}
+
+function loadPermissionsField() {
+    var headersToProcess = {
+        requestType: "getPermissions"
+    };
+    $.ajax({
+        url: '../Staff/UserManagement/userManagement.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Msg == "Success") {
+                var result = resultOfGeneration.Result;
+                var htmlString = "";
+                for (i = 0; i < result.length; i++) {
+                    var ids = result[i].accessID;
+                    var names = result[i].accessName;
+                    htmlString += "<div class='checkbox'><label><input class='perm' type='checkbox' name='id" + i + "' value='" + ids + "'> " + names + "</label></div>";
+                }
+                var formElement = document.createElement("DIV");
+                $(formElement).attr("class", "list-group-item");
+                $(formElement).attr("style", "text-align: left");
+                $(formElement).attr("data-color", "info");
+                $(formElement).attr("id", 17);
+                $(formElement).html(htmlString);
+                $("#permiss").append(formElement);
+            } else {
+                // Error Msg here
+            }
+        },
+        error: function (err) {
+            alert("Error: " + err.msg + ". Please contact the adminsitrator.");
+        },
+    });
 }

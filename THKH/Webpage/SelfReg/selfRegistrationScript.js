@@ -418,6 +418,7 @@ function amendVisitorDetails() {
     } else {
         $('#newusercontent').css("display", "none");
         $('#newusercontent input').removeClass('required');
+        $("#amend").attr('value', 0);
     }
 }
 

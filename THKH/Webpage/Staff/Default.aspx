@@ -173,7 +173,7 @@
                                     <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
                                 </span>
                             </div>
-                            <h4 id="emptyNricWarning" style="color: red">Please enter your NRIC/Identification Number!</h4>
+                            <h4 id="emptyNricWarning" style="color: red">Please enter an NRIC/Identification Number!</h4>
                             <div id="nricWarnDiv">
                                 <h4 id="nricWarning" style="color: red">Non-Singapore Based NRIC/ID!</h4>
                                 <div class="checkbox">
@@ -703,8 +703,9 @@
                                 <div class="form-group">
                                     <input id="staffTitle" class="form-control userInput" /></div>
                                 <label>Permission</label>
-                                <div class="form-group">
-                                    <input id="staffPerms" class="form-control userInput" /></div> 
+                                <div id="permiss" class="form-group">
+                                    <%--<input id="staffPerms" class="form-control userInput" /></div> --%>
+                                <%--To replace with checkbox--%>
                             </div>
                         </div>
                         

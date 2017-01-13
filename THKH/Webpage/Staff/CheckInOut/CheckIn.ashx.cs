@@ -74,6 +74,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var pName = context.Request.Form["pName"];
                 var bedno = context.Request.Form["bedno"];
                 successString = checkPatient(pName, bedno);
+                //checkHospitalPatient(pName, bedno);
         }
         if (typeOfRequest == "confirmation") {
                 // Write to Visitor_Profile, Visit, Confirmed & CheckInCheckOut Tables
@@ -245,6 +246,52 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
+        // Check if patient exists in the Patient Database
+        private String checkHospitalPatient(String pName, String bedno)
+        {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["patientConnection"].ConnectionString);
+            //SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, -1);
+            //respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("SELECT (Pat_NRIC + ',' + Pat_Name + ',' + CAST(Bed AS VARCHAR(100))) FROM[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE Pat_Name LIKE '%' + @pPatientFullName + '%' AND Bed = @pBedNo", cnn);
+                command.CommandType = System.Data.CommandType.Text;
+                command.Parameters.AddWithValue("@pBedNo", bedno);
+                command.Parameters.AddWithValue("@pPatientFullName", pName);
+                //command.Parameters.Add(respon);
+                cnn.Open();
+
+                //command.ExecuteNonQuery();
+                //successString += respon.Value;
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        successString += reader.GetString(0);
+                    }
+                }
+                else
+                {
+                    successString += "none";
+                }
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "\"}";
+            return successString;
+        }
+
         private String getVisitorDetails(String nric) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
@@ -364,6 +411,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pQA_ID", qAID);
                 command.Parameters.Add(respon);
                 cnn.Open();
+
 
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
