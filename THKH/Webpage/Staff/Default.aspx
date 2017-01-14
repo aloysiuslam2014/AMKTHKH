@@ -664,7 +664,7 @@
                             <div class="col-md-6">
                                 <label>Email</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffEmail" class="form-control required userInput" /></div>
+                                    <input id="staffEmail" class="form-control required userInput" placeholder="<ID>@AMKTHKH.com" /></div>
                                 <label>First Name</label><label style="color: red">*</label>
                                 <div class="form-group">
                                     <input id="staffFirstName" class="form-control required userInput" /></div>
