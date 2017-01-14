@@ -256,14 +256,25 @@ function addTextToPass() {
    
     var labelToInsert = document.createElement("label");
     
-    $(labelToInsert).html( selectedSource);
+    $(labelToInsert).html(selectedSource);
+    if ($('input[name="textPosition"]:checked').val() !=null) {
+        $(labelToInsert).css('text-align',($('input[name="textPosition"]:checked').val()));
+    }
+    if ($('#passFontSize').val()!="") {
+        $(labelToInsert).css('font-size', $('#passFontSize').val());
+    }
+   
     $(labelToInsert).prop("value", selectedSource);
     $(labelToInsert).prop("class", selectedSource);
     $(labelToInsert).prop("id", selectedSource);
-    $(labelToInsert).prop("style", "text-overflow:ellipsis; ");
-    $(labelToInsert).resizable({
+    $(labelToInsert).css("text-overflow", "ellipsis ");
+    if ($("#textSizeable").is(':checked')) {
+         $(labelToInsert).resizable({
         containment: "#passLayout"
     });
+    }
+
+   
     createDraggablElement(labelToInsert);
     
     $("#passLayout ").append(labelToInsert);

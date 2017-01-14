@@ -786,10 +786,11 @@
                              </div>
                             <hr />
                             <div class="row">
-                                <h3 style="margin-top: 0;">Add Text</h3>
+                                <h4 style="margin-top: 0;">Add Text</h4>
                                 Source of the text to be displayed:
                                 <br />
-                                  <select id="source" class="form-control" style="width: 50%;margin: auto;" onchange="ifCustom();">
+                                <div>
+                                  <select id="source" class="" style="width: 50%;margin: auto;color:black" onchange="ifCustom();">
 
                                       <option value="namesInput">Full Name</option>
                                       <option value="emailsInput">Email</option>
@@ -811,18 +812,37 @@
                                       <option value="purposeInput">Purpose</option>
                                       <option value="custom">Custom Text</option>
                                   </select>
+                                    <label>Resizable:</label><input type="checkbox" id="textSizeable" /></div>
                                 <input type="text" id="customText" placeholder="Custom Text Here" class="text-center" style="display:none" />
-                                <br />
+                                
+                                
+                                <div id="text-align">
+                                    <label >Text-Align:</label>
+                                     <label class="radio-inline">
+                                      <input type="radio" name="textPosition" value="left"/>Left
+                                    </label>
+                                    <label class="radio-inline">
+                                      <input type="radio" name="textPosition" value="center"/>Center
+                                    </label>
+                                    <label class="radio-inline">
+                                      <input type="radio" name="textPosition" value="right"/>Right
+                                    </label>
+                                </div>
+                                <div id="font-Size">
+                                    <label>Font Size:</label>
+                                    <input id="passFontSize" placeholder="Default size is 10.5pt" />
+                                </div>
+
                                 <button type="button" class="btn btn-success " id="addText"  onclick="addTextToPass();">Add Text</button>
                             </div>
                             <hr />
                             <div class="row">
-                                <h3 style="margin-top: 0;">Add Barcode</h3>
+                                <h4 style="margin-top: 0;">Add Barcode</h4>
                                 <button type="button" class="btn btn-primary"  id="addBarcode" onclick="addBarCodeToPassLayout()">Add Barcode</button>
                             </div>
                             <hr />
                             <div>
-                                <h3 style="margin-top: 0;">Add Image</h3>
+                                <h4 style="margin-top: 0;">Add Image</h4>
                                 <button type="button" class="btn btn-primary" id="addBgImg" onclick="$('#imageUpload').click();">Add Image</button>
                                 <input type="file" id="imageUpload" onchange="createImageAndAdd(this)" class="hidden"/>
                             </div>
