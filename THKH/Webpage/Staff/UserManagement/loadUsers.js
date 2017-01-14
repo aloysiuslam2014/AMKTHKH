@@ -1,8 +1,17 @@
 ﻿//var to check if users are already loaded
 var loadedUsers = false;
+// To check if current process is add user or update user
+var newUser = true;
+// To check if inputs are valid
+var validMobUser = true;
+var validAltUser = true;
+var validHomUser = true;
+var validPosUser = true;
+
 //Load users once
 function loadUsersOnce() {
     if (!loadedUsers) {
+        hideUserTags();
         loadPermissionsField();
         getAllUsers();
     } else {
@@ -30,7 +39,7 @@ function getAllUsers() {
             }
         },
         error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the adminsitrator.");
+            alert("Error: " + err.msg + ". Please contact the administrator.");
         },
     });
 }
@@ -165,7 +174,6 @@ function selectAllUsers() {
 }
 //deselect all from a target list given a keyword
 function deSelectAllUsers() {
- 
     $("#usersLis li.active span").each(function (idx, li) {
             $(li).triggerHandler('click');
         });
@@ -208,15 +216,34 @@ function getUserDetails(listObj) {
             }
         },
         error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the adminsitrator.");
+            alert("Error: " + err.msg + ". Please contact the administrator.");
         },
     });
 }
+
 // Update User Data
 function updateUser() {
     var permissions = getPermissionInput();
+    var fname = $("#staffFirstName").val();
+    var lname = $("#staffLastName").val();
+    var snric = $("#staffNric").val();
+    var address = $("#staffAddress").val();
+    var postal = $("#staffPostal").val();
+    var mobtel = $("#staffMobileNum").val();
+    var alttel = $("#staffAltNum").val();
+    var hometel = $("#staffHomeNum").val();
+    var sex = $("#staffSex").val();
+    var nationality = $("#staffNationality").val();
+    var dob = $("#staffDOB").val();
+    var race = $("#staffRace").val();
+    var age = $("#staffAge").val();
+    var Email = $("#staffEmail").val();
+    var staffTitle = $("#staffTitle").val();
+    var staffPwd = $("#staffPwd").val();
+
     var headersToProcess = {
-        pName: pName, bedno: bedno, requestType: "updateUser"
+        fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
+        race: race, age: age, email: Email, title: staffTitle, staffPwd: staffPwd,requestType: "addUser"
     };
     $.ajax({
         url: '../Staff/UserManagement/userManagement.ashx',
@@ -229,15 +256,17 @@ function updateUser() {
 
         },
         error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the adminsitrator.");
+            alert("Error: " + err.msg + ". Please contact the administrator.");
         },
     });
 }
 
 // Delete Selected User
 function deleteUser() {
+    var snric = $("#staffNric").val();
+    var Email = $("#staffEmail").val();
     var headersToProcess = {
-        requestType: "deleteUser"
+        nric: snric, email:Email, requestType: "deleteUser"
     };
     $.ajax({
         url: '../Staff/UserManagement/userManagement.ashx',
@@ -250,7 +279,7 @@ function deleteUser() {
 
         },
         error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the adminsitrator.");
+            alert("Error: " + err.msg + ". Please contact the administrator.");
         },
     });
 }
@@ -258,9 +287,26 @@ function deleteUser() {
 // Add new user
 function addUser() {
     var permissions = getPermissionInput();
+    var fname = $("#staffFirstName").val();
+    var lname = $("#staffLastName").val();
+    var snric = $("#staffNric").val();
+    var address = $("#staffAddress").val();
+    var postal = $("#staffPostal").val();
+    var mobtel = $("#staffMobileNum").val();
+    var alttel = $("#staffAltNum").val();
+    var hometel = $("#staffHomeNum").val();
+    var sex = $("#staffSex").val();
+    var nationality = $("#staffNationality").val();
+    var dob = $("#staffDOB").val();
+    var race = $("#staffRace").val();
+    var age = $("#staffAge").val();
+    var Email = $("#staffEmail").val();
+    var staffTitle = $("#staffTitle").val();
+    var staffPwd = $("#staffPwd").val();
 
     var headersToProcess = {
-        requestType: "addUser"
+        fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
+        race:race, age:age, email:Email, title:staffTitle, permissions:permissions, staffPwd:staffPwd, requestType: "addUser"
     };
     $.ajax({
         url: '../Staff/UserManagement/userManagement.ashx',
@@ -270,7 +316,13 @@ function addUser() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-
+            if (resultOfGeneration.Result == "Success") {
+                if (resultOfGeneration.Msg == "Success") {
+                    // Show Success Modal
+                    alert("User Added!");
+                }
+                // If User exists already, prompt user to click on update instead
+            }
         },
         error: function (err) {
             alert("Error: " + err.msg + ". Please contact the adminsitrator.");
@@ -287,17 +339,44 @@ function clearStaffFields() {
     var update = false;
 }
 
+// Retrive value from checkbox
 function getPermissionInput() {
     var permissions = "";
     $("#permiss .perm").each(function (index, value) {
         var element = $(this);
-        var id = $(value).attr('id');
+        var val = $(value).attr('value');
         var check = element.is(":checked");
         if (check) {
-            permissions += id;
+            permissions += val;
         }
     });
     return permissions;
+}
+
+// For field validations
+function checkRequiredFieldsUser() {
+    var valid = true;
+    $.each($("#userInfo input.required"), function (index, value) {
+        var element = $(value).val();
+        if (!element || element == "") {
+            valid = false;
+            $(value).css('background', '#f3f78a');
+        }
+    });
+    if (!validMobUser || !validHomUser || !validAltUser || !validPosUser || !checkNationalsUser()) {
+        valid = false;
+    }
+    if (valid) {
+        $('#emptyUserFields').css("display", "none");
+        //if (type == "update") {
+            //updateUser();
+        //} else {
+            addUser();
+        //}
+    }
+    else {
+        $('#emptyUserFields').css("display", "block");
+    }
 }
 
 // Populates Nationality Field
@@ -524,7 +603,7 @@ function loadPermissionsField() {
                 for (i = 0; i < result.length; i++) {
                     var ids = result[i].accessID;
                     var names = result[i].accessName;
-                    htmlString += "<div class='checkbox'><label><input class='perm' type='checkbox' name='id" + i + "' value='" + ids + "'> " + names + "</label></div>";
+                    htmlString += "<div class='checkbox'><label><input class='perm required userInput' type='checkbox' name='id" + i + "' value='" + ids + "'> " + names + "</label></div>";
                 }
                 var formElement = document.createElement("DIV");
                 $(formElement).attr("class", "list-group-item");
@@ -542,3 +621,102 @@ function loadPermissionsField() {
         },
     });
 }
+
+// Datetime Picker JQuery
+$(function () {
+    $('#staffDOBDiv').datetimepicker({
+        // dateFormat: 'dd-mm-yy',
+        defaultDate: new Date(),
+        maxDate: 'now',
+        format: 'DD-MM-YYYY'
+    });
+});
+
+// hide all warnings on page load
+function hideUserTags() {
+    $("#emptyUserFields").css("display", "none");
+    $("#altWarningUser").css("display", "none");
+    $("#emptyNricWarningUser").css("display", "none");
+    $("#nricWarningUser").css("display", "none");
+    $("#mobWarningUser").css("display", "none");
+    $("#posWarningUser").css("display", "none");
+    $("#homWarningUser").css("display", "none");
+    $("#altWarningUser").css("display", "none");
+    $("#natWarningUser").css("display", "none");
+}
+
+// Check nationality input field
+function checkNationalsUser() {
+    if ($("#staffNationality").val() == "") {
+        $("#natWarningUser").css("display", "block");
+        return false;
+    } else {
+        $("#natWarningUser").css("display", "none");
+    }
+    return true;
+}
+
+// Validate NRIC format
+$("#staffNric").on("input", function () {
+    if ($("#staffNric").val() == "") {
+        $("#emptyNricWarningUser").css("display", "block");
+        $("#nricWarningUser").css("display", "none");
+    }else{
+        var validNric = validateNRIC($("#staffNric").val());
+        if (validNric !== false) {
+            $("#emptyNricWarningUser").css("display", "none");
+            $("#nricWarningUser").css("display", "none");
+        } else {
+            $("#nricWarningUser").css("display", "block");
+            $("#emptyNricWarningUser").css("display", "none");
+        }
+    }
+});
+
+// Validate mobile phone number format
+$("#staffMobileNum").on("input", function () {
+    var validPhone = validatePhone($("#staffMobileNum").val());
+    if (validPhone !== false) {
+        $("#mobWarningUser").css("display", "none");
+        validMobUser = true;
+    } else {
+        $("#mobWarningUser").css("display", "block");
+        validMobUser = false;
+    }
+});
+
+// Validate postal code number format
+$("#staffPostal").on("input", function () {
+    var validPostal = validatePhone($("#staffPostal").val());
+    if (validPostal !== false) {
+        $("#posWarningUser").css("display", "none");
+        validPosUser = true;
+    } else {
+        $("#posWarningUser").css("display", "block");
+        validPosUser = false;
+    }
+});
+
+// Validate home phone number format
+$("#staffHomeNum").on("input", function () {
+    var validPhone = validatePhone($("#staffHomeNum").val());
+    if (validPhone !== false) {
+        $("#homWarningUser").css("display", "none");
+        validHomUser = true;
+    } else {
+        $("#homWarningUser").css("display", "block");
+        validHomUser = false;
+    }
+});
+
+// Validate alt phone number format
+$("#staffAltNum").on("input", function () {
+    var validPhone = validatePhone($("#staffAltNum").val());
+    if (validPhone !== false) {
+        $("#altWarningUser").css("display", "none");
+        validAltUser = true;
+    } else {
+        $("#altWarningUser").css("display", "block");
+        validAltUser = false;
+    }
+});

@@ -647,77 +647,95 @@
                         <h3 style="margin-top: 0;margin-bottom: 0;">User details</h3>
                         <div>
                             <div class="col-md-6">
-                                <label>Email</label>
+                                <label>Email</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffEmail" class="form-control userInput" /></div>
-                                <label>First Name</label>
+                                    <input id="staffEmail" class="form-control required userInput" /></div>
+                                <label>First Name</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffFirstName" class="form-control userInput" /></div>
-                                <label>Last Name</label>
+                                    <input id="staffFirstName" class="form-control required userInput" /></div>
+                                <label>Last Name</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffLastName" class="form-control userInput" /></div>
-                                <label>NRIC</label>
+                                    <input id="staffLastName" class="form-control required userInput" /></div>
+                                <label>NRIC</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffNric" class="form-control userInput" /></div>
-                                <label>Address</label>
+                                    <input id="staffNric" class="form-control required userInput" />
+                                    <h4 id="emptyNricWarningUser" style="color: red">Please enter an NRIC/Identification Number!</h4>
+                                    <h4 id="nricWarningUser" style="color: red">Non-Singapore Based NRIC/ID!</h4>
+                                </div>
+                                <label>Address</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffAddress" class="form-control userInput" /></div>
-                                <label>Postal Code</label>
+                                    <input id="staffAddress" class="form-control required userInput" /></div>
+                                <label>Postal Code</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffPostal" class="form-control userInput" /></div>
-                                <label>Contact Number(Mobile)</label>
+                                    <input id="staffPostal" class="form-control required userInput" />
+                                    <label id="posWarningUser" style="color: red">Invalid Postal Code Format!</label>
+                                </div>
+                                <label>Mobile Number</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffMobileNum" class="form-control userInput" /></div>
-                                <label>Contact Number(Home)</label>
+                                    <input id="staffMobileNum" class="form-control required userInput" />
+                                    <label id="mobWarningUser" style="color: red">Invalid Phone Number Format!</label>
+                                </div>
+                                <label>Home Number</label>
                                 <div class="form-group">
-                                    <input id="staffHomeNum" class="form-control userInput" /></div>
+                                    <input id="staffHomeNum" class="form-control userInput" />
+                                    <label id="homWarningUser" style="color: red">Invalid Phone Number Format!</label>
+                                </div>
                                 </div>
                             <div class="col-md-6">
-                                <label>Contact Number(Alt)</label>
+                                <label>Alternate Number</label>
                                 <div class="form-group">
-                                    <input id="staffAltNum" class="form-control userInput" /></div>
-                                <label>Sex</label>
+                                    <input id="staffAltNum" class="form-control userInput" />
+                                    <label id="altWarningUser" style="color: red">Invalid Phone Number Format!</label>
+                                </div>
+                                <label>Sex</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <select id="staffSex" class="form-control">
+                                    <select id="staffSex" class="form-control required userInput">
                                         <option value="M">Male</option>
                                         <option value="F">Female</option>
                                     </select>
                                 </div>
-                                <label>Nationality</label>
-
+                                <label>Nationality</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                     <select class="form-control required regInput userInput" onchange="checkNationals(); false;" id="staffNationality" >
-                                        <option value=""></option>
+                                     <select class="form-control required userInput" onchange="checkNationals(); false;" id="staffNationality" >
+                                        <option value="">-- Select One --</option>
                                     </select>
+                                    <label for="nationalsInput" id="natWarningUser" style="color: red">Please select a nationality!</label>
                                 </div>
-                                <label>Date Of Birth</label>
+                                <label>Date Of Birth</label><label style="color: red">*</label>
+                                <div class="input-group date" id="staffDOBDiv">
+                                <input type='text' id="staffDOB" class="form-control userInput required" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                                <label>Age</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffDOB" class="form-control userInput" /></div>
-                                <label>Age</label>
+                                    <input id="staffAge" class="form-control required userInput" /></div>
+                                <label>Race</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffAge" class="form-control userInput" /></div>
-                                <label>Race</label>
+                                    <input id="staffRace" class="form-control required userInput" /></div>
+                                <label>Position Title</label><label style="color: red">*</label>
                                 <div class="form-group">
-                                    <input id="staffRace" class="form-control userInput" /></div>
-                                <label>Position Title</label>
-                                <div class="form-group">
-                                    <input id="staffTitle" class="form-control userInput" /></div>
-                                <label>Permission</label>
+                                    <input id="staffTitle" class="form-control required userInput" /></div>
+                                <label>Permission</label><label style="color: red">*</label>
                                 <div id="permiss" class="form-group">
                                     <%--<input id="staffPerms" class="form-control userInput" /></div> --%>
                                 <%--To replace with checkbox--%>
                             </div>
+                                <label>Password</label><label style="color: red">*</label>
+                                <div class="form-group">
+                                    <input id="staffPwd" class="form-control required userInput" /></div>
                         </div>
-                        
-                        <div class="btn-group">   
-                                        
-                            <button type="button"  class="btn btn-warning" onclick="prepareForNewUser();">Create New User/Clear All Fields</button>
-                            <button type="button" class="btn btn-success" onclick="saveUser();">Save</button>
-                            
+                        <h4 id="emptyUserFields" style="color: red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
+                        <div class="btn-group">               
+                            <button type="button" class="btn btn-primary" onclick="clearStaffFields(); false">Clear All Fields</button>
+                            <button type="button" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Create New User</button>
+                            <button type="button" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Update Existing User</button>       
                         </div>
                     </div>
     </div>
             </div>
+                </div>
             <%}
                 if (accessRightsStr.Contains('5'))
                 { %>
@@ -849,7 +867,7 @@
                     </div>
                 </div>
 
-                <script type="text/javascript">
+                <script type="text/javascript"> //Shift to separate Script
                     $(function () {
                         $('#ri_querystartdatetime').datetimepicker();
                     });
@@ -968,7 +986,6 @@
     </div>
     <!-- End of ContactTracing -->
     <%} %>
-        </div>
     </div>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/default.js") %>"></script>

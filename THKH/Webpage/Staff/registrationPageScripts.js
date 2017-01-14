@@ -236,7 +236,6 @@ function showSuccessModal() {
         getPassState();
     })
     $('#successModal').modal({ backdrop: 'static', keyboard: false });
- 
 }
 
 // Hide Success Modal
