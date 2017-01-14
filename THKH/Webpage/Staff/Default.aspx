@@ -32,7 +32,7 @@
         $(function () {
 
 
-            $(document).ready(function () {// once ready then we toglle based  on ajax calls
+            $(document).ready(function () {// once ready then we toggle based on ajax calls
                 $("#loadingGif").toggle(false);
                 hideTags();
                 $(document).ajaxStart(function () {
@@ -621,6 +621,22 @@
 
             <!-- UserManagement -->
             <div class="tab-pane maxHeight" id="UserManagement">
+                <div class="modal fade" id="addUserSuccessModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title">User Added Successfully!</h4>
+                            </div>
+                            <div class="modal-body text-center">
+                                    <label>New user added at <%=DateTime.Now %>.</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-block btn-danger" onclick="hideAddUserSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row inheritHeight">
                     <div class="col-sm-4 inheritHeight">
                         <h3 style="">Existing Users</h3>
@@ -628,18 +644,17 @@
                             <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterUserList(this)" />
                             <span class="input-group-btn">
                                 <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
-                                <button type="button" id="" onclick="deSelectAllUsers();false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                                <button type="button" id="" onclick="deSelectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
                             </span>
                         </div>
-
                         <div class=" " style="border: solid 1pt;margin-bottom: 25px; border-radius: 2px; height: 77%; overflow-y: auto; margin-top: 2px;">
                             <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
-                                
+                                <%--List of users here--%>
                             </ul>
                         </div>
-                        <div>
-                            <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span>Delete Selected User(s)</button>
-                        </div>
+                        <%--<div>
+                            <button type="button" id="" onclick="deleteUser(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete Selected User(s)</button>
+                        </div>--%>
                     </div>
 
                     <div class="col-sm-8 row" id= "userInfo" style="overflow-y: auto">
@@ -719,8 +734,7 @@
                                     <input id="staffTitle" class="form-control required userInput" /></div>
                                 <label>Permission</label><label style="color: red">*</label>
                                 <div id="permiss" class="form-group">
-                                    <%--<input id="staffPerms" class="form-control userInput" /></div> --%>
-                                <%--To replace with checkbox--%>
+                                <%--checkbox--%>
                             </div>
                                 <label>Password</label><label style="color: red">*</label>
                                 <div class="form-group">
@@ -729,8 +743,8 @@
                         <h4 id="emptyUserFields" style="color: red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         <div class="btn-group">               
                             <button type="button" class="btn btn-primary" onclick="clearStaffFields(); false">Clear All Fields</button>
-                            <button type="button" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Create New User</button>
-                            <button type="button" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Update Existing User</button>       
+                            <button type="button" id="newUser" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Create New User</button>
+                            <button type="button" id="updateUser" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Update Existing User</button>       
                         </div>
                     </div>
     </div>

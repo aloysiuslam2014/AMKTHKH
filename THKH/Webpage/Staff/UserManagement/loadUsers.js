@@ -61,7 +61,7 @@ function initUsersList(data) {
             
             $(listElement).attr("id", data[i].email);
             $(listElement).attr("value", data[i].firstName + ' ' + data[i].lastName);
-            $(listElement).html(data[i].firstName + ' ' + data[i].lastName);
+            $(listElement).html(data[i].firstName + ' ' + data[i].lastName + ' - ' + data[i].email);
 
             $(target).append(listElement);
 
@@ -134,8 +134,13 @@ function initUsersList(data) {
                         $(checkBox).prop('checked', !$(checkBox).is(':checked'));
                         $(checkBox).triggerHandler('change');
                         if ($(checkBox).is(':checked')) {
+                            $("#userMode").text("Edit Existing User");
+                            $("#newUser").prop('disabled', true);
+                            $("#updateUser").prop('disabled', false);
                             getUserDetails($(this));  //Get the user details only checkbox is not checked. If deselecting dont get the user
                         } else {
+                            $("#newUser").prop('disabled', false);
+                            $("#updateUser").prop('disabled', true);
                             clearStaffFields();
                         }
                         updateDisplay($(this));
@@ -164,23 +169,21 @@ function filterUserList(elment) {
 
 }
 
-//select all given a target object
+// select all given a target object
 function selectAllUsers() {
-  
     $("#usersLis li.inactive span").each(function (idx, li) {
             $(li).triggerHandler('click');
         });
     
 }
-//deselect all from a target list given a keyword
+// deselect all from a target list given a keyword
 function deSelectAllUsers() {
     $("#usersLis li.active span").each(function (idx, li) {
             $(li).triggerHandler('click');
         });
-    
 }
 
-//get a selected users details
+// get a selected users details
 function getUserDetails(listObj) {
     populateNationalities();
     var headersToProcess = {
@@ -188,7 +191,7 @@ function getUserDetails(listObj) {
         requestType: "getUser"
     };
     $.ajax({
-        url: '../Staff/UserManagement/UserManagement/userManagement.ashx',
+        url: '../Staff/UserManagement/userManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -196,6 +199,7 @@ function getUserDetails(listObj) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Msg == "Success") {
                 $("#staffEmail").val(resultOfGeneration.Result.email);
+                $("#staffEmail").prop('readonly', true);
                 $("#staffFirstName").val(resultOfGeneration.Result.firstName);
                 $("#staffLastName").val(resultOfGeneration.Result.lastName);
                 $("#staffNric").val(resultOfGeneration.Result.nric);
@@ -209,7 +213,10 @@ function getUserDetails(listObj) {
                 $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
                 $("#staffAge").val(resultOfGeneration.Result.age);
                 $("#staffRace").val(resultOfGeneration.Result.race);
-                $("#staffPerms").val(resultOfGeneration.Result.permissions);
+                var perm = resultOfGeneration.Result.permissions.toString();
+                for (i = 0; i < perm.length; i++) {
+                    $("#permiss [value='" + perm.charAt(i) + "']").prop("checked", true);
+                }
                 $("#staffTitle").val(resultOfGeneration.Result.position);
             } else {
                 alert(resultOfGeneration.Msg);
@@ -223,6 +230,7 @@ function getUserDetails(listObj) {
 
 // Update User Data
 function updateUser() {
+    var username = user;
     var permissions = getPermissionInput();
     var fname = $("#staffFirstName").val();
     var lname = $("#staffLastName").val();
@@ -242,8 +250,8 @@ function updateUser() {
     var staffPwd = $("#staffPwd").val();
 
     var headersToProcess = {
-        fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
-        race: race, age: age, email: Email, title: staffTitle, staffPwd: staffPwd,requestType: "addUser"
+        username: username, fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
+        race: race, age: age, email: Email, title: staffTitle, staffPwd: staffPwd,requestType: "updateUser"
     };
     $.ajax({
         url: '../Staff/UserManagement/userManagement.ashx',
@@ -262,30 +270,37 @@ function updateUser() {
 }
 
 // Delete Selected User
-function deleteUser() {
-    var snric = $("#staffNric").val();
-    var Email = $("#staffEmail").val();
-    var headersToProcess = {
-        nric: snric, email:Email, requestType: "deleteUser"
-    };
-    $.ajax({
-        url: '../Staff/UserManagement/userManagement.ashx',
-        method: 'post',
-        data: headersToProcess,
+//function deleteUser() {
+//    var snric = $("#staffNric").val();
+//    var Email = $("#staffEmail").val();
+//    var headersToProcess = {
+//        nric: snric, email:Email, requestType: "deleteUser"
+//    };
+//    $.ajax({
+//        url: '../Staff/UserManagement/userManagement.ashx',
+//        method: 'post',
+//        data: headersToProcess,
 
 
-        success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
-
-        },
-        error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the administrator.");
-        },
-    });
-}
+//        success: function (returner) {
+//            var resultOfGeneration = JSON.parse(returner);
+//            if (resultOfGeneration.Result == "Success") {
+//                if (resultOfGeneration.Msg == "1") {
+//                    // Success
+//                } else {
+//                    // Failure to Delete
+//                }
+//            }
+//        },
+//        error: function (err) {
+//            alert("Error: " + err.msg + ". Please contact the administrator.");
+//        },
+//    });
+//}
 
 // Add new user
 function addUser() {
+    var username = user;
     var permissions = getPermissionInput();
     var fname = $("#staffFirstName").val();
     var lname = $("#staffLastName").val();
@@ -305,7 +320,7 @@ function addUser() {
     var staffPwd = $("#staffPwd").val();
 
     var headersToProcess = {
-        fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
+        username:username, fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
         race:race, age:age, email:Email, title:staffTitle, permissions:permissions, staffPwd:staffPwd, requestType: "addUser"
     };
     $.ajax({
@@ -318,14 +333,15 @@ function addUser() {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result == "Success") {
                 if (resultOfGeneration.Msg == "Success") {
-                    // Show Success Modal
-                    alert("User Added!");
+                    showAddUserSuccessModal();
                 }
                 // If User exists already, prompt user to click on update instead
+            } else {
+                // Error
             }
         },
         error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the adminsitrator.");
+            alert("Error: " + err.msg + ". Please contact the administrator.");
         },
     });
 }
@@ -334,9 +350,14 @@ function addUser() {
 function clearStaffFields() {
     $('#userInfo .userInput').each(function (idx, obj) {
         $(obj).prop("value", "");
-
     });
     var update = false;
+    $("#staffEmail").prop('readonly', false);
+    $("#userMode").text("Create New User");
+    for (i = 1; i < 7; i++) {
+        $("#permiss [value='" + i + "']").prop("checked", false);
+    }
+    deSelectAllUsers();
 }
 
 // Retrive value from checkbox
@@ -643,6 +664,7 @@ function hideUserTags() {
     $("#homWarningUser").css("display", "none");
     $("#altWarningUser").css("display", "none");
     $("#natWarningUser").css("display", "none");
+    $("#updateUser").prop('disabled', true);
 }
 
 // Check nationality input field
@@ -720,3 +742,18 @@ $("#staffAltNum").on("input", function () {
         validAltUser = false;
     }
 });
+
+// Show Success Modal
+function showAddUserSuccessModal() {
+    $('#addUserSuccessModal').modal('show');
+    $('#addUserSuccessModal').modal({ backdrop: 'static', keyboard: false });
+}
+
+// Hide Success Modal
+function hideAddUserSuccessModal() {
+    $('#addUserSuccessModal').modal('hide');
+}
+
+// Get emails of all select users
+
+// Get email of selected user

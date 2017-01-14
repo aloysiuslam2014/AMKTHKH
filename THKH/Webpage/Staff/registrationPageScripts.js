@@ -90,8 +90,8 @@ function callCheck (){
                             var answer = jsonAnswerObject.answer
                             //$("#" + qid).prop('value', answer);
                             $('#' + qid).val(answer);
-                            $("input[name='" + qid + "'][value='" + answer + "']").prop("checked", true);
-                            $("input[id='" + qid + "']").prop("value", answer);
+                            $("#questionaireForm input[name='" + qid + "'][value='" + answer + "']").prop("checked", true);
+                            $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
                         }
                         //$("#qaid").prop('value', qaid);
                     }
