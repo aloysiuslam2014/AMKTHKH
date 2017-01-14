@@ -764,7 +764,7 @@
                         </div>
                         <div class="panel-body" style="overflow-y:auto;height: calc(100% - 40px);">
                          <div class="row">
-                               <h3 style="margin: 0;">Select Size of pass:</h3>
+                               <h4 style="margin: 0;">Select Size of pass:</h4>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary" onclick="changePassDimen('210mm','297mm');">A4</button>
                                 <button type="button" class="btn btn-primary" onclick="changePassDimen('148mm','210mm');">A5</button>
@@ -829,7 +829,7 @@
                                     </label>
                                 </div>
                                 <div id="font-Size">
-                                    <label>Font Size:</label>
+                                    <label>Font Size(in pt):</label>
                                     <input id="passFontSize" placeholder="Default size is 10.5pt" />
                                 </div>
 

@@ -45,9 +45,12 @@ function loadPassState() {
                         $("#passLayout").append(layout);
                         cleanChildrenElements($("#passLayout"));
                         $("#passLayout").children().each(function () {
-                            $(this).resizable({
-                                containment: "#passLayout"
-                            });
+                            if (!$(this).hasClass('notResizable')) {
+                                $(this).resizable({
+                                    containment: "#passLayout"
+                                });
+                            }
+                            
                             createDraggablElement(this);
                         });
                    
@@ -260,8 +263,9 @@ function addTextToPass() {
     if ($('input[name="textPosition"]:checked').val() !=null) {
         $(labelToInsert).css('text-align',($('input[name="textPosition"]:checked').val()));
     }
-    if ($('#passFontSize').val()!="") {
-        $(labelToInsert).css('font-size', $('#passFontSize').val());
+    if ($('#passFontSize').val() != "") {
+        var addPt = $('#passFontSize').val().search("pt") == -1 ? "pt" : "";
+        $(labelToInsert).css('font-size', $('#passFontSize').val() + addPt);
     }
    
     $(labelToInsert).prop("value", selectedSource);
@@ -272,6 +276,8 @@ function addTextToPass() {
          $(labelToInsert).resizable({
         containment: "#passLayout"
     });
+    } else {
+        $(labelToInsert).addClass("notResizable");
     }
 
    
