@@ -61,7 +61,7 @@ function initUsersList(data) {
             
             $(listElement).attr("id", data[i].email);
             $(listElement).attr("value", data[i].firstName + ' ' + data[i].lastName);
-            $(listElement).html(data[i].firstName + ' ' + data[i].lastName);
+            $(listElement).html(data[i].firstName + ' ' + data[i].lastName + ' - ' + data[i].email);
 
             $(target).append(listElement);
 
@@ -134,8 +134,13 @@ function initUsersList(data) {
                         $(checkBox).prop('checked', !$(checkBox).is(':checked'));
                         $(checkBox).triggerHandler('change');
                         if ($(checkBox).is(':checked')) {
+                            $("#userMode").text("Edit Existing User");
+                            $("#newUser").prop('disabled', true);
+                            $("#updateUser").prop('disabled', false);
                             getUserDetails($(this));  //Get the user details only checkbox is not checked. If deselecting dont get the user
                         } else {
+                            $("#newUser").prop('disabled', false);
+                            $("#updateUser").prop('disabled', true);
                             clearStaffFields();
                         }
                         updateDisplay($(this));
@@ -164,23 +169,21 @@ function filterUserList(elment) {
 
 }
 
-//select all given a target object
+// select all given a target object
 function selectAllUsers() {
-  
     $("#usersLis li.inactive span").each(function (idx, li) {
             $(li).triggerHandler('click');
         });
     
 }
-//deselect all from a target list given a keyword
+// deselect all from a target list given a keyword
 function deSelectAllUsers() {
     $("#usersLis li.active span").each(function (idx, li) {
             $(li).triggerHandler('click');
         });
-    
 }
 
-//get a selected users details
+// get a selected users details
 function getUserDetails(listObj) {
     populateNationalities();
     var headersToProcess = {
@@ -196,6 +199,7 @@ function getUserDetails(listObj) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Msg == "Success") {
                 $("#staffEmail").val(resultOfGeneration.Result.email);
+                $("#staffEmail").prop('readonly', true);
                 $("#staffFirstName").val(resultOfGeneration.Result.firstName);
                 $("#staffLastName").val(resultOfGeneration.Result.lastName);
                 $("#staffNric").val(resultOfGeneration.Result.nric);
@@ -209,7 +213,10 @@ function getUserDetails(listObj) {
                 $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
                 $("#staffAge").val(resultOfGeneration.Result.age);
                 $("#staffRace").val(resultOfGeneration.Result.race);
-                $("#staffPerms").val(resultOfGeneration.Result.permissions); // Change to checkbox check
+                var perm = resultOfGeneration.Result.permissions.toString();
+                for (i = 0; i < perm.length; i++) {
+                    $("#permiss [value='" + perm.charAt(i) + "']").prop("checked", true);
+                }
                 $("#staffTitle").val(resultOfGeneration.Result.position);
             } else {
                 alert(resultOfGeneration.Msg);
@@ -263,33 +270,33 @@ function updateUser() {
 }
 
 // Delete Selected User
-function deleteUser() {
-    var snric = $("#staffNric").val();
-    var Email = $("#staffEmail").val();
-    var headersToProcess = {
-        nric: snric, email:Email, requestType: "deleteUser"
-    };
-    $.ajax({
-        url: '../Staff/UserManagement/userManagement.ashx',
-        method: 'post',
-        data: headersToProcess,
+//function deleteUser() {
+//    var snric = $("#staffNric").val();
+//    var Email = $("#staffEmail").val();
+//    var headersToProcess = {
+//        nric: snric, email:Email, requestType: "deleteUser"
+//    };
+//    $.ajax({
+//        url: '../Staff/UserManagement/userManagement.ashx',
+//        method: 'post',
+//        data: headersToProcess,
 
 
-        success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
-            if (resultOfGeneration.Result == "Success") {
-                if (resultOfGeneration.Msg == "1") {
-                    // Success
-                } else {
-                    // Failure to Delete
-                }
-            }
-        },
-        error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the administrator.");
-        },
-    });
-}
+//        success: function (returner) {
+//            var resultOfGeneration = JSON.parse(returner);
+//            if (resultOfGeneration.Result == "Success") {
+//                if (resultOfGeneration.Msg == "1") {
+//                    // Success
+//                } else {
+//                    // Failure to Delete
+//                }
+//            }
+//        },
+//        error: function (err) {
+//            alert("Error: " + err.msg + ". Please contact the administrator.");
+//        },
+//    });
+//}
 
 // Add new user
 function addUser() {
@@ -343,9 +350,14 @@ function addUser() {
 function clearStaffFields() {
     $('#userInfo .userInput').each(function (idx, obj) {
         $(obj).prop("value", "");
-
     });
     var update = false;
+    $("#staffEmail").prop('readonly', false);
+    $("#userMode").text("Create New User");
+    for (i = 1; i < 7; i++) {
+        $("#permiss [value='" + i + "']").prop("checked", false);
+    }
+    deSelectAllUsers();
 }
 
 // Retrive value from checkbox
@@ -652,6 +664,7 @@ function hideUserTags() {
     $("#homWarningUser").css("display", "none");
     $("#altWarningUser").css("display", "none");
     $("#natWarningUser").css("display", "none");
+    $("#updateUser").prop('disabled', true);
 }
 
 // Check nationality input field
@@ -740,3 +753,7 @@ function showAddUserSuccessModal() {
 function hideAddUserSuccessModal() {
     $('#addUserSuccessModal').modal('hide');
 }
+
+// Get emails of all select users
+
+// Get email of selected user

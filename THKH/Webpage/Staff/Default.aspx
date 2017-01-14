@@ -644,18 +644,17 @@
                             <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterUserList(this)" />
                             <span class="input-group-btn">
                                 <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
-                                <button type="button" id="" onclick="deSelectAllUsers();false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                                <button type="button" id="" onclick="deSelectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
                             </span>
                         </div>
-
                         <div class=" " style="border: solid 1pt;margin-bottom: 25px; border-radius: 2px; height: 77%; overflow-y: auto; margin-top: 2px;">
                             <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
-                                
+                                <%--List of users here--%>
                             </ul>
                         </div>
-                        <div>
+                        <%--<div>
                             <button type="button" id="" onclick="deleteUser(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete Selected User(s)</button>
-                        </div>
+                        </div>--%>
                     </div>
 
                     <div class="col-sm-8 row" id= "userInfo" style="overflow-y: auto">
@@ -744,8 +743,8 @@
                         <h4 id="emptyUserFields" style="color: red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         <div class="btn-group">               
                             <button type="button" class="btn btn-primary" onclick="clearStaffFields(); false">Clear All Fields</button>
-                            <button type="button" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Create New User</button>
-                            <button type="button" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Update Existing User</button>       
+                            <button type="button" id="newUser" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Create New User</button>
+                            <button type="button" id="updateUser" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Update Existing User</button>       
                         </div>
                     </div>
     </div>
