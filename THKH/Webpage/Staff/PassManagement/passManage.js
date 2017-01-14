@@ -1,6 +1,7 @@
 ﻿ 
 var sPositions = {};
 var level = 0;
+var loadPassOnce = false;
 
 function convertDvToImg() {
     html2canvas($("#passClone"), {
@@ -11,41 +12,60 @@ function convertDvToImg() {
 }
 
 function loadPassState() {
+
+    
+    if ($('#passLayout').is(':visible')) { //if the container is visible on the page
+    
+        
+        if (loadPassOnce) {
+            return; // only load pass once
+        }
+        loadPassOnce = true;
+
     var headersToProcess = {
         requestType: "getPassState"
 
     };
-    $.ajax({
-        url: '../Staff/PassManagement/passMgmt.ashx',
-        method: 'post',
-        data: headersToProcess,
+        $.ajax({
+            url: '../Staff/PassManagement/passMgmt.ashx',
+            method: 'post',
+            data: headersToProcess,
 
 
-        success: function (returner) {
-            resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.Result;
-            if (res.toString() == "Success") {
-                var passSetup = resultOfGeneration.Msg;
-                if (passSetup != null) { //pass configurations exist
-                    var passLayout = passSetup.divState;
-                    var elementPositionsJson = JSON.parse(passSetup.positions);
-                    //var testtt = elementPositionsJson["barcode"];
-
-                    var layout = $(passLayout).html();
-                    $("#passLayout").append(layout);
+            success: function (returner) {
+                resultOfGeneration = JSON.parse(returner);
+                var res = resultOfGeneration.Result;
+                if (res.toString() == "Success") {
+                    var passSetup = resultOfGeneration.Msg;
+                    if (passSetup != null) { //pass configurations exist
+                        var passLayout = passSetup.divState;
+                        var elementPositionsJson = JSON.parse(passSetup.positions);
+                        sPositions = elementPositionsJson;
+                        var layout = $(passLayout).html();
+                        $("#passLayout").append(layout);
+                        cleanChildrenElements($("#passLayout"));
+                        $("#passLayout").children().each(function () {
+                            $(this).resizable({
+                                containment: "#passLayout"
+                            });
+                            createDraggablElement(this);
+                        });
+                   
+                    }
+               
+               
+                } else {
+                    alert(resultOfGeneration.Msg);
                 }
-               
-               
-            } else {
-                alert(resultOfGeneration.Msg);
-            }
-        },
-        error: function (err) {
-            alert(err.Msg);
-        },
+            },
+            error: function (err) {
+                alert(err.Msg);
+            },
 
-    });
-
+        });
+    } else {
+        setTimeout(loadPassState, 100); //wait 100 ms if div hasnt finished rendering yet, then try again
+    }
 
 }
 
@@ -117,16 +137,17 @@ function savePassState() {
 
 
 function createPassAppendParent(parent, target, datapositions) {
+    $("#" + parent.id + " #passClone").remove();
     $(parent).append(target);
     target = $("#passClone");
     $(target).children().each(function () {//remove event listeners and dashborder
         $(this).off('contextmenu');
         $(this).attr('oncontextmenu', '');
         $(this).prop('oncontextmenu', '');
-        $(this).removeClass("dashedBorderAbsolute"); 
+        cleanChildrenElements(this);
         $(this).addClass("forceAbsolute");
         $(this).css('color', 'black');
-        $("#" + this.id + " .ui-resizable-handle").remove();//remove special symbols to adjust the image or barcode of text size
+        
        // $("#" + this.id + " .ui-resizable").remove();//remove special symbols to adjust the image or barcode of text size
     });
     
@@ -135,9 +156,8 @@ function createPassAppendParent(parent, target, datapositions) {
        //set the elements position to its correct place based on offset
         var name = this.id;
         var leftposition = datapositions[name].left;
-        var targetLeft = $(target).position().left;
-        var targetTop = $(target).position().top;
-        $(this).css({ top: datapositions[name].top + targetTop, left: datapositions[name].left + targetLeft });
+        
+        $(this).css({ top: datapositions[name].top , left:datapositions[name].left });
        
     });
 
@@ -167,16 +187,36 @@ function createPassAppendParent(parent, target, datapositions) {
  
 }
 
+function cleanChildrenElements(element) {
+   
+    if (element.id != "") {
+        $("#" + element.id + " .ui-resizable-handle").remove();//remove special symbols to adjust the image or barcode of text size
+    }
+    $(element).removeClass("dashedBorderAbsolute");
+    $(element).removeClass('ui-resizable');
+    $(element).removeClass('ui-draggable');
+    $(element).removeClass('ui-draggable-handle');
+    $(element).removeClass('zax');
+    var childEle = $(element).children();
+    if (childEle.length > 0) {
+        $(childEle).each(function () { cleanChildrenElements(this) });
+    }
+
+}
+
 function createDraggablElement(element) {
     $(element).draggable({
         stack: "#passLayout .zax", snap: "#passLayout", snapTolerance: 1, containment: "#passLayout", scroll: false,
+        create: function (event, ui) {
+        
+        },
         stop: function (event, ui) {
-            var $this = $(this);
-            var thisPos = $this.position();
-            var parentPos = $this.parent().position();
+            var $this = $(this)[0];
+          
+          
            
-            var x = thisPos.left - parentPos.left;
-            var y = thisPos.top - parentPos.top;
+            var x = $this.offsetLeft  ;
+            var y = $this.offsetTop ;
             var storedPoints = { top:y, left: x};
             sPositions[this.id] = storedPoints;
         }
