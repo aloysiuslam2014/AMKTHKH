@@ -137,7 +137,7 @@ function savePassState() {
 
 
 function createPassAppendParent(parent, target, datapositions) {
-    $("#" + parent.id + " #passClone").remove();
+    $( " #passClone").remove();
     $(parent).append(target);
     target = $("#passClone");
     $(target).children().each(function () {//remove event listeners and dashborder
@@ -166,7 +166,7 @@ function createPassAppendParent(parent, target, datapositions) {
     if(barcodeElement == null){
         $(barcodeElement).remove();
     }else{
-        var getNric = $("#registration").find("#nric").val();
+        var getNric = $("#registration").find("#nric").prop('value');
        createBarCodeImg(getNric, barcodeElement[0]);
        
           
@@ -178,7 +178,7 @@ function createPassAppendParent(parent, target, datapositions) {
         var name = this.id;
         var inputVal = $("#userData").find("#" + name);
         if (inputVal != null) {
-            $(this).html($(inputVal).val());
+            $(this).html($(inputVal).prop('value'));
         }
        
     });

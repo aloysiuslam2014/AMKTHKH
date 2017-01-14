@@ -54,7 +54,7 @@ function callCheck (){
                     }
                     if (visitorArr.length > 1) {
                         // Populate fields if data exists
-                        $("#nric").attr('value', visitorArr[0]);
+                        $("#nric").prop('value', visitorArr[0]);
                         $("#namesInput").prop('value', visitorArr[1]);
                         $("#sexinput").prop('value', visitorArr[2].trim());
                         $("#nationalsInput").val(visitorArr[3]);
@@ -241,6 +241,7 @@ function showSuccessModal() {
 // Hide Success Modal
 function hideSuccessModal() {
     $('#successModal').modal('hide');
+    $(" #passClone").remove();//remove the currently generated pass
 }
 
 // Show Max Limit Modal
