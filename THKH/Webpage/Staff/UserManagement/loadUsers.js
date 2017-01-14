@@ -188,7 +188,7 @@ function getUserDetails(listObj) {
         requestType: "getUser"
     };
     $.ajax({
-        url: '../Staff/UserManagement/UserManagement/userManagement.ashx',
+        url: '../Staff/UserManagement/userManagement.ashx',
         method: 'post',
         data: headersToProcess,
 
@@ -209,7 +209,7 @@ function getUserDetails(listObj) {
                 $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
                 $("#staffAge").val(resultOfGeneration.Result.age);
                 $("#staffRace").val(resultOfGeneration.Result.race);
-                $("#staffPerms").val(resultOfGeneration.Result.permissions);
+                $("#staffPerms").val(resultOfGeneration.Result.permissions); // Change to checkbox check
                 $("#staffTitle").val(resultOfGeneration.Result.position);
             } else {
                 alert(resultOfGeneration.Msg);
@@ -223,6 +223,7 @@ function getUserDetails(listObj) {
 
 // Update User Data
 function updateUser() {
+    var username = user;
     var permissions = getPermissionInput();
     var fname = $("#staffFirstName").val();
     var lname = $("#staffLastName").val();
@@ -242,8 +243,8 @@ function updateUser() {
     var staffPwd = $("#staffPwd").val();
 
     var headersToProcess = {
-        fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
-        race: race, age: age, email: Email, title: staffTitle, staffPwd: staffPwd,requestType: "addUser"
+        username: username, fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
+        race: race, age: age, email: Email, title: staffTitle, staffPwd: staffPwd,requestType: "updateUser"
     };
     $.ajax({
         url: '../Staff/UserManagement/userManagement.ashx',
@@ -276,7 +277,13 @@ function deleteUser() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-
+            if (resultOfGeneration.Result == "Success") {
+                if (resultOfGeneration.Msg == "1") {
+                    // Success
+                } else {
+                    // Failure to Delete
+                }
+            }
         },
         error: function (err) {
             alert("Error: " + err.msg + ". Please contact the administrator.");
@@ -286,6 +293,7 @@ function deleteUser() {
 
 // Add new user
 function addUser() {
+    var username = user;
     var permissions = getPermissionInput();
     var fname = $("#staffFirstName").val();
     var lname = $("#staffLastName").val();
@@ -305,7 +313,7 @@ function addUser() {
     var staffPwd = $("#staffPwd").val();
 
     var headersToProcess = {
-        fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
+        username:username, fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
         race:race, age:age, email:Email, title:staffTitle, permissions:permissions, staffPwd:staffPwd, requestType: "addUser"
     };
     $.ajax({
@@ -318,14 +326,15 @@ function addUser() {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result == "Success") {
                 if (resultOfGeneration.Msg == "Success") {
-                    // Show Success Modal
-                    alert("User Added!");
+                    showAddUserSuccessModal();
                 }
                 // If User exists already, prompt user to click on update instead
+            } else {
+                // Error
             }
         },
         error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the adminsitrator.");
+            alert("Error: " + err.msg + ". Please contact the administrator.");
         },
     });
 }
@@ -720,3 +729,14 @@ $("#staffAltNum").on("input", function () {
         validAltUser = false;
     }
 });
+
+// Show Success Modal
+function showAddUserSuccessModal() {
+    $('#addUserSuccessModal').modal('show');
+    $('#addUserSuccessModal').modal({ backdrop: 'static', keyboard: false });
+}
+
+// Hide Success Modal
+function hideAddUserSuccessModal() {
+    $('#addUserSuccessModal').modal('hide');
+}
