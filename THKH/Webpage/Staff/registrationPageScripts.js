@@ -66,8 +66,8 @@ function callCheck (){
                         $("#homesInput").prop('value', visitorArr[7]);
                         $("#emailsInput").prop('value', visitorArr[9]);
                     } if (visitArr.length > 1) {
-                        $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10)); // Error
-                        $("#visitbookingtime").val(visitArr[0].toString().substring(11)); // Error
+                        $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10));
+                        $("#visitbookingtime").val(visitArr[0].toString().substring(11, 16));
                         $("#patientNric").prop('value', visitArr[1]);
                         $("#patientName").prop('value', visitArr[3]);
                         var visPurpose = visitArr[4];
@@ -158,6 +158,17 @@ function checkNationals() {
     return true;
 }
 
+// Check visit time input field
+function checkTime() {
+    if ($("#visitbookingtime").val() == '') {
+        $("#timelabel").css("display", "block");
+        return false;
+    } else {
+        $("#timelabel").css("display", "none");
+    }
+    return true;
+}
+
 // ensure patient info is valid
 function validatePatient() {
     // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
@@ -229,31 +240,6 @@ $("#temp").on("input", function () {
         }
     }
 });
-
-// Show Success Modal
-function showSuccessModal() {
-    $('#successModal').on('shown.bs.modal', function () {
-        getPassState();
-    })
-    $('#successModal').modal({ backdrop: 'static', keyboard: false });
-}
-
-// Hide Success Modal
-function hideSuccessModal() {
-    $('#successModal').modal('hide');
-    $(" #passClone").remove();//remove the currently generated pass
-}
-
-// Show Max Limit Modal
-function showMaxLimitModal() {
-    $('#maxLimitModal').modal({ backdrop: 'static', keyboard: false });
-    $('#maxLimitModal').modal('show');
-}
-
-// Hide Max Limit Modal
-function hideMaxLimitModal() {
-    $('#maxLimitModal').modal('hide');
-}
 
 // ASHX page call to write info to DB
 function NewAssistReg() {
@@ -391,7 +377,7 @@ function checkRequiredFields() {
             $(value).css('background', '#f3f78a');
         }
     });
-    if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !checkNationals() || !purposePanels()) {
+    if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !checkNationals() || !purposePanels() || !checkTime()) {
         valid = false;
     }
     if (valid) {
@@ -552,12 +538,12 @@ $(function () {
         maxDate: 'now',
         format: 'DD-MM-YYYY'
     });
-    $('#visitbookingtimediv').datetimepicker(
-        {
-            // dateFormat: 'dd-mm-yy',
-            defaultDate: new Date(),
-            format: 'HH:mm' // Change to 15 Min Intervals
-        });
+    //$('#visitbookingtimediv').datetimepicker(
+    //    {
+    //        // dateFormat: 'dd-mm-yy',
+    //        defaultDate: new Date(),
+    //        format: 'HH:mm' // Change to 15 Min Intervals
+    //    });
     $('#visitbookingdatediv').datetimepicker(
         {
             // dateFormat: 'dd-mm-yy',
@@ -596,7 +582,9 @@ function hideTags() {
     $("#natWarning").css("display", "none");
     $("#purWarning").css("display", "none");
     $("#locWarning").css("display", "none");
+    $("#timelabel").css("display", "none");
     loadFacilities();
+    populateTime();
     populateRegNationalities();
     loadActiveForm();
 }
@@ -619,7 +607,14 @@ function checkNricWarningDeclaration() {
 
 // Change checkbox value upon click
 $('#ignoreNric').on('change', function () {
-    var val = this.checked;
+    var check = this.is(":checked");
+    if (check) {
+        $(this).prop('checked', false);
+    } else {
+        $(this).prop('checked', true);
+    }
+    // Old Code
+    // this.check;
 });
 
 // Loads & displays the active questionnaire from the DB for Assisted Reg
@@ -904,4 +899,71 @@ function populateRegNationalities() {
         $(optin).html(nationalities[i]);
         $('#nationalsInput').append(optin);
     }
+}
+
+// Populates Visit Time Field
+function populateTime() {
+    var time = [
+        '07:00',
+        '07:30',
+        '08:00',
+        '08:30',
+        '09:30',
+        '10:00',
+        '10:30',
+        '11:00',
+        '11:30',
+        '12:00',
+        '12:30',
+        '13:00',
+        '13:30',
+        '14:00',
+        '14:30',
+        '15:00',
+        '15:30',
+        '16:00',
+        '16:30',
+        '17:00',
+        '17:30',
+        '18:00',
+        '18:30',
+        '19:00',
+        '19:30',
+        '20:00',
+        '20:30',
+        '21:00',
+        '21:30'];
+    for (var i = 0; i < time.length; i++) {
+        var optin = document.createElement("option");
+        $(optin).attr("style", "background:white");
+        $(optin).attr("name", time[i]);
+        $(optin).attr("value", time[i]);
+        $(optin).html(time[i]);
+        $('#visitbookingtime').append(optin);
+    }
+}
+
+// Show Success Modal
+function showSuccessModal() {
+    $('#successModal').on('shown.bs.modal', function () {
+        getPassState();
+    })
+    $('#successModal').modal({ backdrop: 'static', keyboard: false });
+}
+
+// Hide Success Modal
+function hideSuccessModal() {
+    $('#successModal').modal('hide');
+    $(" #passClone").remove();//remove the currently generated pass
+}
+
+// Show Max Limit Modal
+function showMaxLimitModal() {
+    $('#maxLimitModal').modal({ backdrop: 'static', keyboard: false });
+    $('#maxLimitModal').modal('show');
+}
+
+// Hide Max Limit Modal
+function hideMaxLimitModal() {
+    $('#maxLimitModal').modal('hide');
 }

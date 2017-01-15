@@ -94,18 +94,19 @@
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h4 class="modal-title" id="memberModalLabel">Please enter your NRIC/Identification Number to Begin</h4>
+                                <h3 class="modal-title">Visitor Online Registration</h3>
+                                <h5 class="modal-title">Please enter your NRIC/Identification Number to Begin</h5>
                             </div>
                             <div class="modal-body text-center">
                                 <div class="input-group">
                                           <span class="input-group-addon" id="basic-addon">NRIC/FIN</span>
-                                          <input type="text" class="form-control" id="selfRegNric" aria-describedby="basic-addon" />
+                                          <input type="text" class="form-control" id="selfRegNric" placeholder="Please enter a Singapore-based ID Number" aria-describedby="basic-addon" />
                                         </div>    
-                                <h4 id="emptyNricWarning">Please enter your NRIC/Identification Number!</h4>
+                                <h5 id="emptyNricWarning">Please enter your NRIC/Identification Number!</h5>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-block btn-success" id="submitNric" onclick="showVisitDetails(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
-                                <h4 id="nricWarning" style="color: red">Invalid/Non-Singapore Based ID! Please register at the Front Counter.</h4>
+                                <h5 id="nricWarning" style="color: red">For non-Singapore based ID numbers, please register at the front counter.</h5>
                             </div>
                         </div>
                     </div>
@@ -187,12 +188,10 @@
                                 <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
                                 <%--Visit Time--%>
                             <div class="form-group">
-                                    <div class="input-group date" id="visitbookingtimediv">
-                                    <input type='text' id="visitbookingtime" class="form-control required" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-time"></span>
-                                    </span>
-                                </div>
+                                <select class="form-control required" onchange="checkTime(); false;" id="visitbookingtime">
+                                        <option value="">-- Select One --</option>
+                                    </select>
+                                <label for="declaration" id="timelabel" style="color: red">Please choose a Visit Time!</label>
                                 </div>
                     </div>
                         </div>

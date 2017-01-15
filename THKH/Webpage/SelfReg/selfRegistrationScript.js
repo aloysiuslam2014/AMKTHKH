@@ -76,6 +76,17 @@ function checkNationals() {
     return true;
 }
 
+// Check visit time input field
+function checkTime() {
+    if ($("#visitbookingtime").val() == '') {
+        $("#timelabel").css("display", "block");
+        return false;
+    } else {
+        $("#timelabel").css("display", "none");
+    }
+    return true;
+}
+
 // Check visit location input field
 function checkLocation() {
     if ($("#visLoc").val() == '') {
@@ -88,22 +99,22 @@ function checkLocation() {
 }
 
 // Check if DOB is after today
-function checkDOB() {
-    var input = $("#daterange").val();
-    var now = new Date();
-    if (input > now) {
-        alert("Birthday is after today!");
-    }
-}
+//function checkDOB() {
+//    var input = $("#daterange").val();
+//    var now = new Date();
+//    if (input > now) {
+//        alert("Birthday is after today!");
+//    }
+//}
 
 // Check if Requested Visit Time is before or after today (Supposed to be today)
-function checkVisDate() {
-    var input = $("#visitbookingdate").val();
-    var now = new Date();
-    if (input < now) {
-        alert("Visit is before today!");
-    }
-}
+//function checkVisDate() {
+//    var input = $("#visitbookingdate").val();
+//    var now = new Date();
+//    if (input < now) {
+//        alert("Visit is before today!");
+//    }
+//}
 
 // Reload Page & Clear Cache
 function reloadPage() {
@@ -233,9 +244,11 @@ function showNricWarning() {
 function checkRequiredFields() {
     var valid = true;
     var nationalitycheck = true;
+    var timeCheck = false;
     if (existUser !== true) {
         nationalitycheck = checkNationals();
     }
+    timeCheck = checkTime();
     $.each($("#selfregistration input.required"), function (index, value) {
         var element = $(value).val();
         if (!element || element == "") {
@@ -243,7 +256,7 @@ function checkRequiredFields() {
             $(value).css('background', '#f3f78a');
         }
     });
-    if (!validMob || !validHom || !validAlt || !validPos || !nationalitycheck) {
+    if (!validMob || !validHom || !validAlt || !validPos || !nationalitycheck || !timeCheck) {
         valid = false;
     }
     if (valid) {
@@ -446,9 +459,11 @@ function hideTags() {
     $("#submitNric").prop('disabled', true);
     $("#submitNric").css("display", "none");
     $("#locWarning").css("display", "none");
+    $("#timelabel").css("display", "none");
     $("#posWarning").css("display", "none");
     $("#natWarning").css("display", "none");
     populateNationalities();
+    populateTime();
     loadFacilities();
     loadActiveForm();
 }
@@ -835,5 +850,47 @@ function populateNationalities() {
         $(optin).attr("name", nationalities[i]);
         $(optin).html(nationalities[i]);
         $('#nationalsInput').append(optin);
+    }
+}
+
+// Populates Visit Time Field
+function populateTime() {
+    var time = [
+        '07:00',
+        '07:30',
+        '08:00',
+        '08:30',
+        '09:30',
+        '10:00',
+        '10:30',
+        '11:00',
+        '11:30',
+        '12:00',
+        '12:30',
+        '13:00',
+        '13:30',
+        '14:00',
+        '14:30',
+        '15:00',
+        '15:30',
+        '16:00',
+        '16:30',
+        '17:00',
+        '17:30',
+        '18:00',
+        '18:30',
+        '19:00',
+        '19:30',
+        '20:00',
+        '20:30',
+        '21:00',
+        '21:30'];
+    for (var i = 0; i < time.length; i++) {
+        var optin = document.createElement("option");
+        $(optin).attr("style", "background:white");
+        $(optin).attr("name", time[i]);
+        $(optin).attr("value", time[i]);
+        $(optin).html(time[i]);
+        $('#visitbookingtime').append(optin);
     }
 }

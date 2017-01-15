@@ -305,11 +305,11 @@
                             </div>
                             <%--Visit Time--%>
                             <label for="visitbookingtime">Intended Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
-                            <div class="input-group date" id="visitbookingtimediv">
-                                <input type='text' id="visitbookingtime" class="form-control required regInput" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                            <div class="form-group">
+                                <select class="form-control required regInput" onchange="checkTime(); false;" id="visitbookingtime">
+                                        <option value="">-- Select One --</option>
+                                    </select>
+                                 <label for="declaration" id="timelabel" style="color: red">Please choose a Visit Time!</label>
                             </div>
                             <h3 style="">Health Screening Questionnaire</h3>
                             <div id="questionaireForm">
@@ -718,7 +718,7 @@
                                 </div>
                                 <label>Date Of Birth</label><label style="color: red">*</label>
                                 <div class="input-group date" id="staffDOBDiv">
-                                <input type='text' id="staffDOB" class="form-control userInput required" />
+                                <input type='text' id="staffDOB" class="form-control userInput required" readonly />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>

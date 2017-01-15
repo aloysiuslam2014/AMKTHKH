@@ -152,7 +152,7 @@
     <Content Include="Webpage\SQL Script\thkhdb create tables.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_10Jan17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_12Jan17.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_7Jan17.sql" />
+    <Content Include="Webpage\SQL Script\THKHDB_15Jan17.sql" />
     <Content Include="Webpage\Staff\ContactTracing\query.js" />
     <Content Include="Webpage\Staff\default.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

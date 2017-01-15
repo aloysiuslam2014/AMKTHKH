@@ -29,6 +29,14 @@ GO
 USE thkhdb;  
 
 
+---------------------------------------------------------------------------------------------------------------------------------------------------- To store the format of Pass 
+GO
+CREATE TABLE PASS_FORMAT
+(
+	passFormat VARCHAR(MAX) NOT NULL
+); 
+
+
 --------------------------------------------------------------------------------------------------------------------------------------------------- To Store Staff Data  
 GO
 CREATE TABLE STAFF  
@@ -433,6 +441,34 @@ BEGIN 
 END;   
   
 
+-------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Staff
+GO
+CREATE PROCEDURE [dbo].[TEST_CREATE_ADMIN]      
+ 	@pCreatedBy        VARCHAR(100) = 'MASTER',  
+    @responseMessage   VARCHAR(250) OUTPUT  
+  
+AS  
+BEGIN  
+  
+    SET NOCOUNT ON  
+  
+    DECLARE @salt UNIQUEIDENTIFIER=NEWID()  
+    
+	BEGIN TRY  
+        INSERT INTO staff (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+							dateOfBirth, age, race, PasswordHash, permission, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('Admin', 'Admin', 'S12345', 'THK Hospital', 123417, '999', '999', '999', 'admin@thk.com.sg', 'M', 'SINGAPOREAN', 
+				'1991-01-01', 25, 'MY', HASHBYTES('SHA2_512', 'passadmin1'),  123456 , 'Doctor', GETDATE(), GETDATE(), @pCreatedBy)  
+
+       SET @responseMessage='Success'   
+    END TRY  
+
+    BEGIN CATCH  
+        SET @responseMessage=ERROR_MESSAGE()   
+    END CATCH  
+END;
+
+
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Visitor
 GO
 CREATE PROCEDURE [dbo].[TEST_CHECK_IN] 
@@ -477,30 +513,68 @@ BEGIN 
 
 	BEGIN
 		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, race, mobileTel,
-									homeTel, altTel, email, homeAddress, postalCode, time_stamp, confirm)
-		VALUES ('S123', 'JASON', 'M', 'SINGAPOREAN', '1990-10-11', 'Chinese', '987654321', 
-				'7878787878', '5656565656', 'JASON@hotmail.com', 'BLK 476 TAMPINES ST 44', 913476, GETDATE(), 0)
+									homeTel, altTel, email, homeAddress, postalCode, time_stamp, confirm, amend)
+		VALUES ('S123', 'Jason', 'M', 'SINGAPOREAN', '1990-10-11', 'Chinese', '987654321', 
+				'7878787878', '5656565656', 'JASON@hotmail.com', 'BLK 476 TAMPINES ST 44', 913476, GETDATE(), 0, 1)
 
 
 		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, race, mobileTel,
-									homeTel, altTel, email, homeAddress, postalCode, time_stamp, confirm)
+									homeTel, altTel, email, homeAddress, postalCode, time_stamp, confirm, amend)
 		VALUES ('S456', 'Aloysius', 'M', 'SINGAPOREAN', '1990-10-11', 'Chinese', '987654321', 
-				'7878787878', '5656565656', 'Aloys@hotmail.com', 'BLK 476 WOODLANDS ST 44', 913476, GETDATE(), 0)
+				'7878787878', '5656565656', 'Aloys@hotmail.com', 'BLK 476 WOODLANDS ST 44', 913476, GETDATE(), 0, 1)
 
 
 		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, race, mobileTel,
-									homeTel, altTel, email, homeAddress, postalCode, time_stamp, confirm)
+									homeTel, altTel, email, homeAddress, postalCode, time_stamp, confirm, amend)
 		VALUES ('S789', 'Chris', 'M', 'SINGAPOREAN', '1990-10-11', 'Chinese', '987654321', 
-				'7878787878', '5656565656', 'chris@hotmail.com', 'BLK 476 BEDOK ST 44', 913476, GETDATE(), 0)
+				'7878787878', '5656565656', 'chris@hotmail.com', 'BLK 476 BEDOK ST 44', 913476, GETDATE(), 0, 1)
 		
+		
+		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, race, mobileTel,
+									homeTel, altTel, email, homeAddress, postalCode, time_stamp, confirm, amend)
+		VALUES ('S246', 'Friedemann', 'M', 'SINGAPOREAN', '1990-10-11', 'Chinese', '987654321', 
+				'7878787878', '5656565656', 'zy@hotmail.com', 'BLK 476 JURONG ST 44', 913476, GETDATE(), 0, 1)
+
 
 		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, race, mobileTel,
-									homeTel, altTel, email, homeAddress, postalCode, time_stamp, confirm)
-		VALUES ('S246', 'ZhengYuan', 'M', 'SINGAPOREAN', '1990-10-11', 'Chinese', '987654321', 
-				'7878787878', '5656565656', 'zy@hotmail.com', 'BLK 476 KEMBANGAN ST 44', 913476, GETDATE(), 0)
+									homeTel, altTel, email, homeAddress, postalCode, time_stamp, confirm, amend)
+		VALUES ('S629', 'ZhengYuan', 'M', 'SINGAPOREAN', '1990-10-11', 'Chinese', '987654321', 
+				'7878787878', '5656565656', 'zy@hotmail.com', 'BLK 476 KEMBANGAN ST 44', 913476, GETDATE(), 0, 1)
   
     END 
 END;  
+
+
+-------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Patient
+GO
+CREATE PROCEDURE [dbo].[TEST_VISIT] 
+   
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	BEGIN
+		INSERT INTO VISIT
+		VALUES ('2016-12-29 14:00', 'S9876543E', 'S123', 'Benny Tan', 'Visiting', NULL, 'THK', 1, 'FIRST_ANS_ID', 1)
+  
+    END 
+END;
+
+
+-------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Patient
+GO
+CREATE PROCEDURE [dbo].[TEST_QUESTIONNAIRE_ANS] 
+   
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	BEGIN
+		INSERT INTO QUESTIONAIRE_ANS
+		VALUES ('FIRST_ANS_ID', 'First', 'JSON ANSWERS FOR QUESTIONNARIE (First)')
+  
+    END 
+END;
 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for TESTING
@@ -636,6 +710,60 @@ BEGIN 
 	WHERE SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pEmail 
 	AND PasswordHash = @pPassword      
 END;  
+
+
+------------------------------------------------------------------------------------------------------------------------ Procedures for checking if Staff exists 
+GO
+CREATE PROCEDURE [dbo].[CHECK_STAFF_EXISTS]  
+@pStaff_Nric VARCHAR(10),  
+@returnValue VARCHAR(30) OUTPUT,
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+  
+	IF NOT EXISTS (SELECT nric FROM STAFF WHERE nric = @pStaff_Nric) 			 
+	BEGIN
+		SET @responseMessage = 1
+		SET @returnValue = 'Staff not found'
+	END
+
+    ELSE  
+		SET @responseMessage = 0  
+		SET @returnValue = 'Staff found'
+END; 
+
+
+------------------------------------------------------------------------------------------------------------------------ Procedures for Updating Staff's password
+GO
+CREATE PROCEDURE [dbo].[UPDATE_STAFF_PASSWORD]  
+@pStaff_Email VARCHAR(10),  
+@pPassword VARCHAR(64) = NULL,
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+  
+	IF EXISTS (SELECT email FROM STAFF WHERE SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pStaff_Email) 			 
+	BEGIN
+		IF (RTRIM(@pPassword) != '' OR @pPassword IS NOT NULL)
+		BEGIN
+			UPDATE STAFF
+			SET passwordHash = HASHBYTES('SHA2_512', @pPassword)
+			WHERE email = @pStaff_Email
+
+			SET @responseMessage = 1
+		END
+		ELSE
+			SET @responseMessage = 0	
+	END
+
+    ELSE  
+		SET @responseMessage = 0  
+END; 
+
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Updating Access Rights for staffs 
@@ -1069,42 +1197,70 @@ END; 
 
 
 -----------------------------------------------------------------------------------------------------  Procedures for retrieving Visitor's details  
-GO 
-CREATE PROCEDURE [dbo].[GET_VISITOR]  
-@pNRIC VARCHAR(15),  
+GO
+CREATE PROCEDURE [dbo].[GET_VISITOR]  
+@pNRIC VARCHAR(15),  
 @responseMessage INT OUTPUT,
-@returnValue VARCHAR(MAX) OUTPUT
-  
-AS  
-BEGIN  
-	SET NOCOUNT ON  
-	DECLARE @visitorInfo VARCHAR(1000) 
- 	 
+@returnValue VARCHAR(MAX) OUTPUT
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+	DECLARE @visitorInfo VARCHAR(1000),
+	@len BIGINT
+    
 	BEGIN
+		SET @len = 0
 		SET @visitorInfo = (SELECT TOP 1 (nric + ',' + fullName + ',' + gender + ',' + nationality + ',' + CONVERT(VARCHAR(100), dateOfBirth, 105) + ',' + race + ',' + mobileTel + ',' + 
-					                     homeTel + ',' + altTel + ',' + email + ',' + homeAddress + ',' + CAST(postalCode AS VARCHAR(20)) + ',' + CONVERT(VARCHAR(100), time_stamp, 105) + ' ' + CONVERT(VARCHAR(10), time_stamp, 108)) 
+                               homeTel + ',' + altTel + ',' + email + ',' + homeAddress + ',' + CAST(postalCode AS VARCHAR(20)) + ',' + CONVERT(VARCHAR(100), time_stamp, 105) + ' ' + CONVERT(VARCHAR(10), time_stamp, 108)) 
 		FROM [dbo].[VISITOR_PROFILE] 
-		WHERE nric = @pNRIC AND amend = 1
+		WHERE nric = @pNRIC AND amend = 1 AND confirm = 0
 		ORDER BY time_stamp DESC)
+		SET @len = LEN(@visitorInfo)
 
-		IF(@visitorInfo IS NULL)
+		IF (@len > 0)
 		BEGIN
-		SET @visitorInfo = (SELECT TOP 1 (nric + ',' + fullName + ',' + gender + ',' + nationality + ',' + CONVERT(VARCHAR(100), dateOfBirth, 105) + ',' + race + ',' + mobileTel + ',' + 
-					                     homeTel + ',' + altTel + ',' + email + ',' + homeAddress + ',' + CAST(postalCode AS VARCHAR(20)) + ',' + CONVERT(VARCHAR(100), time_stamp, 105) + ' ' + CONVERT(VARCHAR(10), time_stamp, 108)) 
-		FROM [dbo].[VISITOR_PROFILE] 
-		WHERE nric = @pNRIC AND amend = 0 AND confirm = 1
-		ORDER BY time_stamp DESC)
-		END
-
-		IF (@visitorInfo IS NULL) 
-		BEGIN
-			SET @responseMessage = 0
-			SET @returnValue = 'Visitor not found'
-		END
-		ELSE
 			SET @responseMessage = 1
 			SET @returnValue = @visitorInfo
-	END  
+		END
+		
+		ELSE
+		BEGIN
+			SET @visitorInfo = (SELECT TOP 1 (nric + ',' + fullName + ',' + gender + ',' + nationality + ',' + CONVERT(VARCHAR(100), dateOfBirth, 105) + ',' + race + ',' + mobileTel + ',' + 
+											homeTel + ',' + altTel + ',' + email + ',' + homeAddress + ',' + CAST(postalCode AS VARCHAR(20)) + ',' + CONVERT(VARCHAR(100), time_stamp, 105) + ' ' + CONVERT(VARCHAR(10), time_stamp, 108)) 
+								FROM [dbo].[VISITOR_PROFILE] 
+								WHERE nric = @pNRIC AND amend = 0 AND confirm = 1
+								ORDER BY time_stamp DESC)
+								SET @len = LEN(@visitorInfo)
+								
+			IF (@len > 0)
+			BEGIN
+				SET @responseMessage = 1
+				SET @returnValue = @visitorInfo
+			END
+			ELSE
+			BEGIN
+				SET @visitorInfo = (SELECT TOP 1 (nric + ',' + fullName + ',' + gender + ',' + nationality + ',' + CONVERT(VARCHAR(100), dateOfBirth, 105) + ',' + race + ',' + mobileTel + ',' + 
+												homeTel + ',' + altTel + ',' + email + ',' + homeAddress + ',' + CAST(postalCode AS VARCHAR(20)) + ',' + CONVERT(VARCHAR(100), time_stamp, 105) + ' ' + CONVERT(VARCHAR(10), time_stamp, 108)) 
+									FROM [dbo].[VISITOR_PROFILE] 
+									WHERE nric = @pNRIC AND amend = 0 AND confirm = 0
+									ORDER BY time_stamp DESC)
+        
+				SET @len = LEN(@visitorInfo)
+				IF (@len > 0)
+				BEGIN
+					SET @responseMessage = 1
+					SET @returnValue = @visitorInfo
+				END
+				
+				ELSE
+				BEGIN
+					SET @responseMessage = 0
+					SET @returnValue = 'Visitor not found'
+				END
+			END
+		END 
+	END
 END;
 
 
@@ -1181,37 +1337,38 @@ BEGIN 
 END; 
 
 
------------------------------------------------------------------------------------------------------  Procedures for retrieving Visitor's details  
+-----------------------------------------------------------------------------------------------------  Procedures for retrieving Visit details   
 GO
-CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
-@pNric VARCHAR(100),  
+CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
+@pNric VARCHAR(100),  
 @responseMessage VARCHAR(MAX) OUTPUT
 
-AS  
-BEGIN  
-	SET NOCOUNT ON  
-	DECLARE @pVisit_Details VARCHAR(MAX)
-	DECLARE @pLatestTimestamp DATETIME
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+  DECLARE @pVisit_Details VARCHAR(MAX)
+  DECLARE @pLatestTimestamp DATETIME
 
-	IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
-	BEGIN
-		SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
-								 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
-								 WHERE visitRequestTime <= SYSDATETIME() 
-								 OR CONVERT(VARCHAR(20), visitRequestTime, 105) = CONVERT(VARCHAR(20), SYSDATETIME(), 105)))
+  IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
+  BEGIN
+    SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = 's9332934a' 
+                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
+                 WHERE YEAR(visitRequestTime) = YEAR(GETDATE())
+                 AND MONTH(visitRequestTime) = MONTH(GETDATE())
+                 AND DAY(visitRequestTime) = DAY(GETDATE())))
 
-		SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
-										patientNric + ',' + visitorNric + ',' + patientFullName + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
-										CAST(bedNo AS VARCHAR(100)) + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  CAST(confirm AS VARCHAR(5)))
-		FROM VISIT 
-		WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp)
+    SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
+                    patientNric + ',' + visitorNric + ',' + patientFullName + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
+                    CAST(bedNo AS VARCHAR(100)) + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  CAST(confirm AS VARCHAR(5)))
+    FROM VISIT 
+    WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp)
 
-		SET @responseMessage = @pVisit_Details
-	END  
+    SET @responseMessage = @pVisit_Details
+  END  
 
-	ELSE
-		SET @responseMessage = '0'
-END; 
+  ELSE
+    SET @responseMessage = '0'
+END;
 
 
 ---------------------------------------------------------------------------------------------------------- Procedure for confirming visitor's check-in
@@ -1657,6 +1814,25 @@ BEGIN 
 	ELSE
 		SET @responseMessage = 0 
 END; 
+
+
+---------------------------------------------------------------------------------------------------— Procedure for getting question order
+GO
+CREATE PROCEDURE [dbo].[GET_SELECTED_QUESTIONNARIE_ORDER]  
+@pQ_QuestionList_ID VARCHAR(100),
+@responseMessage INT OUTPUT
+
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+	DECLARE @pOrder_QQ_ID VARCHAR(100)
+  
+	SELECT Q_Order 
+	FROM QUESTIONAIRE_QNS_LIST 
+	WHERE Q_QuestionListID = @pQ_QuestionList_ID AND endDate IS NULL
+
+    SET @responseMessage = 1
+END;
 
 
 -----------------------------------------------------------------------------------------------------  Procedures for retrieving Active Questionnaries 
@@ -2331,7 +2507,8 @@ BEGIN 
 	BEGIN
 	INSERT INTO @pSelected_Terminals
 		SELECT * FROM TERMINAL
-		WHERE startDate <= @pEnd_Date AND endDate >= @pStart_Date
+		WHERE endDate IS NOT NULL 
+		AND startDate <= @pEnd_Date AND endDate >= @pStart_Date
 	END
 
 	SET @pTerminal_count = (SELECT DISTINCT COUNT(tId) FROM @pSelected_Terminals)
@@ -2346,3 +2523,195 @@ BEGIN 
 	ELSE
 		SET @responseMessage = 0
 END; 
+
+
+--------------------------------------------------------------------------------------------------------- Checks number of visitors checked in to a particular bed number
+GO
+CREATE PROCEDURE [dbo].[CHECK_NUM_VISITORS] 
+@pBedNo INT,
+@pLimit INT = 3,
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	BEGIN TRY
+		SET @responseMessage = CAST((SELECT COUNT(DISTINCT nric) AS checkedIn 
+									 FROM MOVEMENT
+									 WHERE locationID <> 1 
+									 AND nric IN (SELECT DISTINCT nric FROM CHECK_IN
+												  WHERE nric IN (SELECT visitorNric FROM VISIT WHERE bedNo = @pBedNo) 
+												  AND DAY(visitActualTime) = DAY(GETDATE()) 
+												  AND MONTH(visitActualTime) = MONTH(GETDATE()) 
+												  AND YEAR(visitActualTime) = YEAR(GETDATE())) 
+												  AND nric NOT IN (SELECT DISTINCT nric FROM MOVEMENT WHERE locationID = 1
+																	AND DAY(visitActualTime) = DAY(GETDATE())
+																	AND MONTH(visitActualTime) = MONTH(GETDATE()) 
+																	AND YEAR(visitActualTime) = YEAR(GETDATE()))) AS INT)
+    END TRY  
+    BEGIN CATCH
+        SET @responseMessage = 0 
+    END CATCH  
+END; 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Retrieving Pass Format
+GO
+CREATE PROCEDURE [dbo].[GET_PASS_FORMAT]  
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	BEGIN TRY
+		SELECT * FROM PASS_FORMAT   
+
+		SET @responseMessage = 1
+	END TRY
+	
+	BEGIN CATCH
+		SET @responseMessage = 0	
+	END CATCH  
+END; 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Updating Pass Format
+GO
+CREATE PROCEDURE [dbo].[SET_PASS_FORMAT]  
+@pPass_Format VARCHAR(MAX),
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	BEGIN 
+		DECLARE @pCount_pass INT
+		SET @pCount_pass = (SELECT COUNT(passFormat) FROM PASS_FORMAT)
+
+		BEGIN TRY
+		IF (@pCount_pass > 0)
+			UPDATE PASS_FORMAT
+			SET passFormat = @pPass_Format
+
+		ELSE
+			INSERT INTO  PASS_FORMAT
+			VALUES (@pPass_Format)   
+
+			SET @responseMessage = 1
+		END TRY
+  
+		BEGIN CATCH
+			SET @responseMessage = 0  
+		END CATCH  
+	END
+END;
+
+
+---------------------------------------------------------------------------------------------------  Procedures for Tracing Visiors by Check-In  
+GO
+CREATE PROCEDURE [dbo].[GET_TRACE_BEDNO]  
+@pStart_Date DATETIME,
+@pEnd_Date DATETIME,
+@pBed_No INT,
+@responseMessage INT OUT,
+@Visitors NVARCHAR(MAX) OUTPUT,
+@Visitor_Details NVARCHAR(MAX) OUTPUT
+
+AS  
+BEGIN  
+	SET NOCOUNT ON
+	DECLARE @pVisitor_Details TABLE (visitorNric VARCHAR(10), visitRequestTime DATETIME)			
+	
+	DECLARE @pVisit_Full_Details TABLE (
+		visitRequestTime DATETIME, 
+		patientNric VARCHAR(15),  
+		visitorNric VARCHAR(15),  
+		patientFullName VARCHAR(150), 
+		purpose VARCHAR(1000),
+		reason VARCHAR(1000),
+		visitLocation VARCHAR(300),    
+		bedNo INT,  
+		QaID VARCHAR(100),
+		confirm INT,    
+		visitActualTime DATETIME, 
+		temperature VARCHAR(10),  
+		staffEmail VARCHAR(200))				
+	
+	DECLARE @pvisitor_count INT
+
+	BEGIN
+		INSERT INTO @pVisitor_Details
+			SELECT vt.visitorNric, vt.visitRequestTime
+			FROM VISIT vt
+				INNER JOIN PATIENT p ON vt.bedNo = p.bedNo
+			WHERE vt.visitRequestTime BETWEEN @pStart_Date AND @pEnd_Date
+			AND vt.confirm = 1
+	END
+
+	BEGIN
+		DECLARE @pCount_Visitor INT
+		SET @pCount_Visitor = (SELECT COUNT(visitorNric) FROM @pVisitor_Details)
+
+		IF (@pCount_Visitor > 0)
+		BEGIN
+			SET @Visitors = (
+				SELECT * FROM VISITOR_PROFILE
+				WHERE nric IN (SELECT visitorNric FROM @pVisitor_Details)
+				FOR JSON PATH, ROOT('Visitors'))
+
+			--SELECT @Visitors
+		END
+		ELSE
+			SET @responseMessage = 0
+	END
+			
+	BEGIN 
+		INSERT INTO @pVisit_Full_Details
+			SELECT vt.visitRequestTime, vt.patientNric, vt.visitorNric, vt.patientFullName, vt.purpose, vt.reason, vt.visitLocation,
+				   vt.bedNo, vt.QaID, vt.confirm, ci.visitActualTime, ci.temperature, ci.staffEmail
+			FROM VISIT vt
+				INNER JOIN CHECK_IN ci ON vt.visitorNric = ci.nric
+			WHERE vt.visitorNric IN (SELECT visitorNric FROM @pVisitor_Details)
+			AND vt.visitRequestTime IN (SELECT visitRequestTime FROM @pVisitor_Details)
+	END	
+
+	BEGIN
+		DECLARE @pCount_Visit INT
+		SET @pCount_Visit = (SELECT COUNT(visitorNric) FROM @pVisit_Full_Details)
+		
+		IF (@pCount_Visit > 0)
+		BEGIN
+			SET @Visitor_Details = ( 
+				SELECT * 
+				FROM @pVisit_Full_Details
+				FOR JSON PATH, ROOT('Visitor_Details'))
+
+			SET @responseMessage = 1
+			--SELECT @Visitor_Details
+		END
+		ELSE
+			SET @responseMessage = 0
+	END
+END; 
+
+
+------------------------------------------------------------------------------------------------ Procedure for retrieving User's permission access
+GO
+CREATE PROCEDURE [dbo].[GET_USER_PERMISSIONS] 
+@responseMessage VARCHAR(500) OUTPUT
+
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+
+  IF (EXISTS (SELECT * FROM dbo.ACCESS_RIGHT))  
+  BEGIN
+    SELECT * FROM dbo.ACCESS_RIGHT
+    SET @responseMessage = '1'
+  END
+  ELSE
+    SET @responseMessage = '0'
+END;
