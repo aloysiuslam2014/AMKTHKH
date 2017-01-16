@@ -1,4 +1,6 @@
-﻿function traceByReg() {
+﻿var visitors, visitDetails;
+
+function traceByReg() {
     $("traceByRegResultTable").remove();
     var ri_dateStart = $("#ri_qstartdatetime").val();
     var ri_dateEnd = $("#ri_qenddatetime").val();
@@ -16,9 +18,9 @@
             var byRegResults = JSON.parse(returner);
             var byRegResultsJson = byRegResults.Msg[0];
             if (byRegResultsJson.visitors != "") {
-                var visitors = byRegResultsJson.visitors;
-                var visitDetails = byRegResultsJson.visitorDetails;
-                writeByRegResultsTable(visitors, visitDetails);
+                var visitorsk = byRegResultsJson.visitors;
+                var visitDetailsk = byRegResultsJson.visitorDetails;
+                writeByRegResultsTable(visitorsk, visitDetailsk);
             } else {
                 alert("Selected period returns no data. Please try another date");
             }
@@ -31,9 +33,13 @@
 }
 
 function writeByRegResultsTable(visitorsx, visitorDetails) {
-    var visitors  ;
+     
+    $("#ri_resultTable_body").html('');//clear existing elements
+    $("#generateCSV").removeClass('disabled');//Enable csv download button
     visitors = JSON.parse(visitorsx);
+    visitDetails = JSON.parse(visitorDetails);
     visitors = visitors.Visitors;
+    visitDetails = visitDetails.Visitor_Details;
     for (index = 0; index < visitors.length; ++index) {
         var v = visitors[index];
         var vparams = ["nric", "fullName", "gender", "nationality", "dateOfBirth", "race", "mobileTel", "homeTel", "altTel", "email", "homeAddress", "postalCode", "time_stamp", "confirm", "amend"];
@@ -50,6 +56,58 @@ function writeByRegResultsTable(visitorsx, visitorDetails) {
 
         $("#ri_resultTable_body").append(row);
     }
+}
+
+function generateCSV() {
+    //convert the data a csv array
+    var csvGenerate = [];
+    var csvHeader ;
+    var visitItem;
+    for (var i = 0 ; i < visitDetails.length; i++) {
+        var visitDetailToCSV = "";
+        visitItem = visitDetails[i];
+        var visitItemElementKeys = Object.keys(visitItem);
+        for (var x = 0; x < visitItemElementKeys.length; x++) {
+            visitDetailToCSV += visitItem[visitItemElementKeys[x]];
+            if (x + 1 < visitItemElementKeys.length) {
+                visitDetailToCSV+=",";
+            }
+        }
+        var visitProfileCSV = "";
+        for (var z = 0; z < visitors.length; z++) {
+            var item = visitors[z];
+            if (item.nric == visitItem.visitorNric) {
+                visitItem = item;
+                csvHeader = Object.keys(visitItem);
+                csvHeader = csvHeader.concat(visitItemElementKeys);
+                visitItemElementKeys = Object.keys(visitItem);
+                for (var x = 0; x < visitItemElementKeys.length; x++) {
+                    visitProfileCSV += visitItem[visitItemElementKeys[x]];
+                    if (x + 1 < visitItemElementKeys.length) {
+                        visitProfileCSV += ",";
+                    }
+                }
+            }
+        }
+        csvGenerate.push(csvHeader);
+        csvGenerate.push(visitProfileCSV + "," + visitDetailToCSV);
+    }
+    var csvContent = "data:text/csv;charset=utf-8,";
+    
+    csvGenerate.forEach(function (infoArray, index) {
+
+        csvContent += index < csvGenerate.length ? infoArray + "\n" : infoArray;
+
+    });
+
+    var encodedUri = encodeURI(csvContent);
+  
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "traceResultsForBed.csv");
+    document.body.appendChild(link); // Required for FF
+
+    link.click(); // This will download the data file named "my_data.csv".
 }
 
 function getValidTerminals() {

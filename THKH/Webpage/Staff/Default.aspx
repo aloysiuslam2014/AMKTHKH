@@ -899,7 +899,7 @@
             <h3 style="">Query by Registered Intent</h3>
            
             <div class="form-group col-sm-offset-2 col-sm-8">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="input-group date" id="ri_querystartdatetime">
                         <input type='text' id="ri_qstartdatetime" class="form-control required" placeholder="Start DateTime" />
                         <span class="input-group-addon">
@@ -908,7 +908,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="input-group date" id="ri_queryenddatetime">
                         <input type='text' id="ri_qenddatetime" class="form-control required" placeholder="End DateTime" />
                         <span class="input-group-addon">
@@ -926,10 +926,12 @@
                     });
                 </script>
 
-                <div class="input-group col-sm-4" id="ri_querybedrange">
-                    <input type="text" class="form-control" id="ri_querybeds" placeholder="Beds: 1-4,7,10 " />
+                <div id="ri_querybedrange" class="input-group col-sm-6">
+                    <input class="form-control" id="ri_querybeds" placeholder="Beds: 1-4,7,10 " style=" " type="text" />
                     <span class="input-group-btn">
                         <button class="btn btn-warning" id="traceByReg" onclick="traceByReg();"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
+                    </span><span class="input-group-btn">
+                        <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-save "></span>Generate CSV</button>
                     </span>
                 </div>
                 
