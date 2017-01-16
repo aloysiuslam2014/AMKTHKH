@@ -1,5 +1,69 @@
 ﻿var visitors, visitDetails;
 
+function unifiedTrace() {
+    var resultTable = document.getElementById("uq_resultstable_body");
+    while (resultTable.firstChild) {
+        resultTable.removeChild(resultTable.childNodes[0]);
+    }
+    var uq_dateStart = $("#uq_startdatetime").val();
+    var uq_dateEnd = $("#uq_enddatetime").val();
+    var uq_querybeds = $("#uq_bednos").val();
+
+    uq_params = uq_dateStart + '~' + uq_dateEnd + '~' + uq_querybeds;
+
+    var headersToProcess = { action: "unifiedTrace", queries: uq_params };
+    $.ajax({
+        url: './ContactTracing/tracing.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+        success: function (returner) {
+            try {
+                var uqResult = JSON.parse(returner);
+                var uqResultJSON = uqResult.Msg[0];
+
+                writeUQResultsTable(uqResultJSON);
+
+            } catch (err) {
+                alert("Selected period returns no data. Please try again");
+            }
+           
+        },
+        error: function (err) {
+            alert("There was a problem executing the trace, please contact the admin.");
+        },
+    });
+}
+
+function writeUQResultsTable(uqResultJSON) {
+
+    //$("#uq_resultstable_body").html('');//already cleared child elements at top of unifiedTrace()
+    $("#generateCSV").removeClass('disabled');//Enable csv download button
+    $("#uq_resultstable_head").removeAttribute('style');//unhide table headers
+    traced_visitors = JSON.parse(uqResultJSON);
+
+    try {
+        for (index = 0; index < traced_visitors.length; ++index) {
+            var v = visitors[index];
+            var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "registered", "scanned"];
+
+            //visitor
+            var row = document.createElement("tr");
+
+            for (rowindex = 0; rowindex < vparams.length; ++rowindex) {
+                var cell = document.createElement("td");
+                $(cell).html(v[vparams[rowindex]]);
+                $(row).append(cell);
+            }
+
+            $("#uq_resultstable_body").append(row);
+        }
+    } catch (err) {
+        alert("Unable to print any traced visitors.");
+    }
+    
+}
+
 function traceByReg() {
     $("traceByRegResultTable").remove();
     var ri_dateStart = $("#ri_qstartdatetime").val();

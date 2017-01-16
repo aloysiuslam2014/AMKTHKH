@@ -891,11 +891,77 @@
                 { %>
     <!-- ContactTracing -->
     <div class="tab-pane maxHeight" id="ContactTracing">
-        <div style="display:inline;margin:5px">
+        <%--Final Unified Tracing UI--%>
+        <div class="row" id="unifiedTrace">
+            <h3 style="">Unified Registered/Scanned Contact Tracing</h3>
+           
+            <div class="form-group col-sm-offset-2 col-sm-8" id="unified_query_params">
+                <div class="col-sm-3">
+                    <div class="input-group date" id="unifiedquery_startdatetime">
+                        <input type='text' id="uq_startdatetime" class="form-control required" placeholder="Start DateTime" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="input-group date" id="unifiedquery_enddatetime">
+                        <input type='text' id="uq_enddatetime" class="form-control required" placeholder="End DateTime" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <script type="text/javascript"> //Shift to separate Script
+                    $(function () {
+                        $('#unifiedquery_startdatetime').datetimepicker();
+                    });
+                    $(function () {
+                        $('#unifiedquery_enddatetime').datetimepicker();
+                    });
+                </script>
+
+                <div id="unifiedquery_bednos" class="input-group col-sm-6">
+                    <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 1141-1148 " style=" " type="text" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace();"><span class="glyphicon glyphicon-search"></span>Trace</button>
+                    </span><span class="input-group-btn">
+                        <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-save "></span>Generate CSV</button>
+                    </span>
+                </div>
+                
+            </div>
+
+            <div class="form-group col-sm-12" id="uq_results" style="overflow-x">
+                <table id ="uq_resultstable" class="table table-bordered" style:"padding-left:10px padding-right:10px">
+                    <thead id="uq_resultstable_head" style="display:none;">
+                        <tr>
+                            <th>Location</th>
+                            <th>Bed No.</th>
+                            <th>Check-in Time</th>
+                            <th>Exit Time</th>
+                            <th>Name</th>
+                            <th>NRIC</th>
+                            <th>Handphone Number</th>
+                            <th>Nationality</th>
+                            <th>Registered?<br />(to visit this bed/location)</th>
+                            <th>Scanned?<br />(at this location)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="uq_resultstable_body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div style="display:none;margin:5px,">
             <button type="button" onclick="toggleToByReg(); false;" class="btn btn-warning">By Registered Intent</button>
             <button type="button" onclick="toggleToByMove(); false;" class="btn btn-warning">By Terminal Scan</button>
         </div>
-        <div class="row" id="byRegistration">
+        <div class="row" id="byRegistration" style="display:none;">
             <h3 style="">Query by Registered Intent</h3>
            
             <div class="form-group col-sm-offset-2 col-sm-8">
@@ -931,7 +997,7 @@
                     <span class="input-group-btn">
                         <button class="btn btn-warning" id="traceByReg" onclick="traceByReg();"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
                     </span><span class="input-group-btn">
-                        <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-save "></span>Generate CSV</button>
+                        <button class="btn btn-warning disabled" id="old_generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-save "></span>Generate CSV</button>
                     </span>
                 </div>
                 
@@ -960,7 +1026,7 @@
                         <tbody id="ri_resultTable_body">
                         </tbody>
                     </table>
-                </div>
+           </div>
         </div>
          <div class="row" id="byMovement" style="display:none">
              <!-- query input portion -->
