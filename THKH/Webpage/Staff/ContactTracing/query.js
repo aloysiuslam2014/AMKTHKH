@@ -15,9 +15,14 @@
         success: function (returner) {
             var byRegResults = JSON.parse(returner);
             var byRegResultsJson = byRegResults.Msg[0];
-            var visitors = byRegResultsJson.visitors;
-            var visitDetails = byRegResultsJson.visitorDetails;
-            writeByRegResultsTable(visitors, visitDetails);
+            if (byRegResultsJson.visitors != "") {
+                var visitors = byRegResultsJson.visitors;
+                var visitDetails = byRegResultsJson.visitorDetails;
+                writeByRegResultsTable(visitors, visitDetails);
+            } else {
+                alert("Selected period returns no data. Please try another date");
+            }
+           
         },
         error: function (err) {
             alert("There was a problem retrieving valid terminals.");
