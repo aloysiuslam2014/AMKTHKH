@@ -637,6 +637,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="updateUserSuccessModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title">User Updated Successfully!</h4>
+                            </div>
+                            <div id="updateUserTextDiv" class="modal-body text-center">
+                                    <label>User information updated at <%=DateTime.Now %>.</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-block btn-danger" onclick="hideUpdateUserSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row inheritHeight">
                     <div class="col-sm-4 inheritHeight">
                         <h3 style="">Existing Users</h3>
@@ -743,8 +759,8 @@
                         <h4 id="emptyUserFields" style="color: red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         <div class="btn-group">               
                             <button type="button" class="btn btn-primary" onclick="clearStaffFields(); false">Clear All Fields</button>
-                            <button type="button" id="newUser" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Create New User</button>
-                            <button type="button" id="updateUser" class="btn btn-success" onclick="checkRequiredFieldsUser(); false">Update Existing User</button>       
+                            <button type="button" id="newUser" class="btn btn-success" onclick="checkRequiredFieldsUser('new'); false">Create New User</button>
+                            <button type="button" id="updateUser" class="btn btn-success" onclick="checkRequiredFieldsUser('update'); false">Update Existing User</button>       
                         </div>
                     </div>
     </div>
