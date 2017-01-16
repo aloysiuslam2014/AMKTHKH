@@ -97,6 +97,7 @@ function callCheck (){
                     }
                     else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
                         clearFields();
+                        $("#nric").prop('value', nricValue);
                     }
                 }
                 $('#main').animate({
@@ -291,7 +292,7 @@ function NewAssistReg() {
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Result === "Success") {
-                if (resultOfGeneration.Msg === "Visitor Limit Reached!") {
+                if (resultOfGeneration.Visitor === "Visitor Limit Reached!") {
                     // Show Error Modal!
                     showMaxLimitModal();
                     clearFields();
@@ -538,12 +539,6 @@ $(function () {
         maxDate: 'now',
         format: 'DD-MM-YYYY'
     });
-    //$('#visitbookingtimediv').datetimepicker(
-    //    {
-    //        // dateFormat: 'dd-mm-yy',
-    //        defaultDate: new Date(),
-    //        format: 'HH:mm' // Change to 15 Min Intervals
-    //    });
     $('#visitbookingdatediv').datetimepicker(
         {
             // dateFormat: 'dd-mm-yy',
@@ -607,14 +602,14 @@ function checkNricWarningDeclaration() {
 
 // Change checkbox value upon click
 $('#ignoreNric').on('change', function () {
-    var check = this.is(":checked");
-    if (check) {
-        $(this).prop('checked', false);
-    } else {
-        $(this).prop('checked', true);
-    }
+    //var check = this.is(":checked");
+    //if (check) {
+    //    $(this).prop('checked', false);
+    //} else {
+    //    $(this).prop('checked', true);
+    //}
     // Old Code
-    // this.check;
+     this.check;
 });
 
 // Loads & displays the active questionnaire from the DB for Assisted Reg

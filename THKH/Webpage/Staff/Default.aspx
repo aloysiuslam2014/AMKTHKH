@@ -277,7 +277,7 @@
                                 <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
                                 <label></label>
                                 <div class="form-group">
-                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span>Validate Patient</button>
+                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Check Patient</button>
                                     <label for="validatePatientButton" id="patientStatusGreen" style="color: green">Patient Found!</label>
                                     <label for="validatePatientButton" id="patientStatusRed" style="color: red">Patient Not Found!</label>
                                 </div>
