@@ -517,7 +517,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             catch (Exception ex)
             {
                 successString.Replace("Success", "Failure");
-                msg = ex.Message;
+                msg = ex.Message + "\"";
             }
             finally
             {
