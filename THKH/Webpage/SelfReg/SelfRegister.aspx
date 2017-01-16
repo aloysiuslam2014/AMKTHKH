@@ -94,7 +94,7 @@
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h3 class="modal-title">Visitor Online Registration</h3>
+                                <h3 class="modal-title">Visitor Registration</h3>
                                 <h5 class="modal-title">Please enter your NRIC/Identification Number to Begin</h5>
                             </div>
                             <div class="modal-body text-center">
@@ -106,7 +106,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-block btn-success" id="submitNric" onclick="showVisitDetails(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
-                                <h5 id="nricWarning" style="color: red">For non-Singapore based ID numbers, please register at the front counter.</h5>
+                                <h5 id="nricWarning" style="color: red">Invalid ID number! Please register at the front counter.</h5>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                     <div class="row" id="visitDetailsDiv">
                         <div class="jumbotron">
                         <h3>Visit Details</h3>
-                                <label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
+                                <label style="color: red">*</label><label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels(); false;">
                                         <option value="">-- Select One --</option>
@@ -143,7 +143,7 @@
                                         </select>
                                     </div>
                                 <div id="patientpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Visit Patient"--%>
-                                    <label for="patientName">Patient Name</label> <%--AJAX Call to search for Patient Name--%>
+                                    <label style="color: red">*</label><label for="patientName">Patient Name</label> <%--AJAX Call to search for Patient Name--%>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="patientName" />
                                     </div>
@@ -153,42 +153,42 @@
                                     </div>
                                     <label for="bedno">Bed Number:</label> <%--Bed Number--%>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control" id="bedno" />
+                                    <label style="color: red">*</label><input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
                                     <div class="form-group">
-                                        <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Validate Patient</button>
-                                        <label for="validatePatientButton" id="patientStatusGreen" style="color:green">Patient Found! Please fill up the rest of the form.</label>
-                                    <label for="validatePatientButton" id="patientStatusRed" style="color:red">Patient Not Found! Please Register at the Front Counter.</label>
+                                        <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Check Patient</button>
+                                        <label for="validatePatientButton" id="patientStatusGreen" style="color:green">Checked. Please continue with the form</label>
+                                    <label for="validatePatientButton" id="patientStatusRed" style="color:red">Invalid patient or bed number. Please proceed to the front counter</label>
                                         <label for="validatePatientButton" id="patientStatusNone" style="color:red">Please fill in the details of the patient your are visiting! If you are unsure, please approach the front desk personnel for assistance.</label>
                                     </div>
                                 </div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
-                                    <label for="visLoc">Visit Location</label><label for="visLoc" id="comp231" style="color: red">*</label>
+                                    <label style="color: red">*</label><label for="visLoc">Visit Location</label>
                                     <div class="form-group">
                                     <select class="form-control" id="visLoc">
                                         <option value="">-- Select One --</option>
                                         </select>
                                         <label for="visLoc" id="locWarning" style="color: red">Please select a visit location!</label>
                                     </div>
-                                    <label for="purposeInput">Purpose of Visit</label><label for="purposeInput" id="comp221" style="color: red">*</label>
+                                    <label style="color: red">*</label><label for="purposeInput">Purpose of Visit</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="purposeInput" />
                                     </div>
                                 </div>
-                                <label for="visitbookingdate">Visit Date</label><label for="visitbookingdate" id="comp21" style="color: red">*</label>
+                                <label style="color: red">*</label><label for="visitbookingdate">Visit Date (DD-MM-YYYY)</label>
                                 <%--Visit Time--%>
                             <div class="form-group">
                                     <div class="input-group date" id="visitbookingdatediv">
-                                    <input type='text' id="visitbookingdate" class="form-control required" />
+                                    <label style="color: red">*</label><input type='text' id="visitbookingdate" class="form-control required" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
                                 </div>
-                                <label for="visitbookingtime">Visit Time</label><label for="visitbookingtime" id="comp11" style="color: red">*</label>
+                                <label style="color: red">*</label><label for="visitbookingtime">Visit Time (HH:mm)</label>
                                 <%--Visit Time--%>
                             <div class="form-group">
-                                <select class="form-control required" onchange="checkTime(); false;" id="visitbookingtime">
+                                <label style="color: red">*</label><select class="form-control required" onchange="checkTime(); false;" id="visitbookingtime">
                                         <option value="">-- Select One --</option>
                                     </select>
                                 <label for="declaration" id="timelabel" style="color: red">Please choose a Visit Time!</label>
@@ -209,7 +209,7 @@
                         <div id="newusercontent" runat="server">
                             <div style="text-align:left">
                                     <h3>Personal Details</h3>
-                                    <label for="namesinput">Full Name</label><label for="existnric" id="comp1" style="color:red">*</label>
+                                    <label style="color: red">*</label><label for="namesinput">Full Name</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="namesInput" />
                                     </div>
@@ -217,11 +217,11 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="emailsInput" />
                                     </div>
-                                    <label for="nricsInput">NRIC</label><label for="existnric" id="comp2" style="color:red">*</label>
+                                    <label style="color: red">*</label><label for="nricsInput">NRIC</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="nricsInput" readonly />
                                     </div>
-                                    <label for="mobileinput">Mobile Number</label><label for="mobilesinput" id="comp0" style="color:red">*</label>
+                                    <label style="color: red">*</label><label for="mobileinput">Mobile Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="mobilesInput" />
                                         <label for="mobilesInput" id="mobWarning" style="color:red">Invalid Phone Number Format!</label>
@@ -236,30 +236,30 @@
                                         <input type="text" runat="server" class="form-control" id="altInput" />
                                         <label for="altInput" id="altWarning" style="color:red">Invalid Phone Number Format!</label>
                                     </div>
-                                    <label for="addressinput">Address</label><label for="existnric" id="comp4" style="color:red">*</label>
+                                   <label style="color: red">*</label> <label for="addressinput">Address</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="addresssInput" />
                                     </div>
-                                    <label for="postalinput">Postal Code</label><label for="existnric" id="comp5" style="color:red">*</label>
+                                    <label style="color: red">*</label><label for="postalinput">Postal Code</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="postalsInput" />
                                         <label for="postalsInput" id="posWarning" style="color: red">Invalid Postal Code Format!</label>
                                     </div>
-                                    <label for="sexinput">Gender:</label><label for="existnric" id="comp19" style="color:red">*</label>
+                                    <label style="color: red">*</label><label for="sexinput">Gender:</label>
                                     <div class="form-group">
                                         <select class="form-control" id="sexinput">
                                             <option value="M">Male</option>
                                             <option value="F">Female</option>
                                         </select>
                                     </div>
-                                    <label for="nationalinput">Nationality</label><label for="existnric" id="comp6" style="color:red">*</label>
+                                    <label style="color: red">*</label><label for="nationalinput">Nationality</label>
                                     <div class="form-group">
                                         <select class="form-control required" onchange="checkNationals(); false;" id="nationalsInput">
                                             <option value="">-- Select One --</option>
                                         </select>
                                         <label for="nationalsInput" id="natWarning" style="color: red">Please select a nationality!</label>
                                     </div>
-                                    <label for="daterange">Date of Birth</label><label for="existnric" id="comp7" style="color:red">*</label>
+                                    <label style="color: red">*</label><label for="daterange">Date of Birth</label>
                                     <div class="input-group date" id="datetimepicker">
                                         <input type='text'id="daterange" class="form-control required" onchange="checkDOB(); false;" />
                                         <span class="input-group-addon">
@@ -279,9 +279,9 @@
                                 </div>
                                 <div class="checkbox">
                                     <label for="declaration">
-                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation(); false;" value="true" />I declare that the above information given is accurate</label><br />
+                            <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation(); false;" value="true" />I have entered the required information to the best of my knowledge and ability</label><br />
                                     <input type="hidden" name="declare" value="false" />
-                            <label for="declaration" id="declabel" style="color:red">Please validate your patient details & check this option to continue</label>
+                            <label for="declaration" id="declabel" style="color:red">Please ensure that you have "Check Patient" detailes and check this option to continue</label>
                                     <h4 id="emptyFields" style="color:red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         </div>
                         <button class="btn btn-block btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button> <%--Copy to Tables without confirmation--%>

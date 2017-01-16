@@ -50,6 +50,7 @@ namespace THKH.Webpage.Staff.UserManagement
                 var title = context.Request.Form["title"];
                 int permissions = Int32.Parse(context.Request.Form["permissions"]);
                 var password = context.Request.Form["staffPwd"]; // If blank, dont change password
+                successString = updateUser(fname, lname, snric, email, address, postal, mobtel, hometel, alttel, sex, nationality, dob, race, age, title, permissions, password, staffUser);
             }
             if (requestType == "deleteUser") {
                 var snric = context.Request.Form["snric"];
@@ -287,56 +288,38 @@ namespace THKH.Webpage.Staff.UserManagement
         }
 
         private String updateUser(String fname, String lname, String snric, String email, String address, int postal, String mobtel, String hometel, String alttel, String sex,
-            String nationality, String dob, String race, int age, String title, int permissions, String password) {
+            String nationality, String dob, String race, int age, String title, int permissions, String password, String staffUser) {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[RETRIEVE_ACTIVE_QUESTIONNARIE]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[UPDATE_STAFF]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.Add(respon);
                 command.Parameters.AddWithValue("@pEmail", email);
-                command.Parameters.AddWithValue("@pPassword", "123"); // Changes needed
+                command.Parameters.AddWithValue("@pPassword", password);
                 command.Parameters.AddWithValue("@pFirstName", fname);
                 command.Parameters.AddWithValue("@pLastName", lname);
                 command.Parameters.AddWithValue("@pNric", snric);
                 command.Parameters.AddWithValue("@pAddress", address);
-                command.Parameters.AddWithValue("@pPostal", postal);
+                command.Parameters.AddWithValue("@pPostalCode", postal);
                 command.Parameters.AddWithValue("@pHomeTel", hometel);
                 command.Parameters.AddWithValue("@pAltTel", alttel);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pSex", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDOB", dob);
+                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture));
                 command.Parameters.AddWithValue("@pAge", age);
                 command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pPermission", permissions);
-                command.Parameters.AddWithValue("@pPostion", title);
+                command.Parameters.AddWithValue("@pPosition", title);
                 cnn.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
-                int count = 1;
-                if (reader.HasRows)
-                {
-                    successString += "[";
-                    while (reader.Read())
-                    {
-                        if (count > 1)
-                        {
-                            successString += ",";
-                        }
-                        successString += "{\"QuestionNumber\":\"";
-                        successString += reader.GetInt32(1) + "\",\"QuestionList\":\"" + reader.GetString(0) + "\",\"Question\":\"" + reader.GetString(2) + "\",\"QuestionType\":\"" + reader.GetString(3) + "\",\"QuestionAnswers\":\"" + reader.GetString(4);
-                        successString += "\"}";
-                        count++;
-                    }
-                    successString += "]";
-                }
+                command.ExecuteNonQuery();
                 successString += respon.Value;
-                reader.Close();
             }
             catch (Exception ex)
             {
@@ -349,7 +332,7 @@ namespace THKH.Webpage.Staff.UserManagement
             {
                 cnn.Close();
             }
-            successString += "}";
+            successString += "\"}";
             return successString;
         }
 

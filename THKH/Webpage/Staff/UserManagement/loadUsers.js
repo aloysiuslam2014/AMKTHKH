@@ -139,8 +139,6 @@ function initUsersList(data) {
                             $("#updateUser").prop('disabled', false);
                             getUserDetails($(this));  //Get the user details only checkbox is not checked. If deselecting dont get the user
                         } else {
-                            $("#newUser").prop('disabled', false);
-                            $("#updateUser").prop('disabled', true);
                             clearStaffFields();
                         }
                         updateDisplay($(this));
@@ -223,7 +221,7 @@ function getUserDetails(listObj) {
             }
         },
         error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the administrator.");
+            alert("Error: " + err.Msg + ". Please contact the administrator.");
         },
     });
 }
@@ -251,7 +249,7 @@ function updateUser() {
 
     var headersToProcess = {
         username: username, fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
-        race: race, age: age, email: Email, title: staffTitle, staffPwd: staffPwd,requestType: "updateUser"
+        race: race, age: age, email: Email, title: staffTitle, permissions: permissions, staffPwd: staffPwd, requestType: "updateUser"
     };
     $.ajax({
         url: '../Staff/UserManagement/userManagement.ashx',
@@ -261,10 +259,18 @@ function updateUser() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-
+            if (resultOfGeneration.Result == "Success") {
+                if (resultOfGeneration.Msg == "1" || resultOfGeneration.Msg == "2") {
+                    showUpdateUserSuccessModal(resultOfGeneration.Msg);
+                    clearStaffFields();
+                }
+            } else {
+                // Error
+                alert("Error: " + resultOfGeneration.Msg);
+            }
         },
         error: function (err) {
-            alert("Error: " + err.msg + ". Please contact the administrator.");
+            alert("Error: " + err.Msg + ". Please contact the administrator.");
         },
     });
 }
@@ -335,7 +341,6 @@ function addUser() {
                 if (resultOfGeneration.Msg == "Success") {
                     showAddUserSuccessModal();
                 }
-                // If User exists already, prompt user to click on update instead
             } else {
                 // Error
             }
@@ -357,6 +362,8 @@ function clearStaffFields() {
     for (i = 1; i < 7; i++) {
         $("#permiss [value='" + i + "']").prop("checked", false);
     }
+    $("#newUser").prop('disabled', false);
+    $("#updateUser").prop('disabled', true);
     deSelectAllUsers();
 }
 
@@ -375,8 +382,11 @@ function getPermissionInput() {
 }
 
 // For field validations
-function checkRequiredFieldsUser() {
+function checkRequiredFieldsUser(type) {
     var valid = true;
+    if (type == "update") {
+        $('#staffPwd').removeClass('required');
+    }
     $.each($("#userInfo input.required"), function (index, value) {
         var element = $(value).val();
         if (!element || element == "") {
@@ -389,11 +399,11 @@ function checkRequiredFieldsUser() {
     }
     if (valid) {
         $('#emptyUserFields').css("display", "none");
-        //if (type == "update") {
-            //updateUser();
-        //} else {
+        if (type == "update") {
+            updateUser();
+        } else {
             addUser();
-        //}
+        }
     }
     else {
         $('#emptyUserFields').css("display", "block");
@@ -753,6 +763,20 @@ function showAddUserSuccessModal() {
 // Hide Success Modal
 function hideAddUserSuccessModal() {
     $('#addUserSuccessModal').modal('hide');
+}
+
+// Show Success Modal
+function showUpdateUserSuccessModal(text) {
+    if (text = "1") {
+        $("#updateUserTextDiv").text("User information and password updated!");
+    }
+    $('#updateUserSuccessModal').modal('show');
+    $('#updateUserSuccessModal').modal({ backdrop: 'static', keyboard: false });
+}
+
+// Hide Success Modal
+function hideUpdateUserSuccessModal() {
+    $('#updateUserSuccessModal').modal('hide');
 }
 
 // Get emails of all select users
