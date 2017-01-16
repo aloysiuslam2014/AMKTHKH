@@ -537,8 +537,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
-            String msg = "";
+            String successString = "{\"Result\":\"Success\",\"Visitor\":";
+            String msg = "\"";
             string qAid = qaid;
             try
             {
@@ -642,7 +642,8 @@ namespace THKH.Webpage.Staff.CheckInOut
                 }
                 else {
                     successString.Replace("Success", "Failure");
-                    msg = "Visitor Limit Reached!";
+                    msg = "\"Visitor Limit Reached!";
+                    msg += "\"";
                 }
             }
             catch (Exception ex) {
