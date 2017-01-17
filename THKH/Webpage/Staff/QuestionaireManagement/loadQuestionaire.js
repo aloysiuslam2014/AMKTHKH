@@ -156,7 +156,7 @@ function fillQuestinaireList(dataForQList) {
         $(optin).attr("style", "background:white");
         $(optin).attr("name", dataForQList[i].ListName);
         if (dataForQList[i].Active.toString() == "1") {
-            $(optin).html(dataForQList[i].ListName + " <Active>");
+            $(optin).html(dataForQList[i].ListName + " (Active)");
             $(optin).attr("value", "1");
             //$(optin).attr("style", "color:green;background:#dff0d8");
             $(optin).attr("selected", "");
@@ -443,7 +443,7 @@ function newQuestionnaire() {
 function selectNewQuestionnaire(qName) {
     var optin = document.createElement("option");
     $(optin).attr("name", qName);
-    $(optin).html(qName + " <New>");
+    $(optin).html(qName + " (New)");
     $(optin).attr("selected", "");
     $('#qnaires').append(optin);
     $('#sortable').html("");
@@ -692,7 +692,7 @@ $('#delQuestionsFromQuestionnaire').click(function () {
 // Set selected questionnaire to active
 function setActiveQuestionnaire() {
     var qnaireId = $("#qnaires").val().toString();
-    qnaireId = qnaireId.replace(" <New>", "");
+    qnaireId = qnaireId.replace(" (New)", "");
     if (qnaireId == "1") {
         alert("This questionnaire is already active!");
         return;
@@ -741,7 +741,7 @@ function selectActiveQuestionnaire() {
                     $(optin).attr("style", "background:white");
                     $(optin).attr("name", dataForQList[i].ListName);
                     if (dataForQList[i].Active.toString() == "1") {
-                        $(optin).html(dataForQList[i].ListName + " <Active>");
+                        $(optin).html(dataForQList[i].ListName + " (Active)");
                         $(optin).attr("value", "1");
                         $(optin).attr("style", "color:green;background:#dff0d8");
                         $(optin).attr("selected", "");
