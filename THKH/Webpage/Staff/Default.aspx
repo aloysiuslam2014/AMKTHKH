@@ -471,7 +471,7 @@
                                         <div>Question<textarea id="detailsQn" class="form-control qnVal" rows="3" cols="80">  </textarea></div>
                                         <div>
                                             Question Response Type
-                                            <select id="detailsQnType" class="form-control qnVal">
+                                            <select id="detailsQnType" onchange="checkAnsType(); false;" class="form-control qnVal">
                                                 <option value="" selected="selected">-- Select a type --</option>
                                                 <option value="ddList">Drop-down list</option>
                                                 <option value="checkbox">Checkbox</option>
