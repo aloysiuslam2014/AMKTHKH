@@ -344,7 +344,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                         <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                        <h4 style="">Add New Form</h4>
+                                        <h4>Add New Form</h4>
                                     </div>
                                     <div class="modal-body" style="padding: 40px 50px; text-align: center;">
                                         <div class="input-group">
@@ -352,12 +352,13 @@
                                           <input type="text" class="form-control" id="qnaireid" aria-describedby="basic-addon" />      
                                         </div>
                                         <label id="emptyQuestionnaireWarning" style="color:red">Please enter a form name!</label>
-                                            <label id="questionnaireWarning" style="color:red">Form name already exists! Please use a unique name.</label>
-                                        </div>
-                                    <div class="modal-footer" style="text-align: center !important;">
+                                            <label id="questionnaireWarning" style="color:red">Form name already exists! Please use a unique name.</label><br />
                                         <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
                                     <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span> Add Form</button>
-                                    </div>
+                                        </div>
+                                   <%-- <div class="modal-footer" style="text-align: center !important;">
+                                        
+                                    </div>--%>
                                 </div>
                             </div>
                         </div>
@@ -394,15 +395,16 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4>Success</h4>
+                                                <h4>Form Saved!</h4>
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
-                                                <label>Form Saved!</label>
-                                            </div>
-                                            <div class="modal-footer" style="text-align: center !important;">
+                                                <%--<label>Form Saved!</label>--%>
                                                 <button type="button" id="closeUpdateQuestionnaire" onclick="closeUpdateSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
                                             </div>
+                                            <%--<div class="modal-footer" style="text-align: center !important;">
+                                                
+                                            </div>--%>
                                         </div>
 
                                     </div>
@@ -414,14 +416,15 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4>Success</h4>
+                                                <h4>Form Activated!</h4>
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
-                                                <label>Form set as Active!</label>
-                                            </div>
-                                            <div class="modal-footer" style="text-align: center !important;">
+                                                <%--<label>Form set as Active!</label>--%>
                                                 <button type="button" id="closeActiveSuccess" onclick="closeActiveSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
                                             </div>
+                                            <%--<div class="modal-footer" style="text-align: center !important;">
+                                                
+                                            </div>--%>
                                         </div>
 
                                     </div>
@@ -433,15 +436,16 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4>Success</h4>
+                                                <h4>Form Added!</h4>
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
-                                                <label>Form Added!</label>
-                                            </div>
-                                            <div class="modal-footer" style="text-align: center !important;">
+                                                <%--<label>Form Added!</label>--%>
                                                 <button type="button" id="closeAddQuestionnaireSuccess" onclick="closeAddQuestionnaireSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
                                             </div>
+                                            <%--<div class="modal-footer" style="text-align: center !important;">
+                                                
+                                            </div>--%>
                                         </div>
 
                                     </div>
@@ -483,7 +487,7 @@
                                         </div>
                                         <div>
                                             Question Values
-                                            <textarea id="detailsQnValues" class="form-control qnVal" rows="2" cols="60"></textarea>
+                                            <textarea id="detailsQnValues" class="form-control qnVal" rows="2" placeholder="Enter answer values seperated by comma" cols="60"></textarea>
                                         </div><br />
                                         <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Close</button>
                                         <button type="button" id="updateOrCreateQn" onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Save Question</button>
@@ -526,8 +530,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                                <h4>Add New Terminal </h4>
-
+                                                <h4>Add New Terminal</h4>
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
 
@@ -537,10 +540,13 @@
                                                     <label>Bed's attached to Terminal</label>
                                                     <input type="text" class="form-control text-center" id="beds" placeholder="Enter Bed Numbers seperated by comma" />
                                                     <label>Terminal in an infectious location?</label>
-                                                    <select id="terminalInfectious">
+                                                    <%--<div class="form-group">--%>
+                                                    <select class="form-control" id="terminalInfectious">
                                                         <option value="Yes">Yes</option>
                                                         <option value="No">No</option>
                                                     </select>
+
+                                                    <%--</div>--%>
                                                 </div>
 
                                                 

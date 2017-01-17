@@ -494,6 +494,7 @@ function toggleQnEditor() {
         $("#editQuestionTitle").html("New Question Details");
         isCreateQn = true;
         $("#searchQ").prop('readonly', true);
+        $("#detailsQnValues").prop('readonly', true);
         $('#qnEditor').collapse("show");
         clearQnEditorFields();
         toggleListGreyOut(true);
