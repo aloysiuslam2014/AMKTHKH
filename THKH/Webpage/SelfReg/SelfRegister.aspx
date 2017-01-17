@@ -94,7 +94,7 @@
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h3 class="modal-title">Visitor Registration</h3>
+                                <h3 class="modal-title">Visitor Registration</h3><br />
                                 <div class="input-group">
                                           <span class="input-group-addon" id="basic-addon">NRIC/FIN</span>
                                           <input type="text" class="form-control" id="selfRegNric" placeholder="Please enter a Singapore-based ID Number" aria-describedby="basic-addon" />
@@ -122,8 +122,8 @@
                                 <h4 class="modal-title" id="memberModalLabel1" style="color:white">Online Registration Recorded</h4>
                             </div>
                             <div class="modal-body text-center">
-                                    <label>Your online registration has been recorded at <%=TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Now).AddHours(8).ToString() %>.</label>
-                                    <label> Please confirm your registration at the Hospital Front Desk.</label>
+                                    <label>Visitor registration has been recorded at <%=TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Now).AddHours(8).ToString() %>.</label>
+                                    <label>Please proceed to the screening counter.</label>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-block btn-danger" id="closeSuccessButton" onclick="reloadPage(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>

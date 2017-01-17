@@ -487,7 +487,7 @@
                                         </div>
                                         <div>
                                             Question Values
-                                            <textarea id="detailsQnValues" class="form-control qnVal" rows="2" placeholder="Enter answer values seperated by comma" cols="60"></textarea>
+                                            <textarea id="detailsQnValues" class="form-control qnVal" rows="2" placeholder="Enter answer values seperated by comma in the following format: <Option 1>,<Option 2>,<Option 3>" cols="60"></textarea>
                                         </div><br />
                                         <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Close</button>
                                         <button type="button" id="updateOrCreateQn" onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Save Question</button>
