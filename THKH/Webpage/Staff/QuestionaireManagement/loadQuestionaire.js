@@ -337,8 +337,12 @@ function displayQuestionnaireQuestions() {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Result;
             if (res.toString() == "Success") {
-                $(".qnQns").html("");
-                fillList(resultOfGeneration.qnQns, $(".qnQns"), false);
+                if (resultOfGeneration.qnQns[0].question != "0") {
+                    $(".qnQns").html("");
+                    fillList(resultOfGeneration.qnQns, $(".qnQns"), false);
+                } else {
+                    $(".qnQns").html("");
+                }
                 hideQuestionsAppearingInQuestionaire();
             } else {
                 alert(resultOfGeneration.Result);
@@ -352,7 +356,6 @@ function displayQuestionnaireQuestions() {
 
 //Filter the list of available questions
 function filterCurrentList(elment) {
-
     var value = $(elment).val();
     if (value == '' || value == ' ') {
         $('#allQuestions > li').show();
@@ -439,10 +442,11 @@ function selectNewQuestionnaire(qName) {
     var optin = document.createElement("option");
     $(optin).attr("name", qName);
     $(optin).html(qName + " (New)");
-    $(optin).attr("style", "color:blue;background:#dff0d8");
+    //$(optin).attr("style", "color:blue;background:#aaddff");
     $(optin).attr("selected", "");
     $('#qnaires').append(optin);
     $('#sortable').html("");
+    $('.qnaire').css('background', '#aaddff');
 }
 
 //Clear questionaire fields
@@ -488,6 +492,7 @@ function toggleQnEditor() {
     if (!state || update == true) {
         $("#editQuestionTitle").html("New Question Details");
         isCreateQn = true;
+        $("#searchQ").prop('readonly', true);
         $('#qnEditor').collapse("show");
         clearQnEditorFields();
         toggleListGreyOut(true);
@@ -495,6 +500,7 @@ function toggleQnEditor() {
     } else {
         $('#qnEditor').collapse("hide");
         clearQnEditorFields();
+        $("#searchQ").prop('readonly', false);
         toggleListGreyOut(false)
     }
 }
@@ -528,6 +534,7 @@ function closeEditor() {
     toggleListGreyOut(false);
     update = false;
     $('#qnEditor').collapse("hide");
+    $("#searchQ").prop('readonly', false);
     hideFormManagementTags();
 }
 

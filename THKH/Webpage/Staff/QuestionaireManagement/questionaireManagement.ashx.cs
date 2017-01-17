@@ -416,32 +416,24 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 int count = 1;
                 if (reader.HasRows)
                 {
-                    //successString += "[";
                     while (reader.Read())
                     {
-                        //if (count > 1)
-                        //{
-                        //    successString += ",";
-                        //}
-                        //successString += "{";
                         // Get Question ID
-                        //successString += "\"qId\":\""+reader.GetInt32(0)+"\",";
                         qids.Add(reader.GetInt32(0).ToString());
                         // Get Question
-                        //successString += "\"question\":\"" + reader.GetString(1) + "\",";
                         questions.Add(reader.GetString(1));
                         // Get Question Type
-                        //successString += "\"qnType\":\"" + reader.GetString(2) + "\",";
                         qnTypes.Add(reader.GetString(2));
                         // Get Question Value
-                        //successString += "\"values\":\"" + reader.GetString(3)  + "\"";
                         qnValues.Add(reader.GetString(3));
-                        //successString += "}";
                         count++;
                     }
-                    //successString += "]";
                 }
-                successString += respon.Value;
+                var response = respon.Value;
+                if (response != null && response.ToString() == "0") {
+                    successString += "[{\"question\":\"0\"}]}";
+                    return successString;
+                }
                 reader.Close();
                 cnn.Close();
             }

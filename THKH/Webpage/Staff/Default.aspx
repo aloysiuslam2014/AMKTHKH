@@ -453,7 +453,7 @@
                             <h3 style="">Available Question(s)</h3>
                             <%--Checkbox Questions--%>
                             <div class="input-group" id="searchQns">
-                                <input type="text" class="form-control maxWidth" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)" />
+                                <input type="text" class="form-control maxWidth" id="searchQ" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)" />
                                 <span class="input-group-btn">
                                     <button type="button" id="createNewQuestion" onclick="toggleQnEditor(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> New Question</button>
                                 </span>
