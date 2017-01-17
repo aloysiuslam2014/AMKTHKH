@@ -230,9 +230,11 @@
                             <label for="sexinput">Gender</label><label for="sexinput" id="comp4" style="color: red">*</label>
                             <div class="form-group">
                                 <select class="form-control required" id="sexinput">
+                                    <option value="">-- Select One --</option>
                                     <option value="M">Male</option>
                                     <option value="F">Female</option>
                                 </select>
+                                <label for="sexinput" id="sexWarning" style="color: red">Please select a gender!</label>
                             </div>
                             <label for="nationalinput">Nationality</label><label for="nationalinput" id="comp5" style="color: red">*</label>
                             <div class="form-group">

@@ -159,6 +159,17 @@ function checkNationals() {
     return true;
 }
 
+// Check gender input field
+function checkGender() {
+    if ($("#sexinput").val() == '') {
+        $("#sexWarning").css("display", "block");
+        return false;
+    } else {
+        $("#sexWarning").css("display", "none");
+    }
+    return true;
+}
+
 // Check visit time input field
 function checkTime() {
     if ($("#visitbookingtime").val() == '') {
@@ -378,7 +389,7 @@ function checkRequiredFields() {
             $(value).css('background', '#f3f78a');
         }
     });
-    if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !checkNationals() || !purposePanels() || !checkTime()) {
+    if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !checkNationals() || !purposePanels() || !checkTime() || !checkGender()) {
         valid = false;
     }
     if (valid) {
@@ -576,6 +587,7 @@ function hideTags() {
     $("#posWarning").css("display", "none");
     $("#natWarning").css("display", "none");
     $("#purWarning").css("display", "none");
+    $("#sexWarning").css("display", "none");
     $("#locWarning").css("display", "none");
     $("#timelabel").css("display", "none");
     loadFacilities();
@@ -639,7 +651,7 @@ function loadActiveForm() {
                 var values = object.QuestionAnswers;
                 var questionNum = object.QuestionNumber;
                 if (type === "ddList") {
-                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
                         + "<div class='form-group'>"
                             + "<select class='form-control required answer' id='" + questionNum + "'>";
                     var valArr = values.split(",");
@@ -649,7 +661,7 @@ function loadActiveForm() {
                     htmlString += "</select></div>";
                 }
                 if (type === "radio") {
-                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -662,7 +674,7 @@ function loadActiveForm() {
                     htmlString += "</div>";
                 }
                 if (type === "checkbox") {
-                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -670,8 +682,7 @@ function loadActiveForm() {
                     }
                     htmlString += "</div>";
                 } if (type === "text") {
-                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label>"
-                                    + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
                                     + "<div class='form-group'>"
                                     + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "' />"
                                     + "</div>";

@@ -120,7 +120,7 @@
                                 <h4 class="modal-title" id="memberModalLabel1" style="color:white">Online Registration Recorded</h4>
                             </div>
                             <div class="modal-body text-center">
-                                    <label>Your online registration has been recorded at <%=DateTime.Now %>.</label>
+                                    <label>Your online registration has been recorded at <%=DateTime.Now.ToLocalTime() %>.</label>
                                     <label> Please confirm your registration at the Hospital Front Desk.</label>
                             </div>
                             <div class="modal-footer">
@@ -151,9 +151,9 @@
                                     <div class="form-group">
                                         <input type="hidden" runat="server" class="form-control" id="patientNric" />
                                     </div>
-                                    <label for="bedno">Bed Number:</label> <%--Bed Number--%>
+                                    <label style="color: red">*</label><label for="bedno">Bed Number:</label> <%--Bed Number--%>
                                 <div class="form-group">
-                                    <label style="color: red">*</label><input type="text" runat="server" class="form-control" id="bedno" />
+                                    <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
                                     <div class="form-group">
                                         <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Check Patient</button>
@@ -179,7 +179,7 @@
                                 <%--Visit Time--%>
                             <div class="form-group">
                                     <div class="input-group date" id="visitbookingdatediv">
-                                    <label style="color: red">*</label><input type='text' id="visitbookingdate" class="form-control required" />
+                                    <input type='text' id="visitbookingdate" class="form-control required" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -188,7 +188,7 @@
                                 <label style="color: red">*</label><label for="visitbookingtime">Visit Time (HH:mm)</label>
                                 <%--Visit Time--%>
                             <div class="form-group">
-                                <label style="color: red">*</label><select class="form-control required" onchange="checkTime(); false;" id="visitbookingtime">
+                                <select class="form-control required" onchange="checkTime(); false;" id="visitbookingtime">
                                         <option value="">-- Select One --</option>
                                     </select>
                                 <label for="declaration" id="timelabel" style="color: red">Please choose a Visit Time!</label>
@@ -247,10 +247,12 @@
                                     </div>
                                     <label style="color: red">*</label><label for="sexinput">Gender:</label>
                                     <div class="form-group">
-                                        <select class="form-control" id="sexinput">
+                                        <select class="form-control" id="sexinput" onchange="checkGender(); false;">
+                                            <option value="">-- Select One --</option>
                                             <option value="M">Male</option>
                                             <option value="F">Female</option>
                                         </select>
+                                        <label for="sexinput" id="sexWarning" style="color: red">Please select a gender!</label>
                                     </div>
                                     <label style="color: red">*</label><label for="nationalinput">Nationality</label>
                                     <div class="form-group">
@@ -281,7 +283,7 @@
                                     <label for="declaration">
                             <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation(); false;" value="true" />I have entered the required information to the best of my knowledge and ability</label><br />
                                     <input type="hidden" name="declare" value="false" />
-                            <label for="declaration" id="declabel" style="color:red">Please ensure that you have "Check Patient" detailes and check this option to continue</label>
+                            <label for="declaration" id="declabel" style="color:red">Please ensure that you have "Check Patient" details and check this option to continue</label>
                                     <h4 id="emptyFields" style="color:red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         </div>
                         <button class="btn btn-block btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button> <%--Copy to Tables without confirmation--%>

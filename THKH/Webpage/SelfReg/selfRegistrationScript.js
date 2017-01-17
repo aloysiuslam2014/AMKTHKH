@@ -76,45 +76,16 @@ function checkNationals() {
     return true;
 }
 
-// Check visit time input field
-function checkTime() {
-    if ($("#visitbookingtime").val() == '') {
-        $("#timelabel").css("display", "block");
+// Check gender input field
+function checkGender() {
+    if ($("#sexinput").val() == '') {
+        $("#sexWarning").css("display", "block");
         return false;
     } else {
-        $("#timelabel").css("display", "none");
+        $("#sexWarning").css("display", "none");
     }
     return true;
 }
-
-// Check visit location input field
-function checkLocation() {
-    if ($("#visLoc").val() == '') {
-        $("#locWarning").css("display", "block");
-        return false;
-    } else {
-        $("#locWarning").css("display", "none");
-    }
-    return true;
-}
-
-// Check if DOB is after today
-//function checkDOB() {
-//    var input = $("#daterange").val();
-//    var now = new Date();
-//    if (input > now) {
-//        alert("Birthday is after today!");
-//    }
-//}
-
-// Check if Requested Visit Time is before or after today (Supposed to be today)
-//function checkVisDate() {
-//    var input = $("#visitbookingdate").val();
-//    var now = new Date();
-//    if (input < now) {
-//        alert("Visit is before today!");
-//    }
-//}
 
 // Reload Page & Clear Cache
 function reloadPage() {
@@ -245,8 +216,10 @@ function checkRequiredFields() {
     var valid = true;
     var nationalitycheck = true;
     var timeCheck = false;
+    var genCheck = true;
     if (existUser !== true) {
         nationalitycheck = checkNationals();
+        genCheck = checkGender();
     }
     timeCheck = checkTime();
     $.each($("#selfregistration input.required"), function (index, value) {
@@ -256,7 +229,7 @@ function checkRequiredFields() {
             $(value).css('background', '#f3f78a');
         }
     });
-    if (!validMob || !validHom || !validAlt || !validPos || !nationalitycheck || !timeCheck) {
+    if (!validMob || !validHom || !validAlt || !validPos || !nationalitycheck || !timeCheck || !genCheck) {
         valid = false;
     }
     if (valid) {
@@ -427,6 +400,9 @@ function amendVisitorDetails() {
     if ($("#changed").prop('checked') === true) {
         $('#newusercontent').css("display", "block");
         $('#newusercontent input').addClass('required');
+        $('#emailsInput').removeClass('required');
+        $('#homesInput').removeClass('required');
+        $('#altInput').removeClass('required');
         $("#amend").attr('value', 1);
     } else {
         $('#newusercontent').css("display", "none");
@@ -459,6 +435,7 @@ function hideTags() {
     $("#submitNric").prop('disabled', true);
     $("#submitNric").css("display", "none");
     $("#locWarning").css("display", "none");
+    $("#sexWarning").css("display", "none");
     $("#timelabel").css("display", "none");
     $("#posWarning").css("display", "none");
     $("#natWarning").css("display", "none");
@@ -596,7 +573,7 @@ function loadActiveForm() {
                 var values = object.QuestionAnswers;
                 var questionNum = object.QuestionNumber;
                 if (type === "ddList") {
-                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
                         + "<div class='form-group'>"
                             + "<select class='form-control required answer' id='" + questionNum + "'>";
                     var valArr = values.split(",");
@@ -606,7 +583,7 @@ function loadActiveForm() {
                     htmlString += "</select></div>";
                 }
                 if (type === "radio") {
-                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -619,7 +596,7 @@ function loadActiveForm() {
                     htmlString += "</div>";
                 }
                 if (type === "checkbox") {
-                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label><label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -627,8 +604,7 @@ function loadActiveForm() {
                     }
                     htmlString += "</div>";
                 } if (type === "text") {
-                    htmlString += "<label for='" + questionNum + "' class='question'>" + question + "</label>"
-                                    + "<label for='" + questionNum + "' id='" + i + "' style='color: red'>*</label>"
+                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
                                     + "<div class='form-group'>"
                                     + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "' />"
                                     + "</div>";
@@ -893,4 +869,26 @@ function populateTime() {
         $(optin).html(time[i]);
         $('#visitbookingtime').append(optin);
     }
+}
+
+// Check visit time input field
+function checkTime() {
+    if ($("#visitbookingtime").val() == '') {
+        $("#timelabel").css("display", "block");
+        return false;
+    } else {
+        $("#timelabel").css("display", "none");
+    }
+    return true;
+}
+
+// Check visit location input field
+function checkLocation() {
+    if ($("#visLoc").val() == '') {
+        $("#locWarning").css("display", "block");
+        return false;
+    } else {
+        $("#locWarning").css("display", "none");
+    }
+    return true;
 }
