@@ -173,20 +173,20 @@
                                     <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
                                 </span>
                             </div>
-                            <h4 id="emptyNricWarning" style="color: red">Please enter an NRIC/Identification Number!</h4>
+                            <h4 id="emptyNricWarning" style="color: lightcoral">Please enter an NRIC/Identification Number!</h4>
                             <div id="nricWarnDiv">
-                                <h4 id="nricWarning" style="color: red">Non-Singapore Based NRIC/ID!</h4>
+                                <h4 id="nricWarning" style="color: lightcoral">Non-Singapore Based NRIC/ID!</h4>
                                 <div class="checkbox">
                                     <label for="ignoreNric"></label>
                                     <input type="checkbox" id="ignoreNric" name="declare" value="true" class="regInput" />Allow Anyway<br />
-                                    <label for="ignoreNric" id="ignoreNricLbl" style="color: red">Please check this option to continue</label>
+                                    <label for="ignoreNric" id="ignoreNricLbl" style="color: lightcoral">Please check this option to continue</label>
                                 </div>
                             </div>
                             <br />
                             <label class="control-label" for="temp"><span style="color:red">*</span>Temperature</label>
                             <input runat="server" id="temp" class="form-control required regInput" type="text" />
-                            <h4 id="tempWarning" style="color: red">Visitor's Temperature is above 37.6 Degrees Celcius!</h4>
-                            <h4 id="invalidTempWarning" style="color: red">Please enter a valid temperature in the following format: "36.7"</h4>
+                            <h4 id="tempWarning" style="color: lightcoral">Visitor's Temperature is above 37.6 Degrees Celcius!</h4>
+                            <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
                         </div>
                     </div>
                 </div>
@@ -206,17 +206,17 @@
                             <label for="mobileinput"><span style="color:red">*</span>Mobile Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="mobilesInput" />
-                                <label for="mobilesInput" id="mobWarning" style="color: red">Invalid Phone Number Format!</label>
+                                <label for="mobilesInput" id="mobWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
                             </div>
                             <label for="homeinput">Home Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control regInput" id="homesInput" />
-                                <label for="homesInput" id="homeWarning" style="color: red">Invalid Phone Number Format!</label>
+                                <label for="homesInput" id="homeWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
                             </div>
                             <label for="altInput">Alternate Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control regInput" id="altInput" />
-                                <label for="altInput" id="altWarning" style="color: red">Invalid Phone Number Format!</label>
+                                <label for="altInput" id="altWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
                             </div>
                             <label for="addressinput"><span style="color:red">*</span>Address</label>
                             <div class="form-group">
@@ -225,7 +225,7 @@
                             <label for="postalinput"><span style="color:red">*</span>Postal Code</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="postalsInput" />
-                                <label for="postalsInput" id="posWarning" style="color: red">Invalid Postal Code Format!</label>
+                                <label for="postalsInput" id="posWarning" style="color: lightcoral">Invalid Postal Code Format!</label>
                             </div>
                             <label for="sexinput"><span style="color:red">*</span>Gender</label>
                             <div class="form-group">
@@ -234,14 +234,14 @@
                                     <option value="M">Male</option>
                                     <option value="F">Female</option>
                                 </select>
-                                <label for="sexinput" id="sexWarning" style="color: red">Please select a gender!</label>
+                                <label for="sexinput" id="sexWarning" style="color: lightcoral">Please select a gender!</label>
                             </div>
                             <label for="nationalinput"><span style="color:red">*</span>Nationality</label>
                             <div class="form-group">
                                 <select class="form-control required regInput" onchange="checkNationals(); false;" id="nationalsInput">
                                     <option value="">-- Select One --</option>
                                 </select>
-                                <label for="nationalsInput" id="natWarning" style="color: red">Please select a nationality!</label>
+                                <label for="nationalsInput" id="natWarning" style="color: lightcoral">Please select a nationality!</label>
                             </div>
                             <label for="daterange"><span style="color:red">*</span>Date of Birth (DD-MM-YYYY)</label>
                             <div class="input-group date" id="datetimepicker">
@@ -263,7 +263,7 @@
                                     <option value="Visit Patient">Visit Patient</option>
                                     <option value="Other Purpose">Other Purpose</option>
                                 </select>
-                                <label for="pInput" id="purWarning" style="color: red">Please select a Visit Purpose!</label>
+                                <label for="pInput" id="purWarning" style="color: lightcoral">Please select a Visit Purpose!</label>
                             </div>
                             <div id="patientpurposevisit" class="container-fluid" runat="server">
                                 <%--Show this only when Visit Purpose is "Visit Patient"--%>
@@ -281,7 +281,7 @@
                                 <div class="form-group">
                                     <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Check Patient</button>
                                     <label for="validatePatientButton" id="patientStatusGreen" style="color: green">Patient Found!</label>
-                                    <label for="validatePatientButton" id="patientStatusRed" style="color: red">Patient Not Found!</label>
+                                    <label for="validatePatientButton" id="patientStatusRed" style="color: lightcoral">Patient Not Found!</label>
                                 </div>
                             </div>
                             <div id="otherpurposevisit" class="container-fluid" runat="server">
@@ -311,21 +311,21 @@
                                 <select class="form-control required regInput" onchange="checkTime(); false;" id="visitbookingtime">
                                         <option value="">-- Select One --</option>
                                     </select>
-                                 <label for="declaration" id="timelabel" style="color: red">Please choose a Visit Time!</label>
+                                 <label for="declaration" id="timelabel" style="color: lightcoral">Please choose a Visit Time!</label>
                             </div>
                             <h3 style="">Health Screening Form</h3>
                             <div id="questionaireForm">
                                 <!-- load questionaires here from JS -->
                             </div>
                             <input type="hidden" runat="server" class="form-control regInput" id="qaid" />
-                            <div class="checkbox">
+                            <%--<div class="checkbox">
                                 <label for="declaration"></label>
                                 <input type="checkbox" id="declaration" name="declare" class="regInput" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate<br />
                                 <input type="hidden" name="declare" value="false" />
-                                <label for="declaration" id="declabel" style="color: red">Please check this option to continue</label>
-                            </div>
-                            <h4 id="emptyFields" style="color: red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
-                            <button class="btn btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span>Submit</button>
+                                <label for="declaration" id="declabel" style="color: lightcoral">Please check this option to continue</label>
+                            </div>--%>
+                            <h4 id="emptyFields" style="color: lightcoral">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
+                            <button class="btn btn-success btn-block" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button>
                         </div>
                     </div>
                 </div>
@@ -362,6 +362,7 @@
                             </div>
                         </div>
                         <h3 style="">Select a Form to Begin</h3>
+                        <h5 style="font-style:italic">Please remember to save your form</h5>
                         <div class="input-group" id="qnaireSelection">
                             <select class="form-control qnaire" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
                                 <option value="">-- No Forms Created --</option>
@@ -451,6 +452,7 @@
                     <div class="col-sm-6 panel" style="height: 100%;margin-bottom:0">
                         <div class="list-group" style="height: 94%;" id="questionnaireQuestions">
                             <h3 style="">Available Question(s)</h3>
+                            <h5 style="font-style:italic">Check questions to add it to the form</h5>
                             <%--Checkbox Questions--%>
                             <div class="input-group" id="searchQns">
                                 <input type="text" class="form-control maxWidth" id="searchQ" placeholder="Enter term to search in question list..." onkeyup="filterCurrentList(this)" />
@@ -693,8 +695,8 @@
                                 <label><span style="color:red">*</span>NRIC</label>
                                 <div class="form-group">
                                     <input id="staffNric" class="form-control required userInput" />
-                                    <h4 id="emptyNricWarningUser" style="color: red">Please enter an NRIC/Identification Number!</h4>
-                                    <h4 id="nricWarningUser" style="color: red">Non-Singapore Based NRIC/ID!</h4>
+                                    <h4 id="emptyNricWarningUser" style="color: lightcoral">Please enter an NRIC/Identification Number!</h4>
+                                    <h4 id="nricWarningUser" style="color: lightcoral">Non-Singapore Based NRIC/ID!</h4>
                                 </div>
                                 <label><span style="color:red">*</span>Address</label>
                                 <div class="form-group">
@@ -702,24 +704,24 @@
                                 <label><span style="color:red">*</span>Postal Code</label>
                                 <div class="form-group">
                                     <input id="staffPostal" class="form-control required userInput" />
-                                    <label id="posWarningUser" style="color: red">Invalid Postal Code Format!</label>
+                                    <label id="posWarningUser" style="color: lightcoral">Invalid Postal Code Format!</label>
                                 </div>
                                 <label><span style="color:red">*</span>Mobile Number</label>
                                 <div class="form-group">
                                     <input id="staffMobileNum" class="form-control required userInput" />
-                                    <label id="mobWarningUser" style="color: red">Invalid Phone Number Format!</label>
+                                    <label id="mobWarningUser" style="color: lightcoral">Invalid Phone Number Format!</label>
                                 </div>
                                 <label>Home Number</label>
                                 <div class="form-group">
                                     <input id="staffHomeNum" class="form-control userInput" />
-                                    <label id="homWarningUser" style="color: red">Invalid Phone Number Format!</label>
+                                    <label id="homWarningUser" style="color: lightcoral">Invalid Phone Number Format!</label>
                                 </div>
                                 </div>
                             <div class="col-md-6">
                                 <label>Alternate Number</label>
                                 <div class="form-group">
                                     <input id="staffAltNum" class="form-control userInput" />
-                                    <label id="altWarningUser" style="color: red">Invalid Phone Number Format!</label>
+                                    <label id="altWarningUser" style="color: lightcoral">Invalid Phone Number Format!</label>
                                 </div>
                                 <label><span style="color:red">*</span>Sex</label>
                                 <div class="form-group">
@@ -733,7 +735,7 @@
                                      <select class="form-control required userInput" onchange="checkNationals(); false;" id="staffNationality" >
                                         <option value="">-- Select One --</option>
                                     </select>
-                                    <label for="nationalsInput" id="natWarningUser" style="color: red">Please select a nationality!</label>
+                                    <label for="nationalsInput" id="natWarningUser" style="color: lightcoral">Please select a nationality!</label>
                                 </div>
                                 <label><span style="color:red">*</span>Date Of Birth</label>
                                 <div class="input-group date" id="staffDOBDiv">
@@ -759,7 +761,7 @@
                                 <div class="form-group">
                                     <input id="staffPwd" class="form-control required userInput" /></div>
                         </div>
-                        <h4 id="emptyUserFields" style="color: red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
+                        <h4 id="emptyUserFields" style="color: lightcoral">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         <div class="btn-group">               
                             <button type="button" class="btn btn-primary" onclick="clearStaffFields(); false">Clear All Fields</button>
                             <button type="button" id="newUser" class="btn btn-success" onclick="checkRequiredFieldsUser('new'); false">Create New User</button>

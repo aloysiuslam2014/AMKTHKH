@@ -33,7 +33,7 @@
                 <asp:Button type="submit" Text="Check-In Terminal" runat="server" id="checkInTerminal" OnClick="checkInTerminal_Click" class="btn btn-primary" />
                 </div>
                     </td></tr>
-            <tr><td colspan="2" align="center"><label id="errorMsg" runat="server" ></label></td></tr>
+            <tr><td colspan="2" align="center"><label id="errorMsg" runat="server" style="color:lightcoral"></label></td></tr>
         </table>
     </div>
     </form>
