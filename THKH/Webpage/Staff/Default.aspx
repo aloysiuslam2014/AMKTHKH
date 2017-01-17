@@ -136,7 +136,7 @@
                                 <h4 class="modal-title" id="memberModalLabel1">Registration Successful</h4>
                             </div>
                             <div class="modal-body text-center" id="userSuccess">
-                                    <label>Visit data recorded at <%=DateTime.Now.AddHours(8) %>.</label>
+                                    <label>Visit data recorded at <%=TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Now).AddHours(8).ToString() %>.</label>
                                     <label style="color:green">Visitor has been checked in!</label>
                             </div>
                             <div class="modal-footer">
@@ -631,7 +631,7 @@
                                 <h4 class="modal-title">User Added Successfully!</h4>
                             </div>
                             <div class="modal-body text-center">
-                                    <label>New user added at <%=DateTime.Now %>.</label>
+                                    <label>New user added at <%=TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Now).AddHours(8).ToString() %>.</label>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-block btn-danger" onclick="hideAddUserSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
@@ -647,7 +647,7 @@
                                 <h4 class="modal-title">User Updated Successfully!</h4>
                             </div>
                             <div id="updateUserTextDiv" class="modal-body text-center">
-                                    <label>User information updated at <%=DateTime.Now %>.</label>
+                                    <label>User information updated at <%=TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Now).AddHours(8).ToString() %>.</label>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-block btn-danger" onclick="hideUpdateUserSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>

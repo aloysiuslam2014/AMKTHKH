@@ -767,7 +767,7 @@ function hideAddUserSuccessModal() {
 
 // Show Success Modal
 function showUpdateUserSuccessModal(text) {
-    if (text = "1") {
+    if (text == "1") {
         $("#updateUserTextDiv").text("User information and password updated!");
     }
     $('#updateUserSuccessModal').modal('show');

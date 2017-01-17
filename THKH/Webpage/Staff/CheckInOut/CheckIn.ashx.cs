@@ -18,7 +18,7 @@ namespace THKH.Webpage.Staff.CheckInOut
         {   
             context.Response.ContentType = "text/plain";
             String successString = "";
-            
+
             var typeOfRequest = context.Request.Form["requestType"];
             if (typeOfRequest == "getdetails") {
                 var nric = context.Request.Form["nric"].ToString();
