@@ -123,10 +123,14 @@ function validatePatient() {
                         $("#patientStatusNone").css("display", "none");
                         $('#newusercontent').css("display", "none");
                         $('#staticinfocontainer').css("display", "none");
+                        $("#patientName").attr('readonly', false);
+                        $("#bedno").attr('readonly', false);
                     } else {
                         $("#patientStatusGreen").css("display", "block");
                         $("#patientStatusRed").css("display", "none");
                         $("#patientStatusNone").css("display", "none");
+                        $("#patientName").attr('readonly', true);
+                        $("#bedno").attr('readonly', true);
                         patientValidated = true;
                         $("#userDetails").css("display", "block");
                         checkIfExistingVisitor();
@@ -433,6 +437,8 @@ function hideTags() {
     $("#patientStatusNone").css("display", "none");
     $("#userDetails").css("display", "none");
     $("#submitNric").prop('disabled', true);
+    $("#patientName").attr('readonly', false);
+    $("#bedno").attr('readonly', false);
     $("#submitNric").css("display", "none");
     $("#locWarning").css("display", "none");
     $("#sexWarning").css("display", "none");

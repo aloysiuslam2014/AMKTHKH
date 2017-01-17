@@ -95,19 +95,21 @@
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
                                 <h3 class="modal-title">Visitor Registration</h3>
-                                <h5 class="modal-title">Please enter your NRIC/Identification Number to Begin</h5>
-                            </div>
-                            <div class="modal-body text-center">
                                 <div class="input-group">
                                           <span class="input-group-addon" id="basic-addon">NRIC/FIN</span>
                                           <input type="text" class="form-control" id="selfRegNric" placeholder="Please enter a Singapore-based ID Number" aria-describedby="basic-addon" />
                                         </div>    
+                                <h5 style="text-align:center; font-style:italic">Visitors without a valid NRIC, please approach our staff at the front counter</h5>
                                 <h5 id="emptyNricWarning">Please enter your NRIC/Identification Number!</h5>
-                            </div>
-                            <div class="modal-footer">
                                 <button class="btn btn-block btn-success" id="submitNric" onclick="showVisitDetails(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
-                                <h5 id="nricWarning" style="color: red">Invalid ID number! Please register at the front counter.</h5>
+                                <h5 id="nricWarning" style="color: lightcoral">Invalid ID number! Please register at the front counter.</h5>
                             </div>
+                            <%--<div class="modal-body text-center">
+                                
+                            </div>--%>
+                            <%--<div class="modal-footer">
+                                
+                            </div>--%>
                         </div>
                     </div>
                 </div>

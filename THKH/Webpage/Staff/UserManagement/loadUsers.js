@@ -14,9 +14,8 @@ function loadUsersOnce() {
         hideUserTags();
         loadPermissionsField();
         getAllUsers();
-    } else {
         loadedUsers = true;
-    }
+    } 
 }
 
 // Load & Populate User List
