@@ -275,7 +275,7 @@
                     <div class="row">
                         <div id="staticinfocontainer" runat="server">
                             <div class="jumbotron" style="text-align:left">                            
-                                <h3>Health Screening Questionnaire</h3>
+                                <h3>Health Screening Form</h3>
                                <div id="questionaireForm">
                                     <!-- load questionaires here -->
                                 </div>

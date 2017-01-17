@@ -137,7 +137,7 @@
                             </div>
                             <div class="modal-body text-center" id="userSuccess">
                                     <label>Visit data recorded at <%=TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Now).AddHours(8).ToString() %>.</label>
-                                    <label style="color:green">Visitor has been checked in!</label>
+                                    <label>Visitor has been checked in!</label>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-block btn-danger" id="closeSuccessButton" onclick="hideSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
@@ -313,7 +313,7 @@
                                     </select>
                                  <label for="declaration" id="timelabel" style="color: red">Please choose a Visit Time!</label>
                             </div>
-                            <h3 style="">Health Screening Questionnaire</h3>
+                            <h3 style="">Health Screening Form</h3>
                             <div id="questionaireForm">
                                 <!-- load questionaires here from JS -->
                             </div>
@@ -344,32 +344,32 @@
                                 <div class="modal-content">
                                     <div class="modal-header" style="padding: 0px 50px; text-align: center;">
                                         <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                        <h4 style="">Add New Questionnaire</h4>
+                                        <h4 style="">Add New Form</h4>
                                     </div>
                                     <div class="modal-body" style="padding: 40px 50px; text-align: center;">
                                         <div class="input-group">
-                                          <span class="input-group-addon" id="basic-addon">Questionnaire Name</span>
+                                          <span class="input-group-addon" id="basic-addon">Form Name</span>
                                           <input type="text" class="form-control" id="qnaireid" aria-describedby="basic-addon" />      
                                         </div>
-                                        <label id="emptyQuestionnaireWarning" style="color:red">Please enter a questionnaire name!</label>
-                                            <label id="questionnaireWarning" style="color:red">Questionnaire name already exists! Please use a unique name.</label>
+                                        <label id="emptyQuestionnaireWarning" style="color:red">Please enter a form name!</label>
+                                            <label id="questionnaireWarning" style="color:red">Form name already exists! Please use a unique name.</label>
                                         </div>
                                     <div class="modal-footer" style="text-align: center !important;">
-                                        <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
-                                    <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span>Add Questionnaire</button>
+                                        <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                    <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span> Add Form</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <h3 style="">Select a Questionnaire to Begin</h3>
+                        <h3 style="">Select a Form to Begin</h3>
                         <div class="input-group" id="qnaireSelection">
                             <select class="form-control qnaire" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
-                                <option value="">-- No Questionnaires Created --</option>
+                                <option value="">-- No Forms Created --</option>
 
                             </select>
                             <span class="input-group-btn">
-                                <button class="btn btn-primary" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span>New Questionnaire</button>
-                                <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span>Set Active</button>
+                                <button class="btn btn-primary" id="addQuestionnaireButton" onclick="showAddQuestionnaireModal();"><span class="glyphicon glyphicon-plus"></span> New Form</button>
+                                <button class="btn btn-success" id="activeQuestionnaireButton" onclick="setActiveQuestionnaire(); false;"><span class="glyphicon glyphicon-star"></span> Set Active</button>
                             </span>
                         </div>
                         <div class="list-group" style="overflow: auto; height: 70%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="questionnaireQuestionsToDisplay">
@@ -383,8 +383,8 @@
                         </div>
                         <br />
                         <div class=" btn-group">
-                            <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Remove Questions</button>
-                            <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>Update Questionnaire</button>
+                            <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Remove Questions</button>
+                            <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save Form</button>
                         </div>
                         <div class="modal fade" id="updateQuestionnaireSuccess" role="dialog">
                                     <div class="modal-dialog">
@@ -397,7 +397,7 @@
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
-                                                <label style="color:green">Questionnaire Updated!</label>
+                                                <label>Form Saved!</label>
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">
                                                 <button type="button" id="closeUpdateQuestionnaire" onclick="closeUpdateSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
@@ -416,7 +416,7 @@
                                                 <h4>Success</h4>
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
-                                                <label style="color:green">Questionnaire set as Active!</label>
+                                                <label>Form set as Active!</label>
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">
                                                 <button type="button" id="closeActiveSuccess" onclick="closeActiveSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
@@ -436,7 +436,7 @@
 
                                             </div>
                                             <div class="modal-body" style="text-align: center;">
-                                                <label style="color:green">Questionnaire Added!</label>
+                                                <label>Form Added!</label>
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">
                                                 <button type="button" id="closeAddQuestionnaireSuccess" onclick="closeAddQuestionnaireSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
@@ -498,7 +498,7 @@
                             </div>
                             <br />
                             <div class="btn-group">
-                                <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Add to Questionnaire</button>
+                                <button type="button" id="addQuestionsToQuestionnaire" onclick="AddQtoQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add to Form</button>
                             </div>
                         </div>
                     </div>
@@ -560,7 +560,7 @@
 
                                             <div class="modal-body" id="prompText" style="text-align: center;">
 
-                                                <label style="color:green">Successfully Added New Terminal</label>
+                                                <label>Successfully Added New Terminal</label>
 
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">
@@ -658,12 +658,13 @@
                 <div class="row inheritHeight">
                     <div class="col-sm-4 inheritHeight">
                         <h3 style="">Existing Users</h3>
-                        <div class="input-group" id="searchUser">
+                        <%--<div class="input-group" id="searchUser">--%>
+                        <div class="form-group" id="searchUser">
                             <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterUserList(this)" />
-                            <span class="input-group-btn">
-                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
-                                <button type="button" id="" onclick="deSelectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
-                            </span>
+                            <%--<span class="input-group-btn">
+                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span> Select All</button>
+                                <button type="button" id="" onclick="deSelectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
+                            </span>--%>
                         </div>
                         <div class=" " style="border: solid 1pt;margin-bottom: 25px; border-radius: 2px; height: 77%; overflow-y: auto; margin-top: 2px;">
                             <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
@@ -1076,8 +1077,8 @@
                  </div>
 
                  <div class="btn-group">
-                     <button type="button" onclick="selectAll('queries'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
-                     <button type="button" onclick="deSelectAll('queries');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                     <button type="button" onclick="selectAll('queries'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span> Select All</button>
+                     <button type="button" onclick="deSelectAll('queries');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
                  </div>
                  <br />
                  <div class="btn-group">
