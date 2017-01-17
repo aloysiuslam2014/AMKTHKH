@@ -15,6 +15,7 @@ var validHom = true;
 var validTemp = true;
 var validPos = true;
 var regCompleted = false;
+var init = false;
 
 // Check for visitor details & any online self registration information
 function callCheck (){
@@ -314,6 +315,7 @@ function NewAssistReg() {
                     var today = new Date();
                     regCompleted = true;
                     showSuccessModal();
+                    var purpose = $("#pInput").val("");
                     //after showin then we load the pass go to the method show success modal to see
                     //clearfields moved to passManage.js to grab data before it is cleaned please DO NOT CLEAR FIELDS B4 PASS IS GENERATED!!!!!
                    
@@ -590,10 +592,13 @@ function hideTags() {
     $("#sexWarning").css("display", "none");
     $("#locWarning").css("display", "none");
     $("#timelabel").css("display", "none");
-    loadFacilities();
-    populateTime();
-    populateRegNationalities();
-    loadActiveForm();
+    if (!init) {
+        loadFacilities();
+        populateTime();
+        populateRegNationalities();
+        loadActiveForm();
+        init = true;
+    }
 }
 
 function checkNricWarningDeclaration() {
