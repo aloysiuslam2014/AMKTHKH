@@ -136,7 +136,7 @@
                                 <h4 class="modal-title" id="memberModalLabel1">Registration Successful</h4>
                             </div>
                             <div class="modal-body text-center" id="userSuccess">
-                                    <label>Visit data recorded at <%=DateTime.Now %>.</label>
+                                    <label>Visit data recorded at <%=DateTime.Now.AddHours(8) %>.</label>
                                     <label style="color:green">Visitor has been checked in!</label>
                             </div>
                             <div class="modal-footer">

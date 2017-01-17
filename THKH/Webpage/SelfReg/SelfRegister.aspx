@@ -120,7 +120,7 @@
                                 <h4 class="modal-title" id="memberModalLabel1" style="color:white">Online Registration Recorded</h4>
                             </div>
                             <div class="modal-body text-center">
-                                    <label>Your online registration has been recorded at <%=DateTime.Now.ToLocalTime() %>.</label>
+                                    <label>Your online registration has been recorded at <%=DateTime.Now.AddHours(8) %>.</label>
                                     <label> Please confirm your registration at the Hospital Front Desk.</label>
                             </div>
                             <div class="modal-footer">
