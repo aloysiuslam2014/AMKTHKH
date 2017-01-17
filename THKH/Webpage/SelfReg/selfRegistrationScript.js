@@ -573,7 +573,7 @@ function loadActiveForm() {
                 var values = object.QuestionAnswers;
                 var questionNum = object.QuestionNumber;
                 if (type === "ddList") {
-                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'><span style='color:red'>*</span>" + question + "</label>"
                         + "<div class='form-group'>"
                             + "<select class='form-control required answer' id='" + questionNum + "'>";
                     var valArr = values.split(",");
@@ -583,7 +583,7 @@ function loadActiveForm() {
                     htmlString += "</select></div>";
                 }
                 if (type === "radio") {
-                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'><span style='color:red'>*</span>" + question + "</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -596,7 +596,7 @@ function loadActiveForm() {
                     htmlString += "</div>";
                 }
                 if (type === "checkbox") {
-                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'><span style='color:red'>*</span>" + question + "</label>"
                         + "<div class='form-group'>";
                     var valArr = values.split(",");
                     for (j = 0; j < valArr.length; j++) {
@@ -604,7 +604,7 @@ function loadActiveForm() {
                     }
                     htmlString += "</div>";
                 } if (type === "text") {
-                    htmlString += "<label style='color: red'>*</label><label for='" + questionNum + "' class='question'>" + question + "</label>"
+                    htmlString += "<label for='" + questionNum + "' class='question'><span style='color:red'>*</span>" + question + "</label>"
                                     + "<div class='form-group'>"
                                     + "<input type='text' runat='server' class='form-control required answer' id='" + questionNum + "' />"
                                     + "</div>";

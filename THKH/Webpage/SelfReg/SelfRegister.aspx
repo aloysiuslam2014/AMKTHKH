@@ -134,7 +134,7 @@
                     <div class="row" id="visitDetailsDiv">
                         <div class="jumbotron">
                         <h3>Visit Details</h3>
-                                <label style="color: red">*</label><label for="pInput">Visit Purpose</label> <%--Check for Purpose of Visit--%>
+                                <label for="pInput"><span style='color:red'>*</span>Visit Purpose</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels(); false;">
                                         <option value="">-- Select One --</option>
@@ -143,7 +143,7 @@
                                         </select>
                                     </div>
                                 <div id="patientpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Visit Patient"--%>
-                                    <label style="color: red">*</label><label for="patientName">Patient Name</label> <%--AJAX Call to search for Patient Name--%>
+                                    <label for="patientName"><span style='color:red'>*</span>Patient Name</label> <%--AJAX Call to search for Patient Name--%>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="patientName" />
                                     </div>
@@ -151,7 +151,7 @@
                                     <div class="form-group">
                                         <input type="hidden" runat="server" class="form-control" id="patientNric" />
                                     </div>
-                                    <label style="color: red">*</label><label for="bedno">Bed Number:</label> <%--Bed Number--%>
+                                    <label for="bedno"><span style='color:red'>*</span>Bed Number</label> <%--Bed Number--%>
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
@@ -163,19 +163,19 @@
                                     </div>
                                 </div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
-                                    <label style="color: red">*</label><label for="visLoc">Visit Location</label>
+                                    <label for="visLoc"><span style='color:red'>*</span>Visit Location</label>
                                     <div class="form-group">
                                     <select class="form-control" id="visLoc">
                                         <option value="">-- Select One --</option>
                                         </select>
                                         <label for="visLoc" id="locWarning" style="color: red">Please select a visit location!</label>
                                     </div>
-                                    <label style="color: red">*</label><label for="purposeInput">Purpose of Visit</label>
+                                    <label for="purposeInput"><span style='color:red'>*</span>Purpose of Visit</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="purposeInput" />
                                     </div>
                                 </div>
-                                <label style="color: red">*</label><label for="visitbookingdate">Visit Date (DD-MM-YYYY)</label>
+                                <label for="visitbookingdate"><span style='color:red'>*</span>Visit Date (DD-MM-YYYY)</label>
                                 <%--Visit Time--%>
                             <div class="form-group">
                                     <div class="input-group date" id="visitbookingdatediv">
@@ -185,7 +185,7 @@
                                     </span>
                                 </div>
                                 </div>
-                                <label style="color: red">*</label><label for="visitbookingtime">Visit Time (HH:mm)</label>
+                                <label for="visitbookingtime"><span style='color:red'>*</span>Visit Time (HH:mm)</label>
                                 <%--Visit Time--%>
                             <div class="form-group">
                                 <select class="form-control required" onchange="checkTime(); false;" id="visitbookingtime">
@@ -209,7 +209,7 @@
                         <div id="newusercontent" runat="server">
                             <div style="text-align:left">
                                     <h3>Personal Details</h3>
-                                    <label style="color: red">*</label><label for="namesinput">Full Name</label>
+                                    <label for="namesinput"><span style='color:red'>*</span>Full Name</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="namesInput" />
                                     </div>
@@ -217,11 +217,11 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="emailsInput" />
                                     </div>
-                                    <label style="color: red">*</label><label for="nricsInput">NRIC</label>
+                                    <label for="nricsInput"><span style='color:red'>*</span>NRIC</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="nricsInput" readonly />
                                     </div>
-                                    <label style="color: red">*</label><label for="mobileinput">Mobile Number</label>
+                                    <label for="mobileinput"><span style='color:red'>*</span>Mobile Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="mobilesInput" />
                                         <label for="mobilesInput" id="mobWarning" style="color:red">Invalid Phone Number Format!</label>
@@ -236,16 +236,16 @@
                                         <input type="text" runat="server" class="form-control" id="altInput" />
                                         <label for="altInput" id="altWarning" style="color:red">Invalid Phone Number Format!</label>
                                     </div>
-                                   <label style="color: red">*</label> <label for="addressinput">Address</label>
+                                   <label for="addressinput"><span style='color:red'>*</span>Address</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="addresssInput" />
                                     </div>
-                                    <label style="color: red">*</label><label for="postalinput">Postal Code</label>
+                                    <label for="postalinput"><span style='color:red'>*</span>Postal Code</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="postalsInput" />
                                         <label for="postalsInput" id="posWarning" style="color: red">Invalid Postal Code Format!</label>
                                     </div>
-                                    <label style="color: red">*</label><label for="sexinput">Gender:</label>
+                                    <label for="sexinput"><span style='color:red'>*</span>Gender:</label>
                                     <div class="form-group">
                                         <select class="form-control" id="sexinput" onchange="checkGender(); false;">
                                             <option value="">-- Select One --</option>
@@ -254,14 +254,14 @@
                                         </select>
                                         <label for="sexinput" id="sexWarning" style="color: red">Please select a gender!</label>
                                     </div>
-                                    <label style="color: red">*</label><label for="nationalinput">Nationality</label>
+                                    <label for="nationalinput"><span style='color:red'>*</span>Nationality</label>
                                     <div class="form-group">
                                         <select class="form-control required" onchange="checkNationals(); false;" id="nationalsInput">
                                             <option value="">-- Select One --</option>
                                         </select>
                                         <label for="nationalsInput" id="natWarning" style="color: red">Please select a nationality!</label>
                                     </div>
-                                    <label style="color: red">*</label><label for="daterange">Date of Birth</label>
+                                    <label for="daterange"><span style='color:red'>*</span>Date of Birth (DD-MM-YYYY)</label>
                                     <div class="input-group date" id="datetimepicker">
                                         <input type='text'id="daterange" class="form-control required" onchange="checkDOB(); false;" />
                                         <span class="input-group-addon">
