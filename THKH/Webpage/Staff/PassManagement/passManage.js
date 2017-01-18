@@ -186,7 +186,7 @@ function createPassAppendParent(parent, target, datapositions) {
        
     });
 
-    clearFields();
+   
  
 }
 
@@ -347,6 +347,7 @@ function createBarCodeImg(textToCreate,injectAfterLoad) {
             } else {
                 alert(resultOfGeneration.Msg);
             }
+            clearFields();
         },
         error: function (err) {
             alert(err.Msg);
