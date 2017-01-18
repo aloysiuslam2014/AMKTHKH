@@ -45,7 +45,7 @@ function writeUQResultsTable(uqResultJSON) {
     try {
         for (index = 0; index < traced_visitors.length; ++index) {
             var v = visitors[index];
-            var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "registered", "scanned"];
+            var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "reg", "scan"];
 
             //visitor
             var row = document.createElement("tr");
