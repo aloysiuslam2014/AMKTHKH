@@ -29,15 +29,15 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br />
-                        <img src="../../Assets/AMK_THKH_Logo.png" class="img-responsive" alt="Conxole Admin"/>
+                        <img src="../../Assets/hospital%20logo%20transparent.png" class="img-responsive" />
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6 login-box">
                              
-                            <div style="margin-top: 60px" class="input-group">
+                            <div style="margin-top: 40px" class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                                 <input id="txtUserName" runat="server" type="text" class="form-control" placeholder="Username" required autofocus />
                             </div>
-                            <div style="margin-top: 10px" class="input-group">
+                            <div style="margin-bottom: 40px" class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                                 <input id="txtUserPass" runat="server" type="password" class="form-control" placeholder="Password" required />
                             </div>
