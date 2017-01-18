@@ -308,7 +308,7 @@ function NewAssistReg() {
                     // Show Error Modal!
                     showMaxLimitModal();
                     clearFields();
-                    $('input:checkbox[name=declare]').attr('checked', false);
+                    //$('input:checkbox[name=declare]').attr('checked', false);
                     hideTags();
                     regCompleted = true;
                 } else {
@@ -319,7 +319,7 @@ function NewAssistReg() {
                     //after showin then we load the pass go to the method show success modal to see
                     //clearfields moved to passManage.js to grab data before it is cleaned please DO NOT CLEAR FIELDS B4 PASS IS GENERATED!!!!!
                    
-                    $('input:checkbox[name=declare]').attr('checked', false);
+                    //$('input:checkbox[name=declare]').attr('checked', false);
                     hideTags();
                 }
               
@@ -534,15 +534,15 @@ function getQuestionnaireAnswers() {
 }
 
 // Check if user has checked the "I declare the info to be accurate" checkbox
-function declarationValidation() {
-    if ($("#declaration").prop('checked') == true) {
-        $("#declabel").css("display", "none");
-        $("#submitNewEntry").css("display", "block");
-    } else {
-        $("#declabel").css("display", "block");
-        $("#submitNewEntry").css("display", "none");
-    }
-}
+//function declarationValidation() {
+//    if ($("#declaration").prop('checked') == true) {
+//        $("#declabel").css("display", "none");
+//        $("#submitNewEntry").css("display", "block");
+//    } else {
+//        $("#declabel").css("display", "block");
+//        $("#submitNewEntry").css("display", "none");
+//    }
+//}
 
 // Datetime Picker JQuery
 $(function () {
@@ -577,7 +577,7 @@ function hideTags() {
     $('#tempWarning').css("display", "none");
     $("#patientpurposevisit").css("display", "none");
     $("#otherpurposevisit").css("display", "none");
-    $("#submitNewEntry").css("display", "none");
+    //$("#submitNewEntry").css("display", "none");
     $("#newusercontent").css("display", "none");
     $("#staticinfocontainer").css("display", "none");
     $("#nricWarnDiv").css("display", "none");

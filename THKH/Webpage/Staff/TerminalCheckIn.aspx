@@ -92,13 +92,13 @@
                         </div>
                     </div>
                     <div id="beginTerminal" class="tab-pane fade">
-                        <h3 style="font-size: 7em;"><b>Terminal
+                        <h3 style="font-size: 7em;"><b>
                             <label id="terminalName"></label>
                         </b></h3>
                         <input type="hidden" id="termValue" />
                          <div class="form-group" id="test22">
                         <input type="text" class="form-control text-center userTextScan" id="userNric" autofocus />
-                        <label id="userWelcome" class="text-success" style="font-size: 4em;">Please Scan Your Card</label>
+                        <div id="userWelcome" class="text-success" style="font-size: 4em;">Please Scan Your Card</div>
                              
                         </div>
                     </div>
@@ -107,8 +107,8 @@
 
             </div>
 
-            <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/locationQueries.js") %>"></script>
-
+            <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/TerminalCalls/locationQueries.js") %>"></script>
+       
             <script type="text/javascript">
 
                

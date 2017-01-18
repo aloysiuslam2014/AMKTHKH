@@ -1,16 +1,16 @@
 ﻿/// <reference path="C:\Users\iamth\Source\Repos\AMKTHKH\THKH\Webpage/Staff/Login.aspx" />
 /// <reference path="C:\Users\iamth\Source\Repos\AMKTHKH\THKH\Webpage/Staff/Login.aspx" />
 $(document).ready(function () {
-    $('#navigatePage a:first').tab('show');
+    
   
-   
+    $("#myModal").modal({
+        backdrop: 'static',
+        keyboard: false
+    });
      
 });
 
-$("#myModal").modal({
-    backdrop: 'static',
-    keyboard: false
-});
+
 $('#myModal').submit(function (event) {
 
     // prevent default browser behaviour
@@ -111,15 +111,25 @@ function updateCheckIn() {
             success: function (returner) {
                 var result = String(returner)
                 if (result == "success") {
-                    userWelcome.innerText = "Welcome! " + userNric.value;
+                    $("#userWelcome").html("Welcome! ");
                 } else {
-                    userWelcome.innerText = "You have not registered at the counter. Please head to Lobby front desk for assistance.";
+                    $("#userWelcome").html("You have not registered.<br> Please head to the Lobby's front desk for assistance.");
+                    $("#userWelcome").css('color', 'lightcoral');
                 }
+                setTimeout(function () { hideWelcome();}, 5000);
             },
             error: function (err) {
             },
         });
     }
+    
+}
+
+function hideWelcome(){
+    $("#userWelcome").html('Please Scan Your Card');
+    $("#userNric").prop('value', '');
+    $("#userNric").focus();
+    $("#userWelcome").css('color', '');
     
 }
 

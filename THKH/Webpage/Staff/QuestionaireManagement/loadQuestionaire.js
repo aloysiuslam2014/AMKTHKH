@@ -494,6 +494,7 @@ function toggleQnEditor() {
         $("#editQuestionTitle").html("New Question Details");
         isCreateQn = true;
         $("#searchQ").prop('readonly', true);
+        $("#detailsQnValues").prop('readonly', true);
         $('#qnEditor').collapse("show");
         clearQnEditorFields();
         toggleListGreyOut(true);
@@ -523,6 +524,12 @@ function editQuestionShow(me) {
     $("#detailsQn").val(qn);
     $("#detailsQnType").val(qnType);
     $("#detailsQnValues").val(qnValues);
+    if (qnType == "text") {
+        $("#detailsQnValues").prop('readonly', true);
+    } else {
+        $("#detailsQnValues").prop('readonly', false);
+    }
+    $("#searchQ").prop('readonly', true);
     $("#editQuestionTitle").html("Edit Question Details");
     update = true;
     $('#qnEditor').collapse("show");
@@ -534,6 +541,7 @@ function closeEditor() {
     clearQnEditorFields();
     toggleListGreyOut(false);
     update = false;
+    $("#searchQ").prop('readonly', false);
     $('#qnEditor').collapse("hide");
     $("#searchQ").prop('readonly', false);
     hideFormManagementTags();

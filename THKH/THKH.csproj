@@ -91,6 +91,7 @@
     <Content Include="Assets\hospitalLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\hospitalLogoSq.png" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -121,9 +122,9 @@
     <Content Include="CSS\images\ui-icons_a83300_256x240.png" />
     <Content Include="CSS\images\ui-icons_cccccc_256x240.png" />
     <Content Include="CSS\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="packages.config" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.min.css.map" />
@@ -139,7 +140,7 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery-ui.structure.min.css" />
     <Content Include="Scripts\jquery-ui.theme.min.css" />
-    <Content Include="Scripts\locationQueries.js" />
+    <Content Include="Webpage\Staff\TerminalCalls\locationQueries.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
@@ -242,6 +243,7 @@
     <None Include="Properties\PublishProfiles\Stepwise-is480.pubxml" />
     <None Include="Properties\PublishProfiles\stepwiseis480 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Triage20 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Triage20.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

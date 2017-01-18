@@ -188,14 +188,14 @@ namespace THKH.Webpage.Staff.TerminalCalls
                         int secondNumber = Int32.Parse(lowerUpperBedLimit[1]);
                         if (firstNumber > secondNumber)
                         {
-                            for (int i = secondNumber; i < firstNumber; i++)
+                            for (int i = secondNumber; i <= firstNumber; i++)
                             {
                                 formattedBedNoList += i + ",";
                             }
                         }
                         else if (secondNumber > firstNumber)
                         {
-                            for (int i = firstNumber; i < secondNumber; i++)
+                            for (int i = firstNumber; i <= secondNumber; i++)
                             {
                                 formattedBedNoList += i + ",";
                             }
