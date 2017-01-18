@@ -40,15 +40,14 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                                 <input id="txtUserPass" runat="server" type="password" class="form-control" placeholder="Password" required />
-                            </div><br />
+                            </div><br />                           
                             <div class="input-group center-block">
-                                <div class="btn-group">
-                                    <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success" Text="Login"/>
-                                    <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary" Text="Check-In Terminal"/>
-                                </div>
-                                <label id="errorMsg" runat="server"></label>
-                             </div>
-                            
+                            <div class="btn-group">
+                                <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary" Text="Check-In Terminal"/>
+                                <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success" Text="Login"/>
+                            </div>
+                            <label id="errorMsg" runat="server"></label>
+                        </div>
                         </div>
                     </div>
                 </div>
