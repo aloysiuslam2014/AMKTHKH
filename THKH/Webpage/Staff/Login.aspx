@@ -24,36 +24,42 @@
             <div class="panel panel-primary">
                 <div class="panel-heading" class="panel-heading">
                     <h3 class="panel-title">
-                        Staff Login | Ang Mo Kio - Thye Hua Kwan Hospital</h3>
+                        Triage 2.0 | Staff Login</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br />
-                        <img src="../../Assets/hospital%20logo%20transparent.png" class="img-responsive" />
+                            <img src="../../Assets/hospitalLogoSq.png" class="img img-responsive img-rounded" />
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6 login-box">
                              
                             <div style="margin-top: 40px" class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                                 <input id="txtUserName" runat="server" type="text" class="form-control" placeholder="Username" required autofocus />
-                            </div>
-                            <div style="margin-bottom: 40px" class="input-group">
+                            </div><br />
+                            <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                                 <input id="txtUserPass" runat="server" type="password" class="form-control" placeholder="Password" required />
-                            </div>
+                            </div><br />
+                            <div class="input-group center-block">
+                                <div class="btn-group">
+                                    <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success" Text="Login"/>
+                                    <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary" Text="Check-In Terminal"/>
+                                </div>
+                                <label id="errorMsg" runat="server"></label>
+                             </div>
                             
                         </div>
                     </div>
                 </div>
-                <div class="panel-footer">
+                <%--<div class="panel-footer">
                     <div class="row">
                         <div style="margin-left: 275px" class="col-xs-6 col-sm-6 col-md-6">
                             <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success" Text="Login"/>
                             <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary" Text="Check-In Terminal"/>
                         </div>
-                        <label id="errorMsg" runat="server"></label>
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
