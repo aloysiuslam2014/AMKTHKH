@@ -193,7 +193,7 @@
                                 <select class="form-control required" onchange="checkTime(); false;" id="visitbookingtime">
                                         <option value="">-- Select One --</option>
                                     </select>
-                                <label for="declaration" id="timelabel" style="color: red">Please choose a Visit Time!</label>
+                                <label for="declaration" id="timelabel" style="color: lightcoral">Please choose a Visit Time!</label>
                                 </div>
                     </div>
                         </div>
@@ -227,17 +227,17 @@
                                     <label for="mobileinput"><span style='color:red'>*</span>Mobile Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="mobilesInput" />
-                                        <label for="mobilesInput" id="mobWarning" style="color:red">Invalid Phone Number Format!</label>
+                                        <label for="mobilesInput" id="mobWarning" style="color:lightcoral">Invalid Phone Number Format!</label>
                                     </div>
                                     <label for="homeinput">Home Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="homesInput" />
-                                        <label for="homesInput" id="homeWarning" style="color:red">Invalid Phone Number Format!</label>
+                                        <label for="homesInput" id="homeWarning" style="color:lightcoral">Invalid Phone Number Format!</label>
                                     </div>
                                     <label for="altInput">Alternate Number</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="altInput" />
-                                        <label for="altInput" id="altWarning" style="color:red">Invalid Phone Number Format!</label>
+                                        <label for="altInput" id="altWarning" style="color:lightcoral">Invalid Phone Number Format!</label>
                                     </div>
                                    <label for="addressinput"><span style='color:red'>*</span>Address</label>
                                     <div class="form-group">
@@ -246,7 +246,7 @@
                                     <label for="postalinput"><span style='color:red'>*</span>Postal Code</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="postalsInput" />
-                                        <label for="postalsInput" id="posWarning" style="color: red">Invalid Postal Code Format!</label>
+                                        <label for="postalsInput" id="posWarning" style="color: lightcoral">Invalid Postal Code Format!</label>
                                     </div>
                                     <label for="sexinput"><span style='color:red'>*</span>Gender:</label>
                                     <div class="form-group">
@@ -255,14 +255,14 @@
                                             <option value="M">Male</option>
                                             <option value="F">Female</option>
                                         </select>
-                                        <label for="sexinput" id="sexWarning" style="color: red">Please select a gender!</label>
+                                        <label for="sexinput" id="sexWarning" style="color: lightcoral">Please select a gender!</label>
                                     </div>
                                     <label for="nationalinput"><span style='color:red'>*</span>Nationality</label>
                                     <div class="form-group">
                                         <select class="form-control required" onchange="checkNationals(); false;" id="nationalsInput">
                                             <option value="">-- Select One --</option>
                                         </select>
-                                        <label for="nationalsInput" id="natWarning" style="color: red">Please select a nationality!</label>
+                                        <label for="nationalsInput" id="natWarning" style="color: lightcoral">Please select a nationality!</label>
                                     </div>
                                     <label for="daterange"><span style='color:red'>*</span>Date of Birth (DD-MM-YYYY)</label>
                                     <div class="input-group date" id="datetimepicker">
@@ -286,8 +286,8 @@
                                     <label for="declaration">
                             <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation(); false;" value="true" />I have entered the required information to the best of my knowledge and ability</label><br />
                                     <input type="hidden" name="declare" value="false" />
-                            <label for="declaration" id="declabel" style="color:red">Please ensure that you have "Check Patient" details and check this option to continue</label>
-                                    <h4 id="emptyFields" style="color:red">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
+                            <label for="declaration" id="declabel" style="color:lightcoral">Please ensure that you have "Check Patient" details and check this option to continue</label>
+                                    <h4 id="emptyFields" style="color:lightcoral">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         </div>
                         <button class="btn btn-block btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button> <%--Copy to Tables without confirmation--%>
 
