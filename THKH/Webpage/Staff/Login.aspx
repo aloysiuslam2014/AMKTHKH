@@ -18,24 +18,46 @@
 <body>
     <form id="login" runat="server">
     
-     <div class="container-fluid">
-         <img src="../../Assets/hospitalLogo.png" style="width:50%;height:50%"/><br /><br />
-         <h2>Triage 2.0 | Staff Login</h2>
-        <table class="center">
-            
-            <tr><td class=""><b>Username: </b></td><td><input id="txtUserName" class="form-control" type="text" runat="server" placeholder="Username" autofocus/></td></tr>
-            <tr><td class=""><b>Password: </b></td><td><input id="txtUserPass" class="form-control" type="password" placeholder="Password" runat="server" /></td></tr>
-            <tr><br /><br /></tr>
-            <tr><td colspan="2" align="center">
-                <br />
-                <div class="btn-group">
-                <asp:Button type="submit" Text="Login" runat="server" id="loginSubmit" OnClick="loginSubmit_Click" class="btn btn-success" />
-                <asp:Button type="submit" Text="Check-In Terminal" runat="server" id="checkInTerminal" OnClick="checkInTerminal_Click" class="btn btn-primary" />
+    <div class="container">
+    <div class="row">
+        <div id="loginbox" style="margin-top:35px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-primary">
+                <div class="panel-heading" class="panel-heading">
+                    <h3 class="panel-title">
+                        Staff Login | Ang Mo Kio - Thye Hua Kwan Hospital</h3>
                 </div>
-                    </td></tr>
-            <tr><td colspan="2" align="center"><label id="errorMsg" runat="server" ></label></td></tr>
-        </table>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br />
+                        <img src="../../Assets/AMK_THKH_Logo.png" class="img-responsive" alt="Conxole Admin"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 login-box">
+                             
+                            <div style="margin-top: 60px" class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                <input id="txtUserName" runat="server" type="text" class="form-control" placeholder="Username" required autofocus />
+                            </div>
+                            <div style="margin-top: 10px" class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                                <input id="txtUserPass" runat="server" type="password" class="form-control" placeholder="Password" required />
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div style="margin-left: 275px" class="col-xs-6 col-sm-6 col-md-6">
+                            <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success" Text="Login"/>
+                            <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary" Text="Check-In Terminal"/>
+                        </div>
+                        <label id="errorMsg" runat="server"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>  
     </form>
     
 </body>
