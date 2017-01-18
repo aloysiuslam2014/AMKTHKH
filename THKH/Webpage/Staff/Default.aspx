@@ -950,8 +950,8 @@
                 <table id ="uq_resultstable" class="table table-bordered" style:"padding-left:10px padding-right:10px">
                     <thead id="uq_resultstable_head" style="display:none;">
                         <tr>
-                            <th>Location</th>
-                            <th>Bed No.</th>
+                            <th>Registered Location</th>
+                            <th>Registered Bed No.</th>
                             <th>Check-in Time</th>
                             <th>Exit Time</th>
                             <th>Name</th>
