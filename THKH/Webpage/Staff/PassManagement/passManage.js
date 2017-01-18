@@ -11,6 +11,27 @@ function convertDvToImg() {
     });
 }
 
+function deformatPass(toDeformat) {
+    var dePass = ""; 
+    var dePass = toDeformat.replace(/"/g, "IOI");
+    var dePass = dePass.replace(/\\/g, "MKM");
+    var dePass = dePass.replace(/\//g, "KOK");
+    var dePass = dePass.replace(/</g, "LKL");
+    var dePass = dePass.replace(/=/g, "ORO");
+    var dePass = dePass.replace(/>/g, "LML");
+    return dePass;
+}
+function reformatPass(toReformat) {
+    var rePass = "";
+    var rePass = toReformat.replace(/IOI/g, "\"");
+    var rePass = rePass.replace(/MKM/g, "\\");
+    var rePass = rePass.replace(/KOK/g, "/");
+    var rePass = rePass.replace(/LKL/g, "<");
+    var rePass = rePass.replace(/ORO/g, "=");
+    var rePass = rePass.replace(/LML/g, ">");
+    return rePass;
+}
+
 function loadPassState() {
 
     
@@ -38,7 +59,7 @@ function loadPassState() {
                 if (res.toString() == "Success") {
                     var passSetup = resultOfGeneration.Msg;
                     if (passSetup != null) { //pass configurations exist
-                        var passLayout = passSetup.divState;
+                        var passLayout = reformatPass(passSetup.divState);
                         var elementPositionsJson = JSON.parse(passSetup.positions);
                         sPositions = elementPositionsJson;
                         var layout = $(passLayout).html();
@@ -88,7 +109,7 @@ function getPassState() {
             var res = resultOfGeneration.Result;
             if (res.toString() == "Success") {
                 var passSetup = resultOfGeneration.Msg;
-                var passLayout = passSetup.divState;
+                var passLayout =reformatPass( passSetup.divState);
                 var elementPositionsJson = JSON.parse(passSetup.positions);
                 //var testtt = elementPositionsJson["barcode"];
                 createPassAppendParent($("#userSuccess"), passLayout, elementPositionsJson)
@@ -110,7 +131,7 @@ function savePassState() {
     $(cloneDump).prop("id", "passClone");
    
   
-    var storePassState = $(cloneDump).prop('outerHTML').replace(/"/g, "'");
+    var storePassState = deformatPass($(cloneDump).prop('outerHTML'));
     var headersToProcess = {
         requestType: "savePassState",
         passState: storePassState,
