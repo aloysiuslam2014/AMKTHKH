@@ -948,7 +948,7 @@
 
             <div class="form-group col-sm-12" id="uq_results" style="overflow-x">
                 <table id ="uq_resultstable" class="table table-bordered" style:"padding-left:10px padding-right:10px">
-                    <thead id="uq_resultstable_head" style="display:none;">
+                    <thead id="uq_resultstable_head">
                         <tr>
                             <th>Registered Location</th>
                             <th>Registered Bed No.</th>
@@ -958,8 +958,8 @@
                             <th>NRIC</th>
                             <th>Handphone Number</th>
                             <th>Nationality</th>
-                            <th>Registered?<br />(to visit this bed/location)</th>
-                            <th>Scanned?<br />(at this location)</th>
+                            <th>Registered?<br />(to visit query bed/location)</th>
+                            <th>Scanned?<br />(at query bed/location)</th>
                         </tr>
                     </thead>
                     <tbody id="uq_resultstable_body">
