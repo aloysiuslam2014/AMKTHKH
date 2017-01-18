@@ -51,7 +51,11 @@ function callCheck (){
                     if (resultOfGeneration.Visitor != null) {
                         visitorArr = visitorString.split(",");
                         if (resultOfGeneration.Questionnaire != null) {
-                            questionnaireArr = JSON.parse(resultOfGeneration.Questionnaire).Main;
+                            try {
+                                questionnaireArr = JSON.parse(resultOfGeneration.Questionnaire).Main;
+                            } catch (err) {
+
+                            }
                         }
                     }
                     if (visitorArr.length > 1) {
