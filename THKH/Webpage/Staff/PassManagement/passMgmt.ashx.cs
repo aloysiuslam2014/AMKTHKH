@@ -9,6 +9,7 @@ using System.Dynamic;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
+using System.Net;
 
 namespace THKH.Webpage.Staff.PassManagement
 {
@@ -35,7 +36,7 @@ namespace THKH.Webpage.Staff.PassManagement
             }
             if (requestType.Equals("savePassState"))
             {
-                var passState = context.Request.Unvalidated.Form["passState"];
+                var passState = WebUtility.HtmlEncode(context.Request.Unvalidated.Form["passState"]);
                 var elementsPosition = context.Request.Form["positioning"];
                 returnMe.Result = setPassState(passState,elementsPosition);
 
@@ -106,7 +107,8 @@ namespace THKH.Webpage.Staff.PassManagement
             }
 
             stateOfPass.Msg = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(placeName);//Json object contains: divState(div object holding pass contents) and positions(position offsets of elements within div) in json format
-
+            if(stateOfPass.Msg != null)
+            stateOfPass.Msg.divState = WebUtility.HtmlDecode(""+stateOfPass.Msg.divState);
             return stateOfPass;
         }
 
