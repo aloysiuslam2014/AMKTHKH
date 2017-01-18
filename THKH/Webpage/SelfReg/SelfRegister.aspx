@@ -217,7 +217,8 @@
                                     </div>
                                     <label for="emailinput">Email address</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="emailsInput" />
+                                        <input type="text" runat="server" class="form-control" id="emailsInput" onchange="ValidateEmail(); false"/>
+                                        <label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>
                                     </div>
                                     <label for="nricsInput"><span style='color:red'>*</span>NRIC</label>
                                     <div class="form-group">

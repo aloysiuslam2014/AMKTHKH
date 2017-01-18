@@ -14,6 +14,7 @@ var validAlt = true;
 var validHom = true;
 var validTemp = true;
 var validPos = true;
+var validEmail = true;
 var regCompleted = false;
 var init = false;
 
@@ -391,7 +392,7 @@ function checkRequiredFields() {
             $(value).css('background', '#f3f78a');
         }
     });
-    if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !checkNationals() || !purposePanels() || !checkTime() || !checkGender()) {
+    if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !checkNationals() || !purposePanels() || !checkTime() || !checkGender() || !validEmail) {
         valid = false;
     }
     if (valid) {
@@ -574,6 +575,7 @@ function hideTags() {
     $("#invalidTempWarning").css("display", "none");
     $("#emptyFields").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
+    $("#emailWarning").css("display", "none");
     $('#tempWarning').css("display", "none");
     $("#patientpurposevisit").css("display", "none");
     $("#otherpurposevisit").css("display", "none");
@@ -978,3 +980,15 @@ function showMaxLimitModal() {
 function hideMaxLimitModal() {
     $('#maxLimitModal').modal('hide');
 }
+
+// Email Format Validation
+$("#emailsInput").on("input", function () {
+    var email = $("#emailsInput").val();
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        $("#emailWarning").css("display", "none");
+        validEmail = true;
+    } else {
+        $("#emailWarning").css("display", "block");
+        validEmail = false;
+    }
+});

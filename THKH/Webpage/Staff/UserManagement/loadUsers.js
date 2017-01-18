@@ -778,6 +778,11 @@ function hideUpdateUserSuccessModal() {
     $('#updateUserSuccessModal').modal('hide');
 }
 
-// Get emails of all select users
-
-// Get email of selected user
+// Email Format Validation
+function ValidateEmail() {
+    var email = $('#staffEmail').val();
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        return true;
+    }
+    return false;
+}

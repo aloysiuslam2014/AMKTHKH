@@ -4,6 +4,7 @@ var validAlt = true;
 var validHom = true;
 var validPos = true;
 var existUser = false;
+var validEmail = true;
 var patientValidated = false;
 
 // write to form information DB
@@ -221,9 +222,11 @@ function checkRequiredFields() {
     var nationalitycheck = true;
     var timeCheck = false;
     var genCheck = true;
+    var emCheck = true;
     if (existUser !== true) {
         nationalitycheck = checkNationals();
         genCheck = checkGender();
+        emCheck = validEmail;
     }
     timeCheck = checkTime();
     $.each($("#selfregistration input.required"), function (index, value) {
@@ -233,7 +236,7 @@ function checkRequiredFields() {
             $(value).css('background', '#f3f78a');
         }
     });
-    if (!validMob || !validHom || !validAlt || !validPos || !nationalitycheck || !timeCheck || !genCheck) {
+    if (!validMob || !validHom || !validAlt || !validPos || !nationalitycheck || !timeCheck || !genCheck || !emCheck) {
         valid = false;
     }
     if (valid) {
@@ -420,6 +423,7 @@ function hideTags() {
     $('#emptyNricWarning').css("display", "none");
     $('#nricWarning').css("display", "none");
     $('#visitDetailsDiv').css("display", "none");
+    $("#emailWarning").css("display", "none");
     $('#staticinfocontainer').css("display", "none");
     $('#changeddetailsdeclaration').css("display", "none");
     $('#newusercontent').css("display", "none");
@@ -898,3 +902,15 @@ function checkLocation() {
     }
     return true;
 }
+
+// Email Format Validation
+$("#emailsInput").on("input", function () {
+    var email = $("#emailsInput").val();
+    if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+        $("#emailWarning").css("display", "none");
+        validEmail = true;
+    } else {
+        $("#emailWarning").css("display", "block");
+        validEmail = false;
+    }
+});

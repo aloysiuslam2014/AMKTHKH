@@ -202,6 +202,7 @@
                             <label for="emailinput">Email address</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control regInput" id="emailsInput" />
+                                <label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>
                             </div>
                             <label for="mobileinput"><span style="color:red">*</span>Mobile Number</label>
                             <div class="form-group">

@@ -50,18 +50,18 @@ function validatePhone(txtPhone) {
 }
 
 // Check for required fields in Assisted Registration page
-function checkRequiredFields() {
-    var valid = true;
-    $.each($("#main input.required"), function (index, value) {
-        if (!$(value).val()) {
-            valid = false;
-        }
-    });
-    if (valid) {
-        $('#emptyFields').css("display", "none");
-        NewAssistReg();
-    }
-    else {
-        $('#emptyFields').css("display", "block");
-    }
-}
+//function checkRequiredFields() {
+//    var valid = true;
+//    $.each($("#main input.required"), function (index, value) {
+//        if (!$(value).val()) {
+//            valid = false;
+//        }
+//    });
+//    if (valid) {
+//        $('#emptyFields').css("display", "none");
+//        NewAssistReg();
+//    }
+//    else {
+//        $('#emptyFields').css("display", "block");
+//    }
+//}
