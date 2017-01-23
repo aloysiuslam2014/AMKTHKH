@@ -905,9 +905,9 @@
     <div class="tab-pane maxHeight" id="ContactTracing">
         <%--Final Unified Tracing UI--%>
         <div class="row" id="unifiedTrace">
-            <h3 style="">Unified Registered/Scanned Contact Tracing</h3>
+            <h3 style="">Enter query time period and bed(s)/location(s) to begin.</h3>
            
-            <div class="form-group col-sm-offset-2 col-sm-8" id="unified_query_params">
+            <div class="form-group col-sm-offset-1 col-sm-10" id="unified_query_params">
                 <div class="col-sm-3">
                     <div class="input-group date" id="unifiedquery_startdatetime">
                         <input type='text' id="uq_startdatetime" class="form-control required" placeholder="Start DateTime" />
@@ -936,13 +936,35 @@
                 </script>
 
                 <div id="unifiedquery_bednos" class="input-group col-sm-6">
-                    <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 1141-1148 " style=" " type="text" />
+                    <div class="col-sm-8">
+                        <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 2101-2105 " style=" " type="text" />
+                    </div>
+                    <div class="col-sm-4">
+                        <input class="form-control" id="uq_loc" placeholder="Location: NKF" style=" " type="text" />
+                    </div>
                     <span class="input-group-btn">
-                        <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace();"><span class="glyphicon glyphicon-search"></span>Trace</button>
-                    </span><span class="input-group-btn">
+                    <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace();"><span class="glyphicon glyphicon-search"></span>Trace</button>
+                    </span>
+                    <span class="input-group-btn">
                         <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-save "></span>Generate CSV</button>
                     </span>
                 </div>
+
+                <script>
+                    var uq_bednos = document.getElementById('uq_bednos'),
+                        uq_loc = document.getElementById('uq_loc');
+
+                    function enableToggle(current, other) {
+                        other.disabled = current.value.replace(/\s+/,'').length > 0;
+                    }
+
+                    uq_bednos.onkeyup = function () {
+                        enableToggle(this, uq_loc);
+                    }
+                    uq_loc.onkeyup = function () {
+                        enableToggle(this, uq_bednos);
+                    }
+                </script>
                 
             </div>
 
@@ -950,16 +972,16 @@
                 <table id ="uq_resultstable" class="table table-bordered" style:"padding-left:10px padding-right:10px">
                     <thead id="uq_resultstable_head">
                         <tr>
-                            <th>Registered Location</th>
-                            <th>Registered Bed No.</th>
+                            <th>Registration Location</th>
+                            <th>Registration Bed No.</th>
                             <th>Check-in Time</th>
                             <th>Exit Time</th>
                             <th>Name</th>
                             <th>NRIC</th>
                             <th>Handphone Number</th>
                             <th>Nationality</th>
-                            <th>Registered?<br />(to visit query bed/location)</th>
-                            <th>Scanned?<br />(at query bed/location)</th>
+                            <th>Registered (<a href="#" data-toggle="tooltip" title="Did this visitor register to visit the query location?">?</a>)</th>
+                            <th>Scanned (<a href="#" data-toggle="tooltip" title="Did this visitor scan at the query location?">?</a>)</th>
                         </tr>
                     </thead>
                     <tbody id="uq_resultstable_body">
