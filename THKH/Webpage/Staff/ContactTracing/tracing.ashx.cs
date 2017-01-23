@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -41,8 +42,10 @@ namespace THKH.Webpage.Staff.ContactTracing
             String result = "";
 
             String[] queryParts = query.Split('~');
-            DateTime uq_startdate = DateTime.Parse(queryParts[0]);
-            DateTime uq_enddate = DateTime.Parse(queryParts[1]);
+            String uq_startdate_str = queryParts[0];
+            String uq_enddate_str = queryParts[1];
+            DateTime uq_startdate = DateTime.ParseExact(uq_startdate_str, "MM/dd/yyyy h:mm tt", null);
+            DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "MM/dd/yyyy h:mm tt", null);
             String uq_bednos = queryParts[2];
             String[] uq_bedno_arr = uq_bednos.Split(',');
 
@@ -58,7 +61,10 @@ namespace THKH.Webpage.Staff.ContactTracing
             for (var i = 0; i < processed_uq_bedno_arr.Length; i++)
             {
                 String singleBedResult = traceByRegBed(uq_startdate, uq_enddate, processed_uq_bedno_arr[i]);
-                List<String> singleBedResult_toList = (List<String>)Newtonsoft.Json.JsonConvert.DeserializeObject(singleBedResult);
+                List<String> singleBedResult_toList = new List<String>();
+                if (singleBedResult != "") {
+                    singleBedResult_toList = (List<String>)Newtonsoft.Json.JsonConvert.DeserializeObject(singleBedResult);
+                }
                 byRegBed_response_visitors.AddRange(singleBedResult_toList);
 
             }
@@ -66,14 +72,18 @@ namespace THKH.Webpage.Staff.ContactTracing
             for (var i = 0; i < processed_uq_bedno_arr.Length; i++)
             {
                 String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_bedno_arr[i]);
-                List<String> singleBedResult_toList = (List<String>)Newtonsoft.Json.JsonConvert.DeserializeObject(singleBedResult);
+                List<String> singleBedResult_toList = new List<String>();
+                if (singleBedResult != "")
+                {
+                    singleBedResult_toList = (List<String>)Newtonsoft.Json.JsonConvert.DeserializeObject(singleBedResult);
+                }
                 byScanBed_response_visitors.AddRange(singleBedResult_toList);
             }
 
             //find the intersects, and derive the other 2 categories.
-            List<String> reg_and_scan = (List<String>)byRegBed_response_visitors.Intersect(byScanBed_response_visitors);
-            List<String> reg_only = (List<String>)byRegBed_response_visitors.Except(reg_and_scan);
-            List<String> scan_only = (List<String>)byScanBed_response_visitors.Except(reg_and_scan);
+            List<String> reg_and_scan = (List<String>)byRegBed_response_visitors.Intersect(byScanBed_response_visitors).ToList();
+            List<String> reg_only = (List<String>)byRegBed_response_visitors.Except(reg_and_scan).ToList();
+            List<String> scan_only = (List<String>)byScanBed_response_visitors.Except(reg_and_scan).ToList();
 
             List<Tuple<List<String>, bool, bool>> categorizedResults = new List<Tuple<List<String>, bool, bool>>();
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_and_scan, true, true));
@@ -239,7 +249,7 @@ namespace THKH.Webpage.Staff.ContactTracing
                 }
             }
 
-            return (String[])result.ToArray();
+            return (String[])result.ToArray(typeof(string));
         }
 
         public String traceByReg(String query) {
