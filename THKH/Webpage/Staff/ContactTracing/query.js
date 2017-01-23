@@ -1,4 +1,12 @@
 ﻿var visitors, visitDetails;
+var uq_bednos = document.getElementById("uq_bednos");
+var uq_loc = document.getElementById("uq_loc");
+
+function enableToggle(current, other) {
+
+    other.disabled = current.value.replace(/\s+/, '').length > 0;
+
+}
 
 function unifiedTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
@@ -8,8 +16,15 @@ function unifiedTrace() {
     var uq_dateStart = $("#uq_startdatetime").val();
     var uq_dateEnd = $("#uq_enddatetime").val();
     var uq_querybeds = $("#uq_bednos").val();
+    var uq_loc = $("#uq_loc").val();
 
-    uq_params = uq_dateStart + '~' + uq_dateEnd + '~' + uq_querybeds;
+    uq_params = "";
+    if (uq_loc == "") {
+        uq_params = "bybed~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_querybeds;
+    }
+    if (uq_querybeds == "") {
+        uq_params = "byloc~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_loc;
+    }
 
     var headersToProcess = { action: "unifiedTrace", queries: uq_params };
     $.ajax({
