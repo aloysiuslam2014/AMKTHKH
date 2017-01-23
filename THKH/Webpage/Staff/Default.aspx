@@ -299,7 +299,7 @@
                                 </div>
                             </div>
                             <%--Visit Date--%>
-                            <label for="visitbookingdate"><span style="color:lightcoral">*</span>Registered Visit Date (DD-MM-YYYY)</label>
+                            <label for="visitbookingdate"><span style="color:lightcoral">*</span>Intended Visit Date (DD-MM-YYYY)</label>
                             <div class="input-group date" id="visitbookingdatediv">
                                 <input type='text' id="visitbookingdate" class="form-control required regInput" />
                                 <span class="input-group-addon">
@@ -307,7 +307,7 @@
                                 </span>
                             </div>
                             <%--Visit Time--%>
-                            <label for="visitbookingtime"><span style="color:lightcoral">*</span>Registered Visit Time (HH:mm)</label>
+                            <label for="visitbookingtime"><span style="color:lightcoral">*</span>Intended Visit Time (HH:mm)</label>
                             <div class="form-group">
                                 <select class="form-control required regInput" onchange="checkTime(); false;" id="visitbookingtime">
                                         <option value="">-- Select One --</option>
