@@ -427,10 +427,10 @@ $("#mobilesInput").on("input", function () {
     var validNric = validatePhone($("#mobilesInput").val());
     if (validNric !== false) {
         $("#mobWarning").css("display", "none");
-        validMob = true;
+        //validMob = true;
     } else {
         $("#mobWarning").css("display", "block");
-        validMob = false;
+        //validMob = false;
     }
 });
 
