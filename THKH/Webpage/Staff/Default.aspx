@@ -14,15 +14,14 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/w3data.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/bootstrap-datetimepicker.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery.range.js") %>"></script>
 
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
     <link href="~/CSS/passManagement.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" 	href="~/CSS/jquery-ui.css"/>
-
-
-
+    <link rel="stylesheet" href="~/CSS/jquery.range.css"/>
 
 
 </head>
@@ -35,7 +34,6 @@
             $(document).ready(function () {// once ready then we toggle based on ajax calls
                 $("#loadingGif").toggle(false);
                 hideTags();
-                hideSettingsModal();
                 $(document).ajaxStart(function () {
                     $("#loadingGif").toggle(true);
                 });
@@ -56,6 +54,17 @@
         function hideSettingsModal() {
             $('#settingsModal').modal('hide');
         }
+
+        $('.range-slider').jRange({
+            from: 0,
+            to: 100,
+            step: 1,
+            scale: [0, 25, 50, 75, 100],
+            format: '%s',
+            width: 300,
+            showLabels: true,
+            isRange: true
+        });
     </script>
      <!-- Loading Gif Here -->
      <div id="loadingGif" style="width:100%;height:100%;background-color:black;opacity:0.5;position: absolute;top: 0;left: 0;z-index: 10000;">
@@ -72,20 +81,31 @@
                             <div class="modal-body text-center" id="appSettings">
                                 <label>Temperature Range</label>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control setInput" id="temSetInput" />
+                                    <input type="text" runat="server" class="form-control setInput" placeholder="Temperature Lower Limit" id="temSetInputLow" />
+                                    <input type="text" runat="server" class="form-control setInput" placeholder="Temperature Upper Limit" id="temSetInputHigh" />
+                                    <input type="hidden" class="slider-input" value="23" />
                                     <%--<label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>--%>
                                 </div>
                                 <label>Visit Time Period</label>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control setInput" id="visTimeSetInput" />
+                                    <div class="input-group">
+                                          <span class="input-group-addon">From</span>
+                                            <select class="form-control setInput" onchange="" id="visTimeSetInputLower">
+                                                <option value="">-- Select One --</option>
+                                            </select>
+                                        </div>
+                                    <div class="input-group">
+                                          <span class="input-group-addon">Till</span>
+                                            <select class="form-control setInput" onchange="" id="visTimeSetInputHigh">
+                                                <option value="">-- Select One --</option>
+                                            </select>
+                                        </div>
                                     <%--<label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>--%>
-                            </div>      
                             </div>
-                            <div class="modal-footer">
-                                <div class=" btn-group">
-                                <button class="btn btn-block btn-danger" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
-                                <button class="btn btn-block btn-success" id="saveSettingsButton" onclick=""><span class="glyphicon glyphicon-save"></span> Save Settings</button>
-                                    </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-danger" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                                    <button class="btn btn-success" id="saveSettingsButton" onclick=""><span class="glyphicon glyphicon-save"></span> Save Settings</button>
+                                </div>      
                             </div>
                         </div>
                     </div>
@@ -145,19 +165,17 @@
                         </a>
                     </li>
                     <%  }%>
+                    <li>
+                        <a href="#" onclick="showSettingsModal(); false;">Settings
+                        </a>
+                    </li>
                 </ul>
-
-               
                         <form id="logbtn" class="nav navbar-nav navbar-right" style="margin-top: 10px;" runat="server">
                             <div>
                                 <label>Welcome, <%= Session["username"].ToString()%></label>
-                                <button id="settings" class="btn btn-warning" onclick="showSettingsModal(); false;" runat="server">Settings</button>
                                 <asp:Button ID="logout" class="btn btn-danger" Text="Logout" OnClick="logout_Click" runat="server" />
                             </div>
                         </form>
-
-                     
-               
             </div>
         </div>
     </nav>
@@ -430,12 +448,12 @@
                             <ul class="list-group checked-list-box qnQns" id="sortable">
                             </ul>
                         </div>
-                        <div class=" btn-group">
+                        <div class="btn-group">
                             <button type="button" onclick="selectAll('qnaire'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
                             <button type="button" onclick="deSelectAll('qnaire');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
                         </div>
                         <br />
-                        <div class=" btn-group">
+                        <div class="btn-group">
                             <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Remove Questions</button>
                             <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save Form</button>
                         </div>

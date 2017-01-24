@@ -40,11 +40,16 @@ function validateNRIC(str) {
 // Validation of phone number
 function validatePhone(txtPhone) {
     var filter = /^[0-9-+]+$/;
+    if (txtPhone.includes('+')) {
+        return true;
+    }
     if (txtPhone == "") {
         return true;
     }
     if (filter.test(txtPhone)) {
-        return true;
+        if ((txtPhone.charAt(0) == '8' || txtPhone.charAt(0) == '6' || txtPhone.charAt(0) == '9') & txtPhone.length == 8) {
+            return true;
+        }
     }
     return false;
 }

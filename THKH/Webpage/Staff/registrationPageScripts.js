@@ -602,6 +602,7 @@ function hideTags() {
     $("#locWarning").css("display", "none");
     $("#timelabel").css("display", "none");
     if (!init) {
+        hideSettingsModal();
         loadFacilities();
         populateTime();
         populateRegNationalities();

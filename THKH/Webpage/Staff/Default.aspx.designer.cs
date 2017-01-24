@@ -13,22 +13,22 @@ namespace THKH.Webpage.Staff {
     public partial class Default {
         
         /// <summary>
-        /// temSetInput control.
+        /// temSetInputLow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText temSetInput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText temSetInputLow;
         
         /// <summary>
-        /// visTimeSetInput control.
+        /// temSetInputHigh control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText visTimeSetInput;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText temSetInputHigh;
         
         /// <summary>
         /// regtab control.
@@ -47,15 +47,6 @@ namespace THKH.Webpage.Staff {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm logbtn;
-        
-        /// <summary>
-        /// settings control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton settings;
         
         /// <summary>
         /// logout control.

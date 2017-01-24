@@ -100,6 +100,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="CSS\jquery-ui.css" />
+    <Content Include="CSS\jquery.range.css" />
     <Content Include="CSS\passManagement.css" />
     <Content Include="CSS\adminTerminal.css" />
     <Content Include="CSS\asScrollbar.css" />
@@ -140,6 +141,7 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery-ui.structure.min.css" />
     <Content Include="Scripts\jquery-ui.theme.min.css" />
+    <Content Include="Scripts\jquery.range.js" />
     <Content Include="Webpage\Staff\TerminalCalls\locationQueries.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
