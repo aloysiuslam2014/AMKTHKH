@@ -208,8 +208,8 @@ function getUserDetails(listObj) {
                 $("#staffSex").val(resultOfGeneration.Result.sex.trim());
                 $("#staffNationality").val(resultOfGeneration.Result.nationality);
                 $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
-                $("#staffAge").val(resultOfGeneration.Result.age);
-                $("#staffRace").val(resultOfGeneration.Result.race);
+                //$("#staffAge").val(resultOfGeneration.Result.age);
+                //$("#staffRace").val(resultOfGeneration.Result.race);
                 var perm = resultOfGeneration.Result.permissions.toString();
                 for (i = 0; i < perm.length; i++) {
                     $("#permiss [value='" + perm.charAt(i) + "']").prop("checked", true);
@@ -240,15 +240,15 @@ function updateUser() {
     var sex = $("#staffSex").val();
     var nationality = $("#staffNationality").val();
     var dob = $("#staffDOB").val();
-    var race = $("#staffRace").val();
-    var age = $("#staffAge").val();
+    //var race = $("#staffRace").val();
+    //var age = $("#staffAge").val();
     var Email = $("#staffEmail").val();
     var staffTitle = $("#staffTitle").val();
     var staffPwd = $("#staffPwd").val();
 
     var headersToProcess = {
         username: username, fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
-        race: race, age: age, email: Email, title: staffTitle, permissions: permissions, staffPwd: staffPwd, requestType: "updateUser"
+        email: Email, title: staffTitle, permissions: permissions, staffPwd: staffPwd, requestType: "updateUser"
     };
     $.ajax({
         url: '../Staff/UserManagement/userManagement.ashx',
@@ -318,15 +318,15 @@ function addUser() {
     var sex = $("#staffSex").val();
     var nationality = $("#staffNationality").val();
     var dob = $("#staffDOB").val();
-    var race = $("#staffRace").val();
-    var age = $("#staffAge").val();
+    //var race = $("#staffRace").val();
+    //var age = $("#staffAge").val();
     var Email = $("#staffEmail").val();
     var staffTitle = $("#staffTitle").val();
     var staffPwd = $("#staffPwd").val();
 
     var headersToProcess = {
         username:username, fname: fname, lname: lname, snric: snric, address: address, postal: postal, mobtel: mobtel, hometel: hometel, alttel: alttel, sex: sex, nationality: nationality, dob: dob,
-        race:race, age:age, email:Email, title:staffTitle, permissions:permissions, staffPwd:staffPwd, requestType: "addUser"
+        email:Email, title:staffTitle, permissions:permissions, staffPwd:staffPwd, requestType: "addUser"
     };
     $.ajax({
         url: '../Staff/UserManagement/userManagement.ashx',

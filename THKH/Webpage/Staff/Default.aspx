@@ -35,6 +35,7 @@
             $(document).ready(function () {// once ready then we toggle based on ajax calls
                 $("#loadingGif").toggle(false);
                 hideTags();
+                hideSettingsModal();
                 $(document).ajaxStart(function () {
                     $("#loadingGif").toggle(true);
                 });
@@ -44,12 +45,51 @@
                 });
             });
         });
+
+        // Show Settings Modal
+        function showSettingsModal() {
+            $('#settingsModal').modal({ backdrop: 'static', keyboard: false });
+            $('#settingsModal').modal('show');
+        }
+
+        // Hide Settings Modal
+        function hideSettingsModal() {
+            $('#settingsModal').modal('hide');
+        }
     </script>
      <!-- Loading Gif Here -->
      <div id="loadingGif" style="width:100%;height:100%;background-color:black;opacity:0.5;position: absolute;top: 0;left: 0;z-index: 10000;">
         <img src="../../Assets/cube.svg" style="position: absolute;left: calc(50% - 99px);top: calc(50% - 99px);"/>
 
     </div>
+    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title">System Settings</h4>
+                            </div>
+                            <div class="modal-body text-center" id="appSettings">
+                                <label>Temperature Range</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control setInput" id="temSetInput" />
+                                    <%--<label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>--%>
+                                </div>
+                                <label>Visit Time Period</label>
+                                <div class="form-group">
+                                    <input type="text" runat="server" class="form-control setInput" id="visTimeSetInput" />
+                                    <%--<label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>--%>
+                            </div>      
+                            </div>
+                            <div class="modal-footer">
+                                <div class=" btn-group">
+                                <button class="btn btn-block btn-danger" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                                <button class="btn btn-block btn-success" id="saveSettingsButton" onclick=""><span class="glyphicon glyphicon-save"></span> Save Settings</button>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
 
@@ -111,7 +151,8 @@
                         <form id="logbtn" class="nav navbar-nav navbar-right" style="margin-top: 10px;" runat="server">
                             <div>
                                 <label>Welcome, <%= Session["username"].ToString()%></label>
-                                <asp:Button ID="logout" class="btn btn-danger" Text="logout" OnClick="logout_Click" runat="server" />
+                                <button id="settings" class="btn btn-warning" onclick="showSettingsModal(); false;" runat="server">Settings</button>
+                                <asp:Button ID="logout" class="btn btn-danger" Text="Logout" OnClick="logout_Click" runat="server" />
                             </div>
                         </form>
 
@@ -195,38 +236,19 @@
                     <div id="newusercontent" class="col-sm-6" runat="server">
                         <div class="jumbotron" style="text-align: left">
                             <h3 style="">Personal Details</h3>
-                            <label for="namesinput"><span style="color:lightcoral">*</span>Name</label>
+                            <label for="namesinput"><span style="color:lightcoral">*</span>Full Name</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="namesInput" />
                             </div>
-                            <label for="emailinput">Email address</label>
+                            <%--<label for="emailinput">Email address</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control regInput" id="emailsInput" />
                                 <label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>
-                            </div>
+                            </div>--%>
                             <label for="mobileinput"><span style="color:lightcoral">*</span>Mobile Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="mobilesInput" />
                                 <label for="mobilesInput" id="mobWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
-                            </div>
-                            <label for="homeinput">Home Number</label>
-                            <div class="form-group">
-                                <input type="text" runat="server" class="form-control regInput" id="homesInput" />
-                                <label for="homesInput" id="homeWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
-                            </div>
-                            <label for="altInput">Alternate Number</label>
-                            <div class="form-group">
-                                <input type="text" runat="server" class="form-control regInput" id="altInput" />
-                                <label for="altInput" id="altWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
-                            </div>
-                            <label for="addressinput"><span style="color:lightcoral">*</span>Address</label>
-                            <div class="form-group">
-                                <input type="text" runat="server" class="form-control required regInput" id="addresssInput" />
-                            </div>
-                            <label for="postalinput"><span style="color:lightcoral">*</span>Postal Code</label>
-                            <div class="form-group">
-                                <input type="text" runat="server" class="form-control required regInput" id="postalsInput" />
-                                <label for="postalsInput" id="posWarning" style="color: lightcoral">Invalid Postal Code Format!</label>
                             </div>
                             <label for="sexinput"><span style="color:lightcoral">*</span>Gender</label>
                             <div class="form-group">
@@ -245,12 +267,33 @@
                                 <label for="nationalsInput" id="natWarning" style="color: lightcoral">Please select a nationality!</label>
                             </div>
                             <label for="daterange"><span style="color:lightcoral">*</span>Date of Birth (DD-MM-YYYY)</label>
-                            <div class="input-group date" id="datetimepicker">
-                                <input type='text' id="daterange" class="form-control required regInput" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+                            <div class="form-group">
+                                <div class="input-group date" id="datetimepicker">
+                                    <input type='text' id="daterange" class="form-control required regInput" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
                             </div>
+                            <label for="addressinput"><span style="color:lightcoral">*</span>Address</label>
+                            <div class="form-group">
+                                <input type="text" runat="server" class="form-control required regInput" id="addresssInput" />
+                            </div>
+                            <label for="postalinput"><span style="color:lightcoral">*</span>Postal Code</label>
+                            <div class="form-group">
+                                <input type="text" runat="server" class="form-control required regInput" id="postalsInput" />
+                                <label for="postalsInput" id="posWarning" style="color: lightcoral">Invalid Postal Code Format!</label>
+                            </div>
+                            <%--<label for="homeinput">Home Number</label>
+                            <div class="form-group">
+                                <input type="text" runat="server" class="form-control regInput" id="homesInput" />
+                                <label for="homesInput" id="homeWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
+                            </div>
+                            <label for="altInput">Alternate Number</label>
+                            <div class="form-group">
+                                <input type="text" runat="server" class="form-control regInput" id="altInput" />
+                                <label for="altInput" id="altWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
+                            </div>--%>
                         </div>
                     </div>
                     <div id="staticinfocontainer" class="col-sm-6" style="text-align: left" runat="server">
@@ -317,6 +360,13 @@
                             <h3 style="">Health Screening Form</h3>
                             <div id="questionaireForm">
                                 <!-- load questionaires here from JS -->
+                            </div>
+                            <div id="remarksDiv">
+                                <h3>Additional Information</h3>
+                                <label for="remarksinput">Remarks</label>
+                                <div class="form-group">
+                                <input type="text" runat="server" class="form-control regInput" id="remarksinput" />
+                            </div>
                             </div>
                             <input type="hidden" runat="server" class="form-control regInput" id="qaid" />
                             <%--<div class="checkbox">
@@ -751,12 +801,12 @@
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
-                                <label><span style="color:lightcoral">*</span>Age</label> <%--Redundant--%>
+                                <%--<label><span style="color:lightcoral">*</span>Age</label>
                                 <div class="form-group">
-                                    <input id="staffAge" class="form-control required userInput" /></div>
-                                <label><span style="color:lightcoral">*</span>Race</label>
+                                    <input id="staffAge" class="form-control required userInput" /></div>--%>
+                                <%--<label><span style="color:lightcoral">*</span>Race</label>
                                 <div class="form-group">
-                                    <input id="staffRace" class="form-control required userInput" /></div>
+                                    <input id="staffRace" class="form-control required userInput" /></div>--%>
                                 <label><span style="color:lightcoral">*</span>Position Title</label>
                                 <div class="form-group">
                                     <input id="staffTitle" class="form-control required userInput" /></div>
@@ -1126,7 +1176,7 @@
              </div>
 
              <div class="col-sm-4 panel" style="height: 95%;">
-                 <h3 style="">Query Results</h3>
+                 <h3>Query Results</h3>
                  <div class="list-group" style="overflow: auto; height: 85%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="queryResult">
                      <ul class="list-group checked-list-box results" id="resultList">
                      </ul>
@@ -1139,6 +1189,7 @@
     <!-- End of ContactTracing -->
     <%} %>
     </div>
+        </div>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/default.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/TerminalCalls/adminTerminal.js") %>"></script>

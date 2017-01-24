@@ -45,12 +45,12 @@ namespace THKH.Webpage.Staff.UserManagement
                 var sex = context.Request.Form["sex"];
                 var nationality = context.Request.Form["nationality"];
                 var dob = context.Request.Form["dob"];
-                var race = context.Request.Form["race"];
-                int age = Int32.Parse(context.Request.Form["age"]);
+                //var race = context.Request.Form["race"];
+                //int age = Int32.Parse(context.Request.Form["age"]);
                 var title = context.Request.Form["title"];
                 int permissions = Int32.Parse(context.Request.Form["permissions"]);
                 var password = context.Request.Form["staffPwd"]; // If blank, dont change password
-                successString = updateUser(fname, lname, snric, email, address, postal, mobtel, hometel, alttel, sex, nationality, dob, race, age, title, permissions, password, staffUser);
+                successString = updateUser(fname, lname, snric, email, address, postal, mobtel, hometel, alttel, sex, nationality, dob, title, permissions, password, staffUser);
             }
             if (requestType == "deleteUser") {
                 var snric = context.Request.Form["snric"];
@@ -71,12 +71,12 @@ namespace THKH.Webpage.Staff.UserManagement
                 var sex = context.Request.Form["sex"];
                 var nationality = context.Request.Form["nationality"];
                 var dob = context.Request.Form["dob"];
-                var race = context.Request.Form["race"];
-                int age = Int32.Parse(context.Request.Form["age"]);
+                //var race = context.Request.Form["race"];
+                //int age = Int32.Parse(context.Request.Form["age"]);
                 var title = context.Request.Form["title"];
                 int permissions = Int32.Parse(context.Request.Form["permissions"]);
                 var password = context.Request.Form["staffPwd"];
-                successString = addUser(fname,lname,snric,email,address,postal,mobtel,hometel,alttel,sex,nationality,dob,race,age,title,permissions, password, staffUser);
+                successString = addUser(fname,lname,snric,email,address,postal,mobtel,hometel,alttel,sex,nationality,dob,title,permissions, password, staffUser);
             }
             if (requestType == "getPermissions") {
                 successString = getPermissions();
@@ -176,10 +176,10 @@ namespace THKH.Webpage.Staff.UserManagement
                         responseJson.sex = reader.GetString(9);
                         responseJson.nationality  = reader.GetString(10);
                         responseJson.dateOfBirth = reader.GetDateTime(11).ToString("dd/MM/yyyy");
-                        responseJson.age = reader.GetInt32(12);
-                        responseJson.race = reader.GetString(13);
-                        responseJson.permissions = reader.GetInt32(16);
-                        responseJson.position = reader.GetString(17);
+                        //responseJson.age = reader.GetInt32(12);
+                        //responseJson.race = reader.GetString(13);
+                        responseJson.permissions = reader.GetInt32(14);
+                        responseJson.position = reader.GetString(15);
 
                         count++;
                     }
@@ -205,7 +205,7 @@ namespace THKH.Webpage.Staff.UserManagement
         }
 
         private String addUser(String fname, String lname, String snric, String email, String address, int postal, String mobtel, String hometel, String alttel, String sex,
-            String nationality, String dob, String race, int age, String title, int permissions, String password, String staffUser) {
+            String nationality, String dob, String title, int permissions, String password, String staffUser) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -229,8 +229,8 @@ namespace THKH.Webpage.Staff.UserManagement
                 command.Parameters.AddWithValue("@pSex", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
                 command.Parameters.AddWithValue("@pDOB", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                command.Parameters.AddWithValue("@pAge", age);
-                command.Parameters.AddWithValue("@pRace", race);
+                //command.Parameters.AddWithValue("@pAge", age);
+                //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pPermission", permissions);
                 command.Parameters.AddWithValue("@pPostion", title);
                 command.Parameters.AddWithValue("@pCreatedBy", staffUser);
@@ -288,7 +288,7 @@ namespace THKH.Webpage.Staff.UserManagement
         }
 
         private String updateUser(String fname, String lname, String snric, String email, String address, int postal, String mobtel, String hometel, String alttel, String sex,
-            String nationality, String dob, String race, int age, String title, int permissions, String password, String staffUser) {
+            String nationality, String dob, String title, int permissions, String password, String staffUser) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -312,8 +312,8 @@ namespace THKH.Webpage.Staff.UserManagement
                 command.Parameters.AddWithValue("@pSex", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
                 command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture));
-                command.Parameters.AddWithValue("@pAge", age);
-                command.Parameters.AddWithValue("@pRace", race);
+                //command.Parameters.AddWithValue("@pAge", age);
+                //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pPermission", permissions);
                 command.Parameters.AddWithValue("@pPosition", title);
                 cnn.Open();

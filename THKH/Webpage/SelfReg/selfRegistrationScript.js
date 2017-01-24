@@ -14,14 +14,14 @@ function NewSelfReg() {
     var address = $("#addresssInput").val();
     var postal = $("#postalsInput").val();
     var mobtel = $("#mobilesInput").val();
-    var alttel = $("#altInput").val();
-    var hometel = $("#homesInput").val();
+    //var alttel = $("#altInput").val();
+    //var hometel = $("#homesInput").val();
     var sex = $("#sexinput").val();
     var nationality = $("#nationalsInput").val();
     var dob = $("#daterange").val();
-    var race = "Chinese";
-    var age = 23;
-    var Email = $("#emailsInput").val();
+    //var race = "Chinese";
+    //var age = 23;
+    //var Email = $("#emailsInput").val();
     var purpose = $("#pInput").val();
     var pName = $("#patientName").val();
     var pNric = $("#patientNric").val();
@@ -30,21 +30,19 @@ function NewSelfReg() {
     var visTime = $("#visitbookingtime").val();
     var visDate = $("#visitbookingdate").val();
     var appTime = visDate + " " + visTime;
-    var fever = $("#fever").val();
-    var symptoms = $("#pimple").val();
-    var influenza = $("#flu").val();
-    var countriesTravelled = $("#sg").val();
-    var remarks = $("#remarksinput").val();
+    //var fever = $("#fever").val();
+    //var symptoms = $("#pimple").val();
+    //var influenza = $("#flu").val();
+    //var countriesTravelled = $("#sg").val();
+    //var remarks = $("#remarksinput").val();
     var visitLoc = $("#visLoc").val();
     var qListID = $("#qnlistid").val();
     var qAnswers = getQuestionnaireAnswers();
     var amend = $("#amend").val();
 
     var headersToProcess = {
-        fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
-        AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose, pName: pName, pNric: pNric,
-        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza,
-        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers, amend: amend
+        fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, SEX: sex, Natl: nationality, DOB: dob, PURPOSE: purpose, pName: pName, pNric: pNric,
+        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime,  visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers, amend: amend
     };
     $.ajax({
         url: '../Staff/CheckInOut/checkIn.ashx',

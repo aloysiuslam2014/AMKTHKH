@@ -65,12 +65,12 @@ function callCheck (){
                         $("#sexinput").prop('value', visitorArr[2].trim());
                         $("#nationalsInput").val(visitorArr[3]);
                         $("#daterange").val(visitorArr[4].toString()); // Error
-                        $("#addresssInput").prop('value', visitorArr[10]);
-                        $("#postalsInput").prop('value', visitorArr[11]);
-                        $("#mobilesInput").prop('value', visitorArr[6]);
-                        $("#altInput").prop('value', visitorArr[8]);
-                        $("#homesInput").prop('value', visitorArr[7]);
-                        $("#emailsInput").prop('value', visitorArr[9]);
+                        $("#addresssInput").prop('value', visitorArr[6]);
+                        $("#postalsInput").prop('value', visitorArr[7]);
+                        $("#mobilesInput").prop('value', visitorArr[5]);
+                        //$("#altInput").prop('value', visitorArr[8]);
+                        //$("#homesInput").prop('value', visitorArr[7]);
+                        //$("#emailsInput").prop('value', visitorArr[9]);
                     } if (visitArr.length > 1) {
                         $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10));
                         $("#visitbookingtime").val(visitArr[0].toString().substring(11, 16));
@@ -89,6 +89,7 @@ function callCheck (){
                         $("#visLoc").prop('value', visitArr[6]);
                         $("#bedno").prop('value', visitArr[7]);
                         $("#qaid").prop('value', visitArr[8]);
+                        $("#remarks").prop('value', visitArr[9]);
                     } if (questionnaireArr.length > 1) {
                         for (i = 0; i < questionnaireArr.length; i++) {
                             var jsonAnswerObject = questionnaireArr[i];
@@ -267,15 +268,18 @@ function NewAssistReg() {
     var address = $("#addresssInput").val();
     var postal = $("#postalsInput").val();
     var mobtel = $("#mobilesInput").val();
-    var alttel = $("#altInput").val();
-    var hometel = $("#homesInput").val();
+    //var alttel = $("#altInput").val();
+    //var hometel = $("#homesInput").val();
+    var alttel = "";
+    var hometel = "";
     var sex = $("#sexinput").val();
     var nationality = $("#nationalsInput").val();
     var dob = $("#daterange").val();
-    var race = "Chinese"; 
-    var age = 23;
+    var race = ""; 
+    var age = 0;
     var temp = $("#temp").val();
-    var Email = $("#emailsInput").val();
+    //var Email = $("#emailsInput").val();
+    var Email = "";
     var purpose = $("#pInput").val();
     var pName = $("#patientName").val();
     var pNric = $("#patientNric").val();
@@ -285,10 +289,10 @@ function NewAssistReg() {
     var visTime = $("#visitbookingtime").val();
     var visDate = $("#visitbookingdate").val();
     var appTime = visDate + " " + visTime;
-    var fever = $("#fever").val();
-    var symptoms = $("#pimple").val();
-    var influenza = $("#flu").val();
-    var countriesTravelled = $("#sg").val();
+    //var fever = $("#fever").val();
+    //var symptoms = $("#pimple").val();
+    //var influenza = $("#flu").val();
+    //var countriesTravelled = $("#sg").val();
     var remarks = $("#remarksinput").val();
     var visitLoc = $("#visLoc").val();
     var qAnswers = getQuestionnaireAnswers();
@@ -297,8 +301,7 @@ function NewAssistReg() {
     var headersToProcess = {
         staffUser:username,fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
         AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose,pName: pName, pNric: pNric,
-        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, fever: fever, symptoms: symptoms, influenza: influenza,
-        countriesTravelled: countriesTravelled, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp, qListID: qListID, qAnswers: qAnswers, qaid: qaid
+        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp, qListID: qListID, qAnswers: qAnswers, qaid: qaid
     };
     $.ajax({
         url: './CheckInOut/checkIn.ashx',
@@ -996,3 +999,4 @@ $("#emailsInput").on("input", function () {
         validEmail = false;
     }
 });
+

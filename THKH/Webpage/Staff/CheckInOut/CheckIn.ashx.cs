@@ -30,29 +30,29 @@ namespace THKH.Webpage.Staff.CheckInOut
             if (typeOfRequest == "self")
             {
                 var nric = context.Request.Form["nric"].ToString();
-                var temperature = context.Request.Form["temperature"];
-                var age = context.Request.Form["AGE"];
+                //var temperature = context.Request.Form["temperature"];
+                //var age = context.Request.Form["AGE"];
                 var fname = context.Request.Form["fullName"];
                 var address = context.Request.Form["ADDRESS"];
                 var postal = context.Request.Form["POSTAL"];
                 var mobtel = context.Request.Form["MobTel"];
-                var alttel = context.Request.Form["AltTel"];
-                var hometel = context.Request.Form["HomeTel"];
+                //var alttel = context.Request.Form["AltTel"];
+                //var hometel = context.Request.Form["HomeTel"];
                 var sex = context.Request.Form["SEX"];
                 var nationality = context.Request.Form["Natl"];
                 var dob = context.Request.Form["DOB"];
-                var race = context.Request.Form["RACE"];
-                var email = context.Request.Form["email"];
+                //var race = context.Request.Form["RACE"];
+                //var email = context.Request.Form["email"];
                 var purpose = context.Request.Form["PURPOSE"];
                 var pName = context.Request.Form["pName"];
                 var pNric = context.Request.Form["pNric"];
                 var otherPurpose = context.Request.Form["otherPurpose"];
                 var bedno = context.Request.Form["bedno"];
                 var appTime = context.Request.Form["appTime"];
-                var fever = context.Request.Form["fever"];
-                var symptoms = context.Request.Form["symptoms"];
-                var influenza = context.Request.Form["influenza"];
-                var countriesTravelled = context.Request.Form["countriesTravelled"];
+                //var fever = context.Request.Form["fever"];
+                //var symptoms = context.Request.Form["symptoms"];
+                //var influenza = context.Request.Form["influenza"];
+                //var countriesTravelled = context.Request.Form["countriesTravelled"];
                 var remarks = context.Request.Form["remarks"];
                 var visitLocation = context.Request.Form["visitLocation"];
                 var qListID = context.Request.Form["qListID"];
@@ -66,9 +66,9 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var amend = context.Request.Form["amend"];
 
                 // Write to Visitor_Profile & Visit Table
-                successString = selfReg(nric, age, fname, address, postal, mobtel, alttel, hometel,
-            sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
-            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, qListID, qAns, qaid, amend);
+                successString = selfReg(nric, fname, address, postal, mobtel,
+            sex, nationality, dob, purpose, pName, pNric, otherPurpose, bedno, appTime,
+            visitLocation, qListID, qAns, qaid, amend);
         }
         if (typeOfRequest == "patient") {
                 var pName = context.Request.Form["pName"];
@@ -338,7 +338,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 {
                     msg += "\"," + tempMsg;
                     var arr = tempMsg.Split(',');
-                    var qAID = arr[arr.Length - 2];
+                    var qAID = arr[arr.Length - 3];
                     msg += "\"," + getSubmittedQuestionnaireResponse(qAID);
                 }
                 else {
@@ -439,9 +439,9 @@ namespace THKH.Webpage.Staff.CheckInOut
         }
 
         // Write to Visitor & Visit Table
-        private String selfReg(String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
-            String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String qListID, String qAns, String qaid, String amend) {
+        private String selfReg(String nric, String fname, String address, String postal, String mobtel,
+            String sex, String nationality, String dob, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
+            String visitLocation, String qListID, String qAns, String qaid, String amend) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -457,11 +457,11 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
                 command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                command.Parameters.AddWithValue("@pRace", race);
+                //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
-                command.Parameters.AddWithValue("@pHomeTel", hometel);
-                command.Parameters.AddWithValue("@pAltTel", alttel);
-                command.Parameters.AddWithValue("@pEmail", email);
+                //command.Parameters.AddWithValue("@pHomeTel", hometel);
+                //command.Parameters.AddWithValue("@pAltTel", alttel);
+                //command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
                 command.Parameters.AddWithValue("@pAmend", Int32.Parse(amend));
@@ -508,6 +508,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
                 command.Parameters.AddWithValue("@pBedNo", bedno);
                 command.Parameters.AddWithValue("@pQaID", qaid);
+                command.Parameters.AddWithValue("@pRemarks", "");
                 command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cnn.Open();
 
@@ -549,11 +550,11 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
                 command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                command.Parameters.AddWithValue("@pRace", race);
+                //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
-                command.Parameters.AddWithValue("@pHomeTel", hometel);
-                command.Parameters.AddWithValue("@pAltTel", alttel);
-                command.Parameters.AddWithValue("@pEmail", email);
+                //command.Parameters.AddWithValue("@pHomeTel", hometel);
+                //command.Parameters.AddWithValue("@pAltTel", alttel);
+                //command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
                 command.Parameters.Add(respon);
@@ -615,6 +616,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
                 command.Parameters.AddWithValue("@pBedNo", bedno);
                 command.Parameters.AddWithValue("@pQaID", qAid);
+                command.Parameters.AddWithValue("@pRemarks", remarks);
                 command.Parameters.Add(respon);
                 cnn.Open();
 

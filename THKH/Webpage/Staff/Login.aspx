@@ -22,7 +22,7 @@
     <div class="row">
         <div id="loginbox" style="margin-top:35px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
             <div class="panel panel-primary">
-                <div class="panel-heading" class="panel-heading">
+                <div class="panel-heading">
                     <h3 class="panel-title">
                         Triage 2.0 | Staff Login</h3>
                 </div>

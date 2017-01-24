@@ -114,7 +114,7 @@ function getPassState() {
                 //var testtt = elementPositionsJson["barcode"];
                 createPassAppendParent($("#userSuccess"), passLayout, elementPositionsJson)
             } else {
-                alert(resultOfGeneration.Msg);
+                //alert(resultOfGeneration.Msg);
             }
         },
         error: function (err) {

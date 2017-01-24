@@ -215,11 +215,11 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="namesInput" />
                                     </div>
-                                    <label for="emailinput">Email address</label>
+                                    <%--<label for="emailinput">Email address</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control" id="emailsInput" onchange="ValidateEmail(); false"/>
                                         <label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>
-                                    </div>
+                                    </div>--%>
                                     <label for="nricsInput"><span style='color:lightcoral'>*</span>NRIC</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="nricsInput" readonly />
@@ -228,25 +228,6 @@
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="mobilesInput" />
                                         <label for="mobilesInput" id="mobWarning" style="color:lightcoral">Invalid Phone Number Format!</label>
-                                    </div>
-                                    <label for="homeinput">Home Number</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="homesInput" />
-                                        <label for="homesInput" id="homeWarning" style="color:lightcoral">Invalid Phone Number Format!</label>
-                                    </div>
-                                    <label for="altInput">Alternate Number</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="altInput" />
-                                        <label for="altInput" id="altWarning" style="color:lightcoral">Invalid Phone Number Format!</label>
-                                    </div>
-                                   <label for="addressinput"><span style='color:lightcoral'>*</span>Address</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="addresssInput" />
-                                    </div>
-                                    <label for="postalinput"><span style='color:lightcoral'>*</span>Postal Code</label>
-                                    <div class="form-group">
-                                        <input type="text" runat="server" class="form-control required" id="postalsInput" />
-                                        <label for="postalsInput" id="posWarning" style="color: lightcoral">Invalid Postal Code Format!</label>
                                     </div>
                                     <label for="sexinput"><span style='color:lightcoral'>*</span>Gender:</label>
                                     <div class="form-group">
@@ -270,6 +251,25 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
+                                    </div>
+                                    <%--<label for="homeinput">Home Number</label>
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="homesInput" />
+                                        <label for="homesInput" id="homeWarning" style="color:lightcoral">Invalid Phone Number Format!</label>
+                                    </div>
+                                    <label for="altInput">Alternate Number</label>
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control" id="altInput" />
+                                        <label for="altInput" id="altWarning" style="color:lightcoral">Invalid Phone Number Format!</label>
+                                    </div>--%>
+                                   <label for="addressinput"><span style='color:lightcoral'>*</span>Address</label>
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control required" id="addresssInput" />
+                                    </div>
+                                    <label for="postalinput"><span style='color:lightcoral'>*</span>Postal Code</label>
+                                    <div class="form-group">
+                                        <input type="text" runat="server" class="form-control required" id="postalsInput" />
+                                        <label for="postalsInput" id="posWarning" style="color: lightcoral">Invalid Postal Code Format!</label>
                                     </div>
                                 </div>
                                 </div>
