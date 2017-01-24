@@ -246,11 +246,13 @@
                                         <label for="nationalsInput" id="natWarning" style="color: lightcoral">Please select a nationality!</label>
                                     </div>
                                     <label for="daterange"><span style='color:lightcoral'>*</span>Date of Birth (DD-MM-YYYY)</label>
+                                    <div class="form-group">
                                     <div class="input-group date" id="datetimepicker">
                                         <input type='text'id="daterange" class="form-control required" onchange="checkDOB(); false;" />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
+                                    </div>
                                     </div>
                                     <%--<label for="homeinput">Home Number</label>
                                     <div class="form-group">

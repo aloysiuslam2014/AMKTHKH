@@ -73,7 +73,7 @@ namespace THKH.Webpage.Staff
             }
             cnn.Close();
                 // Assign user access rights string to session
-                Session["accessRights"] = userInfo[16];
+                Session["accessRights"] = userInfo[14];
             }
             catch (Exception ex)
             {
