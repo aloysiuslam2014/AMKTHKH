@@ -14,14 +14,12 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/w3data.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/bootstrap-datetimepicker.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery.range.js") %>"></script>
 
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
     <link href="~/CSS/passManagement.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" 	href="~/CSS/jquery-ui.css"/>
-    <link rel="stylesheet" href="~/CSS/jquery.range.css"/>
 
 
 </head>
@@ -55,16 +53,6 @@
             $('#settingsModal').modal('hide');
         }
 
-        $('.range-slider').jRange({
-            from: 0,
-            to: 100,
-            step: 1,
-            scale: [0, 25, 50, 75, 100],
-            format: '%s',
-            width: 300,
-            showLabels: true,
-            isRange: true
-        });
     </script>
      <!-- Loading Gif Here -->
      <div id="loadingGif" style="width:100%;height:100%;background-color:black;opacity:0.5;position: absolute;top: 0;left: 0;z-index: 10000;">
@@ -76,14 +64,13 @@
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h4 class="modal-title">System Settings</h4>
+                                <h4 class="modal-title">Master Configuration</h4>
                             </div>
                             <div class="modal-body text-center" id="appSettings">
                                 <label>Temperature Range</label>
                                 <div class="form-group">
                                     <input type="text" runat="server" class="form-control setInput" placeholder="Temperature Lower Limit" id="temSetInputLow" />
                                     <input type="text" runat="server" class="form-control setInput" placeholder="Temperature Upper Limit" id="temSetInputHigh" />
-                                    <input type="hidden" class="slider-input" value="23" />
                                     <%--<label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>--%>
                                 </div>
                                 <label>Visit Time Period</label>
@@ -164,11 +151,14 @@
                         <a href="#ContactTracing" data-toggle="tab">Contact Tracing
                         </a>
                     </li>
-                    <%  }%>
+                    <%  }
+                    if (accessRightsStr.Contains('4'))
+                    {%>
                     <li>
-                        <a href="#" onclick="showSettingsModal(); false;">Settings
+                        <a href="#" onclick="showSettingsModal(); false;">Configurations
                         </a>
                     </li>
+                    <%  }%>
                 </ul>
                         <form id="logbtn" class="nav navbar-nav navbar-right" style="margin-top: 10px;" runat="server">
                             <div>

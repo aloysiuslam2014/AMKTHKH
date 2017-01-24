@@ -100,7 +100,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="CSS\jquery-ui.css" />
-    <Content Include="CSS\jquery.range.css" />
     <Content Include="CSS\passManagement.css" />
     <Content Include="CSS\adminTerminal.css" />
     <Content Include="CSS\asScrollbar.css" />
@@ -141,7 +140,6 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery-ui.structure.min.css" />
     <Content Include="Scripts\jquery-ui.theme.min.css" />
-    <Content Include="Scripts\jquery.range.js" />
     <Content Include="Webpage\Staff\TerminalCalls\locationQueries.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -269,6 +267,7 @@
     <Content Include="Webpage\Staff\UserManagement\userManagement.ashx" />
     <Content Include="Webpage\Staff\PassManagement\passMgmt.ashx" />
     <Content Include="Webpage\Staff\ContactTracing\tracing.ashx" />
+    <Content Include="Webpage\Staff\masterConfig.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config">
@@ -303,6 +302,9 @@
     </Compile>
     <Compile Include="Webpage\Staff\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Webpage\Staff\masterConfig.ashx.cs">
+      <DependentUpon>masterConfig.ashx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Staff\PassManagement\passMgmt.ashx.cs">
       <DependentUpon>passMgmt.ashx</DependentUpon>

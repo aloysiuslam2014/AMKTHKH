@@ -1,1 +1,1 @@
-﻿
+﻿// Logic to get temp range & time range & send to ashx
