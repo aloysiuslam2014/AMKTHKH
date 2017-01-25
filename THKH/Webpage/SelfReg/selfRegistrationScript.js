@@ -340,7 +340,7 @@ $("#mobilesInput").on("input", function () {
 
 // Validate postal code number format
 $("#postalsInput").on("input", function () {
-    var validNric = validatePhone($("#postalsInput").val());
+    var validNric = validatePostal($("#postalsInput").val());
     if (validNric !== false) {
         $("#posWarning").css("display", "none");
         validPos = true;
