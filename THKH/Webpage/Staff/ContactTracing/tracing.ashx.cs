@@ -88,16 +88,16 @@ namespace THKH.Webpage.Staff.ContactTracing
 
                 }
 
-                //for (var i = 0; i < processed_uq_place_arr.Length; i++)
-                //{
-                //    String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
-                //    List<String> singleBedResult_toList = new List<String>();
-                //    if (singleBedResult != "")
-                //    {
-                //        singleBedResult_toList = (List<String>)Newtonsoft.Json.JsonConvert.DeserializeObject(singleBedResult);
-                //    }
-                //    byScan_response_visitors.AddRange(singleBedResult_toList);
-                //}
+                for (var i = 0; i < processed_uq_place_arr.Length; i++)
+                {
+                    String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
+                    List<String> singleBedResult_toList = new List<String>();
+                    if (singleBedResult != "")
+                    {
+                        singleBedResult_toList = (List<String>)Newtonsoft.Json.JsonConvert.DeserializeObject(singleBedResult);
+                    }
+                    byScan_response_visitors.AddRange(singleBedResult_toList);
+                }
             }
 
             if (bedORloc == "byloc") {
@@ -144,6 +144,7 @@ namespace THKH.Webpage.Staff.ContactTracing
         private String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults) {
             String result = "";
             List<String> serializedResults = new List<String>();
+            List<dynamic> serializedResults1 = new List<dynamic>();
 
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
@@ -179,12 +180,14 @@ namespace THKH.Webpage.Staff.ContactTracing
                     if (reg) { innerItem.reg = "Yes"; } else { innerItem.reg = "No"; }
                     if (scan) { innerItem.scan = "Yes"; } else { innerItem.scan = "No"; }
 
+                    serializedResults1.Add(innerItem);
                     String serializedResult = Newtonsoft.Json.JsonConvert.SerializeObject(innerItem);
                     serializedResults.Add(serializedResult);
                 }
             }
             json.Result = "Success";
-            json.Msg = serializedResults;
+            json.Msg = serializedResults1.ToArray();
+            //json.Msg = serializedResults;
 
             result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
 
