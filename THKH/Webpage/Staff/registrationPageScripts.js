@@ -347,6 +347,9 @@ function clearFields() {
         $("#registration .regInput").each(function (idx, obj) {
             $(obj).prop("value", "");
         });
+        var date = new Date();
+        $('#visitbookingdate').val(formatDate(date, "DD-MM-YYYY"));
+        $("#visitbookingtime").val(formatDate(date, "HH:mm"));
         regCompleted = false;
     } else {
         $("#registration .regInput").each(function (idx, obj) {
@@ -607,6 +610,9 @@ function hideTags() {
         populateTime();
         populateRegNationalities();
         loadActiveForm();
+        var date = new Date();
+        $('#visitbookingdate').val(formatDate(date, "DD-MM-YYYY"));
+        $("#visitbookingtime").val(formatDate(date, "HH:mm"));
         init = true;
     }
 }

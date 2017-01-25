@@ -70,3 +70,17 @@ function validatePhone(txtPhone) {
 //        $('#emptyFields').css("display", "block");
 //    }
 //}
+
+//// formats date
+//function formatDate(date) {
+//    return date.getDay() + "-" + date.getMonth() + "-" + date.getYear();
+//}
+
+//// formats date
+//function formatTime(date) {
+//    var hours = date.getHours();
+//    var minutes = date.getMinutes();
+//    minutes = minutes < 10 ? '0' + minutes : minutes;
+//    var strTime = hours + ':' + minutes;
+//    return strTime;
+//}
