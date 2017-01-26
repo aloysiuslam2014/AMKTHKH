@@ -340,16 +340,16 @@ function NewAssistReg() {
         },
     });
     $('input[id="ignoreNric"]').prop('checked', false);
+    var allowNric = false;
 }
 
 function clearFields() {
     if (regCompleted) {
         $("#registration .regInput").each(function (idx, obj) {
-            $(obj).prop("value", "");
+            if ($(obj).attr("id") != "visitbookingdate") {
+                $(obj).prop("value", "");
+            }
         });
-        var date = new Date();
-        $('#visitbookingdate').val(formatDate(date, "DD-MM-YYYY"));
-        $("#visitbookingtime").val(formatDate(date, "HH:mm"));
         regCompleted = false;
     } else {
         $("#registration .regInput").each(function (idx, obj) {
@@ -358,6 +358,8 @@ function clearFields() {
             }
         });
     }
+    $('input[id="ignoreNric"]').prop('checked', false);
+    var allowNric = false;
 }
 
 // Display appropriate panels according to visit purpose

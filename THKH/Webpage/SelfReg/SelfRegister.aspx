@@ -181,7 +181,7 @@
                                 <%--Visit Time--%>
                             <div class="form-group">
                                     <div class="input-group date" id="visitbookingdatediv">
-                                    <input type='text' id="visitbookingdate" class="form-control required" />
+                                    <input type='text' id="visitbookingdate" class="form-control required" readonly />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>

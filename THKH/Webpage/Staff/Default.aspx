@@ -352,7 +352,7 @@
                             <%--Visit Date--%>
                             <label for="visitbookingdate"><span style="color:lightcoral">*</span>Intended Visit Date (DD-MM-YYYY)</label>
                             <div class="input-group date" id="visitbookingdatediv">
-                                <input type='text' id="visitbookingdate" class="form-control required regInput" readonly />
+                                <input type='text' id="visitbookingdate" class="form-control required regInput excludeClear" readonly />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
