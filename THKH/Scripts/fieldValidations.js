@@ -54,6 +54,18 @@ function validatePhone(txtPhone) {
     return false;
 }
 
+// Validation of postal code
+function validatePostal(code) {
+    var filter = /^[0-9-+]+$/;
+    if (code == "") {
+        return true;
+    }
+    if (filter.test(code)) {
+         return true;
+    }
+    return false;
+}
+
 // Check for required fields in Assisted Registration page
 //function checkRequiredFields() {
 //    var valid = true;
@@ -69,4 +81,18 @@ function validatePhone(txtPhone) {
 //    else {
 //        $('#emptyFields').css("display", "block");
 //    }
+//}
+
+//// formats date
+//function formatDate(date) {
+//    return date.getDay() + "-" + date.getMonth() + "-" + date.getYear();
+//}
+
+//// formats date
+//function formatTime(date) {
+//    var hours = date.getHours();
+//    var minutes = date.getMinutes();
+//    minutes = minutes < 10 ? '0' + minutes : minutes;
+//    var strTime = hours + ':' + minutes;
+//    return strTime;
 //}

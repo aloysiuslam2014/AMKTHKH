@@ -35,9 +35,15 @@ function unifiedTrace() {
         success: function (returner) {
             try {
                 var uqResult = JSON.parse(returner);
-                var uqResultJSON = uqResult.Msg[0];
+                var arrLen = uqResult.Msg.length;
+                for (i = 0; i < arrLen; i++) {
+                    var uqResultJSON = uqResult.Msg[i];
 
-                writeUQResultsTable(uqResultJSON);
+                    writeUQResultsTable(uqResultJSON);
+                }
+                //var uqResultJSON = uqResult.Msg[0];
+
+                //writeUQResultsTable(uqResultJSON);
 
             } catch (err) {
                 alert("Selected period returns no data. Please try again");
@@ -54,12 +60,12 @@ function writeUQResultsTable(uqResultJSON) {
 
     //$("#uq_resultstable_body").html('');//already cleared child elements at top of unifiedTrace()
     $("#generateCSV").removeClass('disabled');//Enable csv download button
-    $("#uq_resultstable_head").removeAttribute('style');//unhide table headers
-    traced_visitors = JSON.parse(uqResultJSON);
+    //$("#uq_resultstable_head").removeAttribute('style');//unhide table headers
+    // var traced_visitors = JSON.parse(uqResultJSON); //Why parse when a JSON object is given to you already?
 
-    try {
-        for (index = 0; index < traced_visitors.length; ++index) {
-            var v = visitors[index];
+    //try {
+        //for (index = 0; index < traced_visitors.length; ++index) {
+            //var v = visitors[index];
             var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "reg", "scan"];
 
             //visitor
@@ -67,15 +73,16 @@ function writeUQResultsTable(uqResultJSON) {
 
             for (rowindex = 0; rowindex < vparams.length; ++rowindex) {
                 var cell = document.createElement("td");
-                $(cell).html(v[vparams[rowindex]]);
+                var item = uqResultJSON[vparams[rowindex]];
+                $(cell).html(uqResultJSON[vparams[rowindex]]);
                 $(row).append(cell);
             }
 
             $("#uq_resultstable_body").append(row);
-        }
-    } catch (err) {
-        alert("Unable to print any traced visitors.");
-    }
+        //}
+    //} catch (err) {
+    //    alert("Unable to print any traced visitors.");
+    //}
     
 }
 

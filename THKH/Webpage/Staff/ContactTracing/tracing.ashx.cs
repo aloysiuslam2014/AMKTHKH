@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -38,15 +40,17 @@ namespace THKH.Webpage.Staff.ContactTracing
             }
             context.Response.Write(returnoutput);
         }
-        public String unifiedTrace(String query) {
+
+        private String unifiedTrace(String query) {
             String result = "";
 
             String[] queryParts = query.Split('~');
             String bedORloc = queryParts[0];
             String uq_startdate_str = queryParts[1];
             String uq_enddate_str = queryParts[2];
-            DateTime uq_startdate = DateTime.ParseExact(uq_startdate_str, "MM/dd/yyyy h:mm tt", null);
-            DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "MM/dd/yyyy h:mm tt", null);
+            DateTime uq_startdate = DateTime.ParseExact(uq_startdate_str, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture); // Might be time format issue
+            DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+            //DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "MM/dd/yyyy h:mm tt", null);
             String uq_place = queryParts[3];
             String[] uq_place_arr = uq_place.Split(',');
 
@@ -71,9 +75,16 @@ namespace THKH.Webpage.Staff.ContactTracing
                     String singleBedResult = traceByRegBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
                     List<String> singleBedResult_toList = new List<String>();
                     if (singleBedResult != "") {
-                        singleBedResult_toList = (List<String>)Newtonsoft.Json.JsonConvert.DeserializeObject(singleBedResult);
+                        //Object obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Object>(singleBedResult);
+                        JObject obj = JObject.Parse(singleBedResult);
+                        JArray arr = (JArray)obj["Visits"];
+                        foreach (JToken item in arr.Children()) {
+                            String entry = item.Value<JObject>().ToString(Formatting.None);
+                            byReg_response_visitors.Add(entry);
+                        }
+                        // singleBedResult_toList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<String>>(singleBedResult); // Invalid Cast
                     }
-                    byReg_response_visitors.AddRange(singleBedResult_toList);
+                    //byReg_response_visitors.AddRange(singleBedResult_toList);
 
                 }
 
@@ -130,9 +141,10 @@ namespace THKH.Webpage.Staff.ContactTracing
             return result;
         }
 
-        public String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults) {
+        private String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults) {
             String result = "";
             List<String> serializedResults = new List<String>();
+            List<dynamic> serializedResults1 = new List<dynamic>();
 
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
@@ -143,34 +155,46 @@ namespace THKH.Webpage.Staff.ContactTracing
                 bool scan = category.Item3;
 
                 foreach (String visit in visitList) {
-                    dynamic deserializedVisit = Newtonsoft.Json.JsonConvert.DeserializeObject(visit);
-
+                    //dynamic deserializedVisit = Newtonsoft.Json.JsonConvert.DeserializeObject(visit);
+                    JObject deserializedVisit = JObject.Parse(visit);
                     innerItem = new ExpandoObject();
 
-                    innerItem.location = deserializedVisit.visitLocation;
-                    innerItem.bedno = deserializedVisit.bedNo;
-                    innerItem.checkin_time = deserializedVisit.visitActualTime;
-                    innerItem.exit_time = deserializedVisit.exitTime;
-                    innerItem.fullName = deserializedVisit.fullName;
-                    innerItem.nric = deserializedVisit.visitorNric;
-                    innerItem.mobileTel = deserializedVisit.mobileTel;
-                    innerItem.nationality = deserializedVisit.nationality;
+                    //innerItem.location = deserializedVisit.visitLocation;
+                    //innerItem.bedno = deserializedVisit.bedNo;
+                    //innerItem.checkin_time = deserializedVisit.visitActualTime;
+                    //innerItem.exit_time = deserializedVisit.exitTime;
+                    //innerItem.fullName = deserializedVisit.fullName;
+                    //innerItem.nric = deserializedVisit.visitorNric;
+                    //innerItem.mobileTel = deserializedVisit.mobileTel;
+                    //innerItem.nationality = deserializedVisit.nationality;
+
+                    innerItem.location = deserializedVisit["visitLocation"];
+                    innerItem.bedno = deserializedVisit["bedno"];
+                    innerItem.checkin_time = deserializedVisit["visitActualTime"];
+                    innerItem.exit_time = deserializedVisit["exitTime"];
+                    innerItem.fullName = deserializedVisit["fullName"];
+                    innerItem.nric = deserializedVisit["visitorNric"];
+                    innerItem.mobileTel = deserializedVisit["mobileTel"];
+                    innerItem.nationality = deserializedVisit["nationality"];
+
                     if (reg) { innerItem.reg = "Yes"; } else { innerItem.reg = "No"; }
                     if (scan) { innerItem.scan = "Yes"; } else { innerItem.scan = "No"; }
 
-                    String serializedResult = Newtonsoft.Json.JsonConvert.SerializeObject(innerItem);
-                    serializedResults.Add(serializedResult);
+                    serializedResults1.Add(innerItem);
+                    //String serializedResult = Newtonsoft.Json.JsonConvert.SerializeObject(innerItem);
+                    //serializedResults.Add(serializedResult);
                 }
             }
             json.Result = "Success";
-            json.Msg = serializedResults;
+            json.Msg = serializedResults1.ToArray();
+            //json.Msg = serializedResults;
 
             result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
 
             return result;
         }
 
-        public String traceByScanBed(DateTime startdatetime, DateTime enddatetime, String bedno)
+        private String traceByScanBed(DateTime startdatetime, DateTime enddatetime, String bedno)
         {
             //String result = "";
 
@@ -215,7 +239,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return byScanBed_response_visitors;
         }
 
-        public String traceByRegBed(DateTime startdatetime, DateTime enddatetime, String bedno) {
+        private String traceByRegBed(DateTime startdatetime, DateTime enddatetime, String bedno) {
             //String result = "";
 
             dynamic json = new ExpandoObject();
@@ -240,7 +264,6 @@ namespace THKH.Webpage.Staff.ContactTracing
                 command.Parameters.Add(visitors);
                 cnn.Open();
                 command.ExecuteNonQuery();
-
             }
             catch (Exception ex)
             {
@@ -258,7 +281,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return byRegBed_response_visitors;
         }
 
-        public String traceByScanLoc(DateTime startdatetime, DateTime enddatetime, String loc)
+        private String traceByScanLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
             //String result = "";
 
@@ -303,7 +326,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return byScanLoc_response_visitors;
         }
 
-        public String traceByRegLoc(DateTime startdatetime, DateTime enddatetime, String loc)
+        private String traceByRegLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
             //String result = "";
 
@@ -347,7 +370,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return byRegLoc_response_visitors;
         }
 
-        public String[] processBedNos(String[] bedno_arr) {
+        private String[] processBedNos(String[] bedno_arr) {
             ArrayList result = new ArrayList();
 
             for (var i = 0; i < bedno_arr.Length; i++) {
@@ -375,7 +398,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return (String[])result.ToArray(typeof(string));
         }
 
-        public String traceByReg(String query) {
+        private String traceByReg(String query) {
             String result = "";
             String[] queryParts = query.Split('~');
             DateTime ri_dateStart = DateTime.Parse(queryParts[0]);
@@ -431,7 +454,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return result;
         }
 
-        public String getValidTerminals(String query)
+        private String getValidTerminals(String query)
         {
             DataTable dataTable = new DataTable();
             string result = "";

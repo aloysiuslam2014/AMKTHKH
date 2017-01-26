@@ -352,7 +352,7 @@
                             <%--Visit Date--%>
                             <label for="visitbookingdate"><span style="color:lightcoral">*</span>Intended Visit Date (DD-MM-YYYY)</label>
                             <div class="input-group date" id="visitbookingdatediv">
-                                <input type='text' id="visitbookingdate" class="form-control required regInput" />
+                                <input type='text' id="visitbookingdate" class="form-control required regInput" readonly />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -986,10 +986,20 @@
 
                 <script type="text/javascript"> //Shift to separate Script
                     $(function () {
-                        $('#unifiedquery_startdatetime').datetimepicker();
+                        $('#unifiedquery_startdatetime').datetimepicker(
+                            {
+                                defaultDate: new Date(),
+                                maxDate: 'now',
+                                format: 'DD-MM-YYYY HH:mm'
+                            }
+                            );
                     });
                     $(function () {
-                        $('#unifiedquery_enddatetime').datetimepicker();
+                        $('#unifiedquery_enddatetime').datetimepicker({
+                            defaultDate: new Date(),
+                            maxDate: 'now',
+                            format: 'DD-MM-YYYY HH:mm'
+                        });
                     });
                 </script>
 
