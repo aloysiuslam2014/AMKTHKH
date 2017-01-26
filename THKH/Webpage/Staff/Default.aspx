@@ -44,6 +44,12 @@
 
         // Show Settings Modal
         function showSettingsModal() {
+            populateSettingsTime();
+            $("#tempSetWarning").css("display", "none");
+            $("#timeSetWarning").css("display", "none");
+            $("#tempRangeWarning").css("display", "none");
+            $("#timeHighLowWarning").css("display", "none");
+            $("#tempHighLowWarning").css("display", "none");
             $('#settingsModal').modal({ backdrop: 'static', keyboard: false });
             $('#settingsModal').modal('show');
         }
@@ -51,6 +57,7 @@
         // Hide Settings Modal
         function hideSettingsModal() {
             $('#settingsModal').modal('hide');
+            // Clear fields
         }
 
     </script>
@@ -69,29 +76,38 @@
                             <div class="modal-body text-center" id="appSettings">
                                 <label>Temperature Range</label>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control setInput" placeholder="Temperature Lower Limit" id="temSetInputLow" />
-                                    <input type="text" runat="server" class="form-control setInput" placeholder="Temperature Upper Limit" id="temSetInputHigh" />
-                                    <%--<label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>--%>
+                                    <div class="input-group">
+                                          <span class="input-group-addon">Lower Limit</span>
+                                    <input type="text" runat="server" class="form-control setInput" id="temSetInputLow" />
+                                        </div>
+                                    <div class="input-group">
+                                          <span class="input-group-addon">Upper Limit</span>
+                                    <input type="text" runat="server" class="form-control setInput" id="temSetInputHigh" />
+                                        </div>
+                                    <label id="tempHighLowWarning" style="color: lightcoral">Upper limit is higher than the lower limit!</label>
+                                    <label id="tempSetWarning" style="color: lightcoral">Please enter the temperature values in this format: "36.7"</label>
+                                    <label id="tempRangeWarning" style="color: lightcoral">Please enter a temperature within 34 to 40 degs</label>
                                 </div>
                                 <label>Visit Time Period</label>
                                 <div class="form-group">
                                     <div class="input-group">
                                           <span class="input-group-addon">From</span>
-                                            <select class="form-control setInput" onchange="" id="visTimeSetInputLower">
+                                            <select class="form-control setInput" id="visTimeSetInputLower">
                                                 <option value="">-- Select One --</option>
                                             </select>
                                         </div>
                                     <div class="input-group">
                                           <span class="input-group-addon">Till</span>
-                                            <select class="form-control setInput" onchange="" id="visTimeSetInputHigh">
+                                            <select class="form-control setInput" id="visTimeSetInputHigh">
                                                 <option value="">-- Select One --</option>
                                             </select>
                                         </div>
-                                    <%--<label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>--%>
+                                    <label id="timeHighLowWarning" style="color: lightcoral">End Time is before the Start Time!</label>
+                                    <label id="timeSetWarning" style="color: lightcoral">Please provide a visit time range</label>
                             </div>
                                 <div class="btn-group">
                                     <button class="btn btn-danger" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
-                                    <button class="btn btn-success" id="saveSettingsButton" onclick=""><span class="glyphicon glyphicon-save"></span> Save Settings</button>
+                                    <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-save"></span> Save Settings</button>
                                 </div>      
                             </div>
                         </div>
@@ -352,7 +368,7 @@
                             <%--Visit Date--%>
                             <label for="visitbookingdate"><span style="color:lightcoral">*</span>Intended Visit Date (DD-MM-YYYY)</label>
                             <div class="input-group date" id="visitbookingdatediv">
-                                <input type='text' id="visitbookingdate" class="form-control required regInput excludeClear" readonly />
+                                <input type='text' id="visitbookingdate" class="form-control required regInput excludeClear" disabled />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
