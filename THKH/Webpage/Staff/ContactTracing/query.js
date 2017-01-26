@@ -35,9 +35,15 @@ function unifiedTrace() {
         success: function (returner) {
             try {
                 var uqResult = JSON.parse(returner);
-                var uqResultJSON = uqResult.Msg[0];
+                var arrLen = uqResult.Msg.length;
+                for (i = 0; i < arrLen; i++) {
+                    var uqResultJSON = uqResult.Msg[i];
 
-                writeUQResultsTable(uqResultJSON);
+                    writeUQResultsTable(uqResultJSON);
+                }
+                //var uqResultJSON = uqResult.Msg[0];
+
+                //writeUQResultsTable(uqResultJSON);
 
             } catch (err) {
                 alert("Selected period returns no data. Please try again");

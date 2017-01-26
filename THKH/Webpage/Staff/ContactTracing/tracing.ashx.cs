@@ -181,8 +181,8 @@ namespace THKH.Webpage.Staff.ContactTracing
                     if (scan) { innerItem.scan = "Yes"; } else { innerItem.scan = "No"; }
 
                     serializedResults1.Add(innerItem);
-                    String serializedResult = Newtonsoft.Json.JsonConvert.SerializeObject(innerItem);
-                    serializedResults.Add(serializedResult);
+                    //String serializedResult = Newtonsoft.Json.JsonConvert.SerializeObject(innerItem);
+                    //serializedResults.Add(serializedResult);
                 }
             }
             json.Result = "Success";
