@@ -14,7 +14,9 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/w3data.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/bootstrap-datetimepicker.js") %>"></script>
-
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/dependencies/rsvp-3.1.0.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/dependencies/sha-256.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/qz-tray.js") %>"></script>
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
@@ -189,6 +191,7 @@
                                     <label>Visitor has been checked in!</label>
                             </div>
                             <div class="modal-footer">
+                                <button class="btn btn-block btn-info" id="printButton" onclick="printPass(); false;"><span class="glyphicon glyphicon-off"></span> Print</button>
                                 <button class="btn btn-block btn-danger" id="closeSuccessButton" onclick="hideSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
                             </div>
                         </div>
