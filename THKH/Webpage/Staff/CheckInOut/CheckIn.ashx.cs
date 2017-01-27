@@ -218,7 +218,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, -1);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, 500);
             respon.Direction = ParameterDirection.Output;
             try
             {

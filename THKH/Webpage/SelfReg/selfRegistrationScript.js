@@ -128,8 +128,9 @@ function validatePatient() {
                         $("#patientStatusGreen").css("display", "block");
                         $("#patientStatusRed").css("display", "none");
                         $("#patientStatusNone").css("display", "none");
-                        $("#patientName").attr('readonly', true);
-                        $("#bedno").attr('readonly', true);
+                        $("#patientName").prop('disabled', true);
+                        $("#pInput").prop('disabled', true);
+                        $("#bedno").prop('disabled', true);
                         patientValidated = true;
                         $("#userDetails").css("display", "block");
                         checkIfExistingVisitor();

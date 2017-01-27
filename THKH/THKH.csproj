@@ -270,7 +270,7 @@
     <Content Include="Webpage\Staff\UserManagement\userManagement.ashx" />
     <Content Include="Webpage\Staff\PassManagement\passMgmt.ashx" />
     <Content Include="Webpage\Staff\ContactTracing\tracing.ashx" />
-    <Content Include="Webpage\Staff\masterConfig.ashx" />
+    <Content Include="Webpage\Staff\MasterConfig\masterConfig.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config">
@@ -306,7 +306,7 @@
     <Compile Include="Webpage\Staff\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\Staff\masterConfig.ashx.cs">
+    <Compile Include="Webpage\Staff\MasterConfig\masterConfig.ashx.cs">
       <DependentUpon>masterConfig.ashx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Staff\PassManagement\passMgmt.ashx.cs">
