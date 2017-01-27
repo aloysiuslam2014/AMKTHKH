@@ -17,6 +17,8 @@ var validPos = true;
 var validEmail = true;
 var regCompleted = false;
 var init = false;
+var lowTemp = "34";
+var highTemp = "40";
 
 // Check for visitor details & any online self registration information
 function callCheck (){
@@ -235,22 +237,34 @@ $("#temp").on("input", function () {
     if (temper == "") {
         $('#tempWarning').css("display", "none");
         $("#invalidTempWarning").css("display", "none");
+        $('#lowtempWarning').css("display", "none");
         validTemp = false;
     } else {
         try {
             var temperature = parseFloat(temper);
-            if (temperature > 37.6) {
+            if (temperature > highTemp) {
+                $('#tempWarning').html("Visitor's Temperature is above the allowable " + highTemp + " degrees celcius!");
                 $('#tempWarning').css("display", "block");
                 $("#invalidTempWarning").css("display", "none");
+                $('#lowtempWarning').css("display", "none");
                 validTemp = false;
-            } else if (isNaN(temperature) || temperature < 35.0) {
+            } else if (isNaN(temperature)) {
                 $("#invalidTempWarning").css("display", "block");
                 $('#tempWarning').css("display", "none");
+                $('#lowtempWarning').css("display", "none");
+                validTemp = false;
+            }
+            else if (temperature < lowTemp) {
+                $('#lowtempWarning').html("Visitor's Temperature is below the allowable " + lowTemp + " degrees celcius!");
+                $('#lowtempWarning').css("display", "block");
+                $('#tempWarning').css("display", "none");
+                $("#invalidTempWarning").css("display", "none");
                 validTemp = false;
             }
             else {
                 $('#tempWarning').css("display", "none");
                 $("#invalidTempWarning").css("display", "none");
+                $('#lowtempWarning').css("display", "none");
                 validTemp = true;
             }
         } catch (ex) {
@@ -588,6 +602,7 @@ function hideTags() {
     $("#emptyFields").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
     $("#emailWarning").css("display", "none");
+    $('#lowtempWarning').css("display", "none");
     $('#tempWarning').css("display", "none");
     $("#patientpurposevisit").css("display", "none");
     $("#otherpurposevisit").css("display", "none");
@@ -929,44 +944,87 @@ function populateRegNationalities() {
 
 // Populates Visit Time Field
 function populateTime() {
-    var time = [
-        '07:00',
-        '07:30',
-        '08:00',
-        '08:30',
-        '09:30',
-        '10:00',
-        '10:30',
-        '11:00',
-        '11:30',
-        '12:00',
-        '12:30',
-        '13:00',
-        '13:30',
-        '14:00',
-        '14:30',
-        '15:00',
-        '15:30',
-        '16:00',
-        '16:30',
-        '17:00',
-        '17:30',
-        '18:00',
-        '18:30',
-        '19:00',
-        '19:30',
-        '20:00',
-        '20:30',
-        '21:00',
-        '21:30'];
-    for (var i = 0; i < time.length; i++) {
-        var optin = document.createElement("option");
-        $(optin).attr("style", "background:white");
-        $(optin).attr("name", time[i]);
-        $(optin).attr("value", time[i]);
-        $(optin).html(time[i]);
-        $('#visitbookingtime').append(optin);
-    }
+    var lowTime = "";
+    var highTime = "";
+    var headersToProcess = {
+        requestType: "getConfig"
+    };
+    $.ajax({
+        url: '../Staff/MasterConfig/masterConfig.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            var mes = resultOfGeneration.Msg;
+            var arr = mes.toString().split(",");
+            lowTemp = arr[0].toString();
+            highTemp = arr[1].toString();
+            lowTime = arr[2].toString();
+            highTime = arr[3].toString();
+            var time = [
+                        '00:00',
+                        '00:30',
+                        '01:30',
+                        '02:00',
+                        '02:30',
+                        '03:00',
+                        '03:30',
+                        '04:00',
+                        '04:30',
+                        '05:00',
+                        '05:30',
+                        '06:00',
+                        '06:30',
+                        '07:00',
+                        '07:30',
+                        '08:00',
+                        '08:30',
+                        '09:30',
+                        '10:00',
+                        '10:30',
+                        '11:00',
+                        '11:30',
+                        '12:00',
+                        '12:30',
+                        '13:00',
+                        '13:30',
+                        '14:00',
+                        '14:30',
+                        '15:00',
+                        '15:30',
+                        '16:00',
+                        '16:30',
+                        '17:00',
+                        '17:30',
+                        '18:00',
+                        '18:30',
+                        '19:00',
+                        '19:30',
+                        '20:00',
+                        '20:30',
+                        '21:00',
+                        '21:30',
+                        '22:00',
+                        '22:30',
+                        '23:00',
+                        '23:30'];
+            var start = time.indexOf(lowTime);
+            var end = time.indexOf(highTime);
+            for (i = start; i <= end; i++) {
+                var optin = document.createElement("option");
+                $(optin).attr("style", "background:white");
+                $(optin).attr("name", time[i]);
+                $(optin).attr("value", time[i]);
+                $(optin).html(time[i]);
+                $('#visitbookingtime').append(optin);
+            }
+        },
+        error: function (err) {
+            alert("Error: " + err.Msg);
+        },
+    });
 }
 
 // Show Success Modal
@@ -1005,4 +1063,3 @@ $("#emailsInput").on("input", function () {
         validEmail = false;
     }
 });
-

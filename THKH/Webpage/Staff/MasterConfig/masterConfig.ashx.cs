@@ -28,7 +28,11 @@ namespace THKH.Webpage.Staff
                 var highTime = context.Request.Form["highTime"];
                 successString = updateTempTime(lowTemp, highTemp, lowTime, highTime, staffUser);
             }
-            context.Response.Write(successString);
+            if (requestType.ToString() == "getConfig")
+            {
+                successString = getConfig();
+            }
+                context.Response.Write(successString);
         }
 
         private String updateTempTime(String lowTemp, String highTemp, String lowTime, String highTime, String staffUser) {
@@ -51,6 +55,51 @@ namespace THKH.Webpage.Staff
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "\"}";
+            return successString;
+        }
+
+        private String getConfig()
+        {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, 500);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_CONFIG]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                int count = 1;
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        if (count > 1)
+                        {
+                            successString += ",";
+                        }
+                        successString += reader.GetString(0) + "," + reader.GetString(1) + "," + reader.GetString(2) + "," + reader.GetString(3);
+                        count++;
+                    }
+                }
+                reader.Close();
             }
             catch (Exception ex)
             {

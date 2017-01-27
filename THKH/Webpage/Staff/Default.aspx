@@ -45,6 +45,7 @@
         // Show Settings Modal
         function showSettingsModal() {
             populateSettingsTime();
+            getCurrentConfig();
             $("#tempSetWarning").css("display", "none");
             $("#timeSetWarning").css("display", "none");
             $("#tempRangeWarning").css("display", "none");
@@ -250,7 +251,8 @@
                             <br />
                             <label class="control-label" for="temp"><span style="color:lightcoral">*</span>Temperature</label>
                             <input runat="server" id="temp" class="form-control required regInput" type="text" />
-                            <h4 id="tempWarning" style="color: lightcoral">Visitor's Temperature is above 37.6 Degrees Celcius!</h4>
+                            <h4 id="tempWarning" style="color: lightcoral">Visitor's Temperature is above the allowable 37.6 degrees celcius!</h4>
+                            <h4 id="lowtempWarning" style="color: lightcoral">Visitor's Temperature is below the allowable 34 degrees celcius!</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
                         </div>
                     </div>
