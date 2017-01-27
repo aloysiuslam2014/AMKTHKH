@@ -133,6 +133,8 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\dependencies\rsvp-3.1.0.min.js" />
+    <Content Include="Scripts\dependencies\sha-256.min.js" />
     <Content Include="Scripts\fieldValidations.js" />
     <Content Include="Scripts\fm.scrollator.jquery.js" />
     <Content Include="Scripts\html2canvas.js" />
@@ -140,6 +142,7 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery-ui.structure.min.css" />
     <Content Include="Scripts\jquery-ui.theme.min.css" />
+    <Content Include="Scripts\qz-tray.js" />
     <Content Include="Webpage\Staff\TerminalCalls\locationQueries.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />

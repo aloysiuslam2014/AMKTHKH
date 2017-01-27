@@ -2,10 +2,11 @@
 var sPositions = {};
 var level = 0;
 var loadPassOnce = false;
-
+var creatingPass = false;
 function convertDvToImg() {
     html2canvas($("#passClone"), {
         onrendered: function (canvas) {
+            $(canvas).prop('id', 'imgPass');
             $("#userSuccess").append(canvas);
             $("#passClone").remove();
         }
@@ -192,6 +193,7 @@ function createPassAppendParent(parent, target, datapositions) {
         $(barcodeElement).remove();
     }else{
         var getNric = $("#registration").find("#nric").prop('value');
+        creatingPass = true;//flag as creating a pass so the div will be converted to an img afterwards
        createBarCodeImg(getNric, barcodeElement[0]);
        
           
@@ -208,7 +210,7 @@ function createPassAppendParent(parent, target, datapositions) {
        
     });
 
-    convertDvToImg();
+   
   
 }
 
@@ -364,7 +366,10 @@ function createBarCodeImg(textToCreate,injectAfterLoad) {
                 } else {
                     injectAfterLoad.setAttribute('src', 'data:image/png;base64,' + resultOfGeneration.Msg);
                 }
-               
+                if (creatingPass) {
+                    convertDvToImg();
+                    creatingPass = false;
+                }
 
             } else {
                 alert(resultOfGeneration.Msg);
@@ -402,3 +407,33 @@ function createImageAndAdd(me) {
     $("#passLayout ").append(divWrapper);
 }
 
+function printPass() {
+    qz.websocket.connect().then(function () {
+        return qz.printers.find("POS")               // Pass the printer name into the next Promise
+    }).then(function (printer) {
+        var config = qz.configs.create(printer, { colorType: 'grayscale'});       // Create a default config for the found printer format: 'base64',
+        var rawDataFromImg = $("#imgPass")[0].toDataURL("image/png", 1).split(',')[1];
+        var image = new Image();
+       // image.src = ;
+        var data = [
+     {
+         type: 'image',
+         format: 'base64',
+         data: rawDataFromImg
+     }
+        ];
+
+        return qz.print(config, data);
+    }).then(function () {
+        endConnection();
+    }).catch(function (e) { alert(e); });
+   
+}
+
+function endConnection() {
+    if (qz.websocket.isActive()) {
+        qz.websocket.disconnect().then(function () {
+          
+        }).catch(handleConnectionError);
+    }  
+}
