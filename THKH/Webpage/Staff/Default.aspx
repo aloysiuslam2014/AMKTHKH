@@ -47,6 +47,7 @@
         // Show Settings Modal
         function showSettingsModal() {
             populateSettingsTime();
+            loadPermissionSettingsField();
             getCurrentConfig();
             $("#tempSetWarning").css("display", "none");
             $("#timeSetWarning").css("display", "none");
@@ -69,15 +70,19 @@
         <img src="../../Assets/cube.svg" style="position: absolute;left: calc(50% - 99px);top: calc(50% - 99px);"/>
 
     </div>
+    <%if (accessRightsStr.Contains('4'))
+        { %>
     <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header text-center">
+                            <div class="modal-header">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
                                 <h4 class="modal-title">Master Configuration</h4>
                             </div>
                             <div class="modal-body text-center" id="appSettings">
-                                <label>Temperature Range</label>
+                                <div class="row">
+                                <div class="col-sm-6">
+                                <label>Temperature Control</label>
                                 <div class="form-group">
                                     <div class="input-group">
                                           <span class="input-group-addon">Lower Limit</span>
@@ -91,31 +96,55 @@
                                     <label id="tempSetWarning" style="color: lightcoral">Please enter the temperature values in this format: "36.7"</label>
                                     <label id="tempRangeWarning" style="color: lightcoral">Please enter a temperature within 34 to 40 degs</label>
                                 </div>
-                                <label>Visit Time Period</label>
+                                </div>
+                                <div class="col-sm-6">
+                                <label>Visit Time Control</label>
                                 <div class="form-group">
                                     <div class="input-group">
-                                          <span class="input-group-addon">From</span>
+                                          <span class="input-group-addon">Start</span>
                                             <select class="form-control setInput" id="visTimeSetInputLower">
                                                 <option value="">-- Select One --</option>
                                             </select>
                                         </div>
                                     <div class="input-group">
-                                          <span class="input-group-addon">Till</span>
+                                          <span class="input-group-addon">End</span>
                                             <select class="form-control setInput" id="visTimeSetInputHigh">
                                                 <option value="">-- Select One --</option>
                                             </select>
                                         </div>
                                     <label id="timeHighLowWarning" style="color: lightcoral">End Time is before the Start Time!</label>
                                     <label id="timeSetWarning" style="color: lightcoral">Please provide a visit time range</label>
-                            </div>
-                                <div class="btn-group">
-                                    <button class="btn btn-danger" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
-                                    <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-save"></span> Save Settings</button>
-                                </div>      
+                                </div>
+                                </div>
+                                <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-save"></span> Save Settings</button>
+                                    </div>
+                                <div class="row">
+                                <label>Access Profile Control</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                          <span class="input-group-addon">Profile</span>
+                                            <select class="form-control setInput" id="permissionProfile">
+                                                <option value="">-- Select One --</option>
+                                            </select>
+                                        <span class="input-group-btn">
+                                <button class="btn btn-primary" id="newProfileButton" onclick="newAccessProfile(); false"><span class="glyphicon glyphicon-plus"></span> New Profile</button>
+                                <button class="btn btn-warning" id="delProfileButton" onclick="delAccessProfile(); false;"><span class="glyphicon glyphicon-trash"></span> Delete Profile</button>
+                            </span>
+                                        </div>
+                                    </div>
+                                <div id="permissSet" class="form-group">
+                                <%--checkbox--%>
+                                </div>
+                                <button id="savePermissGroup" class="btn btn-success" onclick=""><span class="glyphicon glyphicon-off"></span> Save Access Profile</button>
+                                    </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger btn-block" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>     
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+    <% } %>
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
 

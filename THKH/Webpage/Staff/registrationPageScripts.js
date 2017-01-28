@@ -24,6 +24,7 @@ var highTemp = "40";
 function callCheck (){
     //Do ajax call
     var nricValue = nric.value;
+    var visDate = $('#visitbookingdate').val();
     var msg;
     var headersToProcess = { nric: nricValue, requestType: "getdetails" }; //Store objects in this manner 
     $.ajax({
@@ -40,6 +41,7 @@ function callCheck (){
                 var visitorString = resultOfGeneration.Visitor;
                 if (resultOfGeneration.Visitor === "new") {
                     clearFields();
+                    $('#visitbookingdate').val(visDate);
                 } else {
                     var visitString = resultOfGeneration.Visit;
                     var questionnaireAns = resultOfGeneration.Questionnaire;
@@ -106,6 +108,8 @@ function callCheck (){
                     }
                     else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
                         clearFields();
+                        // Except Visit Date
+                        $('#visitbookingdate').val(visDate);
                         $("#nric").prop('value', nricValue);
                     }
                 }
@@ -242,7 +246,7 @@ $("#temp").on("input", function () {
     } else {
         try {
             var temperature = parseFloat(temper);
-            if (temperature > highTemp) {
+            if (temperature > parseFloat(highTemp)) {
                 $('#tempWarning').html("Visitor's Temperature is above the allowable " + highTemp + " degrees celcius!");
                 $('#tempWarning').css("display", "block");
                 $("#invalidTempWarning").css("display", "none");
@@ -254,7 +258,7 @@ $("#temp").on("input", function () {
                 $('#lowtempWarning').css("display", "none");
                 validTemp = false;
             }
-            else if (temperature < lowTemp) {
+            else if (temperature < parseFloat(lowTemp)) {
                 $('#lowtempWarning').html("Visitor's Temperature is below the allowable " + lowTemp + " degrees celcius!");
                 $('#lowtempWarning').css("display", "block");
                 $('#tempWarning').css("display", "none");
@@ -455,8 +459,8 @@ $("#mobilesInput").on("input", function () {
 
 // Validate postal code number format
 $("#postalsInput").on("input", function () {
-    var validNric = validatePhone($("#postalsInput").val());
-    if (validNric !== false) {
+    var validPostal = validatePostal($("#postalsInput").val());
+    if (validPostal !== false) {
         $("#posWarning").css("display", "none");
         validPos = true;
     } else {
