@@ -85,6 +85,7 @@ function verifyUser() {
 
 }
 
+var exisingTimeouts = "";
 
 function updateCheckIn() {
 
@@ -113,10 +114,22 @@ function updateCheckIn() {
                 if (result == "success") {
                     $("#userWelcome").html("Welcome! ");
                 } else {
-                    $("#userWelcome").html("You have not registered.<br> Please head to the Lobby's front desk for assistance.");
-                    $("#userWelcome").css('color', 'lightcoral');
+                    if (result.split(',')[0] == "success") // Successfully found user but he is not suppossed to be there
+                    {
+                        $("#userWelcome").html("You do not have access to this area.<br> Please head to the Lobby's front desk for assistance.");
+                        $("#userWelcome").css('color', 'lightcoral');
+                    } else {
+                        $("#userWelcome").html("You have not registered.<br> Please head to the Lobby's front desk for assistance.");
+                        $("#userWelcome").css('color', 'lightcoral');
+                    }
+                   
                 }
-                setTimeout(function () { hideWelcome();}, 5000);
+
+                if(exisingTimeouts != "")
+                    clearTimeout(exisingTimeouts);
+
+                exisingTimeouts = setTimeout(function () { hideWelcome(); }, 5000);
+               
             },
             error: function (err) {
             },

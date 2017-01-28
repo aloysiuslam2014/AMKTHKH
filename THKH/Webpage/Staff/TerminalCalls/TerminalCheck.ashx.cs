@@ -76,7 +76,9 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 if (!toReturn.Equals(""))
                 {
                     context.Response.Write(toReturn);
-                }else
+                    toReturn = "";
+                }
+                else
                 {
                     context.Response.Write("success");
                 }
@@ -519,10 +521,15 @@ namespace THKH.Webpage.Staff.TerminalCalls
             }
             catch (Exception ex)
             {
-
+                var test = ex;
             }
 
-            success = respon.Value.ToString().Equals("1") ? true : false;
+            success = respon.Value.ToString().Equals("1") || respon.Value.ToString().Equals("2") ? true : false;
+
+            if (respon.Value.ToString().Equals("2"))
+            {
+                toReturn = "success,locationError";
+            }
 
             return success;
         }

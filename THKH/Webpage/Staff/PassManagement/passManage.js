@@ -110,11 +110,18 @@ function getPassState() {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Result;
             if (res.toString() == "Success") {
+               
                 var passSetup = resultOfGeneration.Msg;
-                var passLayout =passSetup.divState;
-                var elementPositionsJson = JSON.parse(passSetup.positions);
-                //var testtt = elementPositionsJson["barcode"];
-                createPassAppendParent($("#userSuccess"), passLayout, elementPositionsJson)
+                if (passSetup != null) {
+                    var passLayout =passSetup.divState;
+                    var elementPositionsJson = JSON.parse(passSetup.positions);
+                    //var testtt = elementPositionsJson["barcode"];
+                    createPassAppendParent($("#userSuccess"), passLayout, elementPositionsJson)
+                }else {
+                    //Means no pass has been created. ignore and clear fields
+                    clearFields();
+                }
+               
             } else {
                 //alert(resultOfGeneration.Msg);
             }
@@ -374,7 +381,7 @@ function createBarCodeImg(textToCreate,injectAfterLoad) {
             } else {
                 alert(resultOfGeneration.Msg);
             }
-            clearFields();
+            clearFields();//clear fields for next cycle
         },
         error: function (err) {
             alert(err.Msg);
