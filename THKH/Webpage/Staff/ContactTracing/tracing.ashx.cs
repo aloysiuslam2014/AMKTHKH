@@ -263,7 +263,26 @@ namespace THKH.Webpage.Staff.ContactTracing
                 command.Parameters.Add(respon);
                 command.Parameters.Add(visitors);
                 cnn.Open();
-                command.ExecuteNonQuery();
+                //command.ExecuteNonQuery();
+                // Initiate reader here & construct JSON Object
+                // columns will be returned like this
+                //visitLocation VARCHAR(100),
+                //bedno INT,
+                //visitActualTime DATETIME,
+                //exitTime DATETIME,
+                //visitorNric VARCHAR(15),
+                //fullName VARCHAR(150),
+                //nationality VARCHAR(300),
+                //mobileTel VARCHAR(20))
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        // Construct JSON Object here
+                    }
+                }
+                reader.Close();
             }
             catch (Exception ex)
             {
