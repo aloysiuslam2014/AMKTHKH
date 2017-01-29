@@ -248,9 +248,10 @@ namespace THKH.Webpage.Staff.ContactTracing
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            SqlParameter visitors = new SqlParameter("@pVisits", System.Data.SqlDbType.NVarChar);
-            visitors.Direction = ParameterDirection.Output;
-            visitors.Size = 4000;
+            //SqlParameter visitors = new SqlParameter("@pVisits", System.Data.SqlDbType.NVarChar);
+            //visitors.Direction = ParameterDirection.Output;
+            //visitors.Size = 4000;
+            DataTable dt = new DataTable();
 
             try
             {
@@ -261,9 +262,10 @@ namespace THKH.Webpage.Staff.ContactTracing
                 command.Parameters.AddWithValue("@pBed_No", bedno);
 
                 command.Parameters.Add(respon);
-                command.Parameters.Add(visitors);
+                //command.Parameters.Add(visitors);
                 cnn.Open();
-                //command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
+
                 // Initiate reader here & construct JSON Object
                 // columns will be returned like this
                 //visitLocation VARCHAR(100),
@@ -274,15 +276,35 @@ namespace THKH.Webpage.Staff.ContactTracing
                 //fullName VARCHAR(150),
                 //nationality VARCHAR(300),
                 //mobileTel VARCHAR(20))
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        // Construct JSON Object here
-                    }
-                }
-                reader.Close();
+
+                //SqlDataReader reader = command.ExecuteReader();
+                //if (reader.HasRows)
+                //{
+                //    while (reader.Read())
+                //    {
+                //        // Construct JSON Object here
+                //    }
+                //}
+                //reader.Close();
+
+                //dt.Load(command.ExecuteReader());
+                //List<Object> jsonArray = new List<Object>();
+                //foreach (DataRow row in dt.Rows) {
+                //    dynamic innerJson = new ExpandoObject();
+                //    var itemArr = row.ItemArray;
+                //    innerJson.location = itemArr[0];
+                //    innerJson.bedno = itemArr[1];
+                //    innerJson.checkin_time = itemArr[2];
+                //    innerJson.exit_time = itemArr[3];
+                //    innerJson.fullName = itemArr[5];
+                //    innerJson.nric = itemArr[4];
+                //    innerJson.mobileTel = itemArr[7];
+                //    innerJson.nationality = itemArr[6];
+                //    // Add to JSON Array
+                //    jsonArray.Add(innerJson);
+                //}
+                //// Add JSON Array to JSON Object
+                //json.Msg = jsonArray;
             }
             catch (Exception ex)
             {
@@ -293,8 +315,8 @@ namespace THKH.Webpage.Staff.ContactTracing
 
             String byRegBed_response_visitors = visitors.Value.ToString(); // json array of json objects, each of which is a visitor
 
-            //json.Result = "Success";
-            //json.Msg = byRegBed_response_visitors;
+            json.Result = "Success";
+            json.Msg = byRegBed_response_visitors;
 
             //result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
             return byRegBed_response_visitors;
