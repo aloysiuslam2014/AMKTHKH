@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -28,13 +29,86 @@ namespace THKH.Webpage.Staff
                 var highTime = context.Request.Form["highTime"];
                 successString = updateTempTime(lowTemp, highTemp, lowTime, highTime, staffUser);
             }
-            if (requestType.ToString() == "getConfig")
+            else if (requestType.ToString() == "getConfig")
             {
                 successString = getConfig();
             }
-                context.Response.Write(successString);
+            else if (requestType.ToString() == "newProfile")
+            {
+                successString = newAccessProfile();
+            }
+            else if (requestType.ToString() == "updateProfile")
+            {
+                successString = updateAccessProfile();
+            }
+            else if (requestType.ToString() == "deleteProfile")
+            {
+                successString = deleteAccessProfile();
+            }else if (requestType.ToString() == "getProfiles")
+            {
+                successString = getAccessProfile();
+            }
+            context.Response.Write(successString);
         }
 
+        //
+        private String getAccessProfile() {
+            dynamic json = new ExpandoObject();
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_ACCESS_PROFILES]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                dt.Load(command.ExecuteReader());
+                List<Object> jsonArray = new List<Object>();
+                foreach (DataRow row in dt.Rows)
+                {
+                    dynamic innerJson = new ExpandoObject();
+                    //    var itemArr = row.ItemArray;
+                    //    innerJson.location = itemArr[0];
+                    //    innerJson.bedno = itemArr[1];
+                    //    innerJson.checkin_time = itemArr[2];
+                    //    innerJson.exit_time = itemArr[3];
+                    //    innerJson.fullName = itemArr[5];
+                    //    innerJson.nric = itemArr[4];
+                    //    innerJson.mobileTel = itemArr[7];
+                    //    innerJson.nationality = itemArr[6];
+                    // Add to JSON Array
+                    //    jsonArray.Add(innerJson);
+                }
+                json.Msg = jsonArray;
+                json.Result = "Success";
+                //successString += respon.Value;
+            }
+            catch (Exception ex)
+            {
+                json.Msg = ex.Message.ToString();
+                json.Result = "Failure";
+                //successString.Replace("Success", "Failure");
+                //successString += ex.Message;
+                //successString += "\"}";
+                return Newtonsoft.Json.JsonConvert.SerializeObject(json);
+                //return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            //successString += "\"}";
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
+            //return successString;
+        }
+
+        //
         private String updateTempTime(String lowTemp, String highTemp, String lowTime, String highTime, String staffUser) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
@@ -71,6 +145,7 @@ namespace THKH.Webpage.Staff
             return successString;
         }
 
+        //
         private String getConfig()
         {
             SqlConnection cnn;
@@ -100,6 +175,109 @@ namespace THKH.Webpage.Staff
                     }
                 }
                 reader.Close();
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "\"}";
+            return successString;
+        }
+
+        //
+        private String newAccessProfile() {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[CREATE_ACCESS_PROFILE]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pProfileName", "");
+                command.Parameters.AddWithValue("@pAccessRights", ""); // Change here
+                command.Parameters.AddWithValue("@pUpdatedBy", "");
+                command.Parameters.Add(respon);
+                cnn.Open();
+                command.ExecuteNonQuery();
+
+                successString += respon.Value;
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "\"}";
+            return successString;
+        }
+
+        //
+        private String updateAccessProfile() {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[UPDATE_ACCESS_PROFILE]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pProfileName", "");
+                command.Parameters.AddWithValue("@pAccessRights", ""); // Change here
+                command.Parameters.AddWithValue("@pUpdatedBy", "");
+                command.Parameters.Add(respon);
+                cnn.Open();
+                command.ExecuteNonQuery();
+
+                successString += respon.Value;
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                successString += ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            successString += "\"}";
+            return successString;
+        }
+
+        //
+        private String deleteAccessProfile() {
+            SqlConnection cnn;
+            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[DELETE_ACCESS_PROFILE]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pProfileName", "");
+                command.Parameters.Add(respon);
+                cnn.Open();
+                command.ExecuteNonQuery();
+
+                successString += respon.Value;
             }
             catch (Exception ex)
             {

@@ -387,16 +387,30 @@ function purposePanels() {
         $("#patientpurposevisit").css("display", "block");
         $("#otherpurposevisit").css("display", "none");
         $("#purWarning").css("display", "none");
+        $('#visLoc').prop('value', "");
+        $('#purposeInput').val("");
         return true;
     } else if (purpose === "Other Purpose") {
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "block");
         $("#purWarning").css("display", "none");
+        $('#patientName').prop('value', "");
+        $('#patientNric').prop('value', "");
+        $('#bedno').prop('value', "");
+        $("#patientStatusRed").css("display", "none");
+        $("#patientStatusGreen").css("display", "none");
         return true;
     } else {
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "none");
         $("#purWarning").css("display", "block");
+        $('#patientName').prop('value', "");
+        $('#patientNric').prop('value', "");
+        $('#bedno').prop('value', "");
+        $('#visLoc').val("");
+        $('#purposeInput').prop('value', "");
+        $("#patientStatusRed").css("display", "none");
+        $("#patientStatusGreen").css("display", "none");
     }
     return false;
 }

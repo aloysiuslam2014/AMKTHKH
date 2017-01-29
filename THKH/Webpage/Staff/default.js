@@ -54,6 +54,43 @@ function delAccessProfile() {
 
 }
 
+// Populates dropdown with all profiles
+function fillAccessProfileList(dataForQList) {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "getProfiles"
+    };
+    $.ajax({
+        url: '../Staff/MasterConfig/masterConfig.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Result;
+            // Some array here
+            if (res.toString() == "Success") {
+                //clear existing options
+                $('#permissionProfile').html("");
+                for (var i = 0; i < dataForQList.length; i++) {
+                    var optin = document.createElement("option");
+
+                    $(optin).attr("style", "background:white");
+                    $(optin).attr("name", dataForQList[i].ListName);
+                    $(optin).html(dataForQList[i].ListName);
+                    $('#permissionProfile').append(optin);
+                }
+            } else {
+                alert(resultOfGeneration.Result);
+            }
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
+}
+
 // Get current configuration
 function getCurrentConfig() {
     var headersToProcess = {

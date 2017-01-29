@@ -382,11 +382,18 @@ function purposePanels() {
         $('#newusercontent').css("display", "none");
         $('#staticinfocontainer').css("display", "none");
         $('#otherpurposevisit input').removeClass('required');
+        $('#visLoc').prop('value', "");
+        $('#purposeInput').val("");
     } else if (purpose === "Other Purpose") {
         $("#userDetails").css("display", "block");
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "block");
         $('#otherpurposevisit input').addClass('required');
+        $('#patientName').prop('value', "");
+        $('#patientNric').prop('value', "");
+        $('#bedno').prop('value', "");
+        $("#patientStatusRed").css("display", "none");
+        $("#patientStatusGreen").css("display", "none");
         patientValidated = true;
         checkIfExistingVisitor(); 
     } else {
@@ -398,6 +405,13 @@ function purposePanels() {
         $('#newusercontent').css("display", "none");
         $('#staticinfocontainer').css("display", "none");
         $('#otherpurposevisit input').removeClass('required');
+        $('#patientName').prop('value', "");
+        $('#patientNric').prop('value', "");
+        $('#bedno').prop('value', "");
+        $('#visLoc').val("");
+        $('#purposeInput').prop('value', "");
+        $("#patientStatusRed").css("display", "none");
+        $("#patientStatusGreen").css("display", "none");
     }
 }
 
