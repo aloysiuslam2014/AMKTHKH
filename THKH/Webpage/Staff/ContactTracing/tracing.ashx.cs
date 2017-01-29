@@ -248,9 +248,9 @@ namespace THKH.Webpage.Staff.ContactTracing
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            //SqlParameter visitors = new SqlParameter("@pVisits", System.Data.SqlDbType.NVarChar);
-            //visitors.Direction = ParameterDirection.Output;
-            //visitors.Size = 4000;
+            SqlParameter visitors = new SqlParameter("@pVisits", System.Data.SqlDbType.NVarChar);
+            visitors.Direction = ParameterDirection.Output;
+            visitors.Size = 4000;
             DataTable dt = new DataTable();
 
             try
@@ -262,7 +262,7 @@ namespace THKH.Webpage.Staff.ContactTracing
                 command.Parameters.AddWithValue("@pBed_No", bedno);
 
                 command.Parameters.Add(respon);
-                //command.Parameters.Add(visitors);
+                command.Parameters.Add(visitors);
                 cnn.Open();
                 command.ExecuteNonQuery();
 
