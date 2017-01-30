@@ -123,12 +123,12 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                           <span class="input-group-addon">Profile</span>
-                                            <select class="form-control setInput" id="permissionProfile">
+                                            <select class="form-control setInput" onchange="getSelectedAccessProfile(); false;" id="permissionProfile">
                                                 <option value="">-- Select One --</option>
                                             </select>
                                         <span class="input-group-btn">
-                                <button class="btn btn-primary" id="newProfileButton" onclick="newAccessProfile(); false"><span class="glyphicon glyphicon-plus"></span> New Profile</button>
-                                <button class="btn btn-warning" id="delProfileButton" onclick="delAccessProfile(); false;"><span class="glyphicon glyphicon-trash"></span> Delete Profile</button>
+                                <button class="btn btn-primary" id="newProfileButton" onclick="showNewProfileModal(); false"><span class="glyphicon glyphicon-plus"></span> New Profile</button>
+                                <button class="btn btn-warning" id="delProfileButton" onclick="showDelProfileModal(); false;"><span class="glyphicon glyphicon-trash"></span> Delete Profile</button>
                             </span>
                                         </div>
                                     </div>
@@ -142,6 +142,48 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="newProfileModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title">Master Configuration</h4>
+                            </div>
+                            <div class="modal-body text-center" id="newProfileDiv">
+                                <div class="row">
+                                <label>New Access Control Profile</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                          <span class="input-group-addon">Profile Name</span>
+                                    <input type="text" runat="server" class="form-control required" placeholder="Please enter a unique profile name/role" id="newProfNameInput" />
+                                        </div>
+                                </div>
+                                    </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" id="closeNewProfileButton" onclick="hideNewProfileModal(); false;"><span class="glyphicon glyphicon-off"></span> Cancel</button>     
+                                    <button class="btn btn-success" id="saveProfileButton" onclick="newAccessProfile(); false;"><span class="glyphicon glyphicon-save"></span> Save Profile</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="delProfileModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h4 class="modal-title">Delete Profile</h4>
+                                <label style="color:lightcoral">Do you wish to delete this user access control profile? Changes cannot be undone.</label>
+                                <button class="btn btn-danger" id="closeDelProfileButton" onclick="hideDelProfileModal(); false;"><span class="glyphicon glyphicon-off"></span> Cancel</button>     
+                                    <button class="btn btn-success" id="delSelProfileButton" onclick="delAccessProfile(); false;"><span class="glyphicon glyphicon-trash"></span> Delete Profile</button>
+                            </div>
+<%--                                <div class="modal-footer">
+                                    <button class="btn btn-danger" id="closeDelProfileButton" onclick="hideDelProfileModal(); false;"><span class="glyphicon glyphicon-off"></span> Cancel</button>     
+                                    <button class="btn btn-success" id="delProfileButton" onclick="delAccessProfile(); false;"><span class="glyphicon glyphicon-trash"></span> Save Profile</button>
+                                </div>--%>
+                            </div>
                     </div>
                 </div>
     <% } %>
