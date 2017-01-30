@@ -1056,7 +1056,7 @@ function showSuccessModal() {
 // Hide Success Modal
 function hideSuccessModal() {
     $('#successModal').modal('hide');
-    $(" #passClone").remove();//remove the currently generated pass
+    $(" #imgPass").remove();//remove the currently generated pass
 }
 
 // Show Max Limit Modal
