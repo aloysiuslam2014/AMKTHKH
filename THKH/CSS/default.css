@@ -50,11 +50,11 @@ margin-bottom:10px;
   top:0;
   position:absolute;
 }
-.close:hover {
-  color: #000000;
-  text-decoration: none;
-  opacity: 0.4;
-
+    .close:hover {
+        color: #000000;
+        text-decoration: none;
+        opacity: 0.4;
+    }
 body{
     padding-top: 70px;
 }
@@ -62,7 +62,6 @@ body{
 .inheritHeight{
     height:inherit;
     margin-bottom: 0;
-}
 }
 
 .placeAboveOtherDivs{
