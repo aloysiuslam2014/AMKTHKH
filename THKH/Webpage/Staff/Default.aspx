@@ -135,7 +135,7 @@
                                 <div id="permissSet" class="form-group">
                                 <%--checkbox--%>
                                 </div>
-                                <button id="savePermissGroup" class="btn btn-success" onclick="updateAccessProfile(); false;"><span class="glyphicon glyphicon-off"></span> Save Access Profile</button>
+                                <button id="savePermissGroup" class="btn btn-success" onclick=""><span class="glyphicon glyphicon-off"></span> Save Access Profile</button>
                                     </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-danger btn-block" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>     
@@ -249,11 +249,13 @@
                         </a>
                     </li>
                     <%  }%>
-                     <li><form id="logoutt" class="nav navbar-nav navbar-right" runat="server">
-                        <asp:Button href="#" Text="Logout" Height="50px" CssClass="btn btn-danger"  OnClick="logout_Click" runat="server"   />
-                      </form>
-                    </li>
-                </ul> 
+                </ul>
+                        <form id="logbtn" class="nav navbar-nav navbar-right" style="margin-top: 10px;" runat="server">
+                            <div>
+                                <label>Welcome, <%= Session["username"].ToString()%></label>
+                                <asp:Button ID="logout" class="btn btn-danger" Text="Logout" OnClick="logout_Click" runat="server" />
+                            </div>
+                        </form>
             </div>
         </div>
     </nav>
@@ -421,13 +423,9 @@
                                 <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
                                 <label></label>
                                 <div class="form-group">
-                                    <button id="validatePatientButton" value="Add Bed" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span>Add Bed To Visit</button>
+                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Check Patient</button>
                                     <label for="validatePatientButton" id="patientStatusGreen" style="color: green">Patient Found!</label>
                                     <label for="validatePatientButton" id="patientStatusRed" style="color: lightcoral">Patient Not Found!</label>
-                                </div>
-                                <label style="color:lightcoral">Beds To Be Visited</label>
-                                <div id="bedsAdded" class="col-xs-12 bedNoDisplay">
-
                                 </div>
                             </div>
                             <div id="otherpurposevisit" class="container-fluid" runat="server">
@@ -913,15 +911,9 @@
                                 <div class="form-group">
                                     <input id="staffTitle" class="form-control required userInput" /></div>
                                 <label><span style="color:lightcoral">*</span>Permission</label>
-                                
-                                <div class="form-group" id="permissions">
-                                        <select class="form-control required userInput" onchange="getSelectedAccessProfileUser(); false;" id="permissionProfileDropdown">
-                                            <option value="">-- Select One --</option>
-                                        </select>
-                                    </div>
                                 <div id="permiss" class="form-group">
-                                    <%--Checkbox Here--%>
-                                </div>
+                                <%--checkbox--%>
+                            </div>
                                 <label><span style="color:lightcoral">*</span>Password</label>
                                 <div class="form-group">
                                     <input id="staffPwd" class="form-control required userInput" /></div>

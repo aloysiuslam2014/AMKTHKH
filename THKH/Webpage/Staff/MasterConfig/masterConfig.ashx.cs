@@ -33,22 +33,20 @@ namespace THKH.Webpage.Staff
             {
                 successString = getConfig();
             }
-            //else if (requestType.ToString() == "newProfile")
-            //{
-            //    var name = context.Request.Form["profileName"];
-            //    successString = newAccessProfile();
-            //}
+            else if (requestType.ToString() == "newProfile")
+            {
+                var name = context.Request.Form["profileName"];
+                successString = newAccessProfile();
+            }
             else if (requestType.ToString() == "updateProfile")
             {
                 var name = context.Request.Form["profileName"];
-                var permiss = context.Request.Form["permissions"];
-                var username = context.Request.Form["userName"];
-                successString = updateAccessProfile(name, permiss, username);
+                successString = updateAccessProfile();
             }
             else if (requestType.ToString() == "deleteProfile")
             {
                 var name = context.Request.Form["profileName"];
-                successString = deleteAccessProfile(name);
+                successString = deleteAccessProfile();
             }else if (requestType.ToString() == "getProfiles")
             {
                 successString = getAccessProfile();
@@ -234,7 +232,7 @@ namespace THKH.Webpage.Staff
         }
 
         //
-        private String updateAccessProfile(String name, String permiss, String user) {
+        private String updateAccessProfile() {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -244,9 +242,9 @@ namespace THKH.Webpage.Staff
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_ACCESS_PROFILE]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pProfileName", name);
-                command.Parameters.AddWithValue("@pAccessRights", permiss); // Change here
-                command.Parameters.AddWithValue("@pUpdatedBy", user);
+                command.Parameters.AddWithValue("@pProfileName", "");
+                command.Parameters.AddWithValue("@pAccessRights", ""); // Change here
+                command.Parameters.AddWithValue("@pUpdatedBy", "");
                 command.Parameters.Add(respon);
                 cnn.Open();
                 command.ExecuteNonQuery();
@@ -269,7 +267,7 @@ namespace THKH.Webpage.Staff
         }
 
         //
-        private String deleteAccessProfile(String name) {
+        private String deleteAccessProfile() {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -279,7 +277,7 @@ namespace THKH.Webpage.Staff
             {
                 SqlCommand command = new SqlCommand("[dbo].[DELETE_ACCESS_PROFILE]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pProfileName", name);
+                command.Parameters.AddWithValue("@pProfileName", "");
                 command.Parameters.Add(respon);
                 cnn.Open();
                 command.ExecuteNonQuery();

@@ -14,7 +14,6 @@ function loadUsersOnce() {
         hideUserTags();
         loadPermissionsField();
         getAllUsers();
-        fillAccessProfileList();
         loadedUsers = true;
     } 
 }
@@ -211,15 +210,11 @@ function getUserDetails(listObj) {
                 $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
                 //$("#staffAge").val(resultOfGeneration.Result.age);
                 //$("#staffRace").val(resultOfGeneration.Result.race);
-                $("#permissionProfileDropdown").val(resultOfGeneration.Result.position);
-                //clear existing options
-                $('#permiss').find('input[type=checkbox]:checked').removeAttr('checked');
                 var perm = resultOfGeneration.Result.permissions.toString();
                 for (i = 0; i < perm.length; i++) {
                     $("#permiss [value='" + perm.charAt(i) + "']").prop("checked", true);
                 }
                 $("#staffTitle").val(resultOfGeneration.Result.position);
-                //getSelectedAccessProfileUser();
             } else {
                 alert(resultOfGeneration.Msg);
             }
@@ -638,7 +633,7 @@ function loadPermissionsField() {
                 for (i = 0; i < result.length; i++) {
                     var ids = result[i].accessID;
                     var names = result[i].accessName;
-                    htmlString += "<div class='checkbox'><label><input class='perm required userInput' type='checkbox' name='id" + i + "' value='" + ids + "' disabled> " + names + "</label></div>";
+                    htmlString += "<div class='checkbox'><label><input class='perm required userInput' type='checkbox' name='id" + i + "' value='" + ids + "'> " + names + "</label></div>";
                 }
                 var formElement = document.createElement("DIV");
                 $(formElement).attr("class", "list-group-item");
@@ -653,87 +648,6 @@ function loadPermissionsField() {
         },
         error: function (err) {
             alert("Error: " + err.msg + ". Please contact the adminsitrator.");
-        },
-    });
-}
-
-// Populates dropdown with all profiles
-function fillAccessProfileList() {
-    var resultOfGeneration = "";
-    var headersToProcess = {
-        requestType: "getProfiles"
-    };
-    $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
-        method: 'post',
-        data: headersToProcess,
-
-
-        success: function (returner) {
-            resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.Result;
-            // Some array here
-            if (res.toString() == "Success") {
-                var mes = resultOfGeneration.Msg;
-
-                //clear existing options
-                $('#permissionProfileDropdown').html("");
-                for (var i = 0; i < mes.length; i++) {
-                    var optin = document.createElement("option");
-
-                    $(optin).attr("style", "background:white");
-                    $(optin).attr("name", mes[i].AccessProfile);
-                    $(optin).html(mes[i].AccessProfile);
-                    $('#permissionProfileDropdown').append(optin);
-                }
-            } else {
-                alert(resultOfGeneration.Result);
-            }
-        },
-        error: function (err) {
-            alert(err.Msg);
-        },
-    });
-}
-
-// Get selected access profile values
-function getSelectedAccessProfileUser() {
-    var profile = $('#permissionProfileDropdown').val();
-    var resultOfGeneration = "";
-    // Get name of selected profile
-    var headersToProcess = {
-        profileName: profile, requestType: "getSelectedProfile"
-    };
-    $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
-        method: 'post',
-        data: headersToProcess,
-
-
-        success: function (returner) {
-            resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.Result;
-            // Some array here
-            if (res.toString() == "Success") {
-                var mes = resultOfGeneration.Msg;
-
-                //clear existing options
-                $('#permiss').find('input[type=checkbox]:checked').removeAttr('checked');
-
-                for (i = 0; i < mes.length; i++) {
-                    var item = mes[i].Permissions.toString();
-                    for (j = 0; j < item.length; j++) {
-                        var val = item.charAt(j);
-                        //$("#permiss input[name='" + val + "'][value='" + val + "']").prop("checked", true);
-                        $("#permiss [value='" + val + "']").prop("checked", true);
-                    }
-                }
-            } else {
-                alert(resultOfGeneration.Result);
-            }
-        },
-        error: function (err) {
-            alert(err.Msg);
         },
     });
 }
