@@ -913,7 +913,7 @@
                                 <label><span style="color:lightcoral">*</span>Permission</label>
                                 
                                 <div class="form-group" id="permissions">
-                                        <select class="form-control required userInput" onchange="getSelectedAccessProfile(); false;" id="permissionProfileDropdown">
+                                        <select class="form-control required userInput" onchange="getSelectedAccessProfileUser(); false;" id="permissionProfileDropdown">
                                             <option value="">-- Select One --</option>
                                         </select>
                                     </div>

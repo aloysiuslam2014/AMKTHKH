@@ -211,6 +211,7 @@ function getUserDetails(listObj) {
                 $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
                 //$("#staffAge").val(resultOfGeneration.Result.age);
                 //$("#staffRace").val(resultOfGeneration.Result.race);
+                $("#permissionProfileDropdown").val(resultOfGeneration.Result.position);
                 //clear existing options
                 $('#permiss').find('input[type=checkbox]:checked').removeAttr('checked');
                 var perm = resultOfGeneration.Result.permissions.toString();
@@ -218,7 +219,7 @@ function getUserDetails(listObj) {
                     $("#permiss [value='" + perm.charAt(i) + "']").prop("checked", true);
                 }
                 $("#staffTitle").val(resultOfGeneration.Result.position);
-                getSelectedAccessProfile();
+                //getSelectedAccessProfileUser();
             } else {
                 alert(resultOfGeneration.Msg);
             }
@@ -696,7 +697,7 @@ function fillAccessProfileList() {
 }
 
 // Get selected access profile values
-function getSelectedAccessProfile() {
+function getSelectedAccessProfileUser() {
     var profile = $('#permissionProfileDropdown').val();
     var resultOfGeneration = "";
     // Get name of selected profile
@@ -723,7 +724,8 @@ function getSelectedAccessProfile() {
                     var item = mes[i].Permissions.toString();
                     for (j = 0; j < item.length; j++) {
                         var val = item.charAt(j);
-                        $("#permiss input[name='" + val + "'][value='" + val + "']").prop("checked", true);
+                        //$("#permiss input[name='" + val + "'][value='" + val + "']").prop("checked", true);
+                        $("#permiss [value='" + val + "']").prop("checked", true);
                     }
                 }
             } else {
