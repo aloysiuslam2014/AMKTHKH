@@ -179,17 +179,12 @@
                                 <button class="btn btn-danger" id="closeDelProfileButton" onclick="hideDelProfileModal(); false;"><span class="glyphicon glyphicon-off"></span> Cancel</button>     
                                     <button class="btn btn-success" id="delSelProfileButton" onclick="delAccessProfile(); false;"><span class="glyphicon glyphicon-trash"></span> Delete Profile</button>
                             </div>
-<%--                                <div class="modal-footer">
-                                    <button class="btn btn-danger" id="closeDelProfileButton" onclick="hideDelProfileModal(); false;"><span class="glyphicon glyphicon-off"></span> Cancel</button>     
-                                    <button class="btn btn-success" id="delProfileButton" onclick="delAccessProfile(); false;"><span class="glyphicon glyphicon-trash"></span> Save Profile</button>
-                                </div>--%>
                             </div>
                     </div>
                 </div>
     <% } %>
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
-
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-W1LfPbp4DDBf1">
                     <span class="icon-bar"></span>

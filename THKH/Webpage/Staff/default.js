@@ -123,7 +123,6 @@ function fillAccessProfileList() {
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Result;
-            // Some array here
             if (res.toString() == "Success") {
                 var mes = resultOfGeneration.Msg;
 
@@ -291,6 +290,7 @@ function populateSettingsTime() {
                 '07:30',
                 '08:00',
                 '08:30',
+                '09:00',
                 '09:30',
                 '10:00',
                 '10:30',
