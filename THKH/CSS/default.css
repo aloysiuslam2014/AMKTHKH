@@ -11,6 +11,49 @@ table.dataTable thead th:first-child {
   cursor: pointer;
 }
 
+.bedNoDisplay{
+    overflow-y: auto;
+height: 35px;
+word-wrap: normal;
+background: whitesmoke;
+border: solid 2px coral;
+border-radius: 5px;
+padding: 1px;
+}
+
+.bedNoBox{
+    width: 74px;
+    height: 30px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    border: solid 1px burlywood;
+    padding: 5px;
+    background-color:#f09621;
+    color:white;
+    border-radius: 5px;
+    display:inline-block;
+}
+
+
+.close {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #FFF;
+  text-shadow: 0 1px 0 #ffffff;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  text-decoration: none;
+  right:0;
+  top:0;
+  position:absolute;
+}
+.close:hover {
+  color: #000000;
+  text-decoration: none;
+  opacity: 0.4;
+
 body{
     padding-top: 70px;
 }
@@ -54,6 +97,7 @@ body{
    overflow-y:auto;
    overflow-x:hidden;
    margin-top:-15px;
+
 }
 .overflowXaxis{
     overflow-x:auto;
