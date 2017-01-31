@@ -135,7 +135,7 @@
                                 <div id="permissSet" class="form-group">
                                 <%--checkbox--%>
                                 </div>
-                                <button id="savePermissGroup" class="btn btn-success" onclick=""><span class="glyphicon glyphicon-off"></span> Save Access Profile</button>
+                                <button id="savePermissGroup" class="btn btn-success" onclick="updateAccessProfile(); false;"><span class="glyphicon glyphicon-off"></span> Save Access Profile</button>
                                     </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-danger btn-block" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>     
@@ -911,9 +911,15 @@
                                 <div class="form-group">
                                     <input id="staffTitle" class="form-control required userInput" /></div>
                                 <label><span style="color:lightcoral">*</span>Permission</label>
+                                
+                                <div class="form-group" id="permissions">
+                                        <select class="form-control required userInput" onchange="getSelectedAccessProfile(); false;" id="permissionProfileDropdown">
+                                            <option value="">-- Select One --</option>
+                                        </select>
+                                    </div>
                                 <div id="permiss" class="form-group">
-                                <%--checkbox--%>
-                            </div>
+                                    <%--Checkbox Here--%>
+                                </div>
                                 <label><span style="color:lightcoral">*</span>Password</label>
                                 <div class="form-group">
                                     <input id="staffPwd" class="form-control required userInput" /></div>
