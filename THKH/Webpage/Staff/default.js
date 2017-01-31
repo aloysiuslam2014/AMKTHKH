@@ -18,7 +18,7 @@ function updateConfig() {
     }
     if (validSetTemp && validSetTime) {
         var headersToProcess = {
-            requestType: "updateSettings", lowTemp:lowTemp, highTemp:highTemp, lowTime:lowTime, highTime:highTime, staffUser:username
+            requestType: "updateSettings", lowTemp: lowTemp, highTemp: highTemp, lowTime: lowTime, highTime: highTime, staffUser: username
         };
         $.ajax({
             url: '../Staff/MasterConfig/masterConfig.ashx',
@@ -29,10 +29,9 @@ function updateConfig() {
             success: function (returner) {
                 var resultOfGeneration = JSON.parse(returner);
                 alert("Configuration(s) Saved!");
-                hideSettingsModal();
             },
             error: function (err) {
-
+                alert(err.msg);
             },
         });
     }
@@ -42,7 +41,27 @@ function updateConfig() {
 function updateAccessProfile() {
     var profileName = $('#permissionProfile').val();
     var permissions = getPermissionSettingsInput();
-    //var selectedProfile = "";
+    var userName = user;
+    var headersToProcess = {
+        requestType: "updateProfile", profileName: profileName, permissions: permissions, userName: userName
+    };
+    $.ajax({
+        url: '../Staff/MasterConfig/masterConfig.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Msg == "1") {
+                alert("Profile Saved!");
+            } else {
+                alert("Profile Not Saved!");
+            }
+        },
+        error: function (err) {
+            alert(err.msg);
+        },
+    });
 }
 
 // Creates a new access profile
@@ -53,10 +72,10 @@ function newAccessProfile() {
 }
 
 // Selects newly created questionnaire after adding
-function selectNewProfile(qName) {
+function selectNewProfile(name) {
     var optin = document.createElement("option");
-    $(optin).attr("name", qName);
-    $(optin).html(qName);
+    $(optin).attr("name", name);
+    $(optin).html(name);
     $(optin).attr("selected", "");
     $('#permissionProfile').append(optin);
     $('.profDrop').css('background', '#aaddff');
@@ -65,6 +84,28 @@ function selectNewProfile(qName) {
 // Deletes selected access profile
 function delAccessProfile() {
     var profileName = $('#permissionProfile').val();
+    var headersToProcess = {
+        requestType: "deleteProfile", profileName: profileName
+    };
+    $.ajax({
+        url: '../Staff/MasterConfig/masterConfig.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Msg == "1") {
+                hideDelProfileModal();
+                alert("Profile Deleted!");
+            } else {
+                hideDelProfileModal();
+                alert("Profile Not Deleted!");
+            }
+        },
+        error: function (err) {
+            alert(err.msg);
+        },
+    });
 }
 
 // Populates dropdown with all profiles
@@ -82,6 +123,7 @@ function fillAccessProfileList() {
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Result;
+            // Some array here
             if (res.toString() == "Success") {
                 var mes = resultOfGeneration.Msg;
 
@@ -128,6 +170,8 @@ function getSelectedAccessProfile() {
                 var mes = resultOfGeneration.Msg;
 
                 //clear existing options
+                $('#permissSet').find('input[type=checkbox]:checked').removeAttr('checked');
+
                 for (i = 0; i < mes.length; i++) {
                     var item = mes[i].Permissions.toString();
                     for (j = 0; j < item.length; j++) {
@@ -167,9 +211,6 @@ function getCurrentConfig() {
                 $('#visTimeSetInputLower').val(arr[2].toString());
                 $('#visTimeSetInputHigh').val(arr[3].toString());
             }
-            //for (i = 0; i < perm.length; i++) {
-            //    $("#permissSet [value='" + perm.charAt(i) + "']").prop("checked", true);
-            //}
         },
         error: function (err) {
             alert("Error: " + err.Msg);
@@ -217,7 +258,6 @@ function loadPermissionSettingsField() {
                 $(formElement).attr("class", "list-group-item");
                 $(formElement).attr("style", "text-align: left");
                 $(formElement).attr("data-color", "info");
-                $(formElement).attr("id", 17);
                 $(formElement).html(htmlString);
                 $("#permissSet").append(formElement);
             } else {
@@ -251,7 +291,6 @@ function populateSettingsTime() {
                 '07:30',
                 '08:00',
                 '08:30',
-                '09:00',
                 '09:30',
                 '10:00',
                 '10:30',
@@ -420,7 +459,9 @@ function compareTime() {
 function hideNewProfileModal() {
     $('#newProfileModal').modal('hide');
     $('#newProfNameInput').prop('value', "")
-    showSettingsModal();;
+    //clear existing options
+    $('#permissSet').find('input[type=checkbox]:checked').removeAttr('checked');
+    showSettingsModalWithNew();
 }
 
 // Show New Profile Modal
@@ -433,7 +474,7 @@ function showNewProfileModal() {
 // Hide Delete Profile Modal
 function hideDelProfileModal() {
     $('#delProfileModal').modal('hide');
-    showSettingsModal();;
+    showSettingsModal();
 }
 
 // Show Delete Profile Modal
@@ -441,4 +482,10 @@ function showDelProfileModal() {
     hideSettingsModal();
     $('#delProfileModal').modal({ backdrop: 'static', keyboard: false });
     $('#delProfileModal').modal('show');
+}
+
+// Show Settings Modal with New Profile Entry
+function showSettingsModalWithNew() {
+    $('#settingsModal').modal({ backdrop: 'static', keyboard: false });
+    $('#settingsModal').modal('show');
 }
