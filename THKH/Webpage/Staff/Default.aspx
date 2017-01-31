@@ -423,9 +423,13 @@
                                 <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
                                 <label></label>
                                 <div class="form-group">
-                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Check Patient</button>
+                                    <button id="validatePatientButton" value="Add Bed" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span>Add Bed To Visit</button>
                                     <label for="validatePatientButton" id="patientStatusGreen" style="color: green">Patient Found!</label>
                                     <label for="validatePatientButton" id="patientStatusRed" style="color: lightcoral">Patient Not Found!</label>
+                                </div>
+                                <label style="color:lightcoral">Beds To Be Visited</label>
+                                <div id="bedsAdded" class="col-xs-12 bedNoDisplay">
+
                                 </div>
                             </div>
                             <div id="otherpurposevisit" class="container-fluid" runat="server">

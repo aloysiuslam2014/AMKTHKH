@@ -194,6 +194,27 @@ function checkTime() {
     return true;
 }
 
+function addBedToVisit(patientName,patientBedNo) {
+    var newPatientObj = document.createElement("div");
+
+    var closeButon = document.createElement("a");
+    $(closeButon).prop("class", "close");
+    $(closeButon).html("&times;");
+    $(newPatientObj).html(patientBedNo);
+    $(newPatientObj).append(closeButon);
+    
+  
+    
+    
+    $(newPatientObj).attr("data-toggle", "tooltip");
+    $(newPatientObj).attr("data-placement", "top");
+    $(newPatientObj).attr("data-container", "body");
+    $(newPatientObj).attr("class", "bedNoBox");
+    $(newPatientObj).attr("title", patientBedNo + ": " + patientName);
+    $("#bedsAdded").append(newPatientObj);
+    $('[data-toggle="tooltip"]').tooltip();
+}
+
 // ensure patient info is valid
 function validatePatient() {
     // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
@@ -219,6 +240,8 @@ function validatePatient() {
                     $("#bedno").prop('value', arr[2]);
                     $("#patientStatusGreen").css("display", "block");
                     $("#patientStatusRed").css("display", "none");
+                    //add to current beds visiting field
+                    addBedToVisit(arr[1], arr[2]);
                 }else {
                     alert("Patient Not Found!");
                     $("#patientStatusGreen").css("display", "none");
