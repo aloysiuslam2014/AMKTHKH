@@ -249,13 +249,11 @@
                         </a>
                     </li>
                     <%  }%>
-                </ul>
-                        <form id="logbtn" class="nav navbar-nav navbar-right" style="margin-top: 10px;" runat="server">
-                            <div>
-                                <label>Welcome, <%= Session["username"].ToString()%></label>
-                                <asp:Button ID="logout" class="btn btn-danger" Text="Logout" OnClick="logout_Click" runat="server" />
-                            </div>
-                        </form>
+                     <li><form id="logoutt" class="nav navbar-nav navbar-right" runat="server">
+                        <asp:Button href="#" Text="Logout" Height="50px" CssClass="btn btn-danger"  OnClick="logout_Click" runat="server"   />
+                      </form>
+                    </li>
+                </ul> 
             </div>
         </div>
     </nav>
