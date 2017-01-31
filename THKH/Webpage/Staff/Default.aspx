@@ -123,7 +123,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                           <span class="input-group-addon">Profile</span>
-                                            <select class="form-control setInput" onchange="getSelectedAccessProfile(); false;" id="permissionProfile">
+                                            <select class="form-control setInput profDrop" onchange="getSelectedAccessProfile(); false;" id="permissionProfile">
                                                 <option value="">-- Select One --</option>
                                             </select>
                                         <span class="input-group-btn">

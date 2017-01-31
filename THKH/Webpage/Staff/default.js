@@ -40,18 +40,31 @@ function updateConfig() {
 
 // Updates currently selected Access Profile
 function updateAccessProfile() {
+    var profileName = $('#permissionProfile').val();
     var permissions = getPermissionSettingsInput();
     //var selectedProfile = "";
 }
 
 // Creates a new access profile
 function newAccessProfile() {
+    var profileName = $('#newProfNameInput').val();
+    selectNewProfile(profileName);
     hideNewProfileModal();
+}
+
+// Selects newly created questionnaire after adding
+function selectNewProfile(qName) {
+    var optin = document.createElement("option");
+    $(optin).attr("name", qName);
+    $(optin).html(qName);
+    $(optin).attr("selected", "");
+    $('#permissionProfile').append(optin);
+    $('.profDrop').css('background', '#aaddff');
 }
 
 // Deletes selected access profile
 function delAccessProfile() {
-
+    var profileName = $('#permissionProfile').val();
 }
 
 // Populates dropdown with all profiles
