@@ -33,20 +33,30 @@ namespace THKH.Webpage.Staff
             {
                 successString = getConfig();
             }
-            else if (requestType.ToString() == "newProfile")
-            {
-                successString = newAccessProfile();
-            }
+            //else if (requestType.ToString() == "newProfile")
+            //{
+            //    var name = context.Request.Form["profileName"];
+            //    successString = newAccessProfile();
+            //}
             else if (requestType.ToString() == "updateProfile")
             {
-                successString = updateAccessProfile();
+                var name = context.Request.Form["profileName"];
+                var permiss = context.Request.Form["permissions"];
+                var username = context.Request.Form["userName"];
+                successString = updateAccessProfile(name, permiss, username);
             }
             else if (requestType.ToString() == "deleteProfile")
             {
-                successString = deleteAccessProfile();
+                var name = context.Request.Form["profileName"];
+                successString = deleteAccessProfile(name);
             }else if (requestType.ToString() == "getProfiles")
             {
                 successString = getAccessProfile();
+            }
+            else if (requestType.ToString() == "getSelectedProfile")
+            {
+                var name = context.Request.Form["profileName"];
+                successString = getSelectedProfile(name);
             }
             context.Response.Write(successString);
         }
@@ -55,7 +65,7 @@ namespace THKH.Webpage.Staff
         private String getAccessProfile() {
             dynamic json = new ExpandoObject();
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -73,17 +83,14 @@ namespace THKH.Webpage.Staff
                 foreach (DataRow row in dt.Rows)
                 {
                     dynamic innerJson = new ExpandoObject();
-                    //    var itemArr = row.ItemArray;
-                    //    innerJson.location = itemArr[0];
-                    //    innerJson.bedno = itemArr[1];
-                    //    innerJson.checkin_time = itemArr[2];
-                    //    innerJson.exit_time = itemArr[3];
-                    //    innerJson.fullName = itemArr[5];
-                    //    innerJson.nric = itemArr[4];
-                    //    innerJson.mobileTel = itemArr[7];
-                    //    innerJson.nationality = itemArr[6];
+                    var itemArr = row.ItemArray;
+                    innerJson.AccessProfile = itemArr[0];
+                    innerJson.permissions = itemArr[1];
+                    //innerJson.dateUpdated = itemArr[2];
+                    //innerJson.updatedBy = itemArr[3];
+
                     // Add to JSON Array
-                    //    jsonArray.Add(innerJson);
+                    jsonArray.Add(innerJson);
                 }
                 json.Msg = jsonArray;
                 json.Result = "Success";
@@ -227,7 +234,7 @@ namespace THKH.Webpage.Staff
         }
 
         //
-        private String updateAccessProfile() {
+        private String updateAccessProfile(String name, String permiss, String user) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -237,9 +244,9 @@ namespace THKH.Webpage.Staff
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_ACCESS_PROFILE]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pProfileName", "");
-                command.Parameters.AddWithValue("@pAccessRights", ""); // Change here
-                command.Parameters.AddWithValue("@pUpdatedBy", "");
+                command.Parameters.AddWithValue("@pProfileName", name);
+                command.Parameters.AddWithValue("@pAccessRights", permiss); // Change here
+                command.Parameters.AddWithValue("@pUpdatedBy", user);
                 command.Parameters.Add(respon);
                 cnn.Open();
                 command.ExecuteNonQuery();
@@ -262,7 +269,7 @@ namespace THKH.Webpage.Staff
         }
 
         //
-        private String deleteAccessProfile() {
+        private String deleteAccessProfile(String name) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -272,7 +279,7 @@ namespace THKH.Webpage.Staff
             {
                 SqlCommand command = new SqlCommand("[dbo].[DELETE_ACCESS_PROFILE]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pProfileName", "");
+                command.Parameters.AddWithValue("@pProfileName", name);
                 command.Parameters.Add(respon);
                 cnn.Open();
                 command.ExecuteNonQuery();
@@ -292,6 +299,58 @@ namespace THKH.Webpage.Staff
             }
             successString += "\"}";
             return successString;
+        }
+
+        private String getSelectedProfile(String name) {
+            dynamic json = new ExpandoObject();
+            SqlConnection cnn;
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_SELECTED_PROFILE]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pProfileName", name);
+                command.Parameters.Add(respon);
+                cnn.Open();
+
+                dt.Load(command.ExecuteReader());
+                List<Object> jsonArray = new List<Object>();
+                foreach (DataRow row in dt.Rows)
+                {
+                    dynamic innerJson = new ExpandoObject();
+                    var itemArr = row.ItemArray;
+                    //innerJson.ProfileName = itemArr[0];
+                    innerJson.Permissions = itemArr[1];
+                    //innerJson.dateUpdated = itemArr[2];
+                    //innerJson.updatedBy = itemArr[3];
+
+                    // Add to JSON Array
+                    jsonArray.Add(innerJson);
+                }
+                json.Msg = jsonArray;
+                json.Result = "Success";
+                //successString += respon.Value;
+            }
+            catch (Exception ex)
+            {
+                json.Msg = ex.Message.ToString();
+                json.Result = "Failure";
+                //successString.Replace("Success", "Failure");
+                //successString += ex.Message;
+                //successString += "\"}";
+                return Newtonsoft.Json.JsonConvert.SerializeObject(json);
+                //return successString;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+            //successString += "\"}";
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
+            //return successString;
         }
 
         public bool IsReusable
