@@ -205,7 +205,7 @@ function addBedToVisit(patientName,patientBedNo) {
     
   
     
-    
+    $(newPatientObj).attr("id", patientBedNo);
     $(newPatientObj).attr("data-toggle", "tooltip");
     $(newPatientObj).attr("data-placement", "top");
     $(newPatientObj).attr("data-container", "body");
