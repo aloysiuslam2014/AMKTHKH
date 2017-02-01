@@ -837,7 +837,9 @@
                             <div class="col-md-6">
                                 <label><span style="color:lightcoral">*</span>Email</label>
                                 <div class="form-group">
-                                    <input id="staffEmail" class="form-control required userInput" placeholder="<ID>@AMKTHKH.com" /></div>
+                                    <input id="staffEmail" class="form-control required userInput" placeholder="<ID>@AMKTHKH.com" />
+                                    <h4 id="emailWarningUser" style="color: lightcoral">Invalid Email Format!</h4>
+                                </div>
                                 <label><span style="color:lightcoral">*</span>First Name</label>
                                 <div class="form-group">
                                     <input id="staffFirstName" class="form-control required userInput" /></div>
