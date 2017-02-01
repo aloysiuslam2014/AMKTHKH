@@ -130,20 +130,25 @@ function initUsersList(data) {
 
                 $widget.on('click', function () {
                   
-                        var checkBox = $(this).parent().find(".hidden");
-                        $(checkBox).prop('checked', !$(checkBox).is(':checked'));
-                        $(checkBox).triggerHandler('change');
-                    // Need logic here to deselect the rest of the checkboxes
-                        if ($(checkBox).is(':checked')) {
-                            $("#userMode").text("Edit Existing User");
-                            $("#newUser").prop('disabled', true);
-                            $("#updateUser").prop('disabled', false);
-                            getUserDetails($(this));  //Get the user details only checkbox is not checked. If deselecting dont get the user
-                        } else {
-                            //clearStaffFields();
-                        }
-                        updateDisplay($(this));
-                  
+                    //    var checkBox = $(this).parent().find(".hidden");
+                    //    $(checkBox).prop('checked', !$(checkBox).is(':checked'));
+                    //    $(checkBox).triggerHandler('change');
+                    //// Need logic here to deselect the rest of the checkboxes
+                    //    if ($(checkBox).is(':checked')) {
+                    //        $("#userMode").text("Edit Existing User");
+                    //        $("#newUser").prop('disabled', true);
+                    //        $("#updateUser").prop('disabled', false);
+                    //        getUserDetails($(this));  //Get the user details only checkbox is not checked. If deselecting dont get the user
+                    //    } else {
+                    //        //clearStaffFields();
+                    //    }
+                    //    updateDisplay($(this));
+                    $("#userMode").text("Edit Existing User");
+                    $("#newUser").prop('disabled', true);
+                    $("#updateUser").prop('disabled', false);
+                    $("#staffDOB").prop('readonly', false);
+                    $("#staffDOB").prop('disabled', true);
+                    getUserDetails($(this));
                 });
                 $checkbox.on('change', function () {
                     updateDisplay($(this));
@@ -372,6 +377,8 @@ function clearStaffFields() {
     $('#permiss').find('input[type=checkbox]:checked').prop("checked", false);
     $("#newUser").prop('disabled', false);
     $("#updateUser").prop('disabled', true);
+    $("#staffDOB").prop('readonly', true);
+    $("#staffDOB").prop('disabled', false);
     //deSelectAllUsers();
 }
 
