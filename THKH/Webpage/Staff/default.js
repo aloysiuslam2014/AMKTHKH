@@ -252,7 +252,7 @@ function loadPermissionSettingsField() {
                 for (i = 0; i < result.length; i++) {
                     var ids = result[i].accessID;
                     var names = result[i].accessName;
-                    htmlString += "<div class='checkbox'><label><input class='perm required userInput' type='checkbox' name='" + ids + "' value='" + ids + "'> " + names + "</label></div>";
+                    htmlString += "<div class='checkbox'><label><input class='perm' type='checkbox' name='" + ids + "' value='" + ids + "'> " + names + "</label></div>";
                 }
                 var formElement = document.createElement("DIV");
                 $(formElement).attr("class", "list-group-item");
