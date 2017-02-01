@@ -10,10 +10,10 @@ function updateConfig() {
     var highTemp = $('#temSetInputHigh').val();
     var lowTime = $('#visTimeSetInputLower').val();
     var highTime = $('#visTimeSetInputHigh').val();
-    if (lowTemp == '' & highTemp == '') {
+    if (lowTemp !== '' & highTemp !== '') {
         validSetTemp = true;
     }
-    if (lowTime == '' & highTime == '') {
+    if (lowTime !== '' & highTime !== '') {
         validSetTime = true;
     }
     if (validSetTemp && validSetTime) {
@@ -291,6 +291,7 @@ function populateSettingsTime() {
                 '07:30',
                 '08:00',
                 '08:30',
+                '09:00',
                 '09:30',
                 '10:00',
                 '10:30',
