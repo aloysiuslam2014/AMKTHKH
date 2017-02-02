@@ -1060,7 +1060,7 @@
             <h3 style="">Enter query time period and bed(s)/location(s) to begin.</h3>
            
             <div class="form-group col-sm-offset-1 col-sm-10" id="unified_query_params">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div class="input-group date" id="unifiedquery_startdatetime">
                         <input type='text' id="uq_startdatetime" class="form-control required" placeholder="Start DateTime" />
                         <span class="input-group-addon">
@@ -1069,7 +1069,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div class="input-group date" id="unifiedquery_enddatetime">
                         <input type='text' id="uq_enddatetime" class="form-control required" placeholder="End DateTime" />
                         <span class="input-group-addon">
@@ -1084,7 +1084,7 @@
                             {
                                 defaultDate: new Date(),
                                 maxDate: 'now',
-                                format: 'DD-MM-YYYY HH:mm'
+                                format: 'DD-MM-YYYY'
                             }
                             );
                     });
@@ -1092,16 +1092,16 @@
                         $('#unifiedquery_enddatetime').datetimepicker({
                             defaultDate: new Date(),
                             maxDate: 'now',
-                            format: 'DD-MM-YYYY HH:mm'
+                            format: 'DD-MM-YYYY'
                         });
                     });
                 </script>
 
-                <div id="unifiedquery_bednos" class="input-group col-sm-6">
-                    <div class="col-sm-8">
+                <div id="unifiedquery_bednos" class="input-group col-sm-8">
+                    <div class="col-sm-6">
                         <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 2101-2105 " style=" " type="text" />
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <input class="form-control" id="uq_loc" placeholder="Location: NKF" style=" " type="text" />
                     </div>
                     <span class="input-group-btn">
