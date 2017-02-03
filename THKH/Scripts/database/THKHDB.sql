@@ -3286,7 +3286,7 @@ BEGIN 
 		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, mobileTel,
 									homeAddress, postalCode, time_stamp, confirm, amend)
 		VALUES ('S3333444B', 'Tan Ah Boy', 'M', 'SINGAPOREAN', '1992-03-13','85554321', 
-				'7 Jln Terang Bulan', 457285, '2015-01-29 12:00:00 PM', 0, 1)
+				'7 Jln Terang Bulan', 457285, '2015-01-29 12:00:00 PM', 1, 0)
 
 
 		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, mobileTel,
@@ -3296,6 +3296,11 @@ BEGIN 
     END
 
 	BEGIN
+		INSERT INTO QUESTIONAIRE_ANS
+		VALUES('SECOND_ANS_ID', 'SECOND', 'JSON ANSWERS FOR QUESTIONNARIE (Second)')
+	END
+
+	BEGIN
 		INSERT INTO VISIT
 		VALUES ('2015-01-29 10:00:00', 'S8888999Z', 'S1111222A', 'Li Bai Ka', 'Visiting', NULL, NULL, 1101, 'FIRST_ANS_ID', '', 1)
 
@@ -3303,10 +3308,16 @@ BEGIN 
 		VALUES ('2015-01-29 12:00:00', 'S8888999Z', 'S3333444B', 'Li Bai Ka', 'Visiting', NULL, NULL, 1101, 'FIRST_ANS_ID', '', 1)
 
 		INSERT INTO VISIT
+		VALUES ('2015-01-29 14:00:00', 'S8888999Z', 'S3333444B', 'Li Bai Ka', 'Visiting', NULL, NULL, 1101, 'FIRST_ANS_ID', '', 1)
+
+		INSERT INTO VISIT
 		VALUES ('2015-01-29 16:00:00', 'S8888999Z', 'S3333444B', 'Li Bai Ka', 'Visiting', NULL, NULL, 1101, 'FIRST_ANS_ID', '', 1)
 
 		INSERT INTO VISIT
-		VALUES ('2015-01-29 18:00:00', 'S8888999Z', 'S5555666Z', 'Li Bai Ka', 'Other Purpose', 'Delivery', 'CAFETERIA', NULL, 'FIRST_ANS_ID', '', 1)
+		VALUES ('2015-01-29 18:00:00', 'S8888999Z', 'S3333444B', 'Li Bai Ka', 'Visiting', NULL, NULL, 1101, 'SECOND_ANS_ID', '', 1)
+
+		INSERT INTO VISIT
+		VALUES ('2015-01-29 19:00:00', 'S8888999Z', 'S5555666Z', 'Li Bai Ka', 'Other Purpose', 'Delivery', 'CAFETERIA', NULL, 'FIRST_ANS_ID', '', 1)
 	END 
 
 	BEGIN
@@ -3314,7 +3325,10 @@ BEGIN 
 		VALUES ('S1111222A', '2015-01-29 09:00:00', '37.2', 'asd@smu.edu.sg')
 
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S3333444B', '2015-01-29 14:00:00', '36.8', 'asd@smu.edu.sg')
+		VALUES ('S3333444B', '2015-01-29 12:30:00', '36.8', 'asd@smu.edu.sg')
+
+		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
+		VALUES ('S3333444B', '2015-01-29 17:30:00', '37.1', 'asd@smu.edu.sg')
 
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
 		VALUES ('S5555666Z', '2015-01-29 18:45:00', '37.0', 'asd@smu.edu.sg')
@@ -3332,16 +3346,25 @@ BEGIN 
 
 		---------------------------------------------------------------------- Tan Ah Boy scans in. He was checked in exactly between two registered visits.
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S3333444B', '2015-01-29 14:00:00', 2, '2015-01-29 14:02:00')
+		VALUES ('S3333444B', '2015-01-29 12:30:00', 2, '2015-01-29 14:02:00')
 		---------------------------------------------------------------------- Tan Ah Boy scans at place he registered to visit
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S3333444B', '2015-01-29 14:00:00', 4, '2015-01-29 14:10:00')
+		VALUES ('S3333444B', '2015-01-29 12:30:00', 4, '2015-01-29 14:10:00')
+		---------------------------------------------------------------------- Tan Ah Boy scans out to grab a late lunch.
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S3333444B', '2015-01-29 12:30:00', 3, '2015-01-29 15:45:00')
+		---------------------------------------------------------------------- Tan Ah Boy has to check in again since he scanned out. The system scans him in.
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S3333444B', '2015-01-29 17:30:00', 2, '2015-01-29 17:31:00')
+		---------------------------------------------------------------------- Tan Ah Boy scans at the place he registered to visit, again.
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S3333444B', '2015-01-29 17:30:00', 4, '2015-01-29 17:39:00')
 		---------------------------------------------------------------------- Ninjavan scans in. 
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
 		VALUES ('S5555666Z', '2015-01-29 18:45:00', 2, '2015-01-29 18:47:00')
 		---------------------------------------------------------------------- Tan Ah Boy scans out. 
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S3333444B', '2015-01-29 14:00:00', 3, '2015-01-29 19:00:00')
+		VALUES ('S3333444B', '2015-01-29 17:30:00', 3, '2015-01-29 19:00:00')
 		---------------------------------------------------------------------- Ninjavan scans at place she didn't register to visit
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
 		VALUES ('S5555666Z', '2015-01-29 18:45:00', 4, '2015-01-29 19:10:00')
