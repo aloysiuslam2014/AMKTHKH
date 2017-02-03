@@ -11,6 +11,9 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/moment.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery-ui.min.js") %>"></script>
+<%--    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery-1.12.4.js") %>"></script>--%>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery.dataTables.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/dataTables.bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/w3data.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/bootstrap-datetimepicker.js") %>"></script>
@@ -1130,8 +1133,8 @@
                 
             </div>
 
-            <div class="form-group col-sm-12" id="uq_results" style="overflow-x">
-                <table id ="uq_resultstable" class="table table-bordered" style:"padding-left:10px padding-right:10px">
+            <div class="form-group col-sm-12" id="uq_results">
+                <table id ="uq_resultstable" class="table table-bordered table-striped" style:"padding-left:10px padding-right:10px">
                     <thead id="uq_resultstable_head">
                         <tr>
                             <th>Registration Location</th>
@@ -1149,6 +1152,16 @@
                     <tbody id="uq_resultstable_body">
                     </tbody>
                 </table>
+
+                <script>
+                    $(document).ready(function () {
+                        $('#uq_resultstable').DataTable({
+                            "searching": false,
+                            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                            "deferRender": true
+                        });
+                    });
+                </script>
             </div>
         </div>
 
