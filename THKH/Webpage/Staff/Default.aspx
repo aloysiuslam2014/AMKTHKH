@@ -1303,14 +1303,28 @@
     </div>
         </div>
 
+     <%if (accessRightsStr.Contains('4'))
+         { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/default.js") %>"></script>
+    <%} if (accessRightsStr.Contains('3'))
+        {%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/TerminalCalls/adminTerminal.js") %>"></script>
+    <%} if (accessRightsStr.Contains('2')) { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/QuestionaireManagement/loadQuestionaire.js") %>"></script>
+    <%} %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
+     <%if (accessRightsStr.Contains('1'))
+         { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/registrationPageScripts.js") %>"></script>
+     <%} if (accessRightsStr.Contains('4'))
+             { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/UserManagement/loadUsers.js") %>"></script>
+    <%}if (accessRightsStr.Contains('6'))
+        { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
+    <%} if (accessRightsStr.Contains('5')) {%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/PassManagement/passManage.js") %>"></script>
+    <%} %>
     <script type="text/javascript">
         var user = '<%= Session["username"].ToString() %>';
     </script>
