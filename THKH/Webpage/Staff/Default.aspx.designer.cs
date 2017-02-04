@@ -49,13 +49,22 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl regtab;
         
         /// <summary>
-        /// logoutt control.
+        /// logbtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm logoutt;
+        protected global::System.Web.UI.HtmlControls.HtmlForm logbtn;
+        
+        /// <summary>
+        /// logout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button logout;
         
         /// <summary>
         /// nric control.

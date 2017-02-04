@@ -13,26 +13,6 @@ function convertDvToImg() {
     });
 }
 
-function deformatPass(toDeformat) {
-    var dePass = ""; 
-    var dePass = toDeformat.replace(/"/g, "IOI");
-    var dePass = dePass.replace(/\\/g, "MKM");
-    var dePass = dePass.replace(/\//g, "KOK");
-    var dePass = dePass.replace(/</g, "LKL");
-    var dePass = dePass.replace(/=/g, "ORO");
-    var dePass = dePass.replace(/>/g, "LML");
-    return dePass;
-}
-function reformatPass(toReformat) {
-    var rePass = "";
-    var rePass = toReformat.replace(/IOI/g, "\"");
-    var rePass = rePass.replace(/MKM/g, "\\");
-    var rePass = rePass.replace(/KOK/g, "/");
-    var rePass = rePass.replace(/LKL/g, "<");
-    var rePass = rePass.replace(/ORO/g, "=");
-    var rePass = rePass.replace(/LML/g, ">");
-    return rePass;
-}
 
 function loadPassState() {
 
@@ -118,8 +98,7 @@ function getPassState() {
                     //var testtt = elementPositionsJson["barcode"];
                     createPassAppendParent($("#userSuccess"), passLayout, elementPositionsJson)
                 }else {
-                    //Means no pass has been created. ignore and clear fields
-                    clearFields();
+                
                 }
                
             } else {
@@ -208,11 +187,11 @@ function createPassAppendParent(parent, target, datapositions) {
     //Set the values from the field if id matches label's id
 
     $(target).children().each(function () {
-        //set the elements position to its correct place based on offset
+        //set the elements value based on id
         var name = this.id;
         var inputVal = $("#userData").find("#" + name);
         if (inputVal != null) {
-            $(this).html($(inputVal).prop('value'));
+            $(this).html($(inputVal).val());
         }
        
     });
@@ -381,7 +360,6 @@ function createBarCodeImg(textToCreate,injectAfterLoad) {
             } else {
                 alert(resultOfGeneration.Msg);
             }
-            clearFields();//clear fields for next cycle
         },
         error: function (err) {
             alert(err.Msg);

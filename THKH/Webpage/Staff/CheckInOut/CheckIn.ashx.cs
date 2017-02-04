@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -26,6 +27,11 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             if (typeOfRequest == "form") {
                 successString = loadForm();
+            }
+            if (typeOfRequest == "pName")
+            {
+                var bedNo = context.Request.Form["bedNo"];
+                successString = getPatientNames(bedNo);
             }
             if (typeOfRequest == "self")
             {
@@ -529,6 +535,42 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
+        //Gets patient name from db 
+        public string getPatientNames(string beds)
+        {
+            string successString = "";
+            dynamic toSend = new ExpandoObject();
+            SqlConnection cnn;
+
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            SqlParameter patientName = new SqlParameter("@pPatient_Name", SqlDbType.VarChar);
+            respon.Direction = ParameterDirection.Output;
+            patientName.Direction = ParameterDirection.Output;
+            patientName.Size = 1000;
+            try
+            {
+                SqlCommand command = new SqlCommand("[dbo].[GET_PATIENT_NAME]", cnn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pBed_No", beds);
+                command.Parameters.Add(respon);
+                command.Parameters.Add(patientName);
+                cnn.Open();
+                command.ExecuteNonQuery();
+                cnn.Close(); 
+
+            }
+            catch(Exception e)
+            {
+                toSend.error = e.Message.ToString();
+                successString = Newtonsoft.Json.JsonConvert.SerializeObject(toSend);
+                return successString;
+            }
+            toSend.name = patientName.Value.ToString();
+            successString = Newtonsoft.Json.JsonConvert.SerializeObject(toSend);
+            return successString;
+        }
+
 
         // Write to Visitor, Visit & Confirmation Table
         private String AssistReg(String staffuser, String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
@@ -541,6 +583,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             String successString = "{\"Result\":\"Success\",\"Visitor\":";
             String msg = "\"";
             string qAid = qaid;
+            //update visitor profile
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISITOR_PROFILE]", cnn);
@@ -575,6 +618,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
+
+            //update or add questionaire ans
             try
             {
                 if (qAid == "")
@@ -601,6 +646,29 @@ namespace THKH.Webpage.Staff.CheckInOut
                 successString += "\"}";
                 return successString;
             }
+            //check number of visitors currently with patient
+            try
+            {
+                dynamic num = checkNumCheckedIn(bedno);
+                if (num.visitors < 3) // May need to change to DB side
+                {
+                    msg += CheckIn(staffuser, nric, temperature);
+                }
+                else
+                {
+                    successString.Replace("Success", "Failure");
+                    msg = "\"Limit for visitors at bed " + num.bedno + " has been reached!";
+                    msg += "\"";
+                }
+            }
+            catch (Exception ex)
+            {
+                successString.Replace("Success", "Failure");
+                msg = ex.Message;
+                successString += "\"}";
+                return successString;
+            }
+
             respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
             try
@@ -608,9 +676,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
-                command.Parameters.AddWithValue("@pPatientNRIC", pNric.ToUpper());
                 command.Parameters.AddWithValue("@pVisitorNRIC", nric.ToUpper());
-                command.Parameters.AddWithValue("@pPatientFullName", pName);
                 command.Parameters.AddWithValue("@pPurpose", purpose);
                 command.Parameters.AddWithValue("@pReason", otherPurpose);
                 command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
@@ -635,23 +701,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-            try
-            {
-                int num = checkNumCheckedIn(bedno);
-                if (num < 3) // May need to change to DB side
-                {
-                    msg += CheckIn(staffuser, nric, temperature);
-                }
-                else {
-                    successString.Replace("Success", "Failure");
-                    msg = "\"Visitor Limit Reached!";
-                    msg += "\"";
-                }
-            }
-            catch (Exception ex) {
-                successString.Replace("Success", "Failure");
-                msg = ex.Message;
-            }
+
+           
             successString += msg;
             successString += "}";
             return successString;
@@ -718,23 +769,38 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
-        private int checkNumCheckedIn(String bedno) {
+        private dynamic checkNumCheckedIn(string bedno) {
+            dynamic result = new ExpandoObject();
+
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
-            String successString = "";
+           
+           
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pBedNo", bedno);
-                command.Parameters.AddWithValue("@pLimit", 3); // Dynamic in the future
-                command.Parameters.Add(respon);
-                cnn.Open();
+                string[] beds = bedno.Split('|');
+                foreach(string bed in beds)
+                {
+                    SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@pBedNo", bed);
+                    command.Parameters.AddWithValue("@pLimit", 3); // Dynamic in the future
+                    SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+                    respon.Direction = ParameterDirection.Output;
+                    command.Parameters.Add(respon);
+                    cnn.Open();
 
-                command.ExecuteNonQuery();
-                successString += respon.Value;
+                    command.ExecuteNonQuery();
+                    cnn.Close();
+                    result.visitors = respon.Value;
+                    if (Int32.Parse(respon.Value.ToString()) > 3)
+                    {
+                        result.bedno = bed;
+                        break;
+                    }
+                    
+                }
+               
             }
             catch (Exception ex)
             {
@@ -742,9 +808,10 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             finally
             {
+                if(cnn.State.ToString() == "open")
                 cnn.Close();
             }
-            return Int32.Parse(successString);
+            return result;
         }
 
         private String CheckIn(String staffuser,String nric, String temp) {

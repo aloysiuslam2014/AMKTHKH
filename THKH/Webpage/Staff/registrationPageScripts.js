@@ -78,10 +78,10 @@ function callCheck (){
                     } if (visitArr.length > 1) {
                         $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10));
                         $("#visitbookingtime").val(visitArr[0].toString().substring(11, 16));
-                        $("#patientNric").prop('value', visitArr[1]);
-                        $("#patientName").prop('value', visitArr[3]);
-                        var visPurpose = visitArr[4];
-                        $('#pInput').val(visitArr[4]); // Purpose of visit "Visit Patient" or "Other Purpose"
+                      //  $("#patientNric").prop('value', visitArr[1]);
+                      //  $("#patientName").prop('value', visitArr[3]);
+                        var visPurpose = visitArr[2];
+                        $('#pInput').val(visitArr[2]); // Purpose of visit "Visit Patient" or "Other Purpose"
                         if (visPurpose == "Visit Patient") {
                             $("#patientpurposevisit").css("display", "block");
                             $("#otherpurposevisit").css("display", "none");
@@ -89,11 +89,17 @@ function callCheck (){
                             $("#patientpurposevisit").css("display", "none");
                             $("#otherpurposevisit").css("display", "block");
                         }
-                        $("#purposeInput").prop('value', visitArr[5]);
-                        $("#visLoc").prop('value', visitArr[6]);
-                        $("#bedno").prop('value', visitArr[7]);
-                        $("#qaid").prop('value', visitArr[8]);
-                        $("#remarks").prop('value', visitArr[9]);
+                        $("#purposeInput").prop('value', visitArr[3]);
+                        $("#visLoc").prop('value', visitArr[4]);
+                        //$("#bedno").prop('value', visitArr[7]);
+                        if(visitArr[5].length > 0){
+                            $(visitArr[5].split('|')).each(function () {//split bed no if possible then create the beds
+                              
+                                loadBedPatientName(this);
+                            });
+                        }
+                        $("#qaid").prop('value', visitArr[6]);
+                        $("#remarks").prop('value', visitArr[7]);
                     } if (questionnaireArr.length > 1) {
                         for (i = 0; i < questionnaireArr.length; i++) {
                             var jsonAnswerObject = questionnaireArr[i];
@@ -125,6 +131,29 @@ function callCheck (){
         },
     });
     dataFound = true;
+}
+
+function loadBedPatientName(bedno) {
+    var patientBedRequest = { requestType: "pName", bedNo: "" + bedno };
+    var patientName = "";
+    $.ajax({
+        url: './CheckInOut/checkIn.ashx',
+        method: 'post',
+        data: patientBedRequest,
+
+
+        success: function (returner) {
+            var patientNm = JSON.parse(returner);
+            if (patientNm.name != null) {
+                patientName = patientNm.name;
+                addBedToVisit(patientName, bedno);
+            }
+
+        },
+        error: function (error) {
+
+        }
+    });
 }
 
 // Loads all facilities in the hospital
@@ -194,12 +223,25 @@ function checkTime() {
     return true;
 }
 
-function addBedToVisit(patientName,patientBedNo) {
+
+
+function addBedToVisit(patientName, patientBedNo) {
+
+    if ($("#bedsAdded #"+patientBedNo).prop("id") != null) {
+        alert("Patient has already been added.");
+        return;
+    }
+
     var newPatientObj = document.createElement("div");
 
     var closeButon = document.createElement("a");
     $(closeButon).prop("class", "close");
     $(closeButon).html("&times;");
+    $(closeButon).on("click", function () {
+        $(this).parent().mouseout();
+        $(this).parent().remove();
+    });
+
     $(newPatientObj).html(patientBedNo);
     $(newPatientObj).append(closeButon);
     
@@ -211,6 +253,7 @@ function addBedToVisit(patientName,patientBedNo) {
     $(newPatientObj).attr("data-container", "body");
     $(newPatientObj).attr("class", "bedNoBox");
     $(newPatientObj).attr("title", patientBedNo + ": " + patientName);
+    
     $("#bedsAdded").append(newPatientObj);
     $('[data-toggle="tooltip"]').tooltip();
 }
@@ -325,7 +368,17 @@ function NewAssistReg() {
     var pName = $("#patientName").val();
     var pNric = $("#patientNric").val();
     var otherPurpose = $("#purposeInput").val();
-    var bedno = $("#bedno").val();
+    // add all bedno's comma delimited here
+    //var bedno = $("#bedno").val();
+    var bedno ="";
+    var bedsLength = $("#bedsAdded").children().length;
+    $("#bedsAdded").children().each(function (idx, iitem) {
+        bedno += $(this).prop('id');
+        var parent = $(this).parent();
+        if (idx + 1 < bedsLength) {
+            bedno += "|";
+        }
+    });
     var qListID = $("#qnlistid").val();
     var visTime = $("#visitbookingtime").val();
     var visDate = $("#visitbookingdate").val();
@@ -364,7 +417,6 @@ function NewAssistReg() {
                     var today = new Date();
                     regCompleted = true;
                     showSuccessModal();
-                    var purpose = $("#pInput").val("");
                     //after showin then we load the pass go to the method show success modal to see
                     //clearfields moved to passManage.js to grab data before it is cleaned please DO NOT CLEAR FIELDS B4 PASS IS GENERATED!!!!!
                    
@@ -400,6 +452,7 @@ function clearFields() {
         });
     }
     $('input[id="ignoreNric"]').prop('checked', false);
+    $("#bedno").html("");
     var allowNric = false;
 }
 
@@ -459,6 +512,12 @@ function checkRequiredFields() {
             $(value).css('background', '#f3f78a');
         }
     });
+
+    if ($("#bedsAdded").children().length == 0) {
+        $("#bedsAdded").css('background', '#f3f78a');
+        valid = false;
+    }
+
     if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !checkNationals() || !purposePanels() || !checkTime() || !checkGender() || !validEmail) {
         valid = false;
     }
@@ -1080,6 +1139,7 @@ function showSuccessModal() {
 function hideSuccessModal() {
     $('#successModal').modal('hide');
     $(" #imgPass").remove();//remove the currently generated pass
+    clearFields();//clear all fields
 }
 
 // Show Max Limit Modal
