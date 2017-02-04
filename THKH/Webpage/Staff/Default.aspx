@@ -11,6 +11,9 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/moment.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery-ui.min.js") %>"></script>
+<%--    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery-1.12.4.js") %>"></script>--%>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery.dataTables.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/dataTables.bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/w3data.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/bootstrap-datetimepicker.js") %>"></script>
@@ -135,7 +138,7 @@
                                 <div id="permissSet" class="form-group">
                                 <%--checkbox--%>
                                 </div>
-                                <button id="savePermissGroup" class="btn btn-success" onclick=""><span class="glyphicon glyphicon-off"></span> Save Access Profile</button>
+                                <button id="savePermissGroup" class="btn btn-success" onclick="updateAccessProfile(); false;"><span class="glyphicon glyphicon-off"></span> Save Access Profile</button>
                                     </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-danger btn-block" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>     
@@ -179,17 +182,12 @@
                                 <button class="btn btn-danger" id="closeDelProfileButton" onclick="hideDelProfileModal(); false;"><span class="glyphicon glyphicon-off"></span> Cancel</button>     
                                     <button class="btn btn-success" id="delSelProfileButton" onclick="delAccessProfile(); false;"><span class="glyphicon glyphicon-trash"></span> Delete Profile</button>
                             </div>
-<%--                                <div class="modal-footer">
-                                    <button class="btn btn-danger" id="closeDelProfileButton" onclick="hideDelProfileModal(); false;"><span class="glyphicon glyphicon-off"></span> Cancel</button>     
-                                    <button class="btn btn-success" id="delProfileButton" onclick="delAccessProfile(); false;"><span class="glyphicon glyphicon-trash"></span> Save Profile</button>
-                                </div>--%>
                             </div>
                     </div>
                 </div>
     <% } %>
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
-
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-W1LfPbp4DDBf1">
                     <span class="icon-bar"></span>
@@ -848,7 +846,9 @@
                             <div class="col-md-6">
                                 <label><span style="color:lightcoral">*</span>Email</label>
                                 <div class="form-group">
-                                    <input id="staffEmail" class="form-control required userInput" placeholder="<ID>@AMKTHKH.com" /></div>
+                                    <input id="staffEmail" class="form-control required userInput" placeholder="<ID>@AMKTHKH.com" />
+                                    <h4 id="emailWarningUser" style="color: lightcoral">Invalid Email Format!</h4>
+                                </div>
                                 <label><span style="color:lightcoral">*</span>First Name</label>
                                 <div class="form-group">
                                     <input id="staffFirstName" class="form-control required userInput" /></div>
@@ -917,9 +917,14 @@
                                 <div class="form-group">
                                     <input id="staffTitle" class="form-control required userInput" /></div>
                                 <label><span style="color:lightcoral">*</span>Permission</label>
+                                <div class="form-group" id="permissions">
+                                        <select class="form-control required userInput" onchange="getSelectedAccessProfileUser(); false;" id="permissionProfileDropdown">
+                                            <option value="">-- Select One --</option>
+                                        </select>
+                                    </div>
                                 <div id="permiss" class="form-group">
-                                <%--checkbox--%>
-                            </div>
+                                    <%--Checkbox Here--%>
+                                </div>
                                 <label><span style="color:lightcoral">*</span>Password</label>
                                 <div class="form-group">
                                     <input id="staffPwd" class="form-control required userInput" /></div>
@@ -1064,7 +1069,7 @@
             <h3 style="">Enter query time period and bed(s)/location(s) to begin.</h3>
            
             <div class="form-group col-sm-offset-1 col-sm-10" id="unified_query_params">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div class="input-group date" id="unifiedquery_startdatetime">
                         <input type='text' id="uq_startdatetime" class="form-control required" placeholder="Start DateTime" />
                         <span class="input-group-addon">
@@ -1073,7 +1078,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div class="input-group date" id="unifiedquery_enddatetime">
                         <input type='text' id="uq_enddatetime" class="form-control required" placeholder="End DateTime" />
                         <span class="input-group-addon">
@@ -1088,7 +1093,7 @@
                             {
                                 defaultDate: new Date(),
                                 maxDate: 'now',
-                                format: 'DD-MM-YYYY HH:mm'
+                                format: 'DD-MM-YYYY'
                             }
                             );
                     });
@@ -1096,16 +1101,16 @@
                         $('#unifiedquery_enddatetime').datetimepicker({
                             defaultDate: new Date(),
                             maxDate: 'now',
-                            format: 'DD-MM-YYYY HH:mm'
+                            format: 'DD-MM-YYYY'
                         });
                     });
                 </script>
 
-                <div id="unifiedquery_bednos" class="input-group col-sm-6">
-                    <div class="col-sm-8">
+                <div id="unifiedquery_bednos" class="input-group col-sm-8">
+                    <div class="col-sm-6">
                         <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 2101-2105 " style=" " type="text" />
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <input class="form-control" id="uq_loc" placeholder="Location: NKF" style=" " type="text" />
                     </div>
                     <span class="input-group-btn">
@@ -1134,8 +1139,8 @@
                 
             </div>
 
-            <div class="form-group col-sm-12" id="uq_results" style="overflow-x">
-                <table id ="uq_resultstable" class="table table-bordered" style:"padding-left:10px padding-right:10px">
+            <div class="form-group col-sm-12" id="uq_results">
+                <table id ="uq_resultstable" class="table table-bordered table-striped" style:"padding-left:10px padding-right:10px">
                     <thead id="uq_resultstable_head">
                         <tr>
                             <th>Registration Location</th>
@@ -1153,6 +1158,16 @@
                     <tbody id="uq_resultstable_body">
                     </tbody>
                 </table>
+
+                <script>
+                    $(document).ready(function () {
+                        $('#uq_resultstable').DataTable({
+                            "searching": false,
+                            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                            "deferRender": true
+                        });
+                    });
+                </script>
             </div>
         </div>
 
@@ -1307,14 +1322,28 @@
     </div>
         </div>
 
+     <%if (accessRightsStr.Contains('4'))
+         { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/default.js") %>"></script>
+    <%} if (accessRightsStr.Contains('3'))
+        {%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/TerminalCalls/adminTerminal.js") %>"></script>
+    <%} if (accessRightsStr.Contains('2')) { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/QuestionaireManagement/loadQuestionaire.js") %>"></script>
+    <%} %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
+     <%if (accessRightsStr.Contains('1'))
+         { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/registrationPageScripts.js") %>"></script>
+     <%} if (accessRightsStr.Contains('4'))
+             { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/UserManagement/loadUsers.js") %>"></script>
+    <%}if (accessRightsStr.Contains('6'))
+        { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
+    <%} if (accessRightsStr.Contains('5')) {%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/PassManagement/passManage.js") %>"></script>
+    <%} %>
     <script type="text/javascript">
         var user = '<%= Session["username"].ToString() %>';
     </script>

@@ -49,8 +49,9 @@ namespace THKH.Webpage.Staff.UserManagement
                 //int age = Int32.Parse(context.Request.Form["age"]);
                 var title = context.Request.Form["title"];
                 int permissions = Int32.Parse(context.Request.Form["permissions"]);
+                var accessProfile = context.Request.Form["accessProfile"];
                 var password = context.Request.Form["staffPwd"]; // If blank, dont change password
-                successString = updateUser(fname, lname, snric, email, address, postal, mobtel, hometel, alttel, sex, nationality, dob, title, permissions, password, staffUser);
+                successString = updateUser(fname, lname, snric, email, address, postal, mobtel, hometel, alttel, sex, nationality, dob, title, permissions, password, staffUser, accessProfile);
             }
             if (requestType == "deleteUser") {
                 var snric = context.Request.Form["snric"];
@@ -75,8 +76,9 @@ namespace THKH.Webpage.Staff.UserManagement
                 //int age = Int32.Parse(context.Request.Form["age"]);
                 var title = context.Request.Form["title"];
                 int permissions = Int32.Parse(context.Request.Form["permissions"]);
+                var accessProfile = context.Request.Form["accessProfile"];
                 var password = context.Request.Form["staffPwd"];
-                successString = addUser(fname,lname,snric,email,address,postal,mobtel,hometel,alttel,sex,nationality,dob,title,permissions, password, staffUser);
+                successString = addUser(fname,lname,snric,email,address,postal,mobtel,hometel,alttel,sex,nationality,dob,title,permissions, password, staffUser, accessProfile);
             }
             if (requestType == "getPermissions") {
                 successString = getPermissions();
@@ -179,7 +181,8 @@ namespace THKH.Webpage.Staff.UserManagement
                         //responseJson.age = reader.GetInt32(12);
                         //responseJson.race = reader.GetString(13);
                         responseJson.permissions = reader.GetInt32(14);
-                        responseJson.position = reader.GetString(15);
+                        responseJson.position = reader.GetString(16);
+                        responseJson.accessProfile = reader.GetString(15);
 
                         count++;
                     }
@@ -205,7 +208,7 @@ namespace THKH.Webpage.Staff.UserManagement
         }
 
         private String addUser(String fname, String lname, String snric, String email, String address, int postal, String mobtel, String hometel, String alttel, String sex,
-            String nationality, String dob, String title, int permissions, String password, String staffUser) {
+            String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -232,6 +235,7 @@ namespace THKH.Webpage.Staff.UserManagement
                 //command.Parameters.AddWithValue("@pAge", age);
                 //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pPermission", permissions);
+                command.Parameters.AddWithValue("@pAccessProfile", accessProfile);
                 command.Parameters.AddWithValue("@pPostion", title);
                 command.Parameters.AddWithValue("@pCreatedBy", staffUser);
                 cnn.Open();
@@ -288,7 +292,7 @@ namespace THKH.Webpage.Staff.UserManagement
         }
 
         private String updateUser(String fname, String lname, String snric, String email, String address, int postal, String mobtel, String hometel, String alttel, String sex,
-            String nationality, String dob, String title, int permissions, String password, String staffUser) {
+            String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -315,6 +319,7 @@ namespace THKH.Webpage.Staff.UserManagement
                 //command.Parameters.AddWithValue("@pAge", age);
                 //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pPermission", permissions);
+                command.Parameters.AddWithValue("@pAccessProfile", accessProfile);
                 command.Parameters.AddWithValue("@pPosition", title);
                 cnn.Open();
 
