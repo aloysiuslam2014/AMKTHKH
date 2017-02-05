@@ -25,9 +25,10 @@ namespace THKH.Webpage.Staff
                 var staffUser = context.Request.Form["staffUser"].ToString();
                 var lowTemp = context.Request.Form["lowTemp"];
                 var highTemp = context.Request.Form["highTemp"];
+                var warnTemp = context.Request.Form["warnTemp"];
                 var lowTime = context.Request.Form["lowTime"];
                 var highTime = context.Request.Form["highTime"];
-                successString = updateTempTime(lowTemp, highTemp, lowTime, highTime, staffUser);
+                successString = updateTempTime(lowTemp, highTemp, warnTemp, lowTime, highTime, staffUser);
             }
             else if (requestType.ToString() == "getConfig")
             {
@@ -111,7 +112,7 @@ namespace THKH.Webpage.Staff
         }
 
         //
-        private String updateTempTime(String lowTemp, String highTemp, String lowTime, String highTime, String staffUser) {
+        private String updateTempTime(String lowTemp, String highTemp, String warnTemp, String lowTime, String highTime, String staffUser) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -123,6 +124,7 @@ namespace THKH.Webpage.Staff
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pLowTemp", lowTemp);
                 command.Parameters.AddWithValue("@pHighTemp", highTemp);
+                command.Parameters.AddWithValue("@pWarnTemp", warnTemp);
                 command.Parameters.AddWithValue("@pLowTime", lowTime);
                 command.Parameters.AddWithValue("@pHighTime", highTime);
                 command.Parameters.AddWithValue("@pUpdatedBy", staffUser);
@@ -172,7 +174,7 @@ namespace THKH.Webpage.Staff
                         {
                             successString += ",";
                         }
-                        successString += reader.GetString(0) + "," + reader.GetString(1) + "," + reader.GetString(2) + "," + reader.GetString(3);
+                        successString += reader.GetString(0) + "," + reader.GetString(1) + "," + reader.GetString(2) + "," + reader.GetString(3) + "," + reader.GetString(4);
                         count++;
                     }
                 }
