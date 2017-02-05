@@ -57,6 +57,8 @@
             $("#tempRangeWarning").css("display", "none");
             $("#timeHighLowWarning").css("display", "none");
             $("#tempHighLowWarning").css("display", "none");
+            $('#tempHighWarnWarning').css("display", "none");
+            $("#tempLowWarnWarning").css("display", "none");
             $('#settingsModal').modal({ backdrop: 'static', keyboard: false });
             $('#settingsModal').modal('show');
         }
@@ -82,7 +84,7 @@
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
                                 <h4 class="modal-title">Master Configuration</h4>
                             </div>
-                            <div class="modal-body text-center" id="appSettings">
+                            <div class="modal-body text-center" id="appSettings" style="overflow-y:inherit">
                                 <div class="row">
                                 <div class="col-sm-6">
                                 <label>Temperature Control</label>
@@ -95,9 +97,15 @@
                                           <span class="input-group-addon">Upper Limit</span>
                                     <input type="text" runat="server" class="form-control setInput" id="temSetInputHigh" />
                                         </div>
+                                    <div class="input-group">
+                                          <span class="input-group-addon">Warning Temperature</span>
+                                    <input type="text" runat="server" class="form-control setInput" id="temSetInputWarn" />
+                                        </div>
                                     <label id="tempHighLowWarning" style="color: lightcoral">Upper limit is higher than the lower limit!</label>
                                     <label id="tempSetWarning" style="color: lightcoral">Please enter the temperature values in this format: "36.7"</label>
                                     <label id="tempRangeWarning" style="color: lightcoral">Please enter a temperature within 34 to 40 degs</label>
+                                    <label id="tempHighWarnWarning" style="color: lightcoral">Warning Temperature is above the Upper Limit!</label>
+                                    <label id="tempLowWarnWarning" style="color: lightcoral">Warning Temperature is below the Lower Limit!</label>
                                 </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -119,9 +127,11 @@
                                     <label id="timeSetWarning" style="color: lightcoral">Please provide a visit time range</label>
                                 </div>
                                 </div>
+                                    </div><div class="row">
                                 <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-save"></span> Save Settings</button>
                                     </div>
-                                <div class="row">
+                                <div class="modal-body text-center">
+                                    <div class="row">
                                 <label>Access Profile Control</label>
                                 <div class="form-group">
                                     <div class="input-group">
@@ -140,6 +150,7 @@
                                 </div>
                                 <button id="savePermissGroup" class="btn btn-success" onclick="updateAccessProfile(); false;"><span class="glyphicon glyphicon-off"></span> Save Access Profile</button>
                                     </div>
+                                </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-danger btn-block" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>     
                                 </div>
@@ -324,6 +335,7 @@
                             <label class="control-label" for="temp"><span style="color:lightcoral">*</span>Temperature</label>
                             <input runat="server" id="temp" class="form-control required regInput" type="text" />
                             <h4 id="tempWarning" style="color: lightcoral">Visitor's Temperature is above the allowable 37.6 degrees celcius!</h4>
+                            <h4 id="tempLimitWarning" style="color: lightcoral">Visitor's Temperature is above the limit of 37.6 degrees celcius!</h4>
                             <h4 id="lowtempWarning" style="color: lightcoral">Visitor's Temperature is below the allowable 34 degrees celcius!</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
                         </div>
@@ -925,7 +937,7 @@
                                 <div id="permiss" class="form-group">
                                     <%--Checkbox Here--%>
                                 </div>
-                                <label><span style="color:lightcoral">*</span>Password</label>
+                                <label><span style="color:lightcoral">*</span>Password (If no change, leave this blank)</label>
                                 <div class="form-group">
                                     <input id="staffPwd" class="form-control required userInput" /></div>
                         </div>

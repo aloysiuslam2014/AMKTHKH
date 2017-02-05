@@ -19,6 +19,7 @@ var regCompleted = false;
 var init = false;
 var lowTemp = "34";
 var highTemp = "40";
+var warnTemp = "37.6";
 
 // Check for visitor details & any online self registration information
 function callCheck (){
@@ -305,6 +306,7 @@ function validatePatient() {
 $("#temp").on("input", function () {
     var temper = $("#temp").val();
     if (temper == "") {
+        $('#tempLimitWarning').css("display", "none");
         $('#tempWarning').css("display", "none");
         $("#invalidTempWarning").css("display", "none");
         $('#lowtempWarning').css("display", "none");
@@ -313,13 +315,15 @@ $("#temp").on("input", function () {
         try {
             var temperature = parseFloat(temper);
             if (temperature > parseFloat(highTemp)) {
-                $('#tempWarning').html("Visitor's Temperature is above the allowable " + highTemp + " degrees celcius!");
-                $('#tempWarning').css("display", "block");
+                $('#tempLimitWarning').html("Visitor's Temperature is above the allowable " + highTemp + " degrees celcius!");
+                $('#tempLimitWarning').css("display", "block");
+                $('#tempWarning').css("display", "none");
                 $("#invalidTempWarning").css("display", "none");
                 $('#lowtempWarning').css("display", "none");
                 validTemp = false;
             } else if (isNaN(temperature)) {
                 $("#invalidTempWarning").css("display", "block");
+                $('#tempWarning').css("display", "none");
                 $('#tempWarning').css("display", "none");
                 $('#lowtempWarning').css("display", "none");
                 validTemp = false;
@@ -327,11 +331,21 @@ $("#temp").on("input", function () {
             else if (temperature < parseFloat(lowTemp)) {
                 $('#lowtempWarning').html("Visitor's Temperature is below the allowable " + lowTemp + " degrees celcius!");
                 $('#lowtempWarning').css("display", "block");
+                $('#tempLimitWarning').css("display", "none");
                 $('#tempWarning').css("display", "none");
                 $("#invalidTempWarning").css("display", "none");
                 validTemp = false;
             }
+            else if (temperature > parseFloat(warnTemp)) {
+                $('#tempLimitWarning').css("display", "none");
+                $("#invalidTempWarning").css("display", "none");
+                $('#lowtempWarning').css("display", "none");
+                $('#tempWarning').html("Visitor's Temperature is above the allowable " + warnTemp + " degrees celcius!");
+                $('#tempWarning').css("display", "block");
+                validTemp = true;
+            }
             else {
+                $('#tempLimitWarning').css("display", "none");
                 $('#tempWarning').css("display", "none");
                 $("#invalidTempWarning").css("display", "none");
                 $('#lowtempWarning').css("display", "none");
@@ -704,6 +718,7 @@ function hideTags() {
     $("#emailWarning").css("display", "none");
     $('#lowtempWarning').css("display", "none");
     $('#tempWarning').css("display", "none");
+    $('#tempLimitWarning').css("display", "none");
     $("#patientpurposevisit").css("display", "none");
     $("#otherpurposevisit").css("display", "none");
     //$("#submitNewEntry").css("display", "none");
@@ -1061,8 +1076,9 @@ function populateTime() {
             var arr = mes.toString().split(",");
             lowTemp = arr[0].toString();
             highTemp = arr[1].toString();
-            lowTime = arr[2].toString();
-            highTime = arr[3].toString();
+            warnTemp = arr[2].toString();
+            lowTime = arr[3].toString();
+            highTime = arr[4].toString();
             var time = [
                         '00:00',
                         '00:30',

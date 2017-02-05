@@ -8,6 +8,7 @@ function updateConfig() {
     var username = user;
     var lowTemp = $('#temSetInputLow').val();
     var highTemp = $('#temSetInputHigh').val();
+    var warnTemp = $("#temSetInputWarn").val();
     var lowTime = $('#visTimeSetInputLower').val();
     var highTime = $('#visTimeSetInputHigh').val();
     if (lowTemp !== '' & highTemp !== '') {
@@ -18,7 +19,7 @@ function updateConfig() {
     }
     if (validSetTemp && validSetTime) {
         var headersToProcess = {
-            requestType: "updateSettings", lowTemp: lowTemp, highTemp: highTemp, lowTime: lowTime, highTime: highTime, staffUser: username
+            requestType: "updateSettings", lowTemp: lowTemp, highTemp: highTemp, warnTemp:warnTemp, lowTime: lowTime, highTime: highTime, staffUser: username
         };
         $.ajax({
             url: '../Staff/MasterConfig/masterConfig.ashx',
@@ -208,8 +209,9 @@ function getCurrentConfig() {
             if (arr.length > 1) {
                 $('#temSetInputLow').prop('value', arr[0].toString());
                 $('#temSetInputHigh').prop('value', arr[1].toString());
-                $('#visTimeSetInputLower').val(arr[2].toString());
-                $('#visTimeSetInputHigh').val(arr[3].toString());
+                $("#temSetInputWarn").prop('value', arr[2].toString());
+                $('#visTimeSetInputLower').val(arr[3].toString());
+                $('#visTimeSetInputHigh').val(arr[4].toString());
             }
         },
         error: function (err) {
@@ -389,21 +391,71 @@ $("#temSetInputHigh").on("input", function () {
     }
 });
 
+// Check warning temperature settings
+$("#temSetInputWarn").on("input", function () {
+    var temper = $("#temSetInputWarn").val();
+    if (temper == "") {
+        $('#tempSetWarning').css("display", "none");
+        $("#tempRangeWarning").css("display", "none");
+        $('#tempHighWarnWarning').css("display", "none");
+        $("#tempLowWarnWarning").css("display", "none");
+    } else {
+        try {
+            var temperature = parseFloat(temper);
+            if (temperature > 34 && temperature < 40) {
+                $("#tempRangeWarning").css("display", "none");
+                validSetTemp = true;
+                compareTemp();
+            } else {
+                $("#tempRangeWarning").css("display", "block");
+                $('#tempHighWarnWarning').css("display", "none");
+                $("#tempLowWarnWarning").css("display", "none");
+                validSetTemp = false;
+            }
+        } catch (ex) {
+            $('#tempSetWarning').css("display", "block");
+            $('#tempHighWarnWarning').css("display", "none");
+            $("#tempLowWarnWarning").css("display", "none");
+            validSetTemp = false;
+        }
+    }
+});
+
 // compare temperature fields
 function compareTemp() {
     var temp1 = $("#temSetInputLow").val();
     var temp2 = $("#temSetInputHigh").val();
-    if (temp1 !== '' && temp2 !== '') {
+    var tempW = $("#temSetInputWarn").val();
+    if (temp1 !== '' && temp2 !== '' && tempW !== '') {
         var low = parseFloat(temp1);
         var high = parseFloat(temp2);
+        var warn = parseFloat(tempW);
         if (low > high) {
             $('#tempSetWarning').css("display", "none");
             $("#tempHighLowWarning").css("display", "block");
+            $('#tempHighWarnWarning').css("display", "none");
+            $("#tempLowWarnWarning").css("display", "none");
             validSetTemp = false;
         } else {
-            $('#tempSetWarning').css("display", "none");
-            $("#tempHighLowWarning").css("display", "none");
-            validSetTemp = true;
+            if (low > warn) {
+                $('#tempSetWarning').css("display", "none");
+                $("#tempHighLowWarning").css("display", "none");
+                $('#tempHighWarnWarning').css("display", "none");
+                $("#tempLowWarnWarning").css("display", "block");
+                validSetTemp = false;
+            } else if (high < warn) {
+                $('#tempSetWarning').css("display", "none");
+                $("#tempHighLowWarning").css("display", "none");
+                $('#tempHighWarnWarning').css("display", "block");
+                $("#tempLowWarnWarning").css("display", "none");
+                validSetTemp = false;
+            }else {
+                $('#tempSetWarning').css("display", "none");
+                $("#tempHighLowWarning").css("display", "none");
+                $('#tempHighWarnWarning').css("display", "none");
+                $("#tempLowWarnWarning").css("display", "none");
+                validSetTemp = true;
+            }
         }
     } else {
         validSetTemp = false;
