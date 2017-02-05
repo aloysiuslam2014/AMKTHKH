@@ -23,10 +23,18 @@ function NewSelfReg() {
     //var age = 23;
     //var Email = $("#emailsInput").val();
     var purpose = $("#pInput").val();
-    var pName = $("#patientName").val();
-    var pNric = $("#patientNric").val();
+
     var otherPurpose = $("#purposeInput").val();
-    var bedno = $("#bedno").val();
+  //  var bedno = $("#bedno").val();
+    var bedno = "";
+    var bedsLength = $("#bedsAdded").children().length;
+    $("#bedsAdded").children().each(function (idx, iitem) {
+        bedno += $(this).prop('id');
+        var parent = $(this).parent();
+        if (idx + 1 < bedsLength) {
+            bedno += "|";
+        }
+    });
     var visTime = $("#visitbookingtime").val();
     var visDate = $("#visitbookingdate").val();
     var appTime = visDate + " " + visTime;
@@ -41,7 +49,7 @@ function NewSelfReg() {
     var amend = $("#amend").val();
 
     var headersToProcess = {
-        fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, SEX: sex, Natl: nationality, DOB: dob, PURPOSE: purpose, pName: pName, pNric: pNric,
+        fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, SEX: sex, Natl: nationality, DOB: dob, PURPOSE: purpose, 
         otherPurpose: otherPurpose, bedno: bedno, appTime: appTime,  visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers, amend: amend
     };
     $.ajax({
@@ -98,6 +106,44 @@ $("#submitNric").keyup(function (event) {
     }
 });
 
+//add patient to be visited
+function addBedToVisit(patientName, patientBedNo) {
+
+    if ($("#bedsAdded #" + patientBedNo).prop("id") != null) {
+        alert("Patient has already been added.");
+        return;
+    }
+
+    var newPatientObj = document.createElement("div");
+
+    var closeButon = document.createElement("a");
+    $(closeButon).prop("class", "close");
+    $(closeButon).html("&times;");
+    $(closeButon).on("click", function () {
+        $(this).parent().mouseout();
+        $(this).parent().remove();
+        if ($(this).parent().parent().children().length == 0) {
+            $("#userDetails").css("display", "none");
+            $("#patientStatusGreen").css("display", "none");
+            $('#staticinfocontainer').css("display", "none"); // is actually the questionaire form div
+        }
+    });
+
+    $(newPatientObj).html(patientBedNo);
+    $(newPatientObj).append(closeButon);
+
+
+
+    $(newPatientObj).attr("id", patientBedNo);
+    $(newPatientObj).attr("data-toggle", "tooltip");
+    $(newPatientObj).attr("data-placement", "top");
+    $(newPatientObj).attr("data-container", "body");
+    $(newPatientObj).attr("class", "bedNoBox");
+    $(newPatientObj).attr("title", patientBedNo + ": " + patientName);
+
+    $("#bedsAdded").append(newPatientObj);
+    $('[data-toggle="tooltip"]').tooltip();
+}
 // ensure patient info is valid
 function validatePatient() {
     // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
@@ -128,12 +174,13 @@ function validatePatient() {
                         $("#patientStatusGreen").css("display", "block");
                         $("#patientStatusRed").css("display", "none");
                         $("#patientStatusNone").css("display", "none");
-                        $("#patientName").prop('disabled', true);
-                        $("#pInput").prop('disabled', true);
-                        $("#bedno").prop('disabled', true);
+                       // $("#patientName").prop('disabled', true);
+                       // $("#pInput").prop('disabled', true);
+                       // $("#bedno").prop('disabled', true);
                         patientValidated = true;
                         $("#userDetails").css("display", "block");
                         checkIfExistingVisitor();
+                        addBedToVisit(pName, bedno);
                     }   
                 } else {
                     $("#patientStatusRed").css("display", "block");
