@@ -418,7 +418,7 @@ function NewAssistReg() {
                     regCompleted = true;
                     showSuccessModal();
                     //after showin then we load the pass go to the method show success modal to see
-                    //clearfields moved to passManage.js to grab data before it is cleaned please DO NOT CLEAR FIELDS B4 PASS IS GENERATED!!!!!
+                    //clearfields moved to close button on succes modal
                    
                     //$('input:checkbox[name=declare]').attr('checked', false);
                     hideTags();

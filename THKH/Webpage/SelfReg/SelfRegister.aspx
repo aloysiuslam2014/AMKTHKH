@@ -66,6 +66,52 @@
 .purposeBorder {
     outline: 1px solid black;
 }
+
+
+.bedNoDisplay{
+    overflow-y: auto;
+height: 35px;
+word-wrap: normal;
+background: whitesmoke;
+border: solid 2px coral;
+border-radius: 5px;
+padding: 1px;
+margin-bottom:10px;
+}
+
+.bedNoBox{
+    width: 74px;
+    height: 30px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    border: solid 1px burlywood;
+    padding: 5px;
+    background-color:#f09621;
+    color:white;
+    border-radius: 5px;
+    display:inline-block;
+}
+
+
+.close {
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #FFF;
+  text-shadow: 0 1px 0 #ffffff;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  text-decoration: none;
+  right:0;
+  top:0;
+  position:absolute;
+}
+    .close:hover {
+        color: #000000;
+        text-decoration: none;
+        opacity: 0.4;
+    }
     </style>
 </head>
 <body onload="hideTags()">
@@ -158,11 +204,15 @@
                                     <input type="text" runat="server" class="form-control" id="bedno" />
                                 </div>
                                     <div class="form-group">
-                                        <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Check Patient</button>
-                                        <label for="validatePatientButton" id="patientStatusGreen" style="color:green">Please continue with the form</label>
-                                    <label for="validatePatientButton" id="patientStatusRed" style="color:lightcoral">Invalid patient or bed number. Please proceed to the front counter</label>
+                                        <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span> Add Patient</button>
+                                        <label for="validatePatientButton" id="patientStatusGreen" style="color:green">Please continue with the form or add more patients to visit.</label>
+                                    <label for="validatePatientButton" id="patientStatusRed" style="color:lightcoral">Invalid patient or bed number. Please proceed to the front counter or try again.</label>
                                         <label for="validatePatientButton" id="patientStatusNone" style="color:lightcoral">Please fill in the details of the patient your are visiting! If you are unsure, please approach the front desk personnel for assistance.</label>
                                     </div>
+                                    <label style="color:lightcoral">Beds To Be Visited</label>
+                                <div id="bedsAdded" class="col-xs-12 bedNoDisplay required">
+
+                                </div>
                                 </div>
                                 <div id="otherpurposevisit" class="container-fluid" runat="server"> <%--Show this only when Visit Purpose is "Other Purpose"--%>
                                     <label for="visLoc"><span style='color:lightcoral'>*</span>Visit Location</label>

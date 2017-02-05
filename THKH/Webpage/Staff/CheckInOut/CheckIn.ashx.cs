@@ -73,7 +73,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 // Write to Visitor_Profile & Visit Table
                 successString = selfReg(nric, fname, address, postal, mobtel,
-            sex, nationality, dob, purpose, pName, pNric, otherPurpose, bedno, appTime,
+            sex, nationality, dob, purpose,  otherPurpose, bedno, appTime,
             visitLocation, qListID, qAns, qaid, amend);
         }
         if (typeOfRequest == "patient") {
@@ -446,7 +446,7 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         // Write to Visitor & Visit Table
         private String selfReg(String nric, String fname, String address, String postal, String mobtel,
-            String sex, String nationality, String dob, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
+            String sex, String nationality, String dob, String purpose, String otherPurpose, String bedno, String appTime,
             String visitLocation, String qListID, String qAns, String qaid, String amend) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -506,9 +506,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_VISIT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
-                command.Parameters.AddWithValue("@pPatientNRIC", pNric.ToUpper());
                 command.Parameters.AddWithValue("@pVisitorNRIC", nric.ToUpper());
-                command.Parameters.AddWithValue("@pPatientFullName", pName);
                 command.Parameters.AddWithValue("@pPurpose", purpose);
                 command.Parameters.AddWithValue("@pReason", otherPurpose);
                 command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
