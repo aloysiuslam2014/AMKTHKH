@@ -61,7 +61,6 @@ namespace THKH.Webpage.Staff
 
                 cnn.Open();
 
-                //rows = command.ExecuteNonQuery();
                 using (SqlDataReader reader = command.ExecuteReader())
             {
                     userInfo = new Object[reader.FieldCount];

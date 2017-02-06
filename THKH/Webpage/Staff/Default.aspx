@@ -84,7 +84,7 @@
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
                                 <h4 class="modal-title">Master Configuration</h4>
                             </div>
-                            <div class="modal-body text-center" id="appSettings" style="overflow-y:inherit">
+                            <div class="modal-body text-center" id="appSettings">
                                 <div class="row">
                                 <div class="col-sm-6">
                                 <label>Temperature Control</label>
@@ -317,7 +317,7 @@
                             <h3 style="">Search for Visitor</h3>
                             <label class="control-label" for="nric"><span style="color:lightcoral">*</span>Visitor's NRIC:</label>
                             <div class="input-group date" id="nricinputgroup">
-                                <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus />
+                                <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
                                 </span>
@@ -350,11 +350,6 @@
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="namesInput" />
                             </div>
-                            <%--<label for="emailinput">Email address</label>
-                            <div class="form-group">
-                                <input type="text" runat="server" class="form-control regInput" id="emailsInput" />
-                                <label for="emailsInput" id="emailWarning" style="color: lightcoral">Invalid Email Address Format!</label>
-                            </div>--%>
                             <label for="mobileinput"><span style="color:lightcoral">*</span>Mobile Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="mobilesInput" />
@@ -394,16 +389,6 @@
                                 <input type="text" runat="server" class="form-control required regInput" id="postalsInput" />
                                 <label for="postalsInput" id="posWarning" style="color: lightcoral">Invalid Postal Code Format!</label>
                             </div>
-                            <%--<label for="homeinput">Home Number</label>
-                            <div class="form-group">
-                                <input type="text" runat="server" class="form-control regInput" id="homesInput" />
-                                <label for="homesInput" id="homeWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
-                            </div>
-                            <label for="altInput">Alternate Number</label>
-                            <div class="form-group">
-                                <input type="text" runat="server" class="form-control regInput" id="altInput" />
-                                <label for="altInput" id="altWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
-                            </div>--%>
                         </div>
                     </div>
                     <div id="staticinfocontainer" class="col-sm-6" style="text-align: left" runat="server">

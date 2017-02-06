@@ -35,30 +35,22 @@
                              
                             <div style="margin-top: 40px" class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                <input id="txtUserName" runat="server" type="text" class="form-control" placeholder="Username" required autofocus />
+                                <input id="txtUserName" runat="server" type="text" class="form-control" placeholder="Username" required="required" autofocus="autofocus" />
                             </div><br />
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                                <input id="txtUserPass" runat="server" type="password" class="form-control" placeholder="Password" required />
+                                <input id="txtUserPass" runat="server" type="password" class="form-control" placeholder="Password" required="required" />
                             </div><br />                           
                             <div class="input-group center-block">
                             <div class="btn-group">
                                 <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success" Text="Login"/>
-                                <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary" Text="Check-In Terminal"/>
+                                <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary" Text="Check-In Terminal" CausesValidation="false"/>
                             </div>
-                            <label id="errorMsg" runat="server"></label>
+                            <label id="errorMsg" runat="server" style="color:lightcoral"></label>
                         </div>
                         </div>
                     </div>
                 </div>
-                <%--<div class="panel-footer">
-                    <div class="row">
-                        <div style="margin-left: 275px" class="col-xs-6 col-sm-6 col-md-6">
-                            <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success" Text="Login"/>
-                            <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary" Text="Check-In Terminal"/>
-                        </div>
-                    </div>
-                </div>--%>
             </div>
         </div>
     </div>
