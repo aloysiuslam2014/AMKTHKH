@@ -145,6 +145,8 @@
     <Content Include="Scripts\jquery-ui.theme.min.css" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\qz-tray.js" />
+    <Content Include="Webpage\SQL Script\THKHDB_06Feb17.sql" />
+    <Content Include="Webpage\SQL Script\THKHDB_30Jan17.sql" />
     <Content Include="Webpage\Staff\TerminalCalls\locationQueries.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -156,8 +158,6 @@
     <Content Include="Webpage\SQL Script\AddVisitor.sql" />
     <Content Include="Webpage\SQL Script\thkhdb create procedures.sql" />
     <Content Include="Webpage\SQL Script\thkhdb create tables.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_10Jan17.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_12Jan17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_15Jan17.sql" />
     <Content Include="Webpage\Staff\ContactTracing\query.js" />
     <Content Include="Webpage\Staff\default.js">
