@@ -36,7 +36,7 @@
 
             $(document).ready(function () {// once ready then we toggle based on ajax calls
                 $("#loadingGif").toggle(false);
-                hideTags();
+               
                 $(document).ajaxStart(function () {
                     $("#loadingGif").toggle(true);
                 });
@@ -1039,11 +1039,9 @@
                         <div class="panel-heading">
                             <h4 style="margin: 0">Sample Pass Output</h4>
                         </div>
-                        <div style="background-color: darkslategray; overflow-y: auto; text-align: center; height: calc(100% - 40px); position: relative; padding: 0;" class=" panel-body vertical-center center-block ">
+                        <div id="passContainers" style="background-color: darkslategray; overflow-y: auto; text-align: center; height: calc(100% - 40px); position: relative; padding: 0;" class=" panel-body vertical-center center-block ">
                             <button type="button" class="btn btn-success" onclick="savePassState()" style=" position: absolute; top: 0; left: calc(50% - 70px);  ">Save Pass Format</button>
-                            <div id="passLayout"  class=" " style="background-color: white; border: 1px solid; height: 197px; width: 280px; margin: auto;margin-top:40px;position:relative">
-                                
-                            </div>
+                          
 
                            
 

@@ -1,7 +1,6 @@
 ﻿/// <reference path="registrationPageScripts.js" />
 $(document).ready(function () {
-    
-    // ajax call here
+    hideTags();//when page loads
 });
 
 $('#navigatePage a:first').tab('show');

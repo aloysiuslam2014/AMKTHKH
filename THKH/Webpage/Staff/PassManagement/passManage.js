@@ -13,11 +13,16 @@ function convertDvToImg() {
     });
 }
 
+function convertMMtoPx(mmvalue) {
+    //http://www.translatorscafe.com/unit-converter/typography/4-8/ convert to px from mm formula from here
+    var convertedpx = (mmvalue * 3.78) + "px";
+    return convertedpx;
+}
 
 function loadPassState() {
 
     
-    if ($('#passLayout').is(':visible')) { //if the container is visible on the page
+    if ($('#passContainers').is(':visible')) { //if the container is visible on the page
     
         
         if (loadPassOnce) {
@@ -41,13 +46,23 @@ function loadPassState() {
                 if (res.toString() == "Success") {
                     var passSetup = resultOfGeneration.Msg;
                     if (passSetup != null) { //pass configurations exist
-                        var passLayout =  passSetup.divState;
-                        var elementPositionsJson = JSON.parse(passSetup.positions);
-                        sPositions = elementPositionsJson;
-                        var layout = $(passLayout).html();
-                        $("#passLayout").append(layout);
-                        cleanChildrenElements($("#passLayout"));
-                        $("#passLayout").children().each(function () {
+                        var passLayout = passSetup.divState;
+                        if (passLayout == null) {
+                            var passNew = document.createElement("div");
+                            $(passNew).attr("style", "background-color: white; border: 1px solid; height: 197px; width: 280px; margin: auto;margin-top:40px;position:relative");
+                            $(passNew).attr("id", "passLayout");
+                            $("#passContainers").append(passNew);
+                            return;
+                        }
+                        $(passLayout).attr("id", "passLayout");
+                        //var elementPositionsJson = JSON.parse(passSetup.positions);
+                        //sPositions = elementPositionsJson;
+                        //var layout = $(passLayout).html();
+                        //$("#passLayout").append(layout);
+                       // cleanChildrenElements($("passLayout"));
+                        cleanChildrenElements($(passLayout));
+                        $("#passContainers").append(passLayout);
+                        $(passLayout).children().each(function () {
                             if (!$(this).hasClass('notResizable')) {
                                 $(this).resizable({
                                     containment: "#passLayout"
@@ -242,8 +257,8 @@ function createDraggablElement(element) {
 }
 
 function changePassDimen(width,height){
-    $("#passLayout").css("width", width);
-    $("#passLayout").css("height", height);
+    $("#passLayout").css("width",convertMMtoPx(width));
+    $("#passLayout").css("height", convertMMtoPx(height));
 }
 
 function customDimenstions() {
