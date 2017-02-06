@@ -110,7 +110,27 @@
       
     });
 });
+
+function selectAllTerminals() {
+   
+        //get the list and get all the options
+    $("#terminalList li:not(.active)").each(function (idx, li) {
+            $(li).triggerHandler('click');
+        });
+
+   
+}
  
+function deselectAllTerminals() {
+        
+    //get the list and get all the options
+    $("#terminalList li.active").each(function (idx, li) {
+        $(li).triggerHandler('click');
+    });
+
+
+}
+
 function genericTerminalCofirmation(type){
     //All buttons will have a warning before proceeding on...
   

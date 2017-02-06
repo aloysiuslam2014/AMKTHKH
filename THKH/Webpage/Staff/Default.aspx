@@ -763,8 +763,8 @@
 
                             </div>
                             <div>
-                                <button id="deactivateAll" class="btn-primary btn">Deactivate All Terminals</button>
-                                <button id="deleteAll" class="btn-primary btn">Delete All Terminals</button>
+                                <button type="button" id="selectAllTerminals" onclick="selectAllTerminals();" class="btn-primary btn">Select All Terminals</button>
+                                <button id="deselectAllTerminals"  onclick="deselectAllTerminals();"" class="btn-primary btn">Deselect All Terminals</button>
                             </div>
 
 
