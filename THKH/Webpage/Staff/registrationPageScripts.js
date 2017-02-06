@@ -417,28 +417,32 @@ function NewAssistReg() {
 
 
         success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
-            if (resultOfGeneration.Result === "Success") {
-                if (resultOfGeneration.Visitor === "Visitor Limit Reached!") {
-                    // Show Error Modal!
-                    showMaxLimitModal();
-                    clearFields();
-                    //$('input:checkbox[name=declare]').attr('checked', false);
-                    hideTags();
-                    regCompleted = true;
+            try {
+                var resultOfGeneration = JSON.parse(returner);
+                if (resultOfGeneration.Result === "Success") {
+                    if (resultOfGeneration.Visitor === "Visitor Limit Reached!") {
+                        // Show Error Modal!
+                        showMaxLimitModal();
+                        clearFields();
+                        //$('input:checkbox[name=declare]').attr('checked', false);
+                        hideTags();
+                        regCompleted = true;
+                    } else {
+                        var today = new Date();
+                        regCompleted = true;
+                        showSuccessModal();
+                        //after showin then we load the pass go to the method show success modal to see
+                        //clearfields moved to close button on succes modal
+
+                        //$('input:checkbox[name=declare]').attr('checked', false);
+                        hideTags();
+                    }
+
                 } else {
-                    var today = new Date();
-                    regCompleted = true;
-                    showSuccessModal();
-                    //after showin then we load the pass go to the method show success modal to see
-                    //clearfields moved to close button on succes modal
-                   
-                    //$('input:checkbox[name=declare]').attr('checked', false);
-                    hideTags();
+                    alert("Error: " + resultOfGeneration.Msg);
                 }
-              
-            } else {
-                alert("Error: " + resultOfGeneration.Msg);
+            } catch (err) {
+                alert(err.message + ". User has most likely checked-in previously today");
             }
         },
         error: function (err) {
@@ -478,6 +482,8 @@ function purposePanels() {
         $("#purWarning").css("display", "none");
         $('#visLoc').prop('value', "");
         $('#purposeInput').val("");
+        $('#otherpurposevisit input').removeClass('required');
+        $('#patientpurposevisit input').addClass('required');
         return true;
     } else if (purpose === "Other Purpose") {
         $("#patientpurposevisit").css("display", "none");
@@ -488,6 +494,8 @@ function purposePanels() {
         $('#bedno').prop('value', "");
         $("#patientStatusRed").css("display", "none");
         $("#patientStatusGreen").css("display", "none");
+        $('#patientpurposevisit input').removeClass('required');
+        $('#otherpurposevisit input').addClass('required');
         return true;
     } else {
         $("#patientpurposevisit").css("display", "none");
