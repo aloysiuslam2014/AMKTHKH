@@ -124,7 +124,7 @@ function updateCheckIn() {
                     }
                    
                 }
-
+                $("#userNric").focusout();
                 if(exisingTimeouts != "")
                     clearTimeout(exisingTimeouts);
 
@@ -143,7 +143,7 @@ function hideWelcome(){
     $("#userNric").prop('value', '');
     $("#userNric").focus();
     $("#userWelcome").css('color', '');
-    
+   
 }
 
 function returnToLogin() {
