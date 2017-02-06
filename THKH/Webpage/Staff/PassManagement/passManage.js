@@ -47,13 +47,7 @@ function loadPassState() {
                     var passSetup = resultOfGeneration.Msg;
                     if (passSetup != null) { //pass configurations exist
                         var passLayout = passSetup.divState;
-                        if (passLayout == null) {
-                            var passNew = document.createElement("div");
-                            $(passNew).attr("style", "background-color: white; border: 1px solid; height: 197px; width: 280px; margin: auto;margin-top:40px;position:relative");
-                            $(passNew).attr("id", "passLayout");
-                            $("#passContainers").append(passNew);
-                            return;
-                        }
+                       
                         $(passLayout).attr("id", "passLayout");
                         //var elementPositionsJson = JSON.parse(passSetup.positions);
                         //sPositions = elementPositionsJson;
@@ -72,6 +66,12 @@ function loadPassState() {
                             createDraggablElement(this);
                         });
                    
+                    } else {
+                        var passNew = document.createElement("div");
+                        $(passNew).attr("style", "background-color: white; border: 1px solid; height: 197px; width: 280px; margin: auto;margin-top:40px;position:relative");
+                        $(passNew).attr("id", "passLayout");
+                        $("#passContainers").append(passNew);
+                        return;
                     }
                
                
