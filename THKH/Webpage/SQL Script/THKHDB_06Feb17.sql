@@ -130,6 +130,7 @@ CREATE TABLE STAFF 
 	passwordHash BINARY(64) NOT NULL, -- Hash it With SHA2-512 and add salt to further pad with randomization bits.  
 	salt UNIQUEIDENTIFIER ,  
 	permission INT NOT NULL, 
+	accessProfile VARCHAR(100) NOT NULL,
 	position VARCHAR(50) NOT NULL,  
 	dateCreated DATETIME NOT NULL,  
 	dateUpdated DATETIME NOT NULL,  
@@ -592,14 +593,14 @@ BEGIN 
     
 	BEGIN TRY  
         INSERT INTO staff (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
-							dateOfBirth, PasswordHash, permission, position, dateCreated, dateUpdated, createdBy)  
+							dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
         VALUES('Shahid', 'Abdul', 'S12345', '417 Pasir Ris', 123417, '999', '999', '999', 'asd@smu.edu.sg', 'M', 'SINGAPOREAN', 
-				'1991-01-01', HASHBYTES('SHA2_512', '123'),  123456 , 'Doctor', GETDATE(), GETDATE(), @pCreatedBy)  
+				'1991-01-01', HASHBYTES('SHA2_512', '123'),  123456 , 'Admin', 'Doctor', GETDATE(), GETDATE(), @pCreatedBy)  
 
 		INSERT INTO staff (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
-							dateOfBirth, PasswordHash, permission, position, dateCreated, dateUpdated, createdBy)  
+							dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
         VALUES('Aloysius', 'Lam', 'S9332934A', 'SMU', 123417, '999', '999', '999', 'aloysiuslam.2014@smu.edu.sg', 'M', 'SINGAPOREAN', 
-				'1992-01-01', HASHBYTES('SHA2_512', '123'),  123456 , 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
+				'1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
   
        SET @responseMessage='Success'   
     END TRY  
@@ -607,7 +608,7 @@ BEGIN 
     BEGIN CATCH  
         SET @responseMessage=ERROR_MESSAGE()   
     END CATCH  
-END;    
+END;
   
 
 ----------------------------------------------------------------------------- Procedures for creating Permissions
@@ -655,9 +656,9 @@ BEGIN 
     
 	BEGIN TRY  
         INSERT INTO staff (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
-							dateOfBirth, PasswordHash, permission, position, dateCreated, dateUpdated, createdBy)  
+							dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
         VALUES('Admin', 'Admin', 'S12345', 'THK Hospital', 123417, '999', '999', '999', 'admin@thk.com.sg', 'M', 'SINGAPOREAN', 
-				'1991-01-01', HASHBYTES('SHA2_512', 'passadmin1'),  123456 , 'Doctor', GETDATE(), GETDATE(), @pCreatedBy)  
+				'1991-01-01', HASHBYTES('SHA2_512', 'passadmin1'),  123456, 'Admin', 'Doctor', GETDATE(), GETDATE(), @pCreatedBy)  
 
        SET @responseMessage='Success'   
     END TRY  
@@ -883,7 +884,8 @@ CREATE PROCEDURE [dbo].[CREATE_STAFF]    
  	@pDOB          DATE = '09/08/1965',  
  	--@pAge          INT,  
  	--@pRace          VARCHAR(50),  
- 	@pPermission      INT = 1,  
+ 	@pPermission      INT = 1,
+	@pAccessProfile		VARCHAR(100), 
  	@pPostion        VARCHAR(100) = 'Nurse',  
   --@pDateCreated      DATETIME,  
   --@pDateUpdated      DATETIME,  
@@ -899,9 +901,9 @@ BEGIN 
     
 	BEGIN TRY  
         INSERT INTO staff (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
-							dateOfBirth, PasswordHash, permission, position, dateCreated, dateUpdated, createdBy)  
+							dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
         VALUES(@pFirstName, @pLastName, @pNric, @pAddress, @pPostal, @pHomeTel, @pAltTel, @pMobileTel, @pEmail, @pSex, @pNationality, 
-				@pDOB, HASHBYTES('SHA2_512', @pPassword),  @pPermission ,@pPostion, GETDATE(), GETDATE(), @pCreatedBy)  
+				@pDOB, HASHBYTES('SHA2_512', @pPassword),  @pPermission, @pAccessProfile,@pPostion, GETDATE(), GETDATE(), @pCreatedBy)  
   
        SET @responseMessage='Success'   
     END TRY  
@@ -909,7 +911,7 @@ BEGIN 
     BEGIN CATCH  
         SET @responseMessage=ERROR_MESSAGE()   
     END CATCH  
-END;  
+END;
   
 ---------------------------------------------------------------------------------------------------------------------------------------------------- Validate Staff Login  
 
@@ -1128,13 +1130,13 @@ BEGIN 
 	BEGIN
 		SET @responseMessage = 1
 
-		SELECT SUBSTRING(email, 1, CHARINDEX('@', email) - 1), firstName, lastName, permission 
+		SELECT SUBSTRING(email, 1, CHARINDEX('@', email) - 1), firstName, lastName, permission, accessProfile 
 		FROM dbo.STAFF 	  
 	END
 	
 	ELSE
 		SET @responseMessage = 0	  
-END; 
+END;
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Retrieving selected Staff
@@ -1207,6 +1209,7 @@ CREATE PROCEDURE [dbo].[UPDATE_STAFF]
 --@pAge INT,
 --@pRace VARCHAR(50),
 @pPermission INT,
+@pAccessProfile VARCHAR(100),
 @pPosition VARCHAR(50),
 @responseMessage INT OUTPUT  
   
@@ -1225,7 +1228,7 @@ BEGIN
 				UPDATE STAFF
 				SET firstName = @pFirstName, lastName = @pLastName, address = @pAddress, postalCode = @pPostalCode,
 					homeTel = @pHomeTel, altTel = @pAltTel, mobTel = @pMobileTel, sex= @pSex, nationality = @pNationality, dateOfBirth = @pDateOfBirth,
-					permission = @pPermission, position = @pPosition, dateUpdated = @pDateUpdated
+					permission = @pPermission, accessProfile = @pAccessProfile, position = @pPosition, dateUpdated = @pDateUpdated
 				WHERE nric = @pNRIC
 
 			SET @responseMessage = 2
@@ -1235,7 +1238,7 @@ BEGIN
 			UPDATE STAFF
 			SET passwordHash = HASHBYTES('SHA2_512', @pPassword), firstName = @pFirstName, lastName = @pLastName, address = @pAddress, postalCode = @pPostalCode,
 				homeTel = @pHomeTel, altTel = @pAltTel, mobTel = @pMobileTel, sex= @pSex, nationality = @pNationality, dateOfBirth = @pDateOfBirth,
-				permission = @pPermission, position = @pPosition, dateUpdated = @pDateUpdated
+				permission = @pPermission, accessProfile = @pAccessProfile, position = @pPosition, dateUpdated = @pDateUpdated
 			WHERE nric = @pNRIC
 
 			SET @responseMessage = 1 
