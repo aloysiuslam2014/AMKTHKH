@@ -916,8 +916,8 @@ function populateTime() {
             var resultOfGeneration = JSON.parse(returner);
             var mes = resultOfGeneration.Msg;
             var arr = mes.toString().split(",");
-            lowTime = arr[2].toString();
-            highTime = arr[3].toString();
+            lowTime = arr[3].toString();
+            highTime = arr[4].toString();
             var time = [
                         '00:00',
                         '00:30',
@@ -936,6 +936,7 @@ function populateTime() {
                         '07:30',
                         '08:00',
                         '08:30',
+                        '09:00',
                         '09:30',
                         '10:00',
                         '10:30',
