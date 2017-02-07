@@ -126,8 +126,21 @@
                                     <label id="timeHighLowWarning" style="color: lightcoral">End Time is before the Start Time!</label>
                                     <label id="timeSetWarning" style="color: lightcoral">Please provide a visit time range</label>
                                 </div>
+                                    
                                 </div>
-                                    </div><div class="row">
+                                    </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                    <label>Visitor Limit Per Bed</label>
+                                    <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Limit</span>
+                                            <input type="text" runat="server" class="form-control setInput" placeholder="Please enter a numerical value" id="visLimInput" />
+                                    </div>
+                                </div>
+                                        </div>
+                                </div>
+                                <div class="row">
                                 <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-save"></span> Save Settings</button>
                                     </div>
                                 <div class="modal-body text-center">

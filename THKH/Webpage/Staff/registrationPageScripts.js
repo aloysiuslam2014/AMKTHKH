@@ -19,6 +19,7 @@ var init = false;
 var lowTemp = "34";
 var highTemp = "40";
 var warnTemp = "37.6";
+var visLim = 3;
 
 // Check for visitor details & any online self registration information
 function callCheck (){
@@ -133,6 +134,7 @@ function callCheck (){
     dataFound = true;
 }
 
+//
 function loadBedPatientName(bedno) {
     var patientBedRequest = { requestType: "pName", bedNo: "" + bedno };
     var patientName = "";
@@ -224,7 +226,7 @@ function checkTime() {
 }
 
 
-
+//
 function addBedToVisit(patientName, patientBedNo) {
 
     if ($("#bedsAdded #"+patientBedNo).prop("id") != null) {
@@ -365,8 +367,6 @@ function NewAssistReg() {
     var address = $("#addresssInput").val();
     var postal = $("#postalsInput").val();
     var mobtel = $("#mobilesInput").val();
-    //var alttel = $("#altInput").val();
-    //var hometel = $("#homesInput").val();
     var alttel = "";
     var hometel = "";
     var sex = $("#sexinput").val();
@@ -375,14 +375,11 @@ function NewAssistReg() {
     var race = ""; 
     var age = 0;
     var temp = $("#temp").val();
-    //var Email = $("#emailsInput").val();
     var Email = "";
     var purpose = $("#pInput").val();
     var pName = $("#patientName").val();
     var pNric = $("#patientNric").val();
     var otherPurpose = $("#purposeInput").val();
-    // add all bedno's comma delimited here
-    //var bedno = $("#bedno").val();
     var bedno ="";
     var bedsLength = $("#bedsAdded").children().length;
     $("#bedsAdded").children().each(function (idx, iitem) {
@@ -396,10 +393,6 @@ function NewAssistReg() {
     var visTime = $("#visitbookingtime").val();
     var visDate = $("#visitbookingdate").val();
     var appTime = visDate + " " + visTime;
-    //var fever = $("#fever").val();
-    //var symptoms = $("#pimple").val();
-    //var influenza = $("#flu").val();
-    //var countriesTravelled = $("#sg").val();
     var remarks = $("#remarksinput").val();
     var visitLoc = $("#visLoc").val();
     var qAnswers = getQuestionnaireAnswers();
@@ -408,7 +401,7 @@ function NewAssistReg() {
     var headersToProcess = {
         staffUser:username,fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
         AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose,pName: pName, pNric: pNric,
-        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp, qListID: qListID, qAnswers: qAnswers, qaid: qaid
+        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp, qListID: qListID, qAnswers: qAnswers, qaid: qaid, visLim: visLim
     };
     $.ajax({
         url: './CheckInOut/checkIn.ashx',
@@ -747,6 +740,7 @@ function hideTags() {
     $("#timelabel").css("display", "none");
     if (!init) {
         hideSettingsModal();
+        getVisLim();
         loadFacilities();
         populateTime();
         populateRegNationalities();
@@ -1189,3 +1183,29 @@ $("#emailsInput").on("input", function () {
         validEmail = false;
     }
 });
+
+// Get visitor limit
+function getVisLim() {
+    var headersToProcess = {
+        requestType: "getConfig"
+    };
+    $.ajax({
+        url: '../Staff/MasterConfig/masterConfig.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            var mes = resultOfGeneration.Msg;
+            var arr = mes.toString().split(",");
+            fillAccessProfileList();
+            if (arr.length > 1) {
+                visLim = arr[5];
+            }
+        },
+        error: function (err) {
+            alert("Error: " + err.Msg);
+        },
+    });
+}

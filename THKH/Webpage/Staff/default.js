@@ -11,6 +11,7 @@ function updateConfig() {
     var warnTemp = $("#temSetInputWarn").val();
     var lowTime = $('#visTimeSetInputLower').val();
     var highTime = $('#visTimeSetInputHigh').val();
+    var visLim = $('#visLimInput').val();
     if (lowTemp !== '' & highTemp !== '') {
         validSetTemp = true;
     }
@@ -19,7 +20,7 @@ function updateConfig() {
     }
     if (validSetTemp && validSetTime) {
         var headersToProcess = {
-            requestType: "updateSettings", lowTemp: lowTemp, highTemp: highTemp, warnTemp:warnTemp, lowTime: lowTime, highTime: highTime, staffUser: username
+            requestType: "updateSettings", lowTemp: lowTemp, highTemp: highTemp, warnTemp:warnTemp, lowTime: lowTime, highTime: highTime, staffUser: username, visLim: visLim
         };
         $.ajax({
             url: '../Staff/MasterConfig/masterConfig.ashx',
@@ -55,6 +56,7 @@ function updateAccessProfile() {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Msg == "1") {
                 alert("Profile Saved!");
+                getVisLim();
             } else {
                 alert("Profile Not Saved!");
             }
@@ -212,6 +214,7 @@ function getCurrentConfig() {
                 $("#temSetInputWarn").prop('value', arr[2].toString());
                 $('#visTimeSetInputLower').val(arr[3].toString());
                 $('#visTimeSetInputHigh').val(arr[4].toString());
+                $('#visLimInput').val(arr[5].toString());
             }
         },
         error: function (err) {

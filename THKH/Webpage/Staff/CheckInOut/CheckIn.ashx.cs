@@ -114,10 +114,11 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var qListID = context.Request.Form["qListID"];
                 var qAns = context.Request.Form["qAnswers"];
                 var qAnsId = context.Request.Form["qaid"];
+                var visLim = context.Request.Form["visLim"];
 
                 successString = AssistReg(staffUser,nric, age, fname, address, postal, mobtel, alttel, hometel,
             sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
-            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature, qListID, qAns, qAnsId);
+            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature, qListID, qAns, qAnsId, visLim);
             }
             if (typeOfRequest == "facilities") {
                 successString = getFacilities();
@@ -573,7 +574,7 @@ namespace THKH.Webpage.Staff.CheckInOut
         // Write to Visitor, Visit & Confirmation Table
         private String AssistReg(String staffuser, String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature, String qListID, String qAns, String qaid) {
+            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature, String qListID, String qAns, String qaid, String visLim) {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -648,14 +649,14 @@ namespace THKH.Webpage.Staff.CheckInOut
             try
             {
                 dynamic num = checkNumCheckedIn(bedno);
-                if (num.visitors < 3) // May need to change to DB side
+                if (num.visitors < Int32.Parse(visLim)) // May need to change to DB side
                 {
                     msg += CheckIn(staffuser, nric, temperature);
                 }
                 else
                 {
                     successString.Replace("Success", "Failure");
-                    msg = "\"Limit for visitors at bed " + num.bedno + " has been reached!";
+                    msg = "\"Limit for visitors at bed " + num.bedno + " has been reached! Limit is " + visLim;
                     msg += "\"";
                 }
             }

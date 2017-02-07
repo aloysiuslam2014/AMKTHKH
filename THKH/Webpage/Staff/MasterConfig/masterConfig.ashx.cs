@@ -28,7 +28,8 @@ namespace THKH.Webpage.Staff
                 var warnTemp = context.Request.Form["warnTemp"];
                 var lowTime = context.Request.Form["lowTime"];
                 var highTime = context.Request.Form["highTime"];
-                successString = updateTempTime(lowTemp, highTemp, warnTemp, lowTime, highTime, staffUser);
+                var visLim = context.Request.Form["visLim"];
+                successString = updateTempTime(lowTemp, highTemp, warnTemp, lowTime, highTime, staffUser, visLim);
             }
             else if (requestType.ToString() == "getConfig")
             {
@@ -112,7 +113,7 @@ namespace THKH.Webpage.Staff
         }
 
         //
-        private String updateTempTime(String lowTemp, String highTemp, String warnTemp, String lowTime, String highTime, String staffUser) {
+        private String updateTempTime(String lowTemp, String highTemp, String warnTemp, String lowTime, String highTime, String staffUser, String visLim) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
@@ -128,6 +129,7 @@ namespace THKH.Webpage.Staff
                 command.Parameters.AddWithValue("@pLowTime", lowTime);
                 command.Parameters.AddWithValue("@pHighTime", highTime);
                 command.Parameters.AddWithValue("@pUpdatedBy", staffUser);
+                command.Parameters.AddWithValue("@pVisLim", Int32.Parse(visLim));
                 command.Parameters.Add(respon);
                 cnn.Open();
 
@@ -174,7 +176,7 @@ namespace THKH.Webpage.Staff
                         {
                             successString += ",";
                         }
-                        successString += reader.GetString(0) + "," + reader.GetString(1) + "," + reader.GetString(2) + "," + reader.GetString(3) + "," + reader.GetString(4);
+                        successString += reader.GetString(0) + "," + reader.GetString(1) + "," + reader.GetString(2) + "," + reader.GetString(3) + "," + reader.GetString(4) + "," + reader.GetInt32(5);
                         count++;
                     }
                 }
