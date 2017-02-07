@@ -541,6 +541,8 @@ function checkRequiredFields() {
 
     if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !checkNationals() || !purposePanels() || !checkTime() || !checkGender() || !validEmail) {
         valid = false;
+    } else {
+        valid = true;
     }
     if (valid) {
         $('#emptyFields').css("display", "none");

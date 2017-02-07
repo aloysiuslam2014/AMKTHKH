@@ -476,7 +476,7 @@
                                 <input type="hidden" name="declare" value="false" />
                                 <label for="declaration" id="declabel" style="color: lightcoral">Please check this option to continue</label>
                             </div>--%>
-                            <h4 id="emptyFields" style="color: lightcoral">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
+                            <h4 id="emptyFields" style="color: lightcoral">Please fill in all the required fields with valid data (*) highlighted in yellow & rectify the fields with warning(s) shown.</h4>
                             <button class="btn btn-success btn-block" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button>
                         </div>
                     </div>
