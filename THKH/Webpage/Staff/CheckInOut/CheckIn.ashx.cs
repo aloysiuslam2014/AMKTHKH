@@ -648,8 +648,9 @@ namespace THKH.Webpage.Staff.CheckInOut
             //check number of visitors currently with patient
             try
             {
-                dynamic num = checkNumCheckedIn(bedno);
-                if (num.visitors < Int32.Parse(visLim)) // May need to change to DB side
+                int limit = Int32.Parse(visLim);
+                dynamic num = checkNumCheckedIn(bedno, limit);
+                if (num.visitors < limit) // May need to change to DB side
                 {
                     msg += CheckIn(staffuser, nric, temperature);
                 }
@@ -769,7 +770,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             return successString;
         }
 
-        private dynamic checkNumCheckedIn(string bedno) {
+        private dynamic checkNumCheckedIn(string bedno, int limit) {
             dynamic result = new ExpandoObject();
 
             SqlConnection cnn;
@@ -784,7 +785,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                     SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@pBedNo", bed);
-                    command.Parameters.AddWithValue("@pLimit", 3); // Dynamic in the future
+                    command.Parameters.AddWithValue("@pLimit", limit);
                     SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
                     respon.Direction = ParameterDirection.Output;
                     command.Parameters.Add(respon);
