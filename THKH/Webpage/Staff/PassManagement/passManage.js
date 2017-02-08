@@ -48,7 +48,7 @@ function loadPassState() {
                     if (passSetup != null) { //pass configurations exist
                         var passLayout = passSetup.divState;
                        
-                        $(passLayout).attr("id", "passLayout");
+                      
                         //var elementPositionsJson = JSON.parse(passSetup.positions);
                         //sPositions = elementPositionsJson;
                         //var layout = $(passLayout).html();
@@ -56,7 +56,9 @@ function loadPassState() {
                        // cleanChildrenElements($("passLayout"));
                         cleanChildrenElements($(passLayout));
                         $("#passContainers").append(passLayout);
-                        $(passLayout).children().each(function () {
+                        $("#passContainers #passClone").attr("id", "passLayout");
+                        
+                        $("#passContainers #passLayout").children().each(function () {
                             if (!$(this).hasClass('notResizable')) {
                                 $(this).resizable({
                                     containment: "#passLayout"
@@ -178,16 +180,17 @@ function createPassAppendParent(parent, target, datapositions) {
        // $("#" + this.id + " .ui-resizable").remove();//remove special symbols to adjust the image or barcode of text size
     });
     
-   
+   /*
     $(target).children().each(function () {
        //set the elements position to its correct place based on offset
         var name = this.id;
         var leftposition = datapositions[name].left;
         
         $(this).css({ top: datapositions[name].top , left:datapositions[name].left });
-       
-    });
+       123
 
+    });
+    */
     //Generate new barcode and replace existing barcode value
     var barcodeElement = $("#"+$(target)[0].id).find("#barcode img");
     if(barcodeElement == null){
@@ -411,10 +414,10 @@ function printPass() {
     qz.websocket.connect().then(function () {
         return qz.printers.find("POS")               // Pass the printer name into the next Promise
     }).then(function (printer) {
-        var config = qz.configs.create(printer, { colorType: 'grayscale'});       // Create a default config for the found printer format: 'base64',
+        var config = qz.configs.create(printer, { colorType: 'grayscale' });       // Create a default config for the found printer format: 'base64',
         var rawDataFromImg = $("#imgPass")[0].toDataURL("image/png", 1).split(',')[1];
         var image = new Image();
-       // image.src = ;
+        // image.src = ;
         var data = [
      {
          type: 'image',
@@ -426,7 +429,7 @@ function printPass() {
         return qz.print(config, data);
     }).then(function () {
         endConnection();
-    }).catch(function (e) { alert(e); });
+    });
    
 }
 
