@@ -285,6 +285,7 @@ function validatePatient() {
                     $("#bedno").prop('value', arr[2]);
                     $("#patientStatusGreen").css("display", "block");
                     $("#patientStatusRed").css("display", "none");
+                    // Need logic here to check if visitor limit for that particular bed has been reached
                     //add to current beds visiting field
                     addBedToVisit(arr[1], arr[2]);
                 }else {
@@ -1100,6 +1101,7 @@ function populateTime() {
                         '07:30',
                         '08:00',
                         '08:30',
+                        '09:00',
                         '09:30',
                         '10:00',
                         '10:30',
