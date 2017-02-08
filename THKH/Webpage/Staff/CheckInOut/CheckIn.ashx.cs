@@ -794,7 +794,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                     command.ExecuteNonQuery();
                     cnn.Close();
                     result.visitors = respon.Value;
-                    if (Int32.Parse(respon.Value.ToString()) > 3)
+                    if (Int32.Parse(respon.Value.ToString()) > limit)
                     {
                         result.bedno = bed;
                         break;
