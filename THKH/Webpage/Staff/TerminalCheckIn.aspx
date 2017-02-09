@@ -97,7 +97,7 @@
                         </b></h3>
                         <input type="hidden" id="termValue" />
                          <div class="form-group" id="test22">
-                        <input type="text" class="form-control text-center userTextScan" id="userNric" autofocus />
+                        <input type="password" class="form-control text-center userTextScan" id="userNric"  autofocus />
                         <div id="userWelcome" class="text-success" style="font-size: 4em;">Please Scan Your Card</div>
                              
                         </div>

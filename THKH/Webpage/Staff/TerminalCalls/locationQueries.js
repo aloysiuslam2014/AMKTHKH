@@ -124,11 +124,11 @@ function updateCheckIn() {
                     }
                    
                 }
-                $("#userNric").focusout();
+                $("#userNric").attr("disabled", "disabled");
                 if(exisingTimeouts != "")
                     clearTimeout(exisingTimeouts);
 
-                exisingTimeouts = setTimeout(function () { hideWelcome(); }, 5000);
+                exisingTimeouts = setTimeout(function () { hideWelcome(); }, 3000);
                
             },
             error: function (err) {
@@ -141,6 +141,7 @@ function updateCheckIn() {
 function hideWelcome(){
     $("#userWelcome").html('Please Scan Your Card');
     $("#userNric").prop('value', '');
+    $("#userNric").removeAttr("disabled");
     $("#userNric").focus();
     $("#userWelcome").css('color', '');
    
