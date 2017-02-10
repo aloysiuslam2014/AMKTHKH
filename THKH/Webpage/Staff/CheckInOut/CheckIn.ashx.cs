@@ -229,6 +229,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             respon.Direction = ParameterDirection.Output;
             try
             {
+                //SqlCommand command = new SqlCommand("[dbo].[CONFIRM_HOSPITAL_PATIENT]", cnn);
                 SqlCommand command = new SqlCommand("[dbo].[CONFIRM_PATIENT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pBedNo", bedno);
@@ -238,52 +239,6 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
-            }
-            catch (Exception ex)
-            {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-            }
-            finally
-            {
-                cnn.Close();
-            }
-            successString += "\"}";
-            return successString;
-        }
-
-        // Check if patient exists in the Patient Database
-        private String checkHospitalPatient(String pName, String bedno)
-        {
-            SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["patientConnection"].ConnectionString);
-            //SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, -1);
-            //respon.Direction = ParameterDirection.Output;
-            try
-            {
-                SqlCommand command = new SqlCommand("SELECT (Pat_NRIC + ',' + Pat_Name + ',' + CAST(Bed AS VARCHAR(100))) FROM[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE Pat_Name LIKE '%' + @pPatientFullName + '%' AND Bed = @pBedNo", cnn);
-                command.CommandType = System.Data.CommandType.Text;
-                command.Parameters.AddWithValue("@pBedNo", bedno);
-                command.Parameters.AddWithValue("@pPatientFullName", pName);
-                //command.Parameters.Add(respon);
-                cnn.Open();
-
-                //command.ExecuteNonQuery();
-                //successString += respon.Value;
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        successString += reader.GetString(0);
-                    }
-                }
-                else
-                {
-                    successString += "none";
-                }
             }
             catch (Exception ex)
             {
