@@ -464,7 +464,7 @@ function clearFields() {
         });
     }
     $('input[id="ignoreNric"]').prop('checked', false);
-    $("#bedno").html("");
+    $("#bedsAdded").html("");
     var allowNric = false;
 }
 
@@ -478,7 +478,7 @@ function purposePanels() {
         $('#visLoc').prop('value', "");
         $('#purposeInput').val("");
         $('#otherpurposevisit input').removeClass('required');
-        $('#patientpurposevisit input').addClass('required');
+       // $('#patientpurposevisit input').addClass('required');
         return true;
     } else if (purpose === "Other Purpose") {
         $("#patientpurposevisit").css("display", "none");

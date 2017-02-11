@@ -190,7 +190,7 @@ namespace THKH.Webpage.Staff {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText bedno;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl bedno;
         
         /// <summary>
         /// patientNric control.
