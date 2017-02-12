@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8" />
     <title>Welcome <%= Session["username"].ToString()%> | Ang Mo Kio - Thye Hwa Kuan</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -426,7 +427,7 @@
                                 <label for="bedno"><span style="color:lightcoral">*</span>Bed Number</label>
                                 <%--Bed Number--%>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control regInput" id="bedno" />
+                                    <input type="number" runat="server" class="form-control regInput" id="bedno" />
                                 </div>
                                 <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
                                 <label></label>

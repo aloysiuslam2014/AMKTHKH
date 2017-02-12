@@ -207,10 +207,28 @@ function createPassAppendParent(parent, target, datapositions) {
     $(target).children().each(function () {
         //set the elements value based on id
         var name = this.id;
-        var inputVal = $("#userData").find("#" + name);
-        if (inputVal != null) {
-            $(this).html($(inputVal).val());
+        if (name == "bedno") {
+            
+            var inputVal = $("#userData").find("#bedsAdded");
+            if (inputVal != null) {
+                var bedTodisplay = "";
+                var numbOfBeds =  $(inputVal).children().length;
+                $(inputVal).children().each(function (index,item) {
+
+                    bedTodisplay += this.id;
+                    if (numbOfBeds + 1 < index) {
+                        bedTodisplay += ",";
+                    }
+                });
+                $(this).html(bedTodisplay);
+            }
+        }else {
+            var inputVal = $("#userData").find("#" + name);
+                if (inputVal != null) {
+                    $(this).html($(inputVal).val());
+                }
         }
+       
        
     });
 

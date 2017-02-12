@@ -30,10 +30,17 @@ $('#userNric').keypress(function (e) {
 
 function activateMe(me) {
    
+    var termName = "";
+    var termID = "";
     var nameAndId = me.id.toString().split(":");
-    terminalName.textContent = nameAndId[0];
-    termValue.value = nameAndId[1];
-    var headersToProcess = { action: "activate", id: nameAndId[1] };
+    termID = nameAndId.pop();
+    termValue.value = termID;
+    $(nameAndId).each(function (index, item) {
+        termName += item;
+    });
+    terminalName.textContent = termName;
+    
+    var headersToProcess = { action: "activate", id: termID };
     $.ajax({
         url: './TerminalCalls/TerminalCheck.ashx',
         method: 'post',
