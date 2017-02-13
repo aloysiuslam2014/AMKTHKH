@@ -44,7 +44,7 @@
                             <div class="input-group center-block">
                                 <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success btn-block" Text="Login"/>
                                 <p>--- OR ---</p>
-                                <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary btn-block" Text="Check-In Terminal" CausesValidation="false"/>
+                               <input type="button"  onclick="window.location='TerminalCheckIn.aspx';"  class="btn btn-default" value="Check-In Terminal"/>
                             <label id="errorMsg" runat="server" style="color:lightcoral"></label>
                         </div>
                         </div>

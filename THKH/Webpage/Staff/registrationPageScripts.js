@@ -762,7 +762,10 @@ function hideTags(clear) {
         init = true;
     }
 }
-
+function enterToCheckNric(e) {
+    if (e.which == 13 || e.keyCode == 13) {
+        checkNricWarningDeclaration(); false; }
+}
 function checkNricWarningDeclaration() {
     if ($("#nric").val() == "") {
         $("#emptyNricWarning").css("display", "block");

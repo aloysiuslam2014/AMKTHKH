@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8" />
     <title>Welcome <%= Session["username"].ToString()%> | Ang Mo Kio - Thye Hwa Kuan</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -347,7 +347,7 @@
                             </div>
                             <br />
                             <label class="control-label" for="temp"><span style="color:lightcoral">*</span>Temperature</label>
-                            <input runat="server" id="temp" class="form-control required regInput" type="text" />
+                            <input  id="temp" onkeypress=" return enterToCheckNric(event)" class="form-control required regInput" type="text" />
                             <h4 id="tempWarning" style="color: lightcoral">Visitor's Temperature is above the allowable 37.6 degrees celcius!</h4>
                             <h4 id="tempLimitWarning" style="color: lightcoral">Visitor's Temperature is above the limit of 37.6 degrees celcius!</h4>
                             <h4 id="lowtempWarning" style="color: lightcoral">Visitor's Temperature is below the allowable 34 degrees celcius!</h4>
