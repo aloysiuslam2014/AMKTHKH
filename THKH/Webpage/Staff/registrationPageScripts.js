@@ -66,7 +66,6 @@ function callCheck (){
                 } else {
                     var visitString = resultOfGeneration.Visit;
                     var questionnaireAns = resultOfGeneration.Questionnaire;
-                    //var qaid = resultOfGeneration.QAID;
                     var visitorArr = [];
                     var visitArr = [];
                     var questionnaireArr = [];
@@ -93,14 +92,9 @@ function callCheck (){
                         $("#addresssInput").prop('value', visitorArr[6]);
                         $("#postalsInput").prop('value', visitorArr[7]);
                         $("#mobilesInput").prop('value', visitorArr[5]);
-                        //$("#altInput").prop('value', visitorArr[8]);
-                        //$("#homesInput").prop('value', visitorArr[7]);
-                        //$("#emailsInput").prop('value', visitorArr[9]);
                     } if (visitArr.length > 1) {
                         $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10));
                         $("#visitbookingtime").val(visitArr[0].toString().substring(11, 16));
-                      //  $("#patientNric").prop('value', visitArr[1]);
-                      //  $("#patientName").prop('value', visitArr[3]);
                         var visPurpose = visitArr[2];
                         $('#pInput').val(visitArr[2]); // Purpose of visit "Visit Patient" or "Other Purpose"
                         if (visPurpose == "Visit Patient") {
@@ -112,7 +106,6 @@ function callCheck (){
                         }
                         $("#purposeInput").prop('value', visitArr[3]);
                         $("#visLoc").prop('value', visitArr[4]);
-                        //$("#bedno").prop('value', visitArr[7]);
                         if(visitArr[5].length > 0){
                             $(visitArr[5].split('|')).each(function () {//split bed no if possible then create the beds
                               
@@ -454,7 +447,14 @@ function NewAssistReg() {
                     }
 
                 } else {
-                    alert("Error: " + resultOfGeneration.Msg);
+                    if (resultOfGeneration.Visitor !== "1") {
+                        alert("Error: " + resultOfGeneration.Visitor);
+                    } else if (resultOfGeneration.Questionnaire !== "1") {
+                        alert("Error: " + resultOfGeneration.Visit);
+                    } else if (resultOfGeneration.Visit !== "1") {
+                        alert("Error: " + resultOfGeneration.Visit);
+                    }
+                    //alert("Error: " + resultOfGeneration.Msg);
                 }
             } catch (err) {
                 alert(err.message + ". User has most likely checked-in previously today");

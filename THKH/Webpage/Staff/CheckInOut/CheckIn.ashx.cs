@@ -47,18 +47,12 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var sex = context.Request.Form["SEX"];
                 var nationality = context.Request.Form["Natl"];
                 var dob = context.Request.Form["DOB"];
-                //var race = context.Request.Form["RACE"];
-                //var email = context.Request.Form["email"];
                 var purpose = context.Request.Form["PURPOSE"];
                 var pName = context.Request.Form["pName"];
                 var pNric = context.Request.Form["pNric"];
                 var otherPurpose = context.Request.Form["otherPurpose"];
                 var bedno = context.Request.Form["bedno"];
                 var appTime = context.Request.Form["appTime"];
-                //var fever = context.Request.Form["fever"];
-                //var symptoms = context.Request.Form["symptoms"];
-                //var influenza = context.Request.Form["influenza"];
-                //var countriesTravelled = context.Request.Form["countriesTravelled"];
                 var remarks = context.Request.Form["remarks"];
                 var visitLocation = context.Request.Form["visitLocation"];
                 var qListID = context.Request.Form["qListID"];
@@ -80,7 +74,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var pName = context.Request.Form["pName"];
                 var bedno = context.Request.Form["bedno"];
                 successString = checkPatient(pName, bedno);
-                //checkHospitalPatient(pName, bedno);
         }
         if (typeOfRequest == "confirmation") {
                 // Write to Visitor_Profile, Visit, Confirmed & CheckInCheckOut Tables
@@ -419,11 +412,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
                 command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
-                //command.Parameters.AddWithValue("@pHomeTel", hometel);
-                //command.Parameters.AddWithValue("@pAltTel", alttel);
-                //command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
                 command.Parameters.AddWithValue("@pAmend", Int32.Parse(amend));
@@ -435,7 +424,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
+                successString = successString.Replace("Success", "Failure");
                 msg = ex.Message;
                 successString += msg;
                 successString += "\"}";
@@ -451,7 +440,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
+                successString = successString.Replace("Success", "Failure");
                 msg = ex.Message;
                 successString += msg;
                 successString += "\"}";
@@ -477,7 +466,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
+                successString = successString.Replace("Success", "Failure");
                 msg = ex.Message + "\"";
             }
             finally
@@ -547,11 +536,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pGender", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
                 command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
-                //command.Parameters.AddWithValue("@pHomeTel", hometel);
-                //command.Parameters.AddWithValue("@pAltTel", alttel);
-                //command.Parameters.AddWithValue("@pEmail", email);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
                 command.Parameters.AddWithValue("@pPostalCode", postal);
                 command.Parameters.Add(respon);
@@ -562,7 +547,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
+                successString = successString.Replace("Success", "Failure");
                 msg = ex.Message;
                 successString += msg;
                 successString += "\"}";
@@ -594,35 +579,35 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
+                successString = successString.Replace("Success", "Failure");
                 msg = ex.Message;
                 successString += msg;
                 successString += "\"}";
                 return successString;
             }
             //check number of visitors currently with patient
-            try
-            {
-                int limit = Int32.Parse(visLim);
-                dynamic num = checkNumCheckedIn(bedno, limit);
-                if (num.visitors < limit) // May need to change to DB side
-                {
-                    msg += CheckIn(staffuser, nric, temperature);
-                }
-                else
-                {
-                    successString.Replace("Success", "Failure");
-                    msg = "\"Limit for visitors at bed " + num.bedno + " has been reached! Limit is " + visLim;
-                    msg += "\"";
-                }
-            }
-            catch (Exception ex)
-            {
-                successString.Replace("Success", "Failure");
-                msg = ex.Message;
-                successString += "\"}";
-                return successString;
-            }
+            //try
+            //{
+            //    int limit = Int32.Parse(visLim);
+            //    dynamic num = checkNumCheckedIn(bedno, limit);
+            //    if (num.visitors < limit) // May need to change to DB side
+            //    {
+            //        msg += CheckIn(staffuser, nric, temperature);
+            //    }
+            //    else
+            //    {
+            //        successString.Replace("Success", "Failure");
+            //        msg = "\"Limit for visitors at bed " + num.bedno + " has been reached! Limit is " + visLim;
+            //        msg += "\"";
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    successString = successString.Replace("Success", "Failure");
+            //    msg = ex.Message;
+            //    successString += "\"}";
+            //    return successString;
+            //}
 
             respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -646,7 +631,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
+                successString = successString.Replace("Success", "Failure");
                 successString += msg;
                 msg = ",\"Visit\":\"" + ex.Message;
                 successString += msg;
