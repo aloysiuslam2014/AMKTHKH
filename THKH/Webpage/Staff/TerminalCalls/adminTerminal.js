@@ -12,6 +12,16 @@
       
     });
 
+    
+    $('#terminalBedLink').on('change', function () {
+        
+        if (this.value == "Yes") {
+            $("#beds").prop('disabled', false);
+        } else {
+            $("#beds").prop('disabled', true);
+        }
+    })
+
     $('#addTerminalModal').on('shown.bs.modal', function () {
         $('#terminalNameInput').focus();
     })

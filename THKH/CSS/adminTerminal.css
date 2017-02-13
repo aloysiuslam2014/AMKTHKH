@@ -23,7 +23,7 @@
 #addTerminalModal{
     position:relative;
     width:inherit;
-    height:inherit;
+    height:auto !important;
 }
 
 #promptTerminalModal{

@@ -427,7 +427,7 @@
                                 <label for="bedno"><span style="color:lightcoral">*</span>Bed Number</label>
                                 <%--Bed Number--%>
                                 <div class="form-group">
-                                    <input type="number" runat="server" class="form-control regInput" id="bedno" />
+                                    <input type="text" class="form-control regInput" id="bedno" />
                                 </div>
                                 <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
                                 <label></label>
@@ -703,8 +703,14 @@
                                                 <div class="form-group">
                                                     <label>Terminal Name</label>
                                                     <input type="text" class="form-control text-center" id="terminalNameInput" placeholder="Enter Terminal Name" />
+                                                     <label>Terminal linked to a bed?</label>
+                                                    <select class="form-control" id="terminalBedLink" >
+                                                        
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </select>
                                                     <label>Bed's attached to Terminal</label>
-                                                    <input type="text" class="form-control text-center" id="beds" placeholder="Enter Bed Numbers seperated by comma" />
+                                                    <input type="text" class="form-control text-center" id="beds" disabled="" placeholder="Enter Bed Numbers seperated by comma" />
                                                     <label>Terminal in an infectious location?</label>
                                                     <%--<div class="form-group">--%>
                                                     <select class="form-control" id="terminalInfectious">
