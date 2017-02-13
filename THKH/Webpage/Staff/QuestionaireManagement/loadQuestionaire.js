@@ -695,6 +695,7 @@ $('#delQuestionsFromQuestionnaire').click(function () {
         $(li).remove();
     });
     questionnaireEdited = true;
+    filterCurrentList($("#searchQ"));
 });
 
 // Set selected questionnaire to active
