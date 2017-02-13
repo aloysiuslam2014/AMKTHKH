@@ -31,7 +31,7 @@ w3IncludeHTML();
 var validMob = true;
 var validAlt = true;
 var validHom = true;
-var validTemp = true;
+var validTemp = false;
 var validPos = true;
 var validEmail = true;
 var regCompleted = false;
@@ -44,107 +44,107 @@ var visLim = 3;
 // Check for visitor details & any online self registration information
 function callCheck (){
     //Do ajax call
-    var nricValue = nric.value;
-    var visDate = $('#visitbookingdate').val();
-    var msg;
-    var headersToProcess = { nric: nricValue, requestType: "getdetails" }; //Store objects in this manner 
-    $.ajax({
-        url: './CheckInOut/checkIn.ashx',
-        method: 'post',
-        data: headersToProcess,
-        
-        
-        success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
-            if (resultOfGeneration.Result === "Success") {
-                // ASHX returns all the visitor information
-                // Populate fields if visitor exists by spliting string into array of values & populating
-                var visitorString = resultOfGeneration.Visitor;
-                if (resultOfGeneration.Visitor === "new") {
-                    clearFields(false);
-                    $('#visitbookingdate').val(visDate);
-                } else {
-                    var visitString = resultOfGeneration.Visit;
-                    var questionnaireAns = resultOfGeneration.Questionnaire;
-                    var visitorArr = [];
-                    var visitArr = [];
-                    var questionnaireArr = [];
-                    if (resultOfGeneration.Visit != null & resultOfGeneration.Visit != "0") {
-                        visitArr = visitString.split(",");
-                    }
-                    if (resultOfGeneration.Visitor != null) {
-                        visitorArr = visitorString.split(",");
-                        if (resultOfGeneration.Questionnaire != null) {
-                            try {
-                                questionnaireArr = JSON.parse(resultOfGeneration.Questionnaire).Main;
-                            } catch (err) {
+        var nricValue = nric.value;
+        var visDate = $('#visitbookingdate').val();
+        var msg;
+        var headersToProcess = { nric: nricValue, requestType: "getdetails" }; //Store objects in this manner 
+        $.ajax({
+            url: './CheckInOut/checkIn.ashx',
+            method: 'post',
+            data: headersToProcess,
 
+
+            success: function (returner) {
+                var resultOfGeneration = JSON.parse(returner);
+                if (resultOfGeneration.Result === "Success") {
+                    // ASHX returns all the visitor information
+                    // Populate fields if visitor exists by spliting string into array of values & populating
+                    var visitorString = resultOfGeneration.Visitor;
+                    if (resultOfGeneration.Visitor === "new") {
+                        clearFields(false);
+                        $('#visitbookingdate').val(visDate);
+                    } else {
+                        var visitString = resultOfGeneration.Visit;
+                        var questionnaireAns = resultOfGeneration.Questionnaire;
+                        var visitorArr = [];
+                        var visitArr = [];
+                        var questionnaireArr = [];
+                        if (resultOfGeneration.Visit != null & resultOfGeneration.Visit != "0") {
+                            visitArr = visitString.split(",");
+                        }
+                        if (resultOfGeneration.Visitor != null) {
+                            visitorArr = visitorString.split(",");
+                            if (resultOfGeneration.Questionnaire != null) {
+                                try {
+                                    questionnaireArr = JSON.parse(resultOfGeneration.Questionnaire).Main;
+                                } catch (err) {
+
+                                }
                             }
                         }
-                    }
-                    if (visitorArr.length > 1) {
-                        // Populate fields if data exists
-                        $("#nric").prop('value', visitorArr[0]);
-                        $("#namesInput").prop('value', visitorArr[1]);
-                        $("#sexinput").prop('value', visitorArr[2].trim());
-                        $("#nationalsInput").val(visitorArr[3]);
-                        $("#daterange").val(visitorArr[4].toString()); // Error
-                        $("#addresssInput").prop('value', visitorArr[6]);
-                        $("#postalsInput").prop('value', visitorArr[7]);
-                        $("#mobilesInput").prop('value', visitorArr[5]);
-                    } if (visitArr.length > 1) {
-                        $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10));
-                        $("#visitbookingtime").val(visitArr[0].toString().substring(11, 16));
-                        var visPurpose = visitArr[2];
-                        $('#pInput').val(visitArr[2]); // Purpose of visit "Visit Patient" or "Other Purpose"
-                        if (visPurpose == "Visit Patient") {
-                            $("#patientpurposevisit").css("display", "block");
-                            $("#otherpurposevisit").css("display", "none");
-                        } else if (visPurpose == "Other Purpose") {
-                            $("#patientpurposevisit").css("display", "none");
-                            $("#otherpurposevisit").css("display", "block");
+                        if (visitorArr.length > 1) {
+                            // Populate fields if data exists
+                            $("#nric").prop('value', visitorArr[0]);
+                            $("#namesInput").prop('value', visitorArr[1]);
+                            $("#sexinput").prop('value', visitorArr[2].trim());
+                            $("#nationalsInput").val(visitorArr[3]);
+                            $("#daterange").val(visitorArr[4].toString()); // Error
+                            $("#addresssInput").prop('value', visitorArr[6]);
+                            $("#postalsInput").prop('value', visitorArr[7]);
+                            $("#mobilesInput").prop('value', visitorArr[5]);
+                        } if (visitArr.length > 1) {
+                            $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10));
+                            $("#visitbookingtime").val(visitArr[0].toString().substring(11, 16));
+                            var visPurpose = visitArr[2];
+                            $('#pInput').val(visitArr[2]); // Purpose of visit "Visit Patient" or "Other Purpose"
+                            if (visPurpose == "Visit Patient") {
+                                $("#patientpurposevisit").css("display", "block");
+                                $("#otherpurposevisit").css("display", "none");
+                            } else if (visPurpose == "Other Purpose") {
+                                $("#patientpurposevisit").css("display", "none");
+                                $("#otherpurposevisit").css("display", "block");
+                            }
+                            $("#purposeInput").prop('value', visitArr[3]);
+                            $("#visLoc").prop('value', visitArr[4]);
+                            if (visitArr[5].length > 0) {
+                                $(visitArr[5].split('|')).each(function () {//split bed no if possible then create the beds
+
+                                    loadBedPatientName(this);
+                                });
+                            }
+                            $("#qaid").prop('value', visitArr[6]);
+                            $("#remarks").prop('value', visitArr[7]);
+                        } if (questionnaireArr.length > 1) {
+                            for (i = 0; i < questionnaireArr.length; i++) {
+                                var jsonAnswerObject = questionnaireArr[i];
+                                var qid = jsonAnswerObject.qid;
+                                var answer = jsonAnswerObject.answer
+                                //$("#" + qid).prop('value', answer);
+                                $('#' + qid).val(answer);
+                                $("#questionaireForm input[name='" + qid + "'][value='" + answer + "']").prop("checked", true);
+                                $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
+                            }
+                            //$("#qaid").prop('value', qaid);
                         }
-                        $("#purposeInput").prop('value', visitArr[3]);
-                        $("#visLoc").prop('value', visitArr[4]);
-                        if(visitArr[5].length > 0){
-                            $(visitArr[5].split('|')).each(function () {//split bed no if possible then create the beds
-                              
-                                loadBedPatientName(this);
-                            });
+                        else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
+                            clearFields(false);
+                            // Except Visit Date
+                            $('#visitbookingdate').val(visDate);
+                            $("#nric").prop('value', nricValue);
                         }
-                        $("#qaid").prop('value', visitArr[6]);
-                        $("#remarks").prop('value', visitArr[7]);
-                    } if (questionnaireArr.length > 1) {
-                        for (i = 0; i < questionnaireArr.length; i++) {
-                            var jsonAnswerObject = questionnaireArr[i];
-                            var qid = jsonAnswerObject.qid;
-                            var answer = jsonAnswerObject.answer
-                            //$("#" + qid).prop('value', answer);
-                            $('#' + qid).val(answer);
-                            $("#questionaireForm input[name='" + qid + "'][value='" + answer + "']").prop("checked", true);
-                            $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
-                        }
-                        //$("#qaid").prop('value', qaid);
                     }
-                    else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
-                        clearFields(false);
-                        // Except Visit Date
-                        $('#visitbookingdate').val(visDate);
-                        $("#nric").prop('value', nricValue);
-                    }
+                    $('#main').animate({
+                        scrollTop: $("#userData").offset().top
+                    }, 1000);
+                } else {
+                    alert("Error: " + resultOfGeneration.Msg);
                 }
-                $('#main').animate({
-                    scrollTop: $("#userData").offset().top
-                }, 1000);
-            } else {
-                alert("Error: " + resultOfGeneration.Msg);
-            }
-        },
-        error: function (err) {
-            alert(err.Msg);
-        },
-    });
-    dataFound = true;
+            },
+            error: function (err) {
+                alert(err.Msg);
+            },
+        });
+        dataFound = true;
 }
 
 //
@@ -229,7 +229,7 @@ function checkGender() {
 
 // Check visit time input field
 function checkTime() {
-    if ($("#visitbookingtime").val() == '') {
+    if ($("#visitbookingtime").val() == null || $("#visitbookingtime").val() == '') {
         $("#timelabel").css("display", "block");
         return false;
     } else {
@@ -638,10 +638,14 @@ $("#altInput").on("input", function () {
 
 // Check if visitor record exists in database
 function checkExistOrNew() {
-        $("#emptyNricWarning").css("display", "none");
+    $("#emptyNricWarning").css("display", "none");
+    if (validTemp) {
         callCheck();
         $("#newusercontent").css("display", "block");
         $("#staticinfocontainer").css("display", "block");
+    } else {
+        $("#invalidTempWarning").css("display", "block");
+    }
 }
 
 // Get Questionnaire Answers by .answer class
@@ -782,10 +786,14 @@ function hideTags(clear) {
         init = true;
     }
 }
+
+//
 function enterToCheckNric(e) {
     if (e.which == 13 || e.keyCode == 13) {
         checkNricWarningDeclaration(); false; }
 }
+
+//
 function checkNricWarningDeclaration() {
     if ($("#nric").val() == "") {
         $("#emptyNricWarning").css("display", "block");

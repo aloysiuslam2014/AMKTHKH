@@ -161,7 +161,7 @@ function getUserDetails(listObj) {
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Msg == "Success") {
-                clearStaffFields();
+                clearStaffFields(false);
                 $("#staffEmail").val(resultOfGeneration.Result.email);
                 $("#staffEmail").prop('readonly', true);
                 $("#staffFirstName").val(resultOfGeneration.Result.firstName);
@@ -175,7 +175,7 @@ function getUserDetails(listObj) {
                 $("#staffSex").val(resultOfGeneration.Result.sex.trim());
                 $("#staffNationality").val(resultOfGeneration.Result.nationality);
                 $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
-                $('#permiss').find('input[type=checkbox]:checked').prop("checked", false); // Bug
+                //$('#permiss').find('input[type=checkbox]:checked').removeAttr('checked');
                 var perm = resultOfGeneration.Result.permissions.toString();
                 for (i = 0; i < perm.length; i++) {
                     var val = perm.charAt(i)
@@ -228,7 +228,7 @@ function updateUser() {
             if (resultOfGeneration.Result == "Success") {
                 if (resultOfGeneration.Msg == "1" || resultOfGeneration.Msg == "2") {
                     showUpdateUserSuccessModal(resultOfGeneration.Msg);
-                    clearStaffFields();
+                    clearStaffFields(true);
                 }
             } else {
                 // Error
@@ -256,8 +256,6 @@ function addUser() {
     var sex = $("#staffSex").val();
     var nationality = $("#staffNationality").val();
     var dob = $("#staffDOB").val();
-    //var race = $("#staffRace").val();
-    //var age = $("#staffAge").val();
     var Email = $("#staffEmail").val();
     var staffTitle = $("#staffTitle").val();
     var staffPwd = $("#staffPwd").val();
@@ -280,7 +278,7 @@ function addUser() {
                     showAddUserSuccessModal();
                     getAllUsers();
                     hideUserTags();
-                    clearStaffFields();
+                    clearStaffFields(true);
                 }
             } else {
                 // Error
@@ -293,21 +291,28 @@ function addUser() {
 }
 
 
-function clearStaffFields() {
+function clearStaffFields(newUser) {
     $('#userInfo .userInput').each(function (idx, obj) {
-        $(obj).prop("value", "");
-        $(obj).css('background', '#ffffff');
+        if ($(obj).attr("type") !== "checkbox") {
+            $(obj).prop("value", "");
+            $(obj).css('background', '#ffffff');
+        }
     });
     var update = false;
-    $("#staffEmail").prop('readonly', false);
-    $("#userMode").text("Create New User");
-    //$('#permiss').find('input[type=checkbox]:checked').prop("checked", false);
-    $("#newUser").prop('disabled', false);
-    $("#updateUser").prop('disabled', true);
+    if (newUser) {
+        $("#staffEmail").prop('readonly', false);
+        $("#userMode").text("Create New User");
+        $("#newUser").prop('disabled', false);
+        $("#updateUser").prop('disabled', true);
+        hideUserTags();
+    } else {
+        $("#staffEmail").prop('readonly', true);
+        $("#newUser").prop('disabled', true);
+        $("#updateUser").prop('disabled', false);
+    }
     $("#staffDOB").prop('readonly', true);
     $("#staffDOB").prop('disabled', false);
-    hideUserTags();
-    //deSelectAllUsers();
+    $('#permiss').find('input[type=checkbox]:checked').removeAttr('checked');
 }
 
 // Retrive value from checkbox
@@ -621,7 +626,7 @@ function getSelectedAccessProfileUser() {
                 var mes = resultOfGeneration.Msg;
 
                 //clear existing options
-                $('#permiss').find('input[type=checkbox]:checked').prop("checked", false);
+                $('#permiss').find('input[type=checkbox]:checked').removeAttr('checked');
                 for (i = 0; i < mes.length; i++) {
                     var item = mes[i].Permissions.toString();
                     for (j = 0; j < item.length; j++) {

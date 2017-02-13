@@ -948,7 +948,7 @@
                         </div>
                         <h4 id="emptyUserFields" style="color: lightcoral">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         <div class="btn-group">               
-                            <button type="button" class="btn btn-primary" onclick="clearStaffFields(); false"><span class="glyphicon glyphicon-remove"></span> Clear All Fields</button>
+                            <button type="button" class="btn btn-primary" onclick="clearStaffFields(true); false"><span class="glyphicon glyphicon-remove"></span> Clear All Fields</button>
                             <button type="button" id="newUser" class="btn btn-success" onclick="checkRequiredFieldsUser('new'); false"><span class="glyphicon glyphicon-plus"></span> Create New User</button>
                             <button type="button" id="updateUser" class="btn btn-success" onclick="checkRequiredFieldsUser('update'); false"><span class="glyphicon glyphicon-floppy-saved"></span> Update Existing User</button>       
                         </div>
