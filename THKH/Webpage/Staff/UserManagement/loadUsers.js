@@ -161,6 +161,7 @@ function getUserDetails(listObj) {
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Msg == "Success") {
+                clearStaffFields();
                 $("#staffEmail").val(resultOfGeneration.Result.email);
                 $("#staffEmail").prop('readonly', true);
                 $("#staffFirstName").val(resultOfGeneration.Result.firstName);
@@ -621,7 +622,6 @@ function getSelectedAccessProfileUser() {
 
                 //clear existing options
                 $('#permiss').find('input[type=checkbox]:checked').prop("checked", false);
-
                 for (i = 0; i < mes.length; i++) {
                     var item = mes[i].Permissions.toString();
                     for (j = 0; j < item.length; j++) {
