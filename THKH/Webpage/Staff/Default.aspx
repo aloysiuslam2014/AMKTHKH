@@ -67,7 +67,6 @@
         // Hide Settings Modal
         function hideSettingsModal() {
             $('#settingsModal').modal('hide');
-            // Clear fields
         }
 
     </script>
@@ -939,7 +938,7 @@
                                 </div>
                                 <label><span style="color:lightcoral">*</span>Password (If no change, leave this blank)</label>
                                 <div class="form-group">
-                                    <input id="staffPwd" class="form-control required userInput" /></div>
+                                    <input id="staffPwd" type="password" class="form-control required userInput" /></div>
                         </div>
                         <h4 id="emptyUserFields" style="color: lightcoral">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         <div class="btn-group">               

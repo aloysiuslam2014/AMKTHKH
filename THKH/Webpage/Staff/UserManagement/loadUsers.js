@@ -129,20 +129,6 @@ function initUsersList(data) {
                 // Event Handlers
 
                 $widget.on('click', function () {
-                  
-                    //    var checkBox = $(this).parent().find(".hidden");
-                    //    $(checkBox).prop('checked', !$(checkBox).is(':checked'));
-                    //    $(checkBox).triggerHandler('change');
-                    //// Need logic here to deselect the rest of the checkboxes
-                    //    if ($(checkBox).is(':checked')) {
-                    //        $("#userMode").text("Edit Existing User");
-                    //        $("#newUser").prop('disabled', true);
-                    //        $("#updateUser").prop('disabled', false);
-                    //        getUserDetails($(this));  //Get the user details only checkbox is not checked. If deselecting dont get the user
-                    //    } else {
-                    //        //clearStaffFields();
-                    //    }
-                    //    updateDisplay($(this));
                     $("#userMode").text("Edit Existing User");
                     $("#newUser").prop('disabled', true);
                     $("#updateUser").prop('disabled', false);
@@ -159,34 +145,6 @@ function initUsersList(data) {
     
 
 }
-//Filter the list of available users
-//function filterUserList(elment) {
-
-//    var value = $(elment).val();
-//    if (value == '' || value == ' ') {
-//        $('#usersLis > li').show();
-//        hideQuestionsAppearingInQuestionaire();
-//    } else {
-//        $('#usersLis > li:not(:containsi(' + value + '))').hide();
-//        $('#usersLis > li:containsi(' + value + ')').show();
-//    }
-
-//}
-
-// select all given a target object
-//function selectAllUsers() {
-//    $("#usersLis li.inactive span").each(function (idx, li) {
-//            $(li).triggerHandler('click');
-//        });
-    
-//}
-
-// deselect all from a target list given a keyword
-//function deSelectAllUsers() {
-//    $("#usersLis li.active span").each(function (idx, li) {
-//            $(li).triggerHandler('click');
-//        });
-//}
 
 // get a selected users details
 function getUserDetails(listObj) {
@@ -216,9 +174,7 @@ function getUserDetails(listObj) {
                 $("#staffSex").val(resultOfGeneration.Result.sex.trim());
                 $("#staffNationality").val(resultOfGeneration.Result.nationality);
                 $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
-                //$("#staffAge").val(resultOfGeneration.Result.age);
-                //$("#staffRace").val(resultOfGeneration.Result.race);
-                $('#permiss').find('input[type=checkbox]:checked').prop("checked", false);
+                $('#permiss').find('input[type=checkbox]:checked').prop("checked", false); // Bug
                 var perm = resultOfGeneration.Result.permissions.toString();
                 for (i = 0; i < perm.length; i++) {
                     var val = perm.charAt(i)
@@ -252,8 +208,6 @@ function updateUser() {
     var sex = $("#staffSex").val();
     var nationality = $("#staffNationality").val();
     var dob = $("#staffDOB").val();
-    //var race = $("#staffRace").val();
-    //var age = $("#staffAge").val();
     var Email = $("#staffEmail").val();
     var staffTitle = $("#staffTitle").val();
     var staffPwd = $("#staffPwd").val();
@@ -285,35 +239,6 @@ function updateUser() {
         },
     });
 }
-
-// Delete Selected User
-//function deleteUser() {
-//    var snric = $("#staffNric").val();
-//    var Email = $("#staffEmail").val();
-//    var headersToProcess = {
-//        nric: snric, email:Email, requestType: "deleteUser"
-//    };
-//    $.ajax({
-//        url: '../Staff/UserManagement/userManagement.ashx',
-//        method: 'post',
-//        data: headersToProcess,
-
-
-//        success: function (returner) {
-//            var resultOfGeneration = JSON.parse(returner);
-//            if (resultOfGeneration.Result == "Success") {
-//                if (resultOfGeneration.Msg == "1") {
-//                    // Success
-//                } else {
-//                    // Failure to Delete
-//                }
-//            }
-//        },
-//        error: function (err) {
-//            alert("Error: " + err.msg + ". Please contact the administrator.");
-//        },
-//    });
-//}
 
 // Add new user
 function addUser() {
@@ -370,15 +295,17 @@ function addUser() {
 function clearStaffFields() {
     $('#userInfo .userInput').each(function (idx, obj) {
         $(obj).prop("value", "");
+        $(obj).css('background', '#ffffff');
     });
     var update = false;
     $("#staffEmail").prop('readonly', false);
     $("#userMode").text("Create New User");
-    $('#permiss').find('input[type=checkbox]:checked').prop("checked", false);
+    //$('#permiss').find('input[type=checkbox]:checked').prop("checked", false);
     $("#newUser").prop('disabled', false);
     $("#updateUser").prop('disabled', true);
     $("#staffDOB").prop('readonly', true);
     $("#staffDOB").prop('disabled', false);
+    hideUserTags();
     //deSelectAllUsers();
 }
 
