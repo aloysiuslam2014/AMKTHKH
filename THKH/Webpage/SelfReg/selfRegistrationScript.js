@@ -904,6 +904,13 @@ function populateNationalities() {
 function populateTime() {
     var lowTime = "";
     var highTime = "";
+    var date = new Date();
+    var timeStr = "";
+    if (date.getMinutes() > 30) {
+        timeStr = (date.getHours() + 1) + ":00";
+    } else {
+        timeStr = (date.getHours()) + ":30";
+    }
     var headersToProcess = {
         requestType: "getConfig"
     };
@@ -918,6 +925,9 @@ function populateTime() {
             var mes = resultOfGeneration.Msg;
             var arr = mes.toString().split(",");
             lowTime = arr[3].toString();
+            if (Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) {
+                lowTime = timeStr;
+            }
             highTime = arr[4].toString();
             var time = [
                         '00:00',
