@@ -142,7 +142,7 @@
                                         </div>
                                 </div>
                                 <div class="row">
-                                <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-save"></span> Save Settings</button>
+                                <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-floppy-saved"></span> Save Settings</button>
                                     </div>
                                 <div class="modal-body text-center">
                                     <div class="row">
@@ -162,11 +162,11 @@
                                 <div id="permissSet" class="form-group">
                                 <%--checkbox--%>
                                 </div>
-                                <button id="savePermissGroup" class="btn btn-success" onclick="updateAccessProfile(); false;"><span class="glyphicon glyphicon-off"></span> Save Access Profile</button>
+                                <button id="savePermissGroup" class="btn btn-success" onclick="updateAccessProfile(); false;"><span class="glyphicon glyphicon-floppy-saved"></span> Save Access Profile</button>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-danger btn-block" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>     
+                                    <button class="btn btn-danger btn-block" id="closeSettingsButton" onclick="hideSettingsModal(); false;"><span class="glyphicon glyphicon-remove"></span> Close</button>     
                                 </div>
                             </div>
                         </div>
@@ -190,8 +190,8 @@
                                 </div>
                                     </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-danger" id="closeNewProfileButton" onclick="hideNewProfileModal(); false;"><span class="glyphicon glyphicon-off"></span> Cancel</button>     
-                                    <button class="btn btn-success" id="saveProfileButton" onclick="newAccessProfile(); false;"><span class="glyphicon glyphicon-save"></span> Save Profile</button>
+                                    <button class="btn btn-danger" id="closeNewProfileButton" onclick="hideNewProfileModal(); false;"><span class="glyphicon glyphicon-remove"></span> Cancel</button>     
+                                    <button class="btn btn-success" id="saveProfileButton" onclick="newAccessProfile(); false;"><span class="glyphicon glyphicon-floppy-saved"></span> Save Profile</button>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +204,7 @@
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
                                 <h4 class="modal-title">Delete Profile</h4>
                                 <label style="color:lightcoral">Do you wish to delete this user access control profile? Changes cannot be undone.</label>
-                                <button class="btn btn-danger" id="closeDelProfileButton" onclick="hideDelProfileModal(); false;"><span class="glyphicon glyphicon-off"></span> Cancel</button>     
+                                <button class="btn btn-danger" id="closeDelProfileButton" onclick="hideDelProfileModal(); false;"><span class="glyphicon glyphicon-remove"></span> Cancel</button>     
                                     <button class="btn btn-success" id="delSelProfileButton" onclick="delAccessProfile(); false;"><span class="glyphicon glyphicon-trash"></span> Delete Profile</button>
                             </div>
                             </div>
@@ -226,7 +226,7 @@
                     <%if (accessRightsStr.Contains('1'))
                         { %>
                     <li id="regtab" runat="server">
-                        <a href="#registration" data-toggle="tab" onclick="hideTags(); false;">Registration
+                        <a href="#registration" data-toggle="tab" onclick="hideTags(true); false;">Registration
                         </a>
                     </li>
                     <%  }
@@ -302,8 +302,8 @@
                                     <label>Visitor has been checked in!</label>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-block btn-info" id="printButton" onclick="printPass(); false;"><span class="glyphicon glyphicon-off"></span> Print</button>
-                                <button class="btn btn-block btn-danger" id="closeSuccessButton" onclick="hideSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                                <button class="btn btn-block btn-info" id="printButton" onclick="printPass(); false;"><span class="glyphicon glyphicon-list-alt"></span> Print</button>
+                                <button class="btn btn-block btn-danger" id="closeSuccessButton" onclick="hideSuccessModal(); false;"><span class="glyphicon glyphicon-remove"></span> Close</button>
                             </div>
                         </div>
                     </div>
@@ -319,7 +319,7 @@
                                     <label>Visitor Limit for this Bed has been Reached!</label>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-block btn-danger" id="closeMaxLimitButton" onclick="hideMaxLimitModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                                <button class="btn btn-block btn-danger" id="closeMaxLimitButton" onclick="hideMaxLimitModal(); false;"><span class="glyphicon glyphicon-remove"></span> Close</button>
                             </div>
                         </div>
                     </div>
@@ -333,6 +333,7 @@
                             <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />
                                 <span class="input-group-btn">
+                                    <button class="btn btn-default" id="clearAllBtn" onclick="hideTags(true); false;" runat="server"><span class="glyphicon glyphicon-ban-circle"></span> Clear Fields</button>
                                     <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
                                 </span>
                             </div>
@@ -432,7 +433,7 @@
                                 <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
                                 <label></label>
                                 <div class="form-group">
-                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-check"></span>Add Patient</button>
+                                    <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-ok-circle"></span>Add Patient</button>
                                     <label id="patientStatusGreen" style="color: green">Patient Found!</label>
                                     <label id="patientStatusRed" style="color: lightcoral">Patient Not Found!</label>
                                 </div>
@@ -546,13 +547,13 @@
                             </ul>
                         </div>
                         <div class="btn-group">
-                            <button type="button" onclick="selectAll('qnaire'); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span>Select All</button>
-                            <button type="button" onclick="deSelectAll('qnaire');false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span>Unselect All</button>
+                            <button type="button" onclick="selectAll('qnaire'); false;" class="btn btn-default"><span class="glyphicon glyphicon-check"></span> Select All</button>
+                            <button type="button" onclick="deSelectAll('qnaire');false;" class="btn btn-default"><span class="glyphicon glyphicon-unchecked"></span> Deselect All</button>
                         </div>
                         <br />
                         <div class="btn-group">
                             <button type="button" id="delQuestionsFromQuestionnaire" onclick="removeQFromQuestionnaire(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Remove Questions</button>
-                            <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save Form</button>
+                            <button type="submit" id="saveQuestionnaireChangesButton" onclick="updateQuestionnaire(); false;" class="btn btn-success"><span class="glyphicon glyphicon-floppy-saved"></span> Save Form</button>
                         </div>
                         <div class="modal fade" id="updateQuestionnaireSuccess" role="dialog">
                                     <div class="modal-dialog">
@@ -655,8 +656,8 @@
                                             Question Values
                                             <textarea id="detailsQnValues" class="form-control qnVal" rows="2" placeholder="Enter answer values seperated by comma in the following format: <Option 1>,<Option 2>,<Option 3>" cols="60"></textarea>
                                         </div><br />
-                                        <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Close</button>
-                                        <button type="button" id="updateOrCreateQn" onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Save Question</button>
+                                        <button type="button" data-toggle="collapse" data-target="#qnEditor" id="closeQnEditor" onclick="closeEditor(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Close</button>
+                                        <button type="button" id="updateOrCreateQn" onclick="updateOrCreate(); false;" class="btn btn-success"><span class="glyphicon glyphicon-floppy-saved"></span> Save Question</button>
                                         <label id="emptyQuestionWarning" style="color:red">Please enter a question/answer type!</label>
                                         <label id="questionWarning" style="color:red">Question name already exists! Please use a unique name.</label>
                                         <label id="questionValWarning" style="color:red">Question type requires a response value! Please enter at least 1 response value.</label>
@@ -719,8 +720,8 @@
 
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">
-                                                <button type="button" id="adminCloseTerminal" class="btn btn-danger btn-default "><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-                                            <button type="button" class="btn btn-success" id="addNewTerminal"><span class="glyphicon glyphicon-off"></span> Add New Terminal</button>
+                                                <button type="button" id="adminCloseTerminal" class="btn btn-danger "><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                            <button type="button" class="btn btn-success" id="addNewTerminal"><span class="glyphicon glyphicon-plus"></span> Add New Terminal</button>
                                             </div>
                                         </div>
 
@@ -738,7 +739,7 @@
 
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">
-                                                <button type="button" id="closeAllTerminal" class="btn btn-danger btn-default "><span class="glyphicon glyphicon-remove"></span>Close</button>
+                                                <button type="button" id="closeAllTerminal" class="btn btn-danger "><span class="glyphicon glyphicon-remove"></span>Close</button>
                                             </div>
                                         </div>
 
@@ -757,7 +758,7 @@
 
                                             </div>
                                             <div class="modal-footer" style="text-align: center !important;">
-                                                <button type="button" id="confirmAction" class="btn bg-primary btn-default "><span class="glyphicon glyphicon-save-file"></span>Confirm</button>
+                                                <button type="button" id="confirmAction" class="btn bg-primary btn-default "><span class="glyphicon glyphicon-floppy-saved"></span>Confirm</button>
                                                 <button type="button" id="cancelAction" class="btn btn-danger btn-default "><span class="glyphicon glyphicon-remove"></span>Close</button>
                                             </div>
                                         </div>
@@ -808,7 +809,7 @@
                                     <label>New user added at <%=TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Now).AddHours(8).ToString() %>.</label>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-block btn-danger" onclick="hideAddUserSuccessModal(); false;"><span class="glyphicon glyphicon-off"></span> Close</button>
+                                <button class="btn btn-block btn-danger" onclick="hideAddUserSuccessModal(); false;"><span class="glyphicon glyphicon-remove"></span> Close</button>
                             </div>
                         </div>
                     </div>
@@ -1126,7 +1127,7 @@
                     <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace();"><span class="glyphicon glyphicon-search"></span>Trace</button>
                     </span>
                     <span class="input-group-btn">
-                        <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-save "></span>Generate CSV</button>
+                        <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-list"></span>Generate CSV</button>
                     </span>
                 </div>
 

@@ -42,10 +42,9 @@
                                 <input id="txtUserPass" runat="server" type="password" class="form-control" placeholder="Password" required="required" />
                             </div><br />                           
                             <div class="input-group center-block">
-                            <div class="btn-group">
-                                <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success" Text="Login"/>
-                                <input type="button"  onclick="window.location='TerminalCheckIn.aspx';"  class="btn btn-default" value="Check-In Terminal"/>
-                            </div>
+                                <asp:button runat="server" OnClick="loginSubmit_Click" type="button" class="btn btn-success btn-block" Text="Login"/>
+                                <p>--- OR ---</p>
+                                <asp:button runat="server" OnClick="checkInTerminal_Click" type="button" class="btn btn-primary btn-block" Text="Check-In Terminal" CausesValidation="false"/>
                             <label id="errorMsg" runat="server" style="color:lightcoral"></label>
                         </div>
                         </div>
