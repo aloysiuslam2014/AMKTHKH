@@ -1,6 +1,6 @@
 ﻿/// <reference path="registrationPageScripts.js" />
 $(document).ready(function () {
-    hideTags();//when page loads
+    hideTags(false);//when page loads
 });
 
 $('#navigatePage a:first').tab('show');
@@ -41,7 +41,7 @@ function callCheck (){
                 // Populate fields if visitor exists by spliting string into array of values & populating
                 var visitorString = resultOfGeneration.Visitor;
                 if (resultOfGeneration.Visitor === "new") {
-                    clearFields();
+                    clearFields(false);
                     $('#visitbookingdate').val(visDate);
                 } else {
                     var visitString = resultOfGeneration.Visit;
@@ -114,7 +114,7 @@ function callCheck (){
                         //$("#qaid").prop('value', qaid);
                     }
                     else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
-                        clearFields();
+                        clearFields(false);
                         // Except Visit Date
                         $('#visitbookingdate').val(visDate);
                         $("#nric").prop('value', nricValue);
@@ -418,9 +418,9 @@ function NewAssistReg() {
                     if (resultOfGeneration.Visitor === "Visitor Limit Reached!") {
                         // Show Error Modal!
                         showMaxLimitModal();
-                        clearFields();
+                        //clearFields();
                         //$('input:checkbox[name=declare]').attr('checked', false);
-                        hideTags();
+                        hideTags(true);
                         regCompleted = true;
                     } else {
                         var today = new Date();
@@ -430,7 +430,7 @@ function NewAssistReg() {
                         //clearfields moved to close button on succes modal
 
                         //$('input:checkbox[name=declare]').attr('checked', false);
-                        hideTags();
+                        hideTags(false);
                     }
 
                 } else {
@@ -448,8 +448,8 @@ function NewAssistReg() {
     var allowNric = false;
 }
 
-function clearFields() {
-    if (regCompleted) {
+function clearFields(overwrite) {
+    if (overwrite) {
         $("#registration .regInput").each(function (idx, obj) {
             if ($(obj).attr("id") != "visitbookingdate") {
                 $(obj).prop("value", "");
@@ -457,15 +457,24 @@ function clearFields() {
         });
         regCompleted = false;
     } else {
-        $("#registration .regInput").each(function (idx, obj) {
-            if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp") {
-                $(obj).prop("value", "");
-            }
-        });
+        if (regCompleted) {
+            $("#registration .regInput").each(function (idx, obj) {
+                if ($(obj).attr("id") != "visitbookingdate") {
+                    $(obj).prop("value", "");
+                }
+            });
+            regCompleted = false;
+        } else {
+            $("#registration .regInput").each(function (idx, obj) {
+                if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp") {
+                    $(obj).prop("value", "");
+                }
+            });
+        }
+        $('input[id="ignoreNric"]').prop('checked', false);
+        $("#bedsAdded").html("");
+        var allowNric = false;
     }
-    $('input[id="ignoreNric"]').prop('checked', false);
-    $("#bedsAdded").html("");
-    var allowNric = false;
 }
 
 // Display appropriate panels according to visit purpose
@@ -715,7 +724,10 @@ function getFormattedDate(date) {
 }
 
 // hide all warnings on page load
-function hideTags() {
+function hideTags(clear) {
+    if (clear) {
+        clearFields(true);
+    }
     $("#invalidTempWarning").css("display", "none");
     $("#emptyFields").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
@@ -1161,7 +1173,7 @@ function showSuccessModal() {
 function hideSuccessModal() {
     $('#successModal').modal('hide');
     $(" #imgPass").remove();//remove the currently generated pass
-    clearFields();//clear all fields
+    clearFields(true);//clear all fields
 }
 
 // Show Max Limit Modal

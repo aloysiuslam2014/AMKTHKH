@@ -229,8 +229,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             respon.Direction = ParameterDirection.Output;
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[CONFIRM_HOSPITAL_PATIENT]", cnn);
-                //SqlCommand command = new SqlCommand("[dbo].[CONFIRM_PATIENT]", cnn);
+                //SqlCommand command = new SqlCommand("[dbo].[CONFIRM_HOSPITAL_PATIENT]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[CONFIRM_PATIENT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pBedNo", bedno);
                 command.Parameters.AddWithValue("@pPatientFullName", pName);
