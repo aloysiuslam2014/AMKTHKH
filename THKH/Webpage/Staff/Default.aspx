@@ -427,7 +427,7 @@
                                 <label for="bedno"><span style="color:lightcoral">*</span>Bed Number</label>
                                 <%--Bed Number--%>
                                 <div class="form-group">
-                                    <input type="number" runat="server" class="form-control regInput" id="bedno" />
+                                    <input type="text" class="form-control regInput" id="bedno" />
                                 </div>
                                 <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
                                 <label></label>
