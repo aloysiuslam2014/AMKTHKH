@@ -39,14 +39,16 @@ function unifiedTrace() {
                 for (i = 0; i < arrLen; i++) {
                     var uqResultJSON = uqResult.Msg[i];
 
-                    writeUQResultsTable(uqResultJSON);
+                    //writeUQResultsTable(uqResultJSON);
+                    //$('#uq_resultstable').dataTable().fnClearTable();
+                    $('#uq_resultstable').dataTable().fnAddData(uqResultJSON);
                 }
                 //var uqResultJSON = uqResult.Msg[0];
 
                 //writeUQResultsTable(uqResultJSON);
 
             } catch (err) {
-                alert("Selected period returns no data. Please try again");
+                alert("Selected period returns no data. Please try again. " + err);
             }
            
         },

@@ -163,8 +163,9 @@ namespace THKH.Webpage.Staff.ContactTracing
 
         private String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults) {
             String result = "";
-            List<String> serializedResults = new List<String>();
+            //List<String> serializedResults = new List<String>();
             List<dynamic> serializedResults1 = new List<dynamic>();
+            List<List<String>> datatable_array = new List<List<String>>();
 
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
@@ -188,6 +189,8 @@ namespace THKH.Webpage.Staff.ContactTracing
                     //innerItem.mobileTel = deserializedVisit.mobileTel;
                     //innerItem.nationality = deserializedVisit.nationality;
 
+                    List<String> datatable_arrayitem = new List<String>();
+
                     innerItem.location = deserializedVisit["location"];
                     innerItem.bedno = deserializedVisit["bedno"];
                     innerItem.checkin_time = deserializedVisit["checkin_time"];
@@ -200,13 +203,28 @@ namespace THKH.Webpage.Staff.ContactTracing
                     if (reg) { innerItem.reg = "Yes"; } else { innerItem.reg = "No"; }
                     if (scan) { innerItem.scan = "Yes"; } else { innerItem.scan = "No"; }
 
+                    datatable_arrayitem.Add((string)innerItem.location);
+                    datatable_arrayitem.Add((string)innerItem.bedno);
+                    datatable_arrayitem.Add((string)innerItem.checkin_time);
+                    datatable_arrayitem.Add((string)innerItem.exit_time);
+                    datatable_arrayitem.Add((string)innerItem.fullName);
+                    datatable_arrayitem.Add((string)innerItem.nric);
+                    datatable_arrayitem.Add((string)innerItem.mobileTel);
+                    datatable_arrayitem.Add((string)innerItem.nationality);
+
+                    datatable_arrayitem.Add((string)innerItem.reg);
+                    datatable_arrayitem.Add((string)innerItem.scan);
+
+                    datatable_array.Add(datatable_arrayitem);
+
                     serializedResults1.Add(innerItem);
                     //String serializedResult = Newtonsoft.Json.JsonConvert.SerializeObject(innerItem);
                     //serializedResults.Add(serializedResult);
                 }
             }
             json.Result = "Success";
-            json.Msg = serializedResults1.ToArray();
+            //json.Msg = serializedResults1.ToArray();
+            json.Msg = datatable_array;
             //json.Msg = serializedResults;
 
             result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
