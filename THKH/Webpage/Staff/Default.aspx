@@ -1174,7 +1174,7 @@
                     </tbody>
                 </table>
 
-                <script>
+                <%--<script>
                     $(document).ready(function () {
                         $('#uq_resultstable').DataTable({
                             "searching": false,
@@ -1182,7 +1182,7 @@
                             "deferRender": true
                         });
                     });
-                </script>
+                </script>--%>
             </div>
         </div>
 
