@@ -327,7 +327,7 @@
                 <div class="row">
                     <div id="nurseInputArea" class="col-md-6 col-md-offset-3">
                         <div class="jumbotron" style="text-align: left">
-                            <h3 style="">Search for Visitor</h3>
+                            <h3 style="color:lightblue">Search for Visitor</h3>
                             <label class="control-label" for="nric"><span style="color:lightcoral">*</span>Visitor's NRIC:</label>
                             <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />
