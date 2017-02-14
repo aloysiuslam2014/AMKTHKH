@@ -14,18 +14,12 @@ function NewSelfReg() {
     var address = $("#addresssInput").val();
     var postal = $("#postalsInput").val();
     var mobtel = $("#mobilesInput").val();
-    //var alttel = $("#altInput").val();
-    //var hometel = $("#homesInput").val();
     var sex = $("#sexinput").val();
     var nationality = $("#nationalsInput").val();
     var dob = $("#daterange").val();
-    //var race = "Chinese";
-    //var age = 23;
-    //var Email = $("#emailsInput").val();
     var purpose = $("#pInput").val();
 
     var otherPurpose = $("#purposeInput").val();
-  //  var bedno = $("#bedno").val();
     var bedno = "";
     var bedsLength = $("#bedsAdded").children().length;
     $("#bedsAdded").children().each(function (idx, iitem) {
@@ -38,11 +32,6 @@ function NewSelfReg() {
     var visTime = $("#visitbookingtime").val();
     var visDate = $("#visitbookingdate").val();
     var appTime = visDate + " " + visTime;
-    //var fever = $("#fever").val();
-    //var symptoms = $("#pimple").val();
-    //var influenza = $("#flu").val();
-    //var countriesTravelled = $("#sg").val();
-    //var remarks = $("#remarksinput").val();
     var visitLoc = $("#visLoc").val();
     var qListID = $("#qnlistid").val();
     var qAnswers = getQuestionnaireAnswers();
@@ -175,9 +164,6 @@ function validatePatient() {
                         $("#patientStatusGreen").css("display", "block");
                         $("#patientStatusRed").css("display", "none");
                         $("#patientStatusNone").css("display", "none");
-                       // $("#patientName").prop('disabled', true);
-                       // $("#pInput").prop('disabled', true);
-                       // $("#bedno").prop('disabled', true);
                         patientValidated = true;
                         $("#userDetails").css("display", "block");
                         checkIfExistingVisitor();
@@ -333,10 +319,8 @@ function showExistContent() {
 // Display Submit Button according to whether the user has checked the declaration checkbox
 function declarationValidation() {
     if ($("#declaration").prop('checked') === true && patientValidated === true) {
-        //$("#declabel").css("display", "none");
         $("#submitNewEntry").css("display", "block");
     } else {
-        //$("#declabel").css("display", "block");
         $("#submitNewEntry").css("display", "none");
     }
 }
@@ -344,7 +328,6 @@ function declarationValidation() {
 // Datetime Picker JQuery
 $(function () {
     $('#datetimepicker').datetimepicker({
-        // dateFormat: 'dd-mm-yy',
         defaultDate: new Date(),
         maxDate: 'now',
         format: 'DD-MM-YYYY',
@@ -352,13 +335,11 @@ $(function () {
     });
     $('#visitbookingtimediv').datetimepicker(
         {
-            // dateFormat: 'dd-mm-yy',
             defaultDate: new Date(),
             format: 'HH:mm' // Change to 15 Min Intervals
         });
     $('#visitbookingdatediv').datetimepicker(
         {
-            // dateFormat: 'dd-mm-yy',
             defaultDate: new Date(),
             format: 'DD-MM-YYYY'
         });
@@ -543,19 +524,15 @@ function getQuestionnaireAnswers() {
         if (type != null & type == 'radio') {
             var check = element.attr('checked');
             if (check) {
-                //answers += id + ':' + element.val() + ',';
                 allAnswers.push(id + ':' + element.val());
             }
         } if (type != null & type == 'text') {
-            //answers += id + ':' + element.val() + ',';
             allAnswers.push(id + ':' + element.val());
         } if (type != null & type == 'select-one') {
-            //answers += id + ':' + element.val() + ',';
             allAnswers.push(id + ':' + element.val());
         } if (type != null & type == 'checkbox') {
             var check = element.is(":checked");
             if (check) {
-                //answers += id + ':' + element.val() + ',';
                 allAnswers.push(id + ':' + element.val());
             }
         }
@@ -580,8 +557,6 @@ function getQuestionnaireAnswers() {
     }
     jsonObject = jsonObject.substring(0, jsonObject.length - 1);
     jsonObject += "]}";
-    //answers = answers.substring(0, answers.length - 1);
-    //var jsonString = JSON.stringify(answers);
     var jsonString = JSON.stringify(jsonObject);
     return jsonString;
 }
