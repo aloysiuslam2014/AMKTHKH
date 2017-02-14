@@ -586,28 +586,38 @@ namespace THKH.Webpage.Staff.CheckInOut
                 return successString;
             }
             //check number of visitors currently with patient
-            //try
-            //{
-            //    int limit = Int32.Parse(visLim);
-            //    dynamic num = checkNumCheckedIn(bedno, limit);
-            //    if (num.visitors < limit) // May need to change to DB side
-            //    {
-            //        msg += CheckIn(staffuser, nric, temperature);
-            //    }
-            //    else
-            //    {
-            //        successString.Replace("Success", "Failure");
-            //        msg = "\"Limit for visitors at bed " + num.bedno + " has been reached! Limit is " + visLim;
-            //        msg += "\"";
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    successString = successString.Replace("Success", "Failure");
-            //    msg = ex.Message;
-            //    successString += "\"}";
-            //    return successString;
-            //}
+            try
+            {
+                int limit = Int32.Parse(visLim);
+                var bedArr = bedno.Split('|');
+                Boolean valid = true;
+                for (int i = 0; i < bedArr.Length; i++)
+                {
+                    dynamic num = checkNumCheckedIn(bedArr[i], limit);
+                    if (num.visitors >= limit) // May need to change to DB side
+                    {
+                        valid = false;
+                    }
+                }
+                //dynamic num = checkNumCheckedIn(bedno, limit);
+                if (valid) // May need to change to DB side
+                {
+                    msg += CheckIn(staffuser, nric, temperature);
+                }
+                else
+                {
+                    successString.Replace("Success", "Failure");
+                    msg = "\"Limit of " + visLim + " per bed has been reached.";
+                    msg += "\"";
+                }
+            }
+            catch (Exception ex)
+            {
+                successString = successString.Replace("Success", "Failure");
+                msg = ex.Message;
+                successString += "\"}";
+                return successString;
+            }
 
             respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;

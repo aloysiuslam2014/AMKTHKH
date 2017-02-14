@@ -163,7 +163,6 @@ function getUserDetails(listObj) {
             if (resultOfGeneration.Msg == "Success") {
                 clearStaffFields(false);
                 $("#staffEmail").val(resultOfGeneration.Result.email);
-                $("#staffEmail").prop('readonly', true);
                 $("#staffFirstName").val(resultOfGeneration.Result.firstName);
                 $("#staffLastName").val(resultOfGeneration.Result.lastName);
                 $("#staffNric").val(resultOfGeneration.Result.nric);
@@ -175,7 +174,6 @@ function getUserDetails(listObj) {
                 $("#staffSex").val(resultOfGeneration.Result.sex.trim());
                 $("#staffNationality").val(resultOfGeneration.Result.nationality);
                 $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
-                //$('#permiss').find('input[type=checkbox]:checked').removeAttr('checked');
                 var perm = resultOfGeneration.Result.permissions.toString();
                 for (i = 0; i < perm.length; i++) {
                     var val = perm.charAt(i)

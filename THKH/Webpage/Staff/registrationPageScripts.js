@@ -431,8 +431,6 @@ function NewAssistReg() {
                     if (resultOfGeneration.Visitor === "Visitor Limit Reached!") {
                         // Show Error Modal!
                         showMaxLimitModal();
-                        //clearFields();
-                        //$('input:checkbox[name=declare]').attr('checked', false);
                         hideTags(true);
                         regCompleted = true;
                     } else {
@@ -440,10 +438,8 @@ function NewAssistReg() {
                         regCompleted = true;
                         showSuccessModal();
                         //after showin then we load the pass go to the method show success modal to see
-                        //clearfields moved to close button on succes modal
-
-                        //$('input:checkbox[name=declare]').attr('checked', false);
-                        hideTags(false);
+                        
+                        hideTags(false); //clearfields moved to close button on success modal
                     }
 
                 } else {
@@ -454,7 +450,6 @@ function NewAssistReg() {
                     } else if (resultOfGeneration.Visit !== "1") {
                         alert("Error: " + resultOfGeneration.Visit);
                     }
-                    //alert("Error: " + resultOfGeneration.Msg);
                 }
             } catch (err) {
                 alert(err.message + ". User has most likely checked-in previously today");
