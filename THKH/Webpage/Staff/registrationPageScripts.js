@@ -487,9 +487,10 @@ function clearFields(overwrite) {
             });
         }
         $('input[id="ignoreNric"]').prop('checked', false);
-        $("#bedsAdded").html("");
+        
         var allowNric = false;
     }
+    $("#bedsAdded").html("");
 }
 
 // Display appropriate panels according to visit purpose

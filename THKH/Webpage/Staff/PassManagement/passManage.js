@@ -216,7 +216,7 @@ function createPassAppendParent(parent, target, datapositions) {
                 $(inputVal).children().each(function (index,item) {
 
                     bedTodisplay += this.id;
-                    if (numbOfBeds + 1 < index) {
+                    if (index + 1 < numbOfBeds) {
                         bedTodisplay += ",";
                     }
                 });
@@ -224,8 +224,13 @@ function createPassAppendParent(parent, target, datapositions) {
             }
         }else {
             var inputVal = $("#userData").find("#" + name);
+            var originWidth = $(this).width();
                 if (inputVal != null) {
                     $(this).html($(inputVal).val());
+                }
+                if ($(this).css("text-align") == "center") {
+                    var updatedLeft = $(this).prop("offsetLeft") - (($(this).width() - originWidth) / 2);
+                    $(this).css("left", updatedLeft + "px")
                 }
         }
        
