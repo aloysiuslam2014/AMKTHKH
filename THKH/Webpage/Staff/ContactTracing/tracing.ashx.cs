@@ -48,8 +48,8 @@ namespace THKH.Webpage.Staff.ContactTracing
             String bedORloc = queryParts[0];
             String uq_startdate_str = queryParts[1];
             String uq_enddate_str = queryParts[2];
-            DateTime uq_startdate = DateTime.ParseExact(uq_startdate_str, "dd-MM-yyyy", CultureInfo.InvariantCulture); // Might be time format issue
-            DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            DateTime uq_startdate = DateTime.ParseExact(uq_startdate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture); // Might be time format issue
+            DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             //DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "MM/dd/yyyy h:mm tt", null);
             String uq_place = queryParts[3];
             String[] uq_place_arr = uq_place.Split(',');

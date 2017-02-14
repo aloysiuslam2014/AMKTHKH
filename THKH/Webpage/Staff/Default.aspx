@@ -1116,7 +1116,7 @@
                         $('#unifiedquery_enddatetime').datetimepicker({
                             defaultDate: new Date(),
                             maxDate: 'now',
-                            format: 'DD-MM-YYYY'
+                            format: 'YYYY-MM-DD'
                         });
                     });
                 </script>
@@ -1179,7 +1179,11 @@
                         $('#uq_resultstable').DataTable({
                             "searching": false,
                             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                            "deferRender": true
+                            "deferRender": true,
+                            dom: 'Bfrtip',
+                            buttons: [
+                            'copy', 'csv', 'excel', 'pdf', 'print'
+                        ]
                         });
                     });
                 </script>
