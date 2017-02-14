@@ -1737,24 +1737,42 @@ BEGIN
 	IF (@pVisit_Date != '')
     BEGIN TRY
 		IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
+		BEGIN
+			DECLARE @pTempBedTb TABLE (bedno VARCHAR(10))
+			DECLARE @pTerminalBedTb TABLE (bedno VARCHAR(10))
+
+			DECLARE @pVisiting_Bedno VARCHAR(200)
+			DECLARE @pTerminal_Bedno VARCHAR(200)
+
+			SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = 'S123' AND
+									CONVERT(VARCHAR(10), visitRequestTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
+									ORDER BY visitRequestTime DESC)
+			
+			SET @pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
+
+			INSERT INTO @pTempBedTb
+				SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, ',')
+
+			INSERT INTO @pTerminalBedTb
+				SELECT * FROM dbo.FUNC_SPLIT(@pTerminal_Bedno, ',')
+
+			-- Retrieve Patient's BedNo according to the Visitor's registered Visit	
+			IF EXISTS (SELECT tb.bedno FROM @pTerminalBedTb tb
+						WHERE tb.bedno IN (SELECT bedno FROM @pTempBedTb))
 			BEGIN
-				-- Retrieve Patient's BedNo according to the Visitor's registered Visit	
-				IF EXISTS (SELECT DISTINCT p.nric FROM PATIENT p
-							INNER JOIN VISIT v ON p.bedNo LIKE '%'+ v.bedNo +'%')
-				BEGIN
-					INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-					VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
 
-					SET @responseMessage = 1
-				END
+				SET @responseMessage = 1
+			END
 				
-				-- If Patient's BedNo does not exist in Visitor's 
-				ELSE
-					INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-					VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-					SET @responseMessage = 2
-			END  
+			-- If Patient's BedNo does not exist in Visitor's 
+			ELSE
+				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+		
+				SET @responseMessage = 2
+		END  
  
 		ELSE
 			-- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
@@ -1770,184 +1788,6 @@ BEGIN
 	-- Visitor do not have any VISIT and CHECK_IN record
 	ELSE
 		SET @responseMessage = 0
-
-		BEGIN TRY
-			DECLARE @pSelected_Time DATETIME
-			SET @pSelected_Time = (SELECT TOP 1 visitActualTime 
-									FROM CHECK_IN WHERE nric = @pNRIC
-									ORDER BY visitActualTime DESC)
-
-			INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-			VALUES (@pNRIC, @pSelected_Time, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-			
-			SET @responseMessage = 2 
-		END TRY  
-
-		BEGIN CATCH  
-			SET @responseMessage = 0 
-		END CATCH  
-
-	--IF (@pVisit_Date != '')
- --   BEGIN TRY
-	--	IF (SELECT COUNT(nric) FROM MOVEMENT WHERE nric = @pNRIC AND
-	--		CONVERT(VARCHAR(10), @pVisit_Date, 103) = 
-	--		CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)) <= 0
-	--	BEGIN		
-	--		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--		VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--		SET @responseMessage = 1 
-	--	END
-	--	ELSE 
-	--		DECLARE @pLast_Visit_Time DATETIME
-	--		SET @pLast_Visit_Time = (SELECT TOP 1 locationTime FROM MOVEMENT WHERE nric = @pNRIC AND 
-	--						CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), @pVisit_Date, 103)
-	--						ORDER BY locationTime DESC) 
-
-	--		IF EXISTS (SELECT locationID FROM MOVEMENT WHERE nric = @pNRIC AND 
-	--				   @pLast_Visit_Time = locationTime)
-	--		BEGIN
-	--			DECLARE @pCurrent_LocationID INT
-	--			SET @pCurrent_LocationID = (SELECT locationID FROM MOVEMENT WHERE nric = @pNRIC AND 
-	--										@pLast_Visit_Time = locationTime)
-			
-	--			--END END TRY BEGIN CATCH END CATCH END
-
-	--			-- Scan in HOSPITAL ENTRANCE. Assuming that Exit_Time for 
-	--			-- HOSPITAL ENTRANCE does not require to be traced. 
-	--			IF (@pCurrent_LocationID = 2)
-	--			BEGIN
-	--				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-	--			END
-
-	--			IF (@pCurrent_LocationID = 1)
-	--			BEGIN
-	--				-- Checks if Terminal contains Beds
-	--				IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
-	--				BEGIN
-	--					-- Retrieve Patient's BedNo according to the Visitor's registered Visit
-	--					DECLARE @pPatient_Bedno INT		
-	--					SET @pPatient_Bedno = (SELECT p.bedNo FROM PATIENT p
-	--						INNER JOIN VISIT v ON p.nric = v.patientNric
-	--					WHERE v.visitorNric = @pNRIC AND
-	--					CONVERT(VARCHAR(10), v.visitRequestTime, 103) = 
-	--					CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103))
-	--					--SELECT @pPatient_Bedno 
-	--					--END END END END TRY BEGIN CATCH END CATCH END
-	--					-- Checks if the Terminal contains the BedNo from the intended Visit 
-	--					IF EXISTS (SELECT terminalID FROM TERMINAL_BED 
-	--					WHERE bedNoList LIKE '%' + CAST(@pPatient_Bedno AS VARCHAR(10)) + '%' AND terminalID = @pLocationID)
-	--					BEGIN
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						SET @responseMessage = 1
-	--					END  
-	--					--END END END END TRY BEGIN CATCH END CATCH END
-	--					-- A case when visitor is not suppose to visit the patient 
-	--					ELSE
-	--						-- According to Eddy, he still wants to trace that particular visitor. 
-	--						-- This will cater To Contact Tracing's TRACE_BY_SCAN_BED as well
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						-- Since visitor is not allow to visit the patient, he/he will be asked to leave.
-	--						-- Thus, this insertion enables the record of the Exit_Time for Contact Tracing's TRACE_BY_SCAN_BED
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-							
-	--						SET @responseMessage = 2
-		
-	--				END 
-	--				--END END END TRY BEGIN CATCH END CATCH END
-	--				ELSE
-	--					-- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
-	--					INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--					VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-						
-	--					SET @responseMessage = 1
-
-	--			END
-	--			--END END TRY BEGIN CATCH END CATCH END
-
-	--			-- For scanning out at the EXIT Terminal (LocationID = 1)
-	--			IF (@pCurrent_LocationID != 1 AND @pLocationID = 1)
-	--			BEGIN
-	--				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-					
-	--				SET @responseMessage = 1
-	--			END
-	--			--END END TRY BEGIN CATCH END CATCH END
-
-	--			-- For virtual exiting on visited Terminal, then add in their next intended Visit
-	--			-- Into the MOVEMENT_TABLE
-	--			IF (@pCurrent_LocationID != 1 AND @pLocationID != 1)
-	--			BEGIN
-	--				-- Checks if Terminal contains Beds
-	--				IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
-	--				BEGIN
-	--					-- Retrieve Patient's BedNo according to the Visitor's registered Visit
-	--					DECLARE @pAnother_Patient_Bedno INT		
-	--					SET @pAnother_Patient_Bedno = (SELECT p.bedNo FROM PATIENT p
-	--						INNER JOIN VISIT v ON p.nric = v.patientNric
-	--					WHERE v.visitorNric = @pNRIC AND
-	--					CONVERT(VARCHAR(10), v.visitRequestTime, 103) = 
-	--					CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103))
-
-	--					-- Checks if the Terminal contains the BedNo from the intended Visit 
-	--					IF EXISTS (SELECT terminalID FROM TERMINAL_BED 
-	--					WHERE bedNoList LIKE '%' + CAST(@pAnother_Patient_Bedno AS VARCHAR(10)) + '%' AND terminalID = @pLocationID)
-	--					BEGIN
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						SET @responseMessage = 1
-	--					END   
-	--					--END END END END TRY BEGIN CATCH END CATCH END
-
-	--					-- A case when visitor is not suppose to visit the patient 
-	--					ELSE
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						-- According to Eddy, he still wants to trace that particular visitor. 
-	--						-- This will cater To Contact Tracing's TRACE_BY_SCAN_BED as well
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						-- Since visitor is not allow to visit the patient, he/he will be asked to leave.
-	--						-- Thus, this insertion enables the record of the Exit_Time for Contact Tracing's TRACE_BY_SCAN_BED
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-							
-	--						SET @responseMessage = 2
-	--				END  
-	--				--END END END TRY BEGIN CATCH END CATCH END
-
-	--				ELSE
-	--					-- 'Virtual Exit' first before inserting Facility in the hospital
-	--					INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--					VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--					-- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
-	--					INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--					VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-						
-	--					SET @responseMessage = 1
-	--			END
-	--			ELSE
-	--				SET @responseMessage = 0
-	--		END			
-	--END TRY
-
-	--BEGIN CATCH  
-	--	SET @responseMessage = 0 
-	--END CATCH  
 END; 
 
 

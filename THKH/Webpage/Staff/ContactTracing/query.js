@@ -15,6 +15,15 @@ function unifiedTrace() {
     }
     var uq_dateStart = $("#uq_startdatetime").val();
     var uq_dateEnd = $("#uq_enddatetime").val();
+
+    var _dateStart = new Date(uq_dateStart);
+    var _dateEnd = new Date(uq_dateEnd);
+
+    if (_dateStart > _dateEnd) {
+        alert("End date of query period must be before start date!");
+        return;
+    }
+
     var uq_querybeds = $("#uq_bednos").val();
     var uq_loc = $("#uq_loc").val();
 
