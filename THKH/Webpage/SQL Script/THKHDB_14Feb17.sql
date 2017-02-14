@@ -56,10 +56,12 @@
 --GO
 
 USE master;     
-  
-IF EXISTS(SELECT * from sys.databases WHERE name='thkhdb')    
+
+IF EXISTS(SELECT * from sys.databases WHERE name='thkhdb')      
+--IF EXISTS(SELECT * from sys.databases WHERE name='stepwise')    
 BEGIN    
 	DECLARE @DatabaseName NVARCHAR(50)  
+	--SET @DatabaseName = 'stepwise' 
 	SET @DatabaseName = 'thkhdb'  
   
 	DECLARE @SQL varchar(max)  
@@ -70,15 +72,18 @@ BEGIN   
       
 	SELECT @SQL   
 	EXEC(@SQL)  
-  
+ 	
+	--DROP DATABASE stepwise;
 	DROP DATABASE thkhdb;   
 END
 
 GO
+--CREATE DATABASE stepwise;   
 CREATE DATABASE thkhdb;   
   
 GO
 USE thkhdb;  
+--USE stepwise;  
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------- To store the format of Pass 
@@ -95,11 +100,14 @@ CREATE TABLE MASTER_CONFIG
 (
   lowerTempLimit VARCHAR(15) NOT NULL,
   upperTempLimit VARCHAR(15) NOT NULL,
+  warnTemp VARCHAR(15) NOT NULL,
   lowerTimeLimit VARCHAR(15) NOT NULL,
   upperTimeLimit VARCHAR(15) NOT NULL,
+  visitLimit INT NOT NULL,
   dateUpdated DATETIME NOT NULL,
   updatedBy VARCHAR(100) NOT NULL
 );
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------- To Store Staff Data  
@@ -386,44 +394,71 @@ END
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Terminal
 GO
-CREATE PROCEDURE [dbo].[TEST_TERMINAL] 
-   
-AS  
-BEGIN  
-	SET NOCOUNT ON  
+CREATE PROCEDURE [dbo].[TEST_TERMINAL] 
+   
+AS  
+BEGIN  
+  SET NOCOUNT ON  
 
-	BEGIN
-		-- Terminal_ID == 1 (FIXED VARIABLE)
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('TERMINAL EXIT', 1, 0, '2000-01-01 00:00', NULL)
+  BEGIN
+    -- Terminal_ID == 2 (FIXED VARIABLE)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('HOSPITAL ENTRANCE', 1, 1, '2016-06-06 00:00', NULL)
 
-		-- Terminal_ID == 2 (FIXED VARIABLE)
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('HOSPITAL ENTRANCE', 1, 1, '2016-06-06 00:00', NULL)
+    -- Terminal_ID == 3 (FIXED VARIABLE)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('HOSPITAL EXIT', 1, 1, '2016-06-06 00:00', NULL)
 
-		-- Terminal_ID == 3 (FIXED VARIABLE)
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('HOSPITAL EXIT', 1, 1, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Ward 1', 1, 1, '2016-01-01 00:00', NULL)
+    INSERT INTO TERMINAL_BED(terminalID, bedNoList)
+    VALUES (3, '1101,1102,1202,1303')
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('T1', 1, 1, '2016-01-01 00:00', NULL)
-		INSERT INTO TERMINAL_BED(terminalID, bedNoList)
-		VALUES (4, '1101,1202,1303')
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Ward 2', 1, 1, '2016-03-03 00:00', NULL)
+    INSERT INTO TERMINAL_BED(terminalID, bedNoList)
+    VALUES (4, '1104,3205,5306')
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('T2', 1, 1, '2016-03-03 00:00', NULL)
-		INSERT INTO TERMINAL_BED(terminalID, bedNoList)
-		VALUES (5, '1104,3205,5306')
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Ward 3', 1, 1, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL_BED(terminalID, bedNoList)
+    VALUES (5, '5107,5208,5309')
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('T3', 1, 1, '2016-06-06 00:00', NULL)
-		INSERT INTO TERMINAL_BED(terminalID, bedNoList)
-		VALUES (6, '5107,5208,5309')
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Ward 4', 1, 1, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL_BED(terminalID, bedNoList)
+    VALUES (6, '5108,5508,5509')
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('CAFETERIA', 1, 0, '2016-06-06 00:00', NULL)
-    END 
-END; 
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Entrance: Ambulance Bay', 1, 1, '2016-06-06 00:00', NULL)
+
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Cafeteria', 1, 0, '2016-06-06 00:00', NULL)
+
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Khoo Teck Puat Clinic', 1, 0, '2016-06-06 00:00', NULL)
+
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Pharmacy', 1, 0, '2016-06-06 00:00', NULL)
+
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Healing Hub', 1, 0, '2016-06-06 00:00', NULL)
+
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Community Hub Centre', 1, 0, '2016-06-06 00:00', NULL)
+
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('B. Braun Dialysis Centre', 1, 0, '2016-06-06 00:00', NULL)
+
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('NHG Diagnostics', 1, 0, '2016-06-06 00:00', NULL)
+
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('TCM Medical Centre', 1, 0, '2016-06-06 00:00', NULL)
+    
+  END 
+END;
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Terminal
@@ -573,36 +608,66 @@ END; 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Staff
 GO
-CREATE PROCEDURE [dbo].[TEST_CREATE_STAFF]      
- 	@pCreatedBy        VARCHAR(100) = 'MASTER',  
-    @responseMessage   VARCHAR(250) OUTPUT  
-  
-AS  
-BEGIN  
-  
-    SET NOCOUNT ON  
-  
-    DECLARE @salt UNIQUEIDENTIFIER=NEWID()  
-    
-	BEGIN TRY  
-        INSERT INTO staff (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
-							dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
-        VALUES('Shahid', 'Abdul', 'S12345', '417 Pasir Ris', 123417, '999', '999', '999', 'asd@smu.edu.sg', 'M', 'SINGAPOREAN', 
-				'1991-01-01', HASHBYTES('SHA2_512', '123'),  123456 , 'Admin', 'Doctor', GETDATE(), GETDATE(), @pCreatedBy)  
+CREATE PROCEDURE [dbo].[TEST_CREATE_STAFF]      
+   @pCreatedBy        VARCHAR(100) = 'MASTER',  
+    @responseMessage   VARCHAR(250) OUTPUT  
+  
+AS  
+BEGIN  
+  
+    SET NOCOUNT ON  
+  
+    DECLARE @salt UNIQUEIDENTIFIER=NEWID()  
+    
+  BEGIN TRY  
+        INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('Shahid', 'Abdul', 'S12345', '417 Pasir Ris', 123417, '999', '999', '999', 'abdulsr.2014@smu.edu.sg', 'M', 'SINGAPOREAN', 
+        '1991-01-01', HASHBYTES('SHA2_512', '123'),  123456 , 'Admin', 'Doctor', GETDATE(), GETDATE(), @pCreatedBy)  
 
-		INSERT INTO staff (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
-							dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
-        VALUES('Aloysius', 'Lam', 'S9332934A', 'SMU', 123417, '999', '999', '999', 'aloysiuslam.2014@smu.edu.sg', 'M', 'SINGAPOREAN', 
-				'1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
-  
-       SET @responseMessage='Success'   
-    END TRY  
+    INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('Aloysius', 'Lam', 'S9332934A', 'SMU', 123417, '999', '999', '999', 'aloysiuslam.2014@smu.edu.sg', 'M', 'SINGAPOREAN', 
+        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
 
-    BEGIN CATCH  
-        SET @responseMessage=ERROR_MESSAGE()   
-    END CATCH  
-END;    
-  
+    INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('Christopher', 'Teo', 'S9332464A', 'SMU', 123417, '999', '999', '999', 'mjteo.2014@smu.edu.sg', 'M', 'SINGAPOREAN', 
+        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
+
+    INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('Jason', 'Wu', 'S9122934A', 'SMU', 123417, '999', '999', '999', 'jasonwu.2014@smu.edu.sg', 'M', 'SINGAPOREAN', 
+        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
+
+    INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('Zheng Yuan', 'Yu', 'S9112934A', 'SMU', 123417, '999', '999', '999', 'zyyu.2014@smu.edu.sg', 'M', 'SINGAPOREAN', 
+        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
+
+    INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('Friedemann', 'Ang', 'S9022934A', 'SMU', 123417, '999', '999', '999', 'zkang.2014@smu.edu.sg', 'M', 'SINGAPOREAN', 
+        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)
+   
+  INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('Edy', 'Chandra', 'S2138934A', 'SMU', 123417, '999', '999', '999', 'edy@amk.org.sg', 'M', 'SINGAPOREAN', 
+        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)
+	
+  INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('THK', 'Nurse', 'S2548934A', 'SMU', 123417, '999', '999', '999', 'nurse@amk.org.sg', 'M', 'SINGAPOREAN', 
+        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Front Desk', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
+  
+       SET @responseMessage='Success'   
+    END TRY  
+
+    BEGIN CATCH  
+        SET @responseMessage=ERROR_MESSAGE()   
+    END CATCH  
+END;
+
 
 ----------------------------------------------------------------------------- Procedures for creating Permissions
 GO
@@ -672,42 +737,46 @@ BEGIN 
 
 	BEGIN
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S123', '2016-12-29 14:00', '36.7', 'asd@smu.edu.sg')
+		VALUES ('S123', '2016-12-29 14:00', '36.7', 'abdulsr.2014@smu.edu.sg')
 
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S123', '2016-12-30 14:30', '36.7', 'asd@smu.edu.sg')
+		VALUES ('S123', '2016-12-30 14:30', '36.7', 'abdulsr.2014@smu.edu.sg')
 
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S123', '2016-12-30 16:00', '36.7', 'asd@smu.edu.sg')
+		VALUES ('S123', '2016-12-30 16:00', '36.7', 'abdulsr.2014@smu.edu.sg')
 
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S123', '2016-12-31 14:00', '36.7', 'asd@smu.edu.sg')
+		VALUES ('S123', '2016-12-31 14:00', '36.7', 'abdulsr.2014@smu.edu.sg')
 
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S123', '2017-01-26 20:00', '36.7', 'asd@smu.edu.sg')
+		VALUES ('S123', '2017-01-26 20:00', '36.7', 'abdulsr.2014@smu.edu.sg')
  		
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S789', '2016-12-29 20:00', '36.9', 'asd@smu.edu.sg')
+		VALUES ('S789', '2016-12-29 20:00', '36.9', 'abdulsr.2014@smu.edu.sg')
     END 
 END;  
 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Patient
 GO
-CREATE PROCEDURE [dbo].[TEST_PATIENT] 
-   
-AS  
-BEGIN  
-	SET NOCOUNT ON  
+CREATE PROCEDURE [dbo].[TEST_PATIENT] 
+   
+AS  
+BEGIN  
+  SET NOCOUNT ON  
 
-	BEGIN
-		INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
-		VALUES (1101, 'S9876543E', 'Benny Tan', '2016-07-11 09:00', '2020-01-01 00:00')
+  BEGIN
+    INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
+    VALUES (1101, 'S9876543E', 'Benny Tan', '2016-07-11 09:00', '2020-01-01 00:00')
 
-		INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
-		VALUES (1104, 'S2468269F', 'Nicholas Lim', '2016-08-14 09:00', '2020-01-01 00:00')
-    END 
+    INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
+    VALUES (1104, 'S2468269F', 'Nicholas Lim', '2016-08-14 09:00', '2020-01-01 00:00')
+
+    INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
+    VALUES (1102, 'S2465269F', 'Jamie Tan', '2016-08-14 09:00', '2020-01-01 00:00')
+    END 
 END;
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Visitor
@@ -796,67 +865,35 @@ END;
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for TESTING
 GO
-CREATE PROCEDURE [dbo].[TEST_QUESTIONAIRE_QNS] 
-   
-AS  
-BEGIN  
-	SET NOCOUNT ON  
+CREATE PROCEDURE [dbo].[TEST_QUESTIONAIRE_QNS] 
+   
+AS  
+BEGIN  
+  SET NOCOUNT ON  
 
-	BEGIN
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Which country have you visited over the last 3 months? (If no, please select None)', 'ddList', 'None,Malaysia,USA,China,Russia', SYSDATETIME(), NULL)
-		
- 		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Were you diagnosed with fever over the last 3 days?', 'radio', 'Yes,No', SYSDATETIME(), NULL)
+  BEGIN
+    INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Which country have you visited over the last 3 months? (If no, please select None)', 'ddList', 'None,Malaysia,USA,China,Russia', SYSDATETIME(), NULL)
+    
+     INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Were you diagnosed with fever over the last 3 days?', 'radio', 'Yes,No', SYSDATETIME(), NULL)
 
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Do you have any family members who travelled to overseas over the last 3 months? Please list down their name(s) if  applicable', 'text', '', SYSDATETIME(), NULL)
+    INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Do you have any family members who travelled to overseas over the last 3 months? Please list down their name(s) if  applicable', 'text', '', SYSDATETIME(), NULL)
+---------------------------------------------------------------------------------------------------------------------------------—
 
-		-------------------------------------------------------------------------------------------------------------------------------------
+    INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Have you suffered from any of the following symptoms in the past 7 days? Check those applicable', 'checkbox', 'Cough,Fever,Nasal Congestion,Diarrhoea,Breathing Difficulties', SYSDATETIME(), NULL)
 
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Which universe planet have you visited over the last 6 months? (If no, please select None)', 'ddList', 'None,Jupiter,Mars,Mercury,Saturn,Venus', SYSDATETIME(), NULL)
-		
- 		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Were you diagnosed with Alien-Virus over the last 3 days?', 'radio', 'Yes,No', SYSDATETIME(), NULL)
+---------------------------------------------------------------------------------------------------------------------------------------------------------—
 
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Do you have any family members who travelled to overseas over the last 3 months? Please list down their name(s) if  applicable', 'text', '', SYSDATETIME(), NULL)
+    INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Have you visited any of the following countries in the past 7 days? Check those applicable', 'checkbox', 'Australia,Canada,China', SYSDATETIME(), NULL)
 
-		-------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Which country have you visited over the last 3 months? (If no, please select None)', 'ddList', 'None,Malaysia,USA,China,Russia', SYSDATETIME(), NULL)
-		
- 		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Were you diagnosed with fever over the last 3 days?', 'radio', 'Yes,No', SYSDATETIME(), NULL)
-
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Do you have any family members who travelled to overseas over the last 3 months? Please list down their name(s) if  applicable', 'text', '', SYSDATETIME(), NULL)
-
-    END 
+    END 
 END;
 
 
--------------------------------------------------------------------------------------------------------------------------------- Procedures for TESTING
-GO
-CREATE PROCEDURE [dbo].[TEST_ACCESS_PROFILE] 
-   
-AS  
-BEGIN  
-	SET NOCOUNT ON  
-
-	BEGIN
-		INSERT INTO ACCESS_PROFILE(profileName, accessRights, dateUpdated, updatedBy)
-		VALUES ('Admin', 123456, SYSDATETIME(), 'MASTER')
-
-		INSERT INTO ACCESS_PROFILE(profileName, accessRights, dateUpdated, updatedBy)
-		VALUES ('Infection Control', 26, SYSDATETIME(), 'MASTER')
-
-		INSERT INTO ACCESS_PROFILE(profileName, accessRights, dateUpdated, updatedBy)
-		VALUES ('Front Desk', 1, SYSDATETIME(), 'MASTER')
-    END 
-END; 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for TESTING
 GO
@@ -924,7 +961,7 @@ BEGIN 
     BEGIN CATCH  
         SET @responseMessage=ERROR_MESSAGE()   
     END CATCH  
-END;  
+END;
   
 ---------------------------------------------------------------------------------------------------------------------------------------------------- Validate Staff Login  
 
@@ -993,38 +1030,38 @@ END;
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Updating Access Rights for staffs 
---GO
---CREATE PROCEDURE [dbo].[UPDATE_STAFF_ACCESS_RIGHT]  
---@pStaff_Email VARCHAR(200),  
---@pAccess_ID INT,
---@responseMessage INT OUTPUT  
+GO
+CREATE PROCEDURE [dbo].[UPDATE_STAFF_ACCESS_RIGHT]  
+@pStaff_Email VARCHAR(200),  
+@pAccess_ID INT,
+@responseMessage INT OUTPUT  
   
---AS  
---BEGIN  
---	SET NOCOUNT ON  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
   
---	IF EXISTS (SELECT email FROM STAFF WHERE SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pStaff_Email) 			 
---	BEGIN
---		IF EXISTS (SELECT accessID FROM ACCESS_RIGHT WHERE accessID = @pAccess_ID)
---		BEGIN TRY
---			UPDATE STAFF
---			SET permission = @pAccess_ID
---			WHERE SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pStaff_Email
+	IF EXISTS (SELECT email FROM STAFF WHERE SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pStaff_Email) 			 
+	BEGIN
+		IF EXISTS (SELECT accessID FROM ACCESS_RIGHT WHERE accessID = @pAccess_ID)
+		BEGIN TRY
+			UPDATE STAFF
+			SET permission = @pAccess_ID
+			WHERE SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pStaff_Email
 
---			SET @responseMessage = 1
---		END TRY 
+			SET @responseMessage = 1
+		END TRY 
 
---		BEGIN CATCH
---			SET @responseMessage = 0
---		END CATCH
+		BEGIN CATCH
+			SET @responseMessage = 0
+		END CATCH
 
---		ELSE  
---      		SET @responseMessage = 0 
---	END
+		ELSE  
+      		SET @responseMessage = 0 
+	END
 
---    ELSE  
---       SET @responseMessage = 0  
---END; 
+    ELSE  
+       SET @responseMessage = 0  
+END; 
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Adding Access Rights
@@ -1149,7 +1186,7 @@ BEGIN 
 	
 	ELSE
 		SET @responseMessage = 0	  
-END; 
+END;
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Retrieving selected Staff
@@ -1558,7 +1595,7 @@ CREATE PROCEDURE [dbo].[UPDATE_VISIT]
 @pPurpose VARCHAR(MAX) = '',
 @pReason VARCHAR(MAX) = '',
 @pVisitLocation VARCHAR(150) = '',
-@pBedNo INT = 0,
+@pBedNo VARCHAR(MAX),
 @pQaID VARCHAR(100),
 @pRemarks VARCHAR(MAX) = '',
 @pConfirm INT = 1,
@@ -1618,7 +1655,7 @@ BEGIN
 
     SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
                     visitorNric + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
-                    CAST(bedNo AS VARCHAR(100)) + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
+                    bedNo + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
     FROM VISIT 
     WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp)
 
@@ -1699,8 +1736,50 @@ BEGIN
 	
 	IF (@pVisit_Date != '')
     BEGIN TRY
-		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+		IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
+		BEGIN
+			DECLARE @pTempBedTb TABLE (bedno VARCHAR(10))
+			DECLARE @pTerminalBedTb TABLE (bedno VARCHAR(10))
+
+			DECLARE @pVisiting_Bedno VARCHAR(200)
+			DECLARE @pTerminal_Bedno VARCHAR(200)
+
+			SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = 'S123' AND
+									CONVERT(VARCHAR(10), visitRequestTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
+									ORDER BY visitRequestTime DESC)
+			
+			SET @pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
+
+			INSERT INTO @pTempBedTb
+				SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, ',')
+
+			INSERT INTO @pTerminalBedTb
+				SELECT * FROM dbo.FUNC_SPLIT(@pTerminal_Bedno, ',')
+
+			-- Retrieve Patient's BedNo according to the Visitor's registered Visit	
+			IF EXISTS (SELECT tb.bedno FROM @pTerminalBedTb tb
+						WHERE tb.bedno IN (SELECT bedno FROM @pTempBedTb))
+			BEGIN
+				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+
+				SET @responseMessage = 1
+			END
+				
+			-- If Patient's BedNo does not exist in Visitor's 
+			ELSE
+				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+		
+				SET @responseMessage = 2
+		END  
+ 
+		ELSE
+			-- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
+			INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+			VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+						
+			SET @responseMessage = 1
 	END TRY
 	BEGIN CATCH  
 		SET @responseMessage = 0 
@@ -1709,184 +1788,6 @@ BEGIN
 	-- Visitor do not have any VISIT and CHECK_IN record
 	ELSE
 		SET @responseMessage = 0
-
-		BEGIN TRY
-			DECLARE @pSelected_Time DATETIME
-			SET @pSelected_Time = (SELECT TOP 1 visitActualTime 
-									FROM CHECK_IN WHERE nric = @pNRIC
-									ORDER BY visitActualTime DESC)
-
-			INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-			VALUES (@pNRIC, @pSelected_Time, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-			
-			SET @responseMessage = 2 
-		END TRY  
-
-		BEGIN CATCH  
-			SET @responseMessage = 0 
-		END CATCH  
-
-	--IF (@pVisit_Date != '')
- --   BEGIN TRY
-	--	IF (SELECT COUNT(nric) FROM MOVEMENT WHERE nric = @pNRIC AND
-	--		CONVERT(VARCHAR(10), @pVisit_Date, 103) = 
-	--		CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)) <= 0
-	--	BEGIN		
-	--		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--		VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--		SET @responseMessage = 1 
-	--	END
-	--	ELSE 
-	--		DECLARE @pLast_Visit_Time DATETIME
-	--		SET @pLast_Visit_Time = (SELECT TOP 1 locationTime FROM MOVEMENT WHERE nric = @pNRIC AND 
-	--						CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), @pVisit_Date, 103)
-	--						ORDER BY locationTime DESC) 
-
-	--		IF EXISTS (SELECT locationID FROM MOVEMENT WHERE nric = @pNRIC AND 
-	--				   @pLast_Visit_Time = locationTime)
-	--		BEGIN
-	--			DECLARE @pCurrent_LocationID INT
-	--			SET @pCurrent_LocationID = (SELECT locationID FROM MOVEMENT WHERE nric = @pNRIC AND 
-	--										@pLast_Visit_Time = locationTime)
-			
-	--			--END END TRY BEGIN CATCH END CATCH END
-
-	--			-- Scan in HOSPITAL ENTRANCE. Assuming that Exit_Time for 
-	--			-- HOSPITAL ENTRANCE does not require to be traced. 
-	--			IF (@pCurrent_LocationID = 2)
-	--			BEGIN
-	--				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-	--			END
-
-	--			IF (@pCurrent_LocationID = 1)
-	--			BEGIN
-	--				-- Checks if Terminal contains Beds
-	--				IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
-	--				BEGIN
-	--					-- Retrieve Patient's BedNo according to the Visitor's registered Visit
-	--					DECLARE @pPatient_Bedno INT		
-	--					SET @pPatient_Bedno = (SELECT p.bedNo FROM PATIENT p
-	--						INNER JOIN VISIT v ON p.nric = v.patientNric
-	--					WHERE v.visitorNric = @pNRIC AND
-	--					CONVERT(VARCHAR(10), v.visitRequestTime, 103) = 
-	--					CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103))
-	--					--SELECT @pPatient_Bedno 
-	--					--END END END END TRY BEGIN CATCH END CATCH END
-	--					-- Checks if the Terminal contains the BedNo from the intended Visit 
-	--					IF EXISTS (SELECT terminalID FROM TERMINAL_BED 
-	--					WHERE bedNoList LIKE '%' + CAST(@pPatient_Bedno AS VARCHAR(10)) + '%' AND terminalID = @pLocationID)
-	--					BEGIN
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						SET @responseMessage = 1
-	--					END  
-	--					--END END END END TRY BEGIN CATCH END CATCH END
-	--					-- A case when visitor is not suppose to visit the patient 
-	--					ELSE
-	--						-- According to Eddy, he still wants to trace that particular visitor. 
-	--						-- This will cater To Contact Tracing's TRACE_BY_SCAN_BED as well
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						-- Since visitor is not allow to visit the patient, he/he will be asked to leave.
-	--						-- Thus, this insertion enables the record of the Exit_Time for Contact Tracing's TRACE_BY_SCAN_BED
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-							
-	--						SET @responseMessage = 2
-		
-	--				END 
-	--				--END END END TRY BEGIN CATCH END CATCH END
-	--				ELSE
-	--					-- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
-	--					INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--					VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-						
-	--					SET @responseMessage = 1
-
-	--			END
-	--			--END END TRY BEGIN CATCH END CATCH END
-
-	--			-- For scanning out at the EXIT Terminal (LocationID = 1)
-	--			IF (@pCurrent_LocationID != 1 AND @pLocationID = 1)
-	--			BEGIN
-	--				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-					
-	--				SET @responseMessage = 1
-	--			END
-	--			--END END TRY BEGIN CATCH END CATCH END
-
-	--			-- For virtual exiting on visited Terminal, then add in their next intended Visit
-	--			-- Into the MOVEMENT_TABLE
-	--			IF (@pCurrent_LocationID != 1 AND @pLocationID != 1)
-	--			BEGIN
-	--				-- Checks if Terminal contains Beds
-	--				IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
-	--				BEGIN
-	--					-- Retrieve Patient's BedNo according to the Visitor's registered Visit
-	--					DECLARE @pAnother_Patient_Bedno INT		
-	--					SET @pAnother_Patient_Bedno = (SELECT p.bedNo FROM PATIENT p
-	--						INNER JOIN VISIT v ON p.nric = v.patientNric
-	--					WHERE v.visitorNric = @pNRIC AND
-	--					CONVERT(VARCHAR(10), v.visitRequestTime, 103) = 
-	--					CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103))
-
-	--					-- Checks if the Terminal contains the BedNo from the intended Visit 
-	--					IF EXISTS (SELECT terminalID FROM TERMINAL_BED 
-	--					WHERE bedNoList LIKE '%' + CAST(@pAnother_Patient_Bedno AS VARCHAR(10)) + '%' AND terminalID = @pLocationID)
-	--					BEGIN
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						SET @responseMessage = 1
-	--					END   
-	--					--END END END END TRY BEGIN CATCH END CATCH END
-
-	--					-- A case when visitor is not suppose to visit the patient 
-	--					ELSE
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						-- According to Eddy, he still wants to trace that particular visitor. 
-	--						-- This will cater To Contact Tracing's TRACE_BY_SCAN_BED as well
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--						-- Since visitor is not allow to visit the patient, he/he will be asked to leave.
-	--						-- Thus, this insertion enables the record of the Exit_Time for Contact Tracing's TRACE_BY_SCAN_BED
-	--						INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--						VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-							
-	--						SET @responseMessage = 2
-	--				END  
-	--				--END END END TRY BEGIN CATCH END CATCH END
-
-	--				ELSE
-	--					-- 'Virtual Exit' first before inserting Facility in the hospital
-	--					INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--					VALUES (@pNRIC, @pVisit_Date, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-
-	--					-- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
-	--					INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-	--					VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-						
-	--					SET @responseMessage = 1
-	--			END
-	--			ELSE
-	--				SET @responseMessage = 0
-	--		END			
-	--END TRY
-
-	--BEGIN CATCH  
-	--	SET @responseMessage = 0 
-	--END CATCH  
 END; 
 
 
@@ -1933,34 +1834,35 @@ CREATE PROCEDURE [dbo].[ADD_TERMINAL] 
 @pBedNoList VARCHAR(MAX) = NULL,
 @responseMessage INT OUTPUT 
   
-AS  
-BEGIN  
-	SET NOCOUNT ON  
- 	
-	IF NOT EXISTS (SELECT terminalID FROM TERMINAL WHERE tName = @pTName)
-	BEGIN TRY
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES (@pTName, 0, @pTControl, SYSDATETIME(), NULL)
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+   
+  IF (NOT EXISTS (SELECT terminalID FROM TERMINAL WHERE tName = @pTName) OR EXISTS(SELECT terminalID FROM TERMINAL WHERE tName = @pTName and endDate IS NOT NULL))
+  BEGIN TRY
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES (@pTName, 0, @pTControl, SYSDATETIME(), NULL)
 
-		IF (@pBedNoList != '' OR @pBedNoList IS NULL)
-		BEGIN
-			DECLARE @pTerminal_Id INT
-			SET @pTerminal_Id = (SELECT terminalID FROM TERMINAL WHERE tName = @pTName)
-		
-			INSERT INTO TERMINAL_BED(terminalID, bedNoList)
-			VALUES (@pTerminal_Id, @pBedNoList)
-		END
+    IF (@pBedNoList != '' OR @pBedNoList IS NULL)
+    BEGIN
+      DECLARE @pTerminal_Id INT
+      SET @pTerminal_Id = (SELECT top 1 (terminalID) FROM TERMINAL WHERE tName = @pTName order by startDate desc)
+    
+      INSERT INTO TERMINAL_BED(terminalID, bedNoList)
+      VALUES (@pTerminal_Id, @pBedNoList)
+    END
 
- 		SET @responseMessage = 1  
-    END TRY  
+     SET @responseMessage = 1  
+    END TRY  
 
-    BEGIN CATCH  
-        SET @responseMessage = 0 
-    END CATCH  
-	
-	ELSE
-		SET @responseMessage = 0 
-END; 
+    BEGIN CATCH  
+        SET @responseMessage = 0 
+    END CATCH  
+  
+  ELSE
+    SET @responseMessage = 0 
+END; 
+
 
 
 -------------------------------------------------------------------------------------------------------- Procedure for getting Inactive Terminal
@@ -2085,22 +1987,24 @@ CREATE PROCEDURE [dbo].[ACTIVATE_TERMINAL] 
 @pTerminal_ID INT,
 @responseMessage INT OUTPUT  
   
-AS  
-BEGIN  
-	SET NOCOUNT ON  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
 
 	BEGIN TRY
 		UPDATE TERMINAL
 		SET activated = 1
-		WHERE terminalID = @pTerminal_ID
+		WHERE terminalID = @pTerminal_ID AND endDate IS NULL
+    
+		IF (@@ROWCOUNT = 1)
+			SET @responseMessage = 1  
+		ELSE 
+			SET @responseMessage = 0  
+    END TRY  
 
- 		SET @responseMessage = 1  
-  
-    END TRY  
-
-    BEGIN CATCH  
-        SET @responseMessage = 0 
-    END CATCH  
+    BEGIN CATCH  
+        SET @responseMessage = 0 
+    END CATCH  
 END;
 
 
@@ -2675,227 +2579,6 @@ BEGIN 
 END;
 
 
------------------------------------------------------------------------------------------------------  Procedures for Tracing Visiors who have contacted with the Patient  
---GO
---CREATE PROCEDURE [dbo].[TRACE_BY_PATIENT_NRIC]  
---@pBedNo INT,
---@pStartDate DATETIME,
---@pEndDate DATETIME,
---@responseMessage INT OUT
-
---AS  
---BEGIN  
---	SET NOCOUNT ON  
-
---	IF EXISTS (SELECT nric FROM PATIENT WHERE bedNo = @pBedNo AND 
---				startDate <= @pEndDate AND endDate >= @pStartDate)
---	BEGIN TRY  
---		SET @responseMessage = 1 
-
---		SELECT a.visitorNric FROM VISIT a
---			INNER JOIN PATIENT b ON a.patientNric = b.nric
---			INNER JOIN MOVEMENT c ON a.visitorNric = c.nric
---		WHERE b.bedNo = @pBedNo AND b.startDate = @pStartDate AND b.endDate = @pEndDate 
---    END TRY  
-
---    BEGIN CATCH  
---        SET @responseMessage = 0
---    END CATCH 
-
---	ELSE
---		SET @responseMessage = 0
---END; 
-
-
------------------------------------------------------------------------------------------------------  Procedures for Tracing Visiors by Terminal  
---GO
---CREATE PROCEDURE [dbo].[VISITOR_BY_TERMINAL]  
---@pStart_Date DATETIME,
---@pEnd_Date DATETIME,
---@pTerminal_ID INT,
---@responseMessage INT OUT
-
---AS  
---BEGIN  
---	SET NOCOUNT ON
-	--DECLARE @pTrace_Visitor TABLE (vNRIC VARCHAR(10), startDate DATETIME, endDate DATETIME)
-	--DECLARE @pCountVisitor INT
-
-	--INSERT INTO @pTrace_Visitor
-		--SELECT vp.nric, m.locationTime, (SELECT TOP 1 locationTime FROM MOVEMENT 
-										 --WHERE locationTime > @pEnd_Date ORDER BY locationTime ASC) 
-		--FROM VISITOR_PROFILE vp INNER JOIN MOVEMENT m 
-		--ON vp.nric = m.nric
-		--WHERE m.locationID = @pTerminal_ID
-		--AND m.locationTime >= @pStart_Date
-	
-	--SET @pCountVisitor = (SELECT COUNT(DISTINCT vNRIC) FROM @pTrace_Visitor)
-	
-	--IF (@pCountVisitor > 0)
-	--BEGIN
-		--SET @responseMessage = 1
-		--SELECT * FROM @pTrace_Visitor
-		--ORDER BY vNRIC ASC
-	--END
-
-	--ELSE
-		--SET @responseMessage = 0
---END; 
-
-
------------------------------------------------------------------------------------------------------  Procedures for Tracing Visiors by Check-In  
---GO
---CREATE PROCEDURE [dbo].[CHECKIN_BY_VISITOR]  
---@pStart_Date DATETIME,
---@pEnd_Date DATETIME,
---@pVisitor_Nric VARCHAR(15),
---@responseMessage INT OUT
-
---AS  
---BEGIN  
---	SET NOCOUNT ON
---	DECLARE @pTrace_Visitor TABLE (vNRIC VARCHAR(10), vFullName VARCHAR(200), checkin_time DATETIME)
---	DECLARE @pCountVisitor INT
-
---	INSERT INTO @pTrace_Visitor
---		SELECT vp.nric, vp.fullName, ci.visitActualTime
---		FROM VISITOR_PROFILE vp
---			INNER JOIN CHECK_IN ci ON vp.nric = ci.nric
---		WHERE vp.nric = @pVisitor_Nric
---		AND ci.visitActualTime BETWEEN @pStart_Date AND @pEnd_Date
-	
---	SET @pCountVisitor = (SELECT COUNT(DISTINCT vNRIC) FROM @pTrace_Visitor)
-	
---	IF (@pCountVisitor > 0)
---	BEGIN
---		SET @responseMessage = 1
---		SELECT * FROM @pTrace_Visitor
---		ORDER BY vNRIC
---	END
-
---	ELSE
---		SET @responseMessage = 0
---END; 
-
-
------------------------------------------------------------------------------------------------------  Procedures for Tracing Visiors by Check-In  
---GO
---CREATE PROCEDURE [dbo].[BedNO_BY_TERMINAL]  
---@pStart_Date DATETIME,
---@pEnd_Date DATETIME,
---@pPatient_Nric VARCHAR(15),
---@responseMessage INT OUT
-
---AS  
---BEGIN  
---	SET NOCOUNT ON
---	DECLARE @pTrace_Patient TABLE (pNRIC VARCHAR(10), pBedNo INT)
---	DECLARE @pReturn_Terminal TABLE (terminalID INT)
---	DECLARE @pCount INT
---	DECLARE @pPatient_BedNo VARCHAR(10)
-	
---	INSERT INTO @pTrace_Patient
---		SELECT nric, bedNo
---		FROM PATIENT
---		WHERE nric = @pPatient_Nric
---		AND startDate <= @pEnd_Date
---		AND endDate >= @pStart_Date
-	
---	INSERT INTO @pReturn_Terminal
---		SELECT terminalID
---		FROM TERMINAL_BED tb INNER JOIN @pTrace_Patient tp 
---		ON tp.pBedNo IN 
---		(
---			SELECT * FROM dbo.FUNC_SPLIT(tb.bedNoList, ',')
---		)
-
---	SET @pCount = (SELECT COUNT(DISTINCT terminalID) FROM @pReturn_Terminal)
-	
---	IF (@pCount > 0)
---	BEGIN
---		SET @responseMessage = 1
---		SELECT * FROM @pReturn_Terminal
---	END
-
---	ELSE
---		SET @responseMessage = 0
---END; 
-
-
------------------------------------------------------------------------------------------------------  Procedures for Tracing Visiors by Check-In  
---GO
---CREATE PROCEDURE [dbo].[GET_TERMINAL_BY_TRACE]  
---@pStart_Date DATETIME,
---@pEnd_Date DATETIME,
---@pLevel VARCHAR(50),
---@pData VARCHAR(50),
---@responseMessage INT OUT
-
---AS  
---BEGIN  
---	SET NOCOUNT ON
---	DECLARE @pBedNo_Within_Date TABLE (tID INT, tName VARCHAR(100), bedNo VARCHAR(10))
---	DECLARE @pVaild_Bed TABLE (bedNo VARCHAR(50))
---	DECLARE @pInvaild_Bed TABLE (invaild_bedNo VARCHAR(50))
---	DECLARE @pReturn_Terminal TABLE (tID INT, tName VARCHAR(100))
-	
---	BEGIN
---		INSERT INTO @pBedNo_Within_Date
---			SELECT t.terminalID, tName, beds.Element FROM TERMINAL t
---				INNER JOIN TERMINAL_BED tb ON t.terminalID = tb.terminalID 
---				OUTER APPLY dbo.FUNC_SPLIT(tb.bedNoList, ',') beds
---			WHERE startDate <= @pEnd_Date
---			AND endDate >= @pStart_Date
---	END
-
---	IF ((SELECT COUNT(bedno) FROM @pBedNo_Within_Date) > 0)
---	BEGIN 
---		INSERT INTO @pVaild_Bed
---			SELECT * FROM dbo.FUNC_SPLIT(@pData, ',')
-
---		INSERT INTO @pReturn_Terminal
---			SELECT CASE 
---						WHEN @pLevel = 'ward' AND @pData = (SELECT SUBSTRING(bedNo, 1, 1)) 
---						THEN (SELECT DISTINCT tID)
-
---						WHEN @pLevel = 'wing' AND @pData = (SELECT SUBSTRING(bedNo, 2, 2)) 
---						THEN (SELECT DISTINCT tID)
---					END AS Terminal_ID, tName
---			FROM @pBedNo_Within_Date
-
---		INSERT INTO @pReturn_Terminal
---			SELECT CASE WHEN @pLevel = 'bed' AND bedNo IN (SELECT * FROM @pVaild_Bed) 
---						THEN (SELECT DISTINCT tID)
---					END AS Terminal_ID, tName
---			FROM @pBedNo_Within_Date
-
---		INSERT INTO @pInvaild_Bed
---			SELECT CASE WHEN @pLevel = 'bed' AND bedNo NOT IN (SELECT bedNo FROM @pBedNo_Within_Date) 
---						THEN (SELECT bedNo)
---					END AS Bed_No
---			FROM @pVaild_Bed		
---	END 
-
---	ELSE
---		SET @responseMessage = 0
-	
---	IF ((SELECT COUNT(tID) FROM @pReturn_Terminal) > 0)
---		SELECT DISTINCT tID, tName 
---		FROM @pReturn_Terminal WHERE tID IS NOT NULL
---	ELSE 
---		SET @responseMessage = 0
-
---	IF ((SELECT COUNT(tID) FROM @pReturn_Terminal) > 0 AND @pLevel = 'bed')
---		SELECT DISTINCT tID, tName 
---		FROM @pReturn_Terminal WHERE tID IS NOT NULL
---	ELSE 
---		SET @responseMessage = 0
-	
---	IF (@pLevel = 'bed' AND (SELECT COUNT(*) FROM @pInvaild_Bed) > 0)
---		SELECT invaild_bedNo FROM @pInvaild_Bed	WHERE invaild_bedNo IS NOT NULL
---END; 
-
-
 ---------------------------------------------------------------------------------------------------  Procedures for Tracing Visiors by Check-In  
 GO
 CREATE PROCEDURE [dbo].[TRACE_VISITOR_BY_LOCATION]  
@@ -3276,7 +2959,7 @@ BEGIN 
 		WITH DAY_BED_SCANS (nric, visitActualTime, locationID, locationTime, bedNoList)
 		AS
 		(
-			SELECT m.nric, m.visitActualTime, m.locationID, m.locationTime, tb.bedNoList
+			SELECT DISTINCT m.nric, m.visitActualTime, m.locationID, m.locationTime, tb.bedNoList
 			FROM MOVEMENT m
 			LEFT JOIN TERMINAL_BED tb ON m.locationID = tb.terminalID
 			WHERE tb.bedNoList LIKE '%'+ @pBed_No_Var +'%'
@@ -3304,29 +2987,115 @@ END;
 
 -------------------------------------------------------------------------------------------------
 GO
-CREATE PROCEDURE [dbo].[UPDATE_CONFIG] 
-@pLowTemp VARCHAR(15),
-@pHighTemp VARCHAR(15),
-@pLowTime VARCHAR(15),
-@pHighTime VARCHAR(15),
-@pUpdatedBy VARCHAR(200),
-@responseMessage INT OUTPUT 
- 
--- In the MOVEMENT Table: 
--- Assuming that LocationID = '1' for Checking-out at the 'Exit' Gantry   
+CREATE PROCEDURE [dbo].[TRACE_BY_REG_LOC]  
+@pStart_Date DATE,
+@pEnd_Date DATE,
+@pLocation VARCHAR(128),
+@responseMessage INT OUT
 
 AS  
 BEGIN  
-	SET NOCOUNT ON  
-	BEGIN TRY
-		INSERT INTO MASTER_CONFIG (lowerTempLimit, upperTempLimit, lowerTimeLimit, upperTimeLimit, dateUpdated, updatedBy) 
-		VALUES (@pLowTemp, @pHighTemp, @pLowTime, @pHighTime, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), @pUpdatedBy)
+  SET NOCOUNT ON
+  
+  BEGIN
+    SET @responseMessage = 1;
 
-		SET @responseMessage = 1
-	END TRY
-	BEGIN CATCH
-		SET @responseMessage = 0
-	END CATCH
+	------------------------------------------------ First retrieve all registered visits to the location
+	------------------------------------------------ in question which checked in within query period
+	WITH DAY_BED_CHECKINS(nric, visitActualTime, bedNo, visitLocation)
+	AS
+	(
+		SELECT DISTINCT ci.nric, ci.visitActualTime, v.bedNo, v.visitLocation
+		FROM CHECK_IN ci
+		LEFT JOIN VISIT v ON v.visitorNric = ci.nric
+		WHERE v.visitLocation = @pLocation
+		AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+	),
+	DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
+		AS
+		(
+			SELECT dbc.nric, dbc.visitActualTime, t.tName, m.locationTime
+			FROM DAY_BED_CHECKINS dbc	
+			LEFT JOIN MOVEMENT M ON m.NRIC = dbc.nric
+				AND m.visitActualTime = dbc.visitActualTime
+			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
+			WHERE t.tName LIKE 'EXIT%'
+		)
+	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel'
+		FROM DAY_BED_CHECKINS dbc
+		LEFT JOIN DAY_BED_EXITS dbe ON dbe.nric = dbc.nric AND dbe.visitActualTime = dbc.visitActualTime
+		LEFT JOIN VISITOR_PROFILE vp ON vp.nric = dbc.nric
+  END
+END;
+
+-------------------------------------------------------------------------------------------------
+GO
+CREATE PROCEDURE [dbo].[TRACE_BY_SCAN_LOC]  -- Retrieve every visitor so long as they scanned in the given Bedno
+@pStart_Date DATE,
+@pEnd_Date DATE,
+@pLocation VARCHAR(128),
+@responseMessage INT OUT
+
+AS  
+BEGIN  
+	SET NOCOUNT ON
+
+	BEGIN
+		SET @responseMessage = 1;
+		------------------------------------------------ First retrieve all visits to the location in question
+		------------------------------------------------ which were scanned within the query period
+		WITH DAY_BED_SCANS (nric, visitActualTime, locationID, locationTime, bedNoList)
+		AS
+		(
+			SELECT DISTINCT m.nric, m.visitActualTime, m.locationID, m.locationTime, t.tName
+			FROM MOVEMENT m
+			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
+			WHERE t.tName = @pLocation
+			AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+		),		
+		------------------------------------------------ Find the corresponding exit terminals and exit times
+		DAY_BED_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
+		AS
+		(
+			SELECT dbs.nric, dbs.visitActualTime, dbs.locationTime, t.tName, m.locationTime
+			FROM DAY_BED_SCANS dbs	
+			LEFT JOIN MOVEMENT M ON m.NRIC = dbs.nric
+				AND m.visitActualTime = dbs.visitActualTime
+			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
+			WHERE t.tName LIKE 'EXIT%'
+		)
+		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel'
+		FROM DAY_BED_SCANS dbs 
+		LEFT JOIN DAY_BED_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
+		LEFT JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
+		LEFT JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
+	END
+END;
+
+-------------------------------------------------------------------------------------------------
+GO
+CREATE PROCEDURE [dbo].[UPDATE_CONFIG] 
+@pLowTemp VARCHAR(15),
+@pHighTemp VARCHAR(15),
+@pWarnTemp VARCHAR(15),
+@pLowTime VARCHAR(15),
+@pHighTime VARCHAR(15),
+@pVisLim INT,
+@pUpdatedBy VARCHAR(200),
+@responseMessage INT OUTPUT 
+
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+  BEGIN TRY
+    INSERT INTO MASTER_CONFIG (lowerTempLimit, upperTempLimit, warnTemp, lowerTimeLimit, upperTimeLimit, visitLimit, dateUpdated, updatedBy) 
+    VALUES (@pLowTemp, @pHighTemp, @pWarnTemp, @pLowTime, @pHighTime, @pVisLim, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), @pUpdatedBy)
+
+    SET @responseMessage = 1
+  END TRY
+  BEGIN CATCH
+    SET @responseMessage = 0
+  END CATCH
 END;
 
 
@@ -3375,7 +3144,7 @@ END;
 
 ------------------------------------------------------------------------------------------------------------------------------------
 GO
-CREATE PROCEDURE UPDATE_ACCESS_PROFILE
+CREATE PROCEDURE [dbo].[UPDATE_ACCESS_PROFILE]
 @pProfileName VARCHAR(100),
 @pAccessRights VARCHAR(15),
 @pUpdatedBy VARCHAR(100),
@@ -3386,10 +3155,18 @@ BEGIN
   SET NOCOUNT ON
     
   BEGIN TRY
+    IF EXISTS(SELECT profileName FROM ACCESS_PROFILE WHERE profileName = @pProfileName)
+    BEGIN
     UPDATE ACCESS_PROFILE
     SET accessRights = @pAccessRights, dateUpdated = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), updatedBy = @pUpdatedBy
     WHERE profileName = @pProfileName
-    
+    END
+    ELSE
+    BEGIN
+      INSERT INTO ACCESS_PROFILE (profileName, accessRights, dateUpdated, updatedBy)
+      VALUES (@pProfileName, @pAccessRights, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), @pUpdatedBy)
+    END
+
     SET @responseMessage = 1
   END TRY
   BEGIN CATCH
@@ -3462,6 +3239,126 @@ BEGIN
 END;
 
 
+---------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Getting Patient's name
+GO
+CREATE PROCEDURE [dbo].[GET_PATIENT_NAME]  
+@pBed_No VARCHAR(15),
+@pPatient_Name VARCHAR(100) OUTPUT,   
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	DECLARE @pBed_No_Int INT
+	SET @pBed_No_Int = CONVERT(INT, @pBed_No)
+	--SET @pBed_No_Int = CAST(@pBed_No AS INT)
+  
+	IF EXISTS (SELECT patientFullName FROM PATIENT WHERE @pBed_No_Int = bedNo)  
+	BEGIN    
+		SET @responseMessage = 1
+		SET @pPatient_Name = (SELECT TOP 1 patientFullName FROM PATIENT 
+							  WHERE @pBed_No_Int = bedNo ORDER BY startDate DESC)
+	END  
+	 
+    ELSE  
+       SET @responseMessage = 0  
+END; 
+
+
+----------------------------------------------------------------------------------------------------------------------------
+GO
+CREATE PROCEDURE [dbo].[TEST_CONFIG] 
+   
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+
+  BEGIN
+    INSERT INTO MASTER_CONFIG(lowerTempLimit, upperTempLimit, warnTemp, lowerTimeLimit, upperTimeLimit, visitLimit, dateUpdated, updatedBy)
+    VALUES ('35', '39.9', '37.6', '09:00', '20:00', 3, SYSDATETIME(), 'MASTER')
+
+    END 
+END; 
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+GO
+CREATE PROCEDURE [dbo].[TEST_ACCESS_PROFILE] 
+   
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+
+  BEGIN
+    INSERT INTO ACCESS_PROFILE(profileName, accessRights, dateUpdated, updatedBy)
+    VALUES ('Admin', 123456, SYSDATETIME(), 'MASTER')
+
+    INSERT INTO ACCESS_PROFILE(profileName, accessRights, dateUpdated, updatedBy)
+    VALUES ('Infection Control', 2356, SYSDATETIME(), 'MASTER')
+
+    INSERT INTO ACCESS_PROFILE(profileName, accessRights, dateUpdated, updatedBy)
+    VALUES ('Front Desk', 1, SYSDATETIME(), 'MASTER')
+
+    INSERT INTO ACCESS_PROFILE(profileName, accessRights, dateUpdated, updatedBy)
+    VALUES ('Configurator', 234, SYSDATETIME(), 'MASTER')
+
+    INSERT INTO ACCESS_PROFILE(profileName, accessRights, dateUpdated, updatedBy)
+    VALUES ('Facilities', 3, SYSDATETIME(), 'MASTER')
+
+    END 
+END;
+
+
+--============= This is for Live DB to call the linked server & query the PATIENT DB ================================================================================================================
+--GO
+--CREATE PROCEDURE [dbo].[CONFIRM_HOSPITAL_PATIENT] 
+--@pPatientFullName NVARCHAR(150),
+--@pBedNo INT,
+--@responseMessage VARCHAR(500) OUTPUT
+
+--AS  
+--BEGIN  
+--  SET NOCOUNT ON  
+--  DECLARE @pPatient_Detail VARCHAR(500)
+--  DECLARE @pActiveQns TABLE (ADM_ID INT, Pat_NRIC VARCHAR(50), Pat_Name VARCHAR(200), ADM_Dt DATETIME, Bed VARCHAR(50))  
+
+--  INSERT INTO @pActiveQns
+--  SELECT * FROM OPENQUERY(APPSVR,'SELECT ADM_ID, Pat_NRIC, Pat_Name, ADM_Dt, Bed FROM [AMKH_InhouseDB].[dbo].[Current_Patient_list]')
+
+--  IF(LEN(@pPatientFullName) > 5)
+--  BEGIN
+--    IF EXISTS (SELECT ADM_ID FROM @pActiveQns WHERE Pat_Name LIKE '%' + @pPatientFullName + '%' AND Bed = @pBedNo)
+--    BEGIN
+--      SET @pPatient_Detail = (SELECT (Pat_NRIC + ',' + Pat_Name + ',' + CAST(Bed AS VARCHAR(100))) FROM @pActiveQns WHERE Pat_Name LIKE '%' + @pPatientFullName + '%' AND Bed = @pBedNo)
+--      SET @responseMessage = @pPatient_Detail
+--    END
+--    ELSE
+--    BEGIN
+--      SET @responseMessage = '0'
+--    END
+--    END
+--    ELSE
+--    BEGIN
+--    IF EXISTS (SELECT ADM_ID FROM @pActiveQns WHERE Pat_Name = @pPatientFullName AND Bed = @pBedNo)
+--    BEGIN
+--      SET @pPatient_Detail = (SELECT (Pat_NRIC + ',' + Pat_Name + ',' + CAST(Bed AS VARCHAR(100))) FROM @pActiveQns WHERE Pat_Name = @pPatientFullName AND Bed = @pBedNo)
+--    SET @responseMessage = @pPatient_Detail
+--    END
+--    ELSE
+--    BEGIN
+--      SET @responseMessage = '0'
+--    END
+--  END
+--END;
+
+
+--===========================================================================================================================================================================================
+
+
+
+
+
 ------------------------------------------------------------------------------------------ Created by fried
 GO
 CREATE PROCEDURE [dbo].[TEST_TRACING] 
@@ -3472,7 +3369,7 @@ BEGIN 
 
 	BEGIN
 		INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
-		VALUES (1101, 'S8888999Z', 'Li Bai Ka', '2015-01-13 10:00', '2016-06-25 17:30')
+		VALUES (1202, 'S8888999Z', 'Li Bai Ka', '2015-01-13 10:00', '2016-06-25 17:30')
     END 
 
 	BEGIN
@@ -3485,7 +3382,7 @@ BEGIN 
 		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, mobileTel,
 									homeAddress, postalCode, time_stamp, confirm, amend)
 		VALUES ('S3333444B', 'Tan Ah Boy', 'M', 'SINGAPOREAN', '1992-03-13','85554321', 
-				'7 Jln Terang Bulan', 457285, '2015-01-29 12:00:00 PM', 0, 1)
+				'7 Jln Terang Bulan', 457285, '2015-01-29 12:00:00 PM', 1, 0)
 
 
 		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, mobileTel,
@@ -3495,63 +3392,191 @@ BEGIN 
     END
 
 	BEGIN
+		INSERT INTO QUESTIONAIRE_ANS
+		VALUES('SECOND_ANS_ID', 'Second', 'JSON ANSWERS FOR QUESTIONNARIE (Second)')
+	END
+
+	BEGIN
 		INSERT INTO VISIT
-		VALUES ('2015-01-29 10:00:00', 'S1111222A', 'Visiting', NULL, NULL, '1101', 'FIRST_ANS_ID', '', 1)
+		VALUES ('2015-01-29 10:00:00', 'S1111222A', 'Visiting', NULL, NULL, '1202', 'FIRST_ANS_ID', '', 1)
 
 		INSERT INTO VISIT
-		VALUES ('2015-01-29 12:00:00', 'S3333444B', 'Visiting', NULL, NULL, '1101', 'FIRST_ANS_ID', '', 1)
+		VALUES ('2015-01-29 12:00:00', 'S3333444B', 'Visiting', NULL, NULL, '1202', 'FIRST_ANS_ID', '', 1)
 
 		INSERT INTO VISIT
-		VALUES ('2015-01-29 16:00:00', 'S3333444B', 'Visiting', NULL, NULL, '1101', 'FIRST_ANS_ID', '', 1)
+		VALUES ('2015-01-29 14:00:00', 'S3333444B', 'Visiting', NULL, NULL, '1202', 'FIRST_ANS_ID', '', 1)
 
 		INSERT INTO VISIT
-		VALUES ('2015-01-29 18:00:00', 'S5555666Z', 'Other Purpose', 'Delivery', 'CAFETERIA', NULL, 'FIRST_ANS_ID', '', 1)
+		VALUES ('2015-01-29 16:00:00', 'S3333444B', 'Visiting', NULL, NULL, '1202', 'FIRST_ANS_ID', '', 1)
+
+		INSERT INTO VISIT
+		VALUES ('2015-01-29 18:00:00', 'S3333444B', 'Visiting', NULL, NULL, '1202', 'SECOND_ANS_ID', '', 1)
+
+		INSERT INTO VISIT
+		VALUES ('2015-01-29 19:00:00', 'S5555666Z', 'Other Purpose', 'Delivery', 'CAFETERIA', NULL, 'FIRST_ANS_ID', '', 1)
 	END 
 
 	BEGIN
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S1111222A', '2015-01-29 09:00:00', '37.2', 'asd@smu.edu.sg')
+		VALUES ('S1111222A', '2015-01-29 09:00:00', '37.2', 'abdulsr.2014@smu.edu.sg')
 
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S3333444B', '2015-01-29 14:00:00', '36.8', 'asd@smu.edu.sg')
+		VALUES ('S3333444B', '2015-01-29 12:30:00', '36.8', 'abdulsr.2014@smu.edu.sg')
 
 		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
-		VALUES ('S5555666Z', '2015-01-29 18:45:00', '37.0', 'asd@smu.edu.sg')
+		VALUES ('S3333444B', '2015-01-29 17:30:00', '37.1', 'abdulsr.2014@smu.edu.sg')
+
+		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
+		VALUES ('S5555666Z', '2015-01-29 18:45:00', '37.0', 'abdulsr.2014@smu.edu.sg')
     END 
 
 	BEGIN
 
-		---------------------------------------------------------------------- Lim Bo Chap checks in earlier than time he registered to visit, and doesn't scan in.
+		---------------------------------------------------------------------- Lim Bo Chap checks in earlier than time he registered to visit, and is automatically scanned in.
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S1111222A', '2015-01-29 09:00:00', 2, '2015-01-29 09:15:00')
+		VALUES ('S1111222A', '2015-01-29 09:00:00', 1, '2015-01-29 09:15:00')
 		---------------------------------------------------------------------- Lim Bo Chap scans at place he didn't register to visit.
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S1111222A', '2015-01-29 09:00:00', 7, '2015-01-29 09:15:20')
+		VALUES ('S1111222A', '2015-01-29 09:00:00', 8, '2015-01-29 09:25:20')
 		---------------------------------------------------------------------- Lim Bo Chap doesn't scan out.
 
-		---------------------------------------------------------------------- Tan Ah Boy scans in. He was checked in exactly between two registered visits.
+		---------------------------------------------------------------------- Tan Ah Boy checks in, and is scanned in automatically. 
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S3333444B', '2015-01-29 14:00:00', 2, '2015-01-29 14:02:00')
+		VALUES ('S3333444B', '2015-01-29 12:30:00', 1, '2015-01-29 14:02:00')
 		---------------------------------------------------------------------- Tan Ah Boy scans at place he registered to visit
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S3333444B', '2015-01-29 14:00:00', 4, '2015-01-29 14:10:00')
+		VALUES ('S3333444B', '2015-01-29 12:30:00', 3, '2015-01-29 14:10:00')
+		---------------------------------------------------------------------- Tan Ah Boy scans out to grab a late lunch.
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S3333444B', '2015-01-29 12:30:00', 2, '2015-01-29 15:45:00')
+		---------------------------------------------------------------------- Tan Ah Boy has to check in again since he scanned out. The system scans him in.
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S3333444B', '2015-01-29 17:30:00', 1, '2015-01-29 17:31:00')
+		---------------------------------------------------------------------- Tan Ah Boy scans at the place he registered to visit, again.
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S3333444B', '2015-01-29 17:30:00', 3, '2015-01-29 17:41:00')
 		---------------------------------------------------------------------- Ninjavan scans in. 
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S5555666Z', '2015-01-29 18:45:00', 2, '2015-01-29 18:47:00')
+		VALUES ('S5555666Z', '2015-01-29 18:45:00', 1, '2015-01-29 18:47:00')
 		---------------------------------------------------------------------- Tan Ah Boy scans out. 
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S3333444B', '2015-01-29 14:00:00', 3, '2015-01-29 19:00:00')
+		VALUES ('S3333444B', '2015-01-29 17:30:00', 2, '2015-01-29 19:00:00')
 		---------------------------------------------------------------------- Ninjavan scans at place she didn't register to visit
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S5555666Z', '2015-01-29 18:45:00', 4, '2015-01-29 19:10:00')
+		VALUES ('S5555666Z', '2015-01-29 18:45:00', 3, '2015-01-29 19:10:00')
 		---------------------------------------------------------------------- Ninjavan scans out. 
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S5555666Z', '2015-01-29 18:45:00', 3, '2015-01-29 19:35:00')
+		VALUES ('S5555666Z', '2015-01-29 18:45:00', 2, '2015-01-29 19:35:00')
 		---------------------------------------------------------------------- Lim Bo Chap is scanned out by the system. 
 		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		VALUES ('S1111222A', '2015-01-29 09:00:00', 3, '2015-01-29 23:50:00')
+		VALUES ('S1111222A', '2015-01-29 09:00:00', 2, '2015-01-29 23:50:00')
 	END
 
+END;
+
+
+------------------------------------------------------------------------------------------ Created by JASON
+
+GO
+CREATE PROCEDURE [dbo].[TEST_TRACING_V2] 
+
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	BEGIN
+		INSERT INTO VISIT
+		VALUES ('2017-02-01 10:00:00', 'S123', 'Visiting', NULL, NULL, '1101,1104', 'FIRST_ANS_ID', '', 1)
+
+		INSERT INTO VISIT
+		VALUES ('2017-02-01 12:00:00', 'S456', 'Visiting', NULL, NULL, '1101', 'FIRST_ANS_ID', '', 1)
+
+		INSERT INTO VISIT
+		VALUES ('2017-02-01 14:00:00', 'S789', 'Visiting', NULL, NULL, '1104', 'FIRST_ANS_ID', '', 1)
+
+		INSERT INTO VISIT
+		VALUES ('2017-02-02 16:00:00', 'S246', 'Visiting', NULL, NULL, '1101', 'FIRST_ANS_ID', '', 1)
+
+		INSERT INTO VISIT
+		VALUES ('2017-02-02 18:00:00', 'S629', 'Visiting', NULL, NULL, '1104', 'FIRST_ANS_ID', '', 1)
+
+		INSERT INTO VISIT
+		VALUES ('2017-02-01 19:00:00', 'S123', 'Other Purpose', 'Delivery', 'CAFETERIA', NULL, 'FIRST_ANS_ID', '', 1)
+	END 
+
+	BEGIN
+		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
+		VALUES ('S123', '2017-02-01 09:00:00', '37.2', 'asd@smu.edu.sg')
+
+		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
+		VALUES ('S456', '2017-02-01 12:15:00', '36.8', 'asd@smu.edu.sg')
+
+		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
+		VALUES ('S789', '2017-02-01 14:02:00', '37.1', 'asd@smu.edu.sg')
+
+		INSERT INTO CHECK_IN (nric, visitActualTime, temperature, staffEmail)
+		VALUES ('S123', '2017-02-01 18:45:00', '37.0', 'asd@smu.edu.sg')
+    END 
+
+	BEGIN
+
+		---------------------------------------------------------------------- 
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S123', '2017-02-01 09:00:00', 3, '2017-02-01 09:35:00')
+		---------------------------------------------------------------------- 
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S123', '2017-02-01 09:00:00', 4, '2017-02-01 11:00:20')
+		---------------------------------------------------------------------- Nvr register
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S123', '2017-02-01 09:00:00', 5, '2017-02-01 14:12:20')
+		---------------------------------------------------------------------- Nvr register
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S123', '2017-02-01 09:00:00', 2, '2017-02-01 18:00:20')
+		----------------------------------------------------------------------
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S123', '2017-02-01 09:00:00', 8, '2017-02-01 19:04:20')
+		---------------------------------------------------------------------- Does not scan the EXIT Terminal.
+
+		---------------------------------------------------------------------- 
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S456', '2017-02-01 12:00:00', 3, '2017-02-01 12:15:00')
+		---------------------------------------------------------------------- 
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S456', '2017-02-01 12:00:00', 2, '2017-02-01 14:10:00')
+		---------------------------------------------------------------------- 
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S456', '2017-02-01 12:00:00', 3, '2017-02-01 15:15:00')
+		---------------------------------------------------------------------- 
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S456', '2017-02-01 12:00:00', 2, '2017-02-01 14:10:00')
+		---------------------------------------------------------------------- 
+		
+		----------------------------------------------------------------------
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S789', '2017-02-01 14:00:00', 4, '2017-02-01 15:45:00')
+		---------------------------------------------------------------------- 
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S789', '2017-02-01 17:30:00', 2, '2017-02-01 17:31:00')
+		----------------------------------------------------------------------
+	END
+
+	BEGIN
+		----------------------------------------------------------------------
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S246', '2017-02-02 16:00:00', 3, '2017-02-02 15:50:00')
+		---------------------------------------------------------------------- 
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S246', '2017-02-02 16:00:00', 2, '2017-02-02 17:11:00')
+		----------------------------------------------------------------------
+
+				----------------------------------------------------------------------
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S629', '2017-02-02 18:00:00', 5, '2017-02-02 18:02:00')
+		---------------------------------------------------------------------- 
+		INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		VALUES ('S629', '2017-02-02 18:00:00', 2, '2017-02-02 20:07:00')
+		----------------------------------------------------------------------
+	END
 END;
 
 
@@ -3560,26 +3585,26 @@ GO
 CREATE PROCEDURE [dbo].[TEST_DATA_GENERATE]
 AS
 BEGIN
-	SET NOCOUNT ON
+  SET NOCOUNT ON
 
-		DECLARE	@return_value int,
-				@responseMessage varchar(250)
+    DECLARE  @return_value int,
+        @responseMessage varchar(250)
 
-		EXEC	@return_value = [dbo].[TEST_VISITOR_PROFILE]
-		EXEC	@return_value = [dbo].[TEST_TERMINAL]
-		EXEC	@return_value = [dbo].[TEST_QUESTIONAIRE_QNS_LIST]
-		EXEC	@return_value = [dbo].[TEST_QUESTIONAIRE_QNS]
-		EXEC	@return_value = [dbo].[TEST_QUESTIONNAIRE_ANS]
-		EXEC	@return_value = [dbo].[TEST_PERMISSIONS]
-		EXEC	@return_value = [dbo].[TEST_PATIENT]
-		EXEC	@return_value = [dbo].[TEST_MOVEMENT]
-		EXEC	@return_value = [dbo].[TEST_CREATE_STAFF]
-				@responseMessage = @responseMessage OUTPUT
-		EXEC	@return_value = [dbo].[TEST_CREATE_ADMIN]
-				@responseMessage = @responseMessage OUTPUT
-		EXEC	@return_value = [dbo].[TEST_CHECK_IN]
-		EXEC	@return_value = [dbo].[TEST_VISIT]
-		EXEC	@return_value = [dbo].[TEST_TRACING]
-		EXEC	@responseMessage = [dbo].[TEST_ACCESS_PROFILE]
+    EXEC  @return_value = [dbo].[TEST_PERMISSIONS]
+    EXEC  @return_value = [dbo].[TEST_ACCESS_PROFILE]
+    EXEC  @return_value = [dbo].[TEST_CONFIG]
+    EXEC  @return_value = [dbo].[TEST_VISITOR_PROFILE]
+    EXEC  @return_value = [dbo].[TEST_TERMINAL]
+    EXEC  @return_value = [dbo].[TEST_QUESTIONAIRE_QNS_LIST]
+    EXEC  @return_value = [dbo].[TEST_QUESTIONAIRE_QNS]
+    EXEC  @return_value = [dbo].[TEST_QUESTIONNAIRE_ANS]
+    EXEC  @return_value = [dbo].[TEST_PATIENT]
+    EXEC  @return_value = [dbo].[TEST_MOVEMENT]
+    EXEC  @return_value = [dbo].[TEST_CREATE_STAFF]
+        @responseMessage = @responseMessage OUTPUT
+    EXEC  @return_value = [dbo].[TEST_CREATE_ADMIN]
+        @responseMessage = @responseMessage OUTPUT
+    EXEC  @return_value = [dbo].[TEST_CHECK_IN]
+    EXEC  @return_value = [dbo].[TEST_VISIT]
+    EXEC  @return_value = [dbo].[TEST_TRACING]
 END;
-

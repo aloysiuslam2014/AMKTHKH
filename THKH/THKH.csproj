@@ -291,7 +291,7 @@
     </Content>
     <Content Include="Webpage\SQL Script\THKHDB_06Feb17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_13Feb17.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_30Jan17.sql" />
+    <Content Include="Webpage\SQL Script\THKHDB_14Feb17.sql" />
     <Content Include="Webpage\Staff\TerminalCalls\locationQueries.js" />
     <Content Include="Scripts\moment-with-locales.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
