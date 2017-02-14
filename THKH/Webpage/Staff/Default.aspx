@@ -359,7 +359,7 @@
                 <div class="row" id="userData">
                     <div id="newusercontent" class="col-sm-6" runat="server">
                         <div class="jumbotron" style="text-align: left">
-                            <h3 style="">Personal Details</h3>
+                            <h3 style="color:lightblue">Personal Details</h3>
                             <label for="namesinput"><span style="color:lightcoral">*</span>Full Name</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="namesInput" />
@@ -388,7 +388,7 @@
                             <label for="daterange"><span style="color:lightcoral">*</span>Date of Birth (DD-MM-YYYY)</label>
                             <div class="form-group">
                                 <div class="input-group date" id="datetimepicker">
-                                    <input type='text' id="daterange" class="form-control required regInput" />
+                                    <input type='text' id="daterange" class="form-control required regInput" readonly="readonly"/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -407,7 +407,7 @@
                     </div>
                     <div id="staticinfocontainer" class="col-sm-6" style="text-align: left" runat="server">
                         <div class="jumbotron" style="text-align: left">
-                            <h3 style="">Visit Details</h3>
+                            <h3 style="color:lightblue">Visit Details</h3>
                             <label for="pInput"><span style="color:lightcoral">*</span>Visit Purpose</label>
                             <%--Check for Purpose of Visit--%>
                             <div class="form-group">
@@ -472,12 +472,12 @@
                                     </select>
                                  <label for="declaration" id="timelabel" style="color: lightcoral">Please choose a Visit Time!</label>
                             </div>
-                            <h3 style="">Health Screening Form</h3>
+                            <h3 style="color:lightblue">Health Screening Form</h3>
                             <div id="questionaireForm">
                                 <!-- load questionaires here from JS -->
                             </div>
                             <div id="remarksDiv">
-                                <h3>Additional Information</h3>
+                                <h3 style="color:lightblue">Additional Information</h3>
                                 <label for="remarksinput">Remarks</label>
                                 <div class="form-group">
                                 <input type="text" runat="server" class="form-control regInput" id="remarksinput" />
@@ -1356,7 +1356,7 @@
     <%}if (accessRightsStr.Contains('6'))
         { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
-    <%} if (accessRightsStr.Contains('5')) {%>
+    <%} if (accessRightsStr.Contains('5') || accessRightsStr.Contains('1')) {%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/PassManagement/passManage.js") %>"></script>
     <%} %>
     <script type="text/javascript">

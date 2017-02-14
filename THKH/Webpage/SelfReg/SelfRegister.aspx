@@ -298,7 +298,7 @@ margin-bottom:10px;
                                     <label for="daterange"><span style='color:lightcoral'>*</span>Date of Birth (DD-MM-YYYY)</label>
                                     <div class="form-group">
                                     <div class="input-group date" id="datetimepicker">
-                                        <input type='text'id="daterange" class="form-control required" onchange="checkDOB(); false;" />
+                                        <input type='text'id="daterange" class="form-control required" onchange="checkDOB(); false;" readonly="readonly"/>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>

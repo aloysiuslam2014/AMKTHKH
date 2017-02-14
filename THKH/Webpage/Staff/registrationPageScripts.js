@@ -723,7 +723,8 @@ $(function () {
         // dateFormat: 'dd-mm-yy',
         defaultDate: new Date(),
         maxDate: 'now',
-        format: 'DD-MM-YYYY'
+        format: 'DD-MM-YYYY',
+        ignoreReadonly: true
     });
     $('#visitbookingdatediv').datetimepicker(
         {
