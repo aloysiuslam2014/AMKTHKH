@@ -1108,7 +1108,7 @@
                             {
                                 defaultDate: new Date(),
                                 maxDate: 'now',
-                                format: 'DD-MM-YYYY'
+                                format: 'YYYY-MM-DD'
                             }
                             );
                     });
