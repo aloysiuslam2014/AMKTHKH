@@ -398,66 +398,67 @@ CREATE PROCEDURE [dbo].[TEST_TERMINAL]
    
 AS  
 BEGIN  
-	SET NOCOUNT ON  
+  SET NOCOUNT ON  
 
-	BEGIN
-		-- Terminal_ID == 2 (FIXED VARIABLE)
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('ENTRANCE HOSPITAL', 1, 1, '2016-06-06 00:00', NULL)
+  BEGIN
+    — Terminal_ID == 2 (FIXED VARIABLE)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('HOSPITAL ENTRANCE', 1, 1, '2016-06-06 00:00', NULL)
 
-		-- Terminal_ID == 3 (FIXED VARIABLE)
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('EXIT HOSPITAL', 1, 1, '2016-06-06 00:00', NULL)
+    — Terminal_ID == 3 (FIXED VARIABLE)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('HOSPITAL EXIT', 1, 1, '2016-06-06 00:00', NULL)
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Ward 1', 1, 1, '2016-01-01 00:00', NULL)
-		INSERT INTO TERMINAL_BED(terminalID, bedNoList)
-		VALUES (3, '1101,1202,1303')
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Ward 1', 1, 1, '2016-01-01 00:00', NULL)
+    INSERT INTO TERMINAL_BED(terminalID, bedNoList)
+    VALUES (3, '1101,1102,1202,1303')
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Ward 2', 1, 1, '2016-03-03 00:00', NULL)
-		INSERT INTO TERMINAL_BED(terminalID, bedNoList)
-		VALUES (4, '1104,3205,5306')
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Ward 2', 1, 1, '2016-03-03 00:00', NULL)
+    INSERT INTO TERMINAL_BED(terminalID, bedNoList)
+    VALUES (4, '1104,3205,5306')
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Ward 3', 1, 1, '2016-06-06 00:00', NULL)
-		INSERT INTO TERMINAL_BED(terminalID, bedNoList)
-		VALUES (5, '5107,5208,5309')
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Ward 3', 1, 1, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL_BED(terminalID, bedNoList)
+    VALUES (5, '5107,5208,5309')
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Ward 4', 1, 1, '2016-06-06 00:00', NULL)
-		INSERT INTO TERMINAL_BED(terminalID, bedNoList)
-		VALUES (6, '5108,5508,5509')
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Ward 4', 1, 1, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL_BED(terminalID, bedNoList)
+    VALUES (6, '5108,5508,5509')
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Entrance: Ambulance Bay', 1, 1, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Entrance: Ambulance Bay', 1, 1, '2016-06-06 00:00', NULL)
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Cafeteria', 1, 0, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Cafeteria', 1, 0, '2016-06-06 00:00', NULL)
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Khoo Teck Puat Clinic', 1, 0, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Khoo Teck Puat Clinic', 1, 0, '2016-06-06 00:00', NULL)
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Pharmacy', 1, 0, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Pharmacy', 1, 0, '2016-06-06 00:00', NULL)
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Healing Hub', 1, 0, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Healing Hub', 1, 0, '2016-06-06 00:00', NULL)
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('Community Hub Centre', 1, 0, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('Community Hub Centre', 1, 0, '2016-06-06 00:00', NULL)
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('B. Braun Dialysis Centre', 1, 0, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('B. Braun Dialysis Centre', 1, 0, '2016-06-06 00:00', NULL)
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('NHG Diagnostics', 1, 0, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('NHG Diagnostics', 1, 0, '2016-06-06 00:00', NULL)
 
-		INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-		VALUES ('TCM Medical Centre', 1, 0, '2016-06-06 00:00', NULL)
+    INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
+    VALUES ('TCM Medical Centre', 1, 0, '2016-06-06 00:00', NULL)
     
-	END 
+  END 
 END;
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Terminal
@@ -648,11 +649,16 @@ BEGIN
               dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
         VALUES('Friedemann', 'Ang', 'S9022934A', 'SMU', 123417, '999', '999', '999', 'zkang.2014@smu.edu.sg', 'M', 'SINGAPOREAN', 
         '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)
- 	
-	INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+   
+  INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
               dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
         VALUES('Edy', 'Chandra', 'S2138934A', 'SMU', 123417, '999', '999', '999', 'edy@amk.org.sg', 'M', 'SINGAPOREAN', 
-        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
+        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Admin', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)
+	
+  INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('THK', 'Nurse', 'S2548934A', 'SMU', 123417, '999', '999', '999', 'nurse@amk.org.sg', 'M', 'SINGAPOREAN', 
+        '1992-01-01', HASHBYTES('SHA2_512', '123'),  123456, 'Front Desk', 'Admin', GETDATE(), GETDATE(), @pCreatedBy)  
   
        SET @responseMessage='Success'   
     END TRY  
@@ -753,20 +759,24 @@ END; 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Patient
 GO
-CREATE PROCEDURE [dbo].[TEST_PATIENT] 
-   
-AS  
-BEGIN  
-	SET NOCOUNT ON  
+CREATE PROCEDURE [dbo].[TEST_PATIENT] 
+   
+AS  
+BEGIN  
+  SET NOCOUNT ON  
 
-	BEGIN
-		INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
-		VALUES (1101, 'S9876543E', 'Benny Tan', '2016-07-11 09:00', '2020-01-01 00:00')
+  BEGIN
+    INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
+    VALUES (1101, 'S9876543E', 'Benny Tan', '2016-07-11 09:00', '2020-01-01 00:00')
 
-		INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
-		VALUES (1104, 'S2468269F', 'Nicholas Lim', '2016-08-14 09:00', '2020-01-01 00:00')
-    END 
+    INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
+    VALUES (1104, 'S2468269F', 'Nicholas Lim', '2016-08-14 09:00', '2020-01-01 00:00')
+
+    INSERT INTO PATIENT(bedNo, nric, patientFullName, startDate, endDate)
+    VALUES (1102, 'S2465269F', 'Jamie Tan', '2016-08-14 09:00', '2020-01-01 00:00')
+    END 
 END;
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for creating Visitor
@@ -855,46 +865,34 @@ END;
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for TESTING
 GO
-CREATE PROCEDURE [dbo].[TEST_QUESTIONAIRE_QNS] 
-   
-AS  
-BEGIN  
-	SET NOCOUNT ON  
+CREATE PROCEDURE [dbo].[TEST_QUESTIONAIRE_QNS] 
+   
+AS  
+BEGIN  
+  SET NOCOUNT ON  
 
-	BEGIN
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Which country have you visited over the last 3 months? (If no, please select None)', 'ddList', 'None,Malaysia,USA,China,Russia', SYSDATETIME(), NULL)
-		
- 		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Were you diagnosed with fever over the last 3 days?', 'radio', 'Yes,No', SYSDATETIME(), NULL)
+  BEGIN
+    INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Which country have you visited over the last 3 months? (If no, please select None)', 'ddList', 'None,Malaysia,USA,China,Russia', SYSDATETIME(), NULL)
+    
+     INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Were you diagnosed with fever over the last 3 days?', 'radio', 'Yes,No', SYSDATETIME(), NULL)
 
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Do you have any family members who travelled to overseas over the last 3 months? Please list down their name(s) if  applicable', 'text', '', SYSDATETIME(), NULL)
+    INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Do you have any family members who travelled to overseas over the last 3 months? Please list down their name(s) if  applicable', 'text', '', SYSDATETIME(), NULL)
+---------------------------------------------------------------------------------------------------------------------------------—
 
-		-------------------------------------------------------------------------------------------------------------------------------------
+    INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Have you suffered from any of the following symptoms in the past 7 days? Check those applicable', 'checkbox', 'Cough,Fever,Nasal Congestion,Diarrhoea,Breathing Difficulties', SYSDATETIME(), NULL)
 
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Which universe planet have you visited over the last 6 months? (If no, please select None)', 'ddList', 'None,Jupiter,Mars,Mercury,Saturn,Venus', SYSDATETIME(), NULL)
-		
- 		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Were you diagnosed with Alien-Virus over the last 3 days?', 'radio', 'Yes,No', SYSDATETIME(), NULL)
+---------------------------------------------------------------------------------------------------------------------------------------------------------—
 
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Do you have any family members who travelled to overseas over the last 3 months? Please list down their name(s) if  applicable', 'text', '', SYSDATETIME(), NULL)
+    INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
+    VALUES ('Have you visited any of the following countries in the past 7 days? Check those applicable', 'checkbox', 'Australia,Canada,China', SYSDATETIME(), NULL)
 
-		-------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Which country have you visited over the last 3 months? (If no, please select None)', 'ddList', 'None,Malaysia,USA,China,Russia', SYSDATETIME(), NULL)
-		
- 		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Were you diagnosed with fever over the last 3 days?', 'radio', 'Yes,No', SYSDATETIME(), NULL)
-
-		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES ('Do you have any family members who travelled to overseas over the last 3 months? Please list down their name(s) if  applicable', 'text', '', SYSDATETIME(), NULL)
-
-    END 
+    END 
 END;
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------- Procedures for TESTING
