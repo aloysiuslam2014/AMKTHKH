@@ -1140,9 +1140,9 @@
                     <span class="input-group-btn">
                     <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace();"><span class="glyphicon glyphicon-search"></span>Trace</button>
                     </span>
-                    <span class="input-group-btn">
+                    <%--<span class="input-group-btn">
                         <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-list"></span>Generate CSV</button>
-                    </span>
+                    </span>--%>
                 </div>
 
                 <script>
