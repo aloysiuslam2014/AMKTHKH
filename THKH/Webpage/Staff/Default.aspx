@@ -342,14 +342,14 @@
                         <div class="jumbotron" style="text-align: left">
                             <h3 style="color:lightblue">Search for Visitor</h3>
                             <label class="control-label" for="nric"><span style="color:lightcoral">*</span>Visitor's NRIC:</label>
-                            <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />
-                            <%--<div class="input-group date" id="nricinputgroup">
+                            <%--<input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />--%>
+                            <div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" id="clearAllBtn" onclick="hideTags(true); false;" runat="server"><span class="glyphicon glyphicon-ban-circle"></span> Clear Fields</button>
-                                    <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
+                                    
                                 </span>
-                            </div>--%>
+                            </div>
                             <h4 id="emptyNricWarning" style="color: lightcoral">Please enter an NRIC/Identification Number!</h4>
                             <div id="nricWarnDiv">
                                 <h4 id="nricWarning" style="color: lightcoral">Non-Singapore Based NRIC/ID!</h4>
@@ -366,7 +366,10 @@
                             <h4 id="tempLimitWarning" style="color: lightcoral">Visitor's Temperature is above the limit of 37.6 degrees celcius!</h4>
                             <h4 id="lowtempWarning" style="color: lightcoral">Visitor's Temperature is below the allowable 34 degrees celcius!</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
-                            <h5>Please click the "Check Visitor" button on the right once you have filled in the NRIC & the Temperature</h5>
+                            <h5>Please click the "Check NRIC" button once you have filled in the NRIC & the Temperature</h5>
+                            <div class="center-block">
+                            <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
+                            </div>
                         </div>
                     </div>
                 </div>
