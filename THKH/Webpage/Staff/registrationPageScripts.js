@@ -505,6 +505,7 @@ function clearFields(overwrite) {
         $("#registration .regInput").each(function (idx, obj) {
             if ($(obj).attr("id") != "visitbookingdate") {
                 $(obj).prop("value", "");
+                $(obj).css('background', '#ffffff');
             }
         });
         regCompleted = false;
@@ -513,6 +514,7 @@ function clearFields(overwrite) {
             $("#registration .regInput").each(function (idx, obj) {
                 if ($(obj).attr("id") != "visitbookingdate") {
                     $(obj).prop("value", "");
+                    $(obj).css('background', '#ffffff');
                 }
             });
             regCompleted = false;
@@ -520,6 +522,7 @@ function clearFields(overwrite) {
             $("#registration .regInput").each(function (idx, obj) {
                 if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp") {
                     $(obj).prop("value", "");
+                    $(obj).css('background', '#ffffff');
                 }
             });
         }

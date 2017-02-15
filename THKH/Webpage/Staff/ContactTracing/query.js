@@ -47,6 +47,7 @@ function unifiedTrace() {
                 var arrLen = uqResult.Msg.length;
 
                 var result_table = $('#uq_resultstable').dataTable();
+                
                 result_table.fnClearTable();
 
                 for (i = 0; i < arrLen; i++) {
@@ -85,6 +86,7 @@ function writeUQResultsTable(uqResultJSON) {
 
             //visitor
             var row = document.createElement("tr");
+            $(row).attr("class", "info");
 
             for (rowindex = 0; rowindex < vparams.length; ++rowindex) {
                 var cell = document.createElement("td");

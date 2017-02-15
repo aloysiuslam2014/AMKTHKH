@@ -1173,7 +1173,7 @@
             </div>
 
             <div class="form-group col-sm-12" id="uq_results">
-                <table id ="uq_resultstable" class="display" style:"padding-left:10px padding-right:10px">
+                <table id ="uq_resultstable" class="table table-condensed table-hover" style:"padding-left:10px padding-right:10px">
                     <thead id="uq_resultstable_head">
                         <tr>
                             <th>Registration Location</th>
@@ -1222,8 +1222,11 @@
                                 orientation: 'landscape',
                                 pageSize: 'A4'
                             }
-                        ]
+                            ]
                         });
+                        $('#uq_resultstable').removeClass("dataTable");
+                        $('#uq_resultstable_info').removeClass("dataTables_info");
+                        $('#uq_resultstable_length').removeClass("dataTables_length");
                     });
                 </script>
             </div>
