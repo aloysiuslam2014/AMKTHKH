@@ -804,6 +804,7 @@ function hideTags(clear) {
     $("#emptyFields").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
     $("#emailWarning").css("display", "none");
+    $('#noVisitWarning').css("display", "none");
     $('#lowtempWarning').css("display", "none");
     $('#tempWarning').css("display", "none");
     $('#tempLimitWarning').css("display", "none");
@@ -1156,13 +1157,26 @@ function populateRegNationalities() {
 // Populates Visit Time Field
 function populateTime() {
     var lowTime = "";
+    var adjustedTime = false;
     var highTime = "";
+    var count = 0;
     var date = new Date();
     var timeStr = "";
     if (date.getMinutes() > 30) {
-        timeStr = (date.getHours() + 1) + ":00";
+        if (date.getHours() == 23) {
+            timeStr = "00:00";
+            adjustedTime = true;
+        } else if (date.getHours() < 10) {
+            timeStr = "0" + (date.getHours() + 1) + ":00";
+        } else {
+            timeStr = (date.getHours() + 1) + ":00";
+        }
     } else {
-        timeStr = (date.getHours()) + ":30";
+        if (date.getHours() < 10) {
+            timeStr = "0" + date.getHours() + ":30";
+        } else {
+            timeStr = (date.getHours()) + ":30";
+        }
     }
     var headersToProcess = {
         requestType: "getConfig"
@@ -1178,67 +1192,82 @@ function populateTime() {
             var mes = resultOfGeneration.Msg;
             var arr = mes.toString().split(",");
             lowTime = arr[3].toString();
-            if (Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) {
-                lowTime = timeStr;
+            if ((Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) && (Date.parse("01/01/2011 " + highTime) >= Date.parse("01/01/2011 " + timeStr))) {
+                if (!adjustedTime) {
+                    if (Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) {
+                        lowTime = timeStr;
+                    }
+                    highTime = arr[4].toString();
+                    var time = [
+                                '00:00',
+                                '00:30',
+                                '01:30',
+                                '02:00',
+                                '02:30',
+                                '03:00',
+                                '03:30',
+                                '04:00',
+                                '04:30',
+                                '05:00',
+                                '05:30',
+                                '06:00',
+                                '06:30',
+                                '07:00',
+                                '07:30',
+                                '08:00',
+                                '08:30',
+                                '09:00',
+                                '09:30',
+                                '10:00',
+                                '10:30',
+                                '11:00',
+                                '11:30',
+                                '12:00',
+                                '12:30',
+                                '13:00',
+                                '13:30',
+                                '14:00',
+                                '14:30',
+                                '15:00',
+                                '15:30',
+                                '16:00',
+                                '16:30',
+                                '17:00',
+                                '17:30',
+                                '18:00',
+                                '18:30',
+                                '19:00',
+                                '19:30',
+                                '20:00',
+                                '20:30',
+                                '21:00',
+                                '21:30',
+                                '22:00',
+                                '22:30',
+                                '23:00',
+                                '23:30'];
+                    var start = time.indexOf(lowTime);
+                    var end = time.indexOf(highTime);
+                    for (i = start; i <= end; i++) {
+                        var optin = document.createElement("option");
+                        $(optin).attr("style", "background:white");
+                        $(optin).attr("name", time[i]);
+                        $(optin).attr("value", time[i]);
+                        $(optin).html(time[i]);
+                        $('#visitbookingtime').append(optin);
+                    }
+                }
             }
-            highTime = arr[4].toString();
-            var time = [
-                        '00:00',
-                        '00:30',
-                        '01:30',
-                        '02:00',
-                        '02:30',
-                        '03:00',
-                        '03:30',
-                        '04:00',
-                        '04:30',
-                        '05:00',
-                        '05:30',
-                        '06:00',
-                        '06:30',
-                        '07:00',
-                        '07:30',
-                        '08:00',
-                        '08:30',
-                        '09:00',
-                        '09:30',
-                        '10:00',
-                        '10:30',
-                        '11:00',
-                        '11:30',
-                        '12:00',
-                        '12:30',
-                        '13:00',
-                        '13:30',
-                        '14:00',
-                        '14:30',
-                        '15:00',
-                        '15:30',
-                        '16:00',
-                        '16:30',
-                        '17:00',
-                        '17:30',
-                        '18:00',
-                        '18:30',
-                        '19:00',
-                        '19:30',
-                        '20:00',
-                        '20:30',
-                        '21:00',
-                        '21:30',
-                        '22:00',
-                        '22:30',
-                        '23:00',
-                        '23:30'];
-            var start = time.indexOf(lowTime);
-            var end = time.indexOf(highTime);
-            for (i = start; i <= end; i++) {
-                var optin = document.createElement("option");
-                $(optin).attr("style", "background:white");
-                $(optin).attr("name", time[i]);
-                $(optin).attr("value", time[i]);
-                $(optin).html(time[i]);
-                $('#visitbookingtime').append(optin);
+            if (count == 0) {
+                allowVisit = false;
+                $('#noVisitWarning').css("display", "block");
+                $("#nric").prop('disabled', true);
+                $("#temp").prop('disabled', true);
+            } else {
+                allowVisit = true;
+                $('#noVisitWarning').css("display", "none");
+                $("#nric").prop('disabled', false);
+                $("#temp").prop('disabled', true);
             }
         },
         error: function (err) {
