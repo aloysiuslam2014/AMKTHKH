@@ -14,6 +14,13 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-ui.min.js") %>"></script>
 <%--    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery-1.12.4.js") %>"></script>--%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.dataTables.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.buttons.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.flash.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jszip.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/pdfmake.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/vfs_fonts.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.html5.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.print.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/w3data.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
@@ -26,6 +33,8 @@
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
     <link href="~/CSS/passManagement.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" 	href="~/CSS/jquery-ui.css"/>
+    <link href="~/CSS/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/CSS/buttons.dataTables.min.css" rel="stylesheet" />
 
 
 </head>
@@ -1131,9 +1140,9 @@
                     <span class="input-group-btn">
                     <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace();"><span class="glyphicon glyphicon-search"></span>Trace</button>
                     </span>
-                    <span class="input-group-btn">
+                    <%--<span class="input-group-btn">
                         <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-list"></span>Generate CSV</button>
-                    </span>
+                    </span>--%>
                 </div>
 
                 <script>
@@ -1155,7 +1164,7 @@
             </div>
 
             <div class="form-group col-sm-12" id="uq_results">
-                <table id ="uq_resultstable" class="table table-bordered table-striped" style:"padding-left:10px padding-right:10px">
+                <table id ="uq_resultstable" class="display" style:"padding-left:10px padding-right:10px">
                     <thead id="uq_resultstable_head">
                         <tr>
                             <th>Registration Location</th>
@@ -1166,8 +1175,8 @@
                             <th>NRIC</th>
                             <th>Handphone Number</th>
                             <th>Nationality</th>
-                            <th>Registered (<a href="#" data-toggle="tooltip" title="Did this visitor register to visit the query location?">?</a>)</th>
-                            <th>Scanned (<a href="#" data-toggle="tooltip" title="Did this visitor scan at the query location?">?</a>)</th>
+                            <th>Registered</th>
+                            <th>Scanned</th>
                         </tr>
                     </thead>
                     <tbody id="uq_resultstable_body">
@@ -1176,13 +1185,34 @@
 
                 <script>
                     $(document).ready(function () {
-                        $('#uq_resultstable').DataTable({
+                        var datetime_str = new Date().toString();
+                        var bednos = uq_bednos.value;
+                        var location = uq_loc.value;
+                        var traceby = bednos
+                        if (bednos.length === 0) {
+                            traceby = location
+                        }
+                        var table = $('#uq_resultstable').DataTable({
                             "searching": false,
                             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             "deferRender": true,
-                            dom: 'Bfrtip',
+                            dom: 'Bfrtipl',
                             buttons: [
-                            'copy', 'csv', 'excel', 'pdf', 'print'
+                            'copy',
+                            {
+                                extend: 'csvHtml5',
+                                title: 'Trace done on ' + datetime_str
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: 'Trace done on ' + datetime_str
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: 'Trace done on ' + datetime_str,
+                                orientation: 'landscape',
+                                pageSize: 'A4'
+                            }
                         ]
                         });
                     });

@@ -45,12 +45,16 @@ function unifiedTrace() {
             try {
                 var uqResult = JSON.parse(returner);
                 var arrLen = uqResult.Msg.length;
+
+                var result_table = $('#uq_resultstable').dataTable();
+                result_table.fnClearTable();
+
                 for (i = 0; i < arrLen; i++) {
                     var uqResultJSON = uqResult.Msg[i];
 
                     //writeUQResultsTable(uqResultJSON);
-                    //$('#uq_resultstable').dataTable().fnClearTable();
-                    $('#uq_resultstable').dataTable().fnAddData(uqResultJSON);
+                    
+                    result_table.fnAddData(uqResultJSON);
                 }
                 //var uqResultJSON = uqResult.Msg[0];
 

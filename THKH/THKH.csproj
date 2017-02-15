@@ -151,9 +151,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="CSS\buttons.dataTables.min.css" />
     <Content Include="CSS\jquery-ui.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="CSS\jquery.dataTables.min.css" />
     <Content Include="CSS\passManagement.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -253,9 +255,13 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\buttons.flash.min.js" />
+    <Content Include="Scripts\buttons.html5.min.js" />
+    <Content Include="Scripts\buttons.print.min.js" />
     <Content Include="Scripts\dataTables.bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\dataTables.buttons.min.js" />
     <Content Include="Scripts\dependencies\rsvp-3.1.0.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -286,9 +292,12 @@
     <Content Include="Scripts\jquery.dataTables.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\jszip.min.js" />
+    <Content Include="Scripts\pdfmake.min.js" />
     <Content Include="Scripts\qz-tray.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\vfs_fonts.js" />
     <Content Include="Webpage\SQL Script\THKHDB_06Feb17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_13Feb17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_14Feb17.sql" />
