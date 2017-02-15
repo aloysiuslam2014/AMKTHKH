@@ -6,59 +6,62 @@ var validPos = true;
 var existUser = false;
 var validEmail = true;
 var patientValidated = false;
+var allowVisit = true;
 
 // write to form information DB
 function NewSelfReg() {
-    var fname = $("#namesInput").val();
-    var snric = $("#nricsInput").val();
-    var address = $("#addresssInput").val();
-    var postal = $("#postalsInput").val();
-    var mobtel = $("#mobilesInput").val();
-    var sex = $("#sexinput").val();
-    var nationality = $("#nationalsInput").val();
-    var dob = $("#daterange").val();
-    var purpose = $("#pInput").val();
+    if (allowVisit) {
+        var fname = $("#namesInput").val();
+        var snric = $("#nricsInput").val();
+        var address = $("#addresssInput").val();
+        var postal = $("#postalsInput").val();
+        var mobtel = $("#mobilesInput").val();
+        var sex = $("#sexinput").val();
+        var nationality = $("#nationalsInput").val();
+        var dob = $("#daterange").val();
+        var purpose = $("#pInput").val();
 
-    var otherPurpose = $("#purposeInput").val();
-    var bedno = "";
-    var bedsLength = $("#bedsAdded").children().length;
-    $("#bedsAdded").children().each(function (idx, iitem) {
-        bedno += $(this).prop('id');
-        var parent = $(this).parent();
-        if (idx + 1 < bedsLength) {
-            bedno += "|";
-        }
-    });
-    var visTime = $("#visitbookingtime").val();
-    var visDate = $("#visitbookingdate").val();
-    var appTime = visDate + " " + visTime;
-    var visitLoc = $("#visLoc").val();
-    var qListID = $("#qnlistid").val();
-    var qAnswers = getQuestionnaireAnswers();
-    var amend = $("#amend").val();
-
-    var headersToProcess = {
-        fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, SEX: sex, Natl: nationality, DOB: dob, PURPOSE: purpose, 
-        otherPurpose: otherPurpose, bedno: bedno, appTime: appTime,  visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers, amend: amend
-    };
-    $.ajax({
-        url: '../Staff/CheckInOut/checkIn.ashx',
-        method: 'post',
-        data: headersToProcess,
-
-
-        success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
-            if (resultOfGeneration.Result === "Success") {
-                var today = new Date();
-                showSuccessModal();
-            } else {
-                alert("Error: " + resultOfGeneration.Msg);
+        var otherPurpose = $("#purposeInput").val();
+        var bedno = "";
+        var bedsLength = $("#bedsAdded").children().length;
+        $("#bedsAdded").children().each(function (idx, iitem) {
+            bedno += $(this).prop('id');
+            var parent = $(this).parent();
+            if (idx + 1 < bedsLength) {
+                bedno += "|";
             }
-        },
-        error: function (err) {
-        },
-    });
+        });
+        var visTime = $("#visitbookingtime").val();
+        var visDate = $("#visitbookingdate").val();
+        var appTime = visDate + " " + visTime;
+        var visitLoc = $("#visLoc").val();
+        var qListID = $("#qnlistid").val();
+        var qAnswers = getQuestionnaireAnswers();
+        var amend = $("#amend").val();
+
+        var headersToProcess = {
+            fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, SEX: sex, Natl: nationality, DOB: dob, PURPOSE: purpose,
+            otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, visitLocation: visitLoc, requestType: "self", qListID: qListID, qAnswers: qAnswers, amend: amend
+        };
+        $.ajax({
+            url: '../Staff/CheckInOut/checkIn.ashx',
+            method: 'post',
+            data: headersToProcess,
+
+
+            success: function (returner) {
+                var resultOfGeneration = JSON.parse(returner);
+                if (resultOfGeneration.Result === "Success") {
+                    var today = new Date();
+                    showSuccessModal();
+                } else {
+                    alert("Error: " + resultOfGeneration.Msg);
+                }
+            },
+            error: function (err) {
+            },
+        });
+    }
 }
 
 // Check nationality input field
@@ -341,14 +344,19 @@ $(function () {
     $('#visitbookingdatediv').datetimepicker(
         {
             defaultDate: new Date(),
-            format: 'DD-MM-YYYY'
+            format: 'DD-MM-YYYY',
+            ignoreReadonly: true
         });
 });
 
 // Validate NRIC format
 $("#selfRegNric").on("input", function () {
     var validNric = validateNRIC($("#selfRegNric").val());
-    if (validNric !== false) {
+    if ($("#selfRegNric").val() == "") {
+        $("#nricWarning").css("display", "none");
+        $("#submitNric").prop('disabled', true);
+    }
+    else if (validNric !== false) {
         $("#nricWarning").css("display", "none");
         $("#submitNric").css("display", "block");
         $("#submitNric").prop('disabled', false);
@@ -400,6 +408,26 @@ $("#altInput").on("input", function () {
         $("#altWarning").css("display", "block");
     }
 });
+
+// Check Other Purpose Input
+function checkOtherInput() {
+    var purpose = $("#purposeInput").val();
+    if (purpose == "") {
+        enablePurpose();
+    } else {
+        disablePurpose();
+    }
+}
+
+// Disable Visit Purpose
+function disablePurpose() {
+    $('#pInput').prop('disabled', true);
+}
+
+// Disable Visit Purpose
+function enablePurpose() {
+    $('#pInput').prop('disabled', false);
+}
 
 // Display appropriate panels according to visit purpose
 function purposePanels() {
@@ -465,6 +493,7 @@ function amendVisitorDetails() {
 function hideTags() {
     $('#emptyNricWarning').css("display", "none");
     $('#nricWarning').css("display", "none");
+    $('#noVisitWarning').css("display", "none");
     $('#visitDetailsDiv').css("display", "none");
     $("#emailWarning").css("display", "none");
     $('#staticinfocontainer').css("display", "none");
@@ -898,6 +927,7 @@ function populateTime() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
+            var count = 0;
             var mes = resultOfGeneration.Msg;
             var arr = mes.toString().split(",");
             lowTime = arr[3].toString();
@@ -962,6 +992,11 @@ function populateTime() {
                 $(optin).attr("value", time[i]);
                 $(optin).html(time[i]);
                 $('#visitbookingtime').append(optin);
+                count++;
+            }
+            if (count == 0) {
+                allowVisit = false;
+                $('#noVisitWarning').css("display", "block");
             }
         },
         error: function (err) {

@@ -125,12 +125,14 @@ function callCheck (){
                                 $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
                             }
                             //$("#qaid").prop('value', qaid);
+                            $("#nric").prop('readonly', true);
                         }
                         else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
                             clearFields(false);
                             // Except Visit Date
                             $('#visitbookingdate').val(visDate);
                             $("#nric").prop('value', nricValue);
+                            $("#nric").prop('readonly', true);
                         }
                     }
                     $('#main').animate({
@@ -491,12 +493,16 @@ function clearFields(overwrite) {
         var allowNric = false;
     }
     $("#bedsAdded").html("");
+    $("#nric").prop('readonly', false);
 }
 
 // Display appropriate panels according to visit purpose
 function purposePanels() {
     var purpose = $("#pInput").val();
     if (purpose === "Visit Patient") {
+        $("#otherpurposevisit .regInput").each(function (idx, obj) {
+             $(obj).prop("value", "");
+        });
         $("#patientpurposevisit").css("display", "block");
         $("#otherpurposevisit").css("display", "none");
         $("#purWarning").css("display", "none");
@@ -506,6 +512,9 @@ function purposePanels() {
        // $('#patientpurposevisit input').addClass('required');
         return true;
     } else if (purpose === "Other Purpose") {
+        $("#patientpurposevisit .regInput").each(function (idx, obj) {
+            $(obj).prop("value", "");
+        });
         $("#patientpurposevisit").css("display", "none");
         $("#otherpurposevisit").css("display", "block");
         $("#purWarning").css("display", "none");

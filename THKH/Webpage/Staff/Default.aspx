@@ -438,7 +438,7 @@
                                 </div>
                                 
 
-                                <label style="color:lightcoral">Beds To Be Visited</label>
+                                <label>Beds To Be Visited</label>
                                 <div id="bedsAdded" class="col-xs-12 bedNoDisplay required">
 
                                 </div>

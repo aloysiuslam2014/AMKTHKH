@@ -140,7 +140,7 @@ margin-bottom:10px;
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h3 class="modal-title">Visitor Registration</h3><br />
+                                <h3 class="modal-title" style="color:lightblue">Visitor Registration</h3><br />
                                 <div class="input-group">
                                           <span class="input-group-addon" id="basic-addon">NRIC/FIN</span>
                                           <input type="text" class="form-control" id="selfRegNric" placeholder="Please enter a Singapore-based ID Number" aria-describedby="basic-addon" />
@@ -149,6 +149,7 @@ margin-bottom:10px;
                                 <h5 id="emptyNricWarning">Please enter your NRIC/Identification Number!</h5>
                                 <button class="btn btn-block btn-success" id="submitNric" onclick="showVisitDetails(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
                                 <h5 id="nricWarning" style="color: lightcoral">Invalid ID number! Please register at the front counter.</h5>
+                                <h5 id="noVisitWarning" style="color: lightcoral">You are registering after visiting hours! Please approach the front counter for assistance.</h5>
                             </div>
                             <%--<div class="modal-body text-center">
                                 
@@ -181,7 +182,7 @@ margin-bottom:10px;
                     
                     <div class="row" id="visitDetailsDiv">
                         <div class="jumbotron">
-                        <h3>Visit Details</h3>
+                        <h3 style="color:lightblue">Visit Details</h3>
                                 <label for="pInput"><span style='color:lightcoral'>*</span>Visit Purpose</label> <%--Check for Purpose of Visit--%>
                                 <div class="form-group">
                                     <select class="form-control" id="pInput" onchange="purposePanels(); false;">
@@ -224,7 +225,7 @@ margin-bottom:10px;
                                     </div>
                                     <label for="purposeInput"><span style='color:lightcoral'>*</span>Purpose of Visit</label>
                                     <div class="form-group">
-                                        <input type="text" runat="server" class="form-control" id="purposeInput" />
+                                        <input type="text" runat="server" class="form-control" id="purposeInput" onchange="checkOtherInput(); false;" />
                                     </div>
                                 </div>
                                 <label for="visitbookingdate"><span style='color:lightcoral'>*</span>Visit Date (DD-MM-YYYY)</label>
@@ -260,7 +261,7 @@ margin-bottom:10px;
                                     </div>
                         <div id="newusercontent" runat="server">
                             <div style="text-align:left">
-                                    <h3>Personal Details</h3>
+                                    <h3 style="color:lightblue">Personal Details</h3>
                                     <label for="namesinput"><span style='color:lightcoral'>*</span>Full Name</label>
                                     <div class="form-group">
                                         <input type="text" runat="server" class="form-control required" id="namesInput" />
@@ -330,7 +331,7 @@ margin-bottom:10px;
                     <div class="row">
                         <div id="staticinfocontainer" runat="server">
                             <div class="jumbotron" style="text-align:left">                            
-                                <h3>Health Screening Form</h3>
+                                <h3 style="color:lightblue">Health Screening Form</h3>
                                <div id="questionaireForm">
                                     <!-- load questionaires here -->
                                 </div>
@@ -338,7 +339,7 @@ margin-bottom:10px;
                                     <label for="declaration">
                             <input type="checkbox" id="declaration" name="declare" onchange="declarationValidation(); false;" value="true" />I have entered the required information to the best of my knowledge and ability</label><br />
                                     <input type="hidden" name="declare" value="false" />
-                            <label for="declaration" id="declabel" style="color:lightcoral">Please ensure that you have "Check Patient" details and check this option to continue</label>
+                            <label for="declaration" id="declabel" style="color:lightcoral">Please ensure that you have "Check Patient" details or filled up your reason for visiting and check this option to continue</label>
                                     <h4 id="emptyFields" style="color:lightcoral">Please fill in all the required fields with valid data (*) highlighted in yellow.</h4>
                         </div>
                         <button class="btn btn-block btn-success" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button> <%--Copy to Tables without confirmation--%>
