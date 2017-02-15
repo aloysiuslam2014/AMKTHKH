@@ -2678,7 +2678,7 @@ BEGIN
                                   AND MONTH(a.visitActualTime) = MONTH(b.visitRequestTime) 
                                   AND YEAR(a.visitActualTime) = YEAR(b.visitRequestTime)
                   AND bedNo = @pBedNo
-                  AND nric NOT IN (SELECT DISTINCT nric FROM MOVEMENT WHERE locationID = 3
+                  AND nric NOT IN (SELECT DISTINCT nric FROM MOVEMENT WHERE locationID = 2
                                   AND DAY(visitActualTime) = DAY(GETDATE())
                                   AND MONTH(visitActualTime) = MONTH(GETDATE()) 
                                   AND YEAR(visitActualTime) = YEAR(GETDATE()))) AS INT)

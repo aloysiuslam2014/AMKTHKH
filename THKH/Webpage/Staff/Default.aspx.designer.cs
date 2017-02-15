@@ -94,24 +94,6 @@ namespace THKH.Webpage.Staff {
         protected global::System.Web.UI.HtmlControls.HtmlInputText nric;
         
         /// <summary>
-        /// clearAllBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton clearAllBtn;
-        
-        /// <summary>
-        /// checkNricButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton checkNricButton;
-        
-        /// <summary>
         /// newusercontent control.
         /// </summary>
         /// <remarks>

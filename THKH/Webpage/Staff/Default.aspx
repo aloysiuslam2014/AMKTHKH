@@ -8,6 +8,7 @@
     <meta charset="utf-8" />
     <title>Welcome <%= Session["username"].ToString()%> | Ang Mo Kio - Thye Hwa Kuan</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/CSS/font-awesome.css" />
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/html2canvas.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/moment.min.js") %>"></script>
@@ -28,6 +29,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/rsvp-3.1.0.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/sha-256.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/qz-tray.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/kc.fab.js") %>"></script>
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
@@ -35,6 +37,7 @@
     <link rel="stylesheet" type="text/css" 	href="~/CSS/jquery-ui.css"/>
     <link href="~/CSS/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/CSS/buttons.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/CSS/kc.fab.css" />
 
 
 </head>
@@ -297,6 +300,7 @@
             <%if (accessRightsStr.Contains('1'))
                 { %>
             <div class="tab-pane maxHeight" id="registration">
+                <div class="kc_fab_wrapper"></div>
                 <a data-controls-modal="successModal" data-backdrop="static" data-keyboard="false" href="#/"></a>
                 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -338,13 +342,14 @@
                         <div class="jumbotron" style="text-align: left">
                             <h3 style="color:lightblue">Search for Visitor</h3>
                             <label class="control-label" for="nric"><span style="color:lightcoral">*</span>Visitor's NRIC:</label>
-                            <div class="input-group date" id="nricinputgroup">
+                            <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />
+                            <%--<div class="input-group date" id="nricinputgroup">
                                 <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" id="clearAllBtn" onclick="hideTags(true); false;" runat="server"><span class="glyphicon glyphicon-ban-circle"></span> Clear Fields</button>
                                     <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
                                 </span>
-                            </div>
+                            </div>--%>
                             <h4 id="emptyNricWarning" style="color: lightcoral">Please enter an NRIC/Identification Number!</h4>
                             <div id="nricWarnDiv">
                                 <h4 id="nricWarning" style="color: lightcoral">Non-Singapore Based NRIC/ID!</h4>
@@ -361,6 +366,7 @@
                             <h4 id="tempLimitWarning" style="color: lightcoral">Visitor's Temperature is above the limit of 37.6 degrees celcius!</h4>
                             <h4 id="lowtempWarning" style="color: lightcoral">Visitor's Temperature is below the allowable 34 degrees celcius!</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
+                            <h5>Please click the "Check Visitor" button on the right once you have filled in the NRIC & the Temperature</h5>
                         </div>
                     </div>
                 </div>
@@ -1132,16 +1138,16 @@
 
                 <div id="unifiedquery_bednos" class="input-group col-sm-8">
                     <div class="col-sm-6">
-                        <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 2101-2105 " style=" " type="text" />
+                        <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 2101-2105 " type="text" />
                     </div>
                     <div class="col-sm-6">
-                        <input class="form-control" id="uq_loc" placeholder="Location: NKF" style=" " type="text" />
+                        <input class="form-control" id="uq_loc" placeholder="Location: NKF" type="text" />
                     </div>
                     <span class="input-group-btn">
-                    <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace();"><span class="glyphicon glyphicon-search"></span>Trace</button>
+                    <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace(); false;"><span class="glyphicon glyphicon-search"></span> Trace</button>
                     </span>
                     <%--<span class="input-group-btn">
-                        <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-list"></span>Generate CSV</button>
+                        <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV(); false;"><span class="glyphicon glyphicon-list"></span> Generate CSV</button>
                     </span>--%>
                 </div>
 

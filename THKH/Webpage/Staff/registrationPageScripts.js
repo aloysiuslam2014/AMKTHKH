@@ -21,6 +21,9 @@ $(document).ready(function () {
             e.preventDefault();
         }
     });
+
+    // Boot the floating tab
+    $('.kc_fab_wrapper').kc_fab(links);
 });
 
 $('#navigatePage a:first').tab('show');
@@ -31,6 +34,7 @@ w3IncludeHTML();
 var validMob = true;
 var validAlt = true;
 var validHom = true;
+var validNRIC = false;
 var validTemp = false;
 var validPos = true;
 var validEmail = true;
@@ -40,6 +44,34 @@ var lowTemp = "34";
 var highTemp = "40";
 var warnTemp = "37.6";
 var visLim = 3;
+var links = [
+{
+    "bgcolor":"#03A9F4",
+    "icon":"+"
+},
+{
+    "url": "hideTagsFalse",
+    "bgcolor":"#DB4A39",
+    "color":"#fffff",
+    "icon": "<i class='fa fa-undo'></i>",
+    "target":"Clear Fields"
+},
+{
+    "url": "checkNric",
+    "bgcolor": "#a58512",
+    "color": "#fffff",
+    "icon": "<i class='fa fa-search'></i>",
+    "target": "Check NRIC"
+},
+{
+    "url": "submitAssistReg",
+    "bgcolor": "#1a8220",
+    "color": "#fffff",
+    "icon": "<i class='fa fa-file'></i>",
+    "target": "Submit Registration"
+}
+];
+
 
 // Check for visitor details & any online self registration information
 function callCheck (){
@@ -368,6 +400,9 @@ $("#temp").on("input", function () {
                 $("#invalidTempWarning").css("display", "none");
                 $('#lowtempWarning').css("display", "none");
                 validTemp = true;
+                if (validTemp && validNRIC) {
+                    showMenu();
+                }
             }
         } catch (ex) {
             $('#tempWarning').css("display", "block");
@@ -588,6 +623,10 @@ $("#nric").on("input", function () {
     if (validNric !== false) {
         $("#emptyFields").css("display", "none");
         $("#nricWarnDiv").css("display", "none");
+        validNRIC = true;
+        if (validTemp && validNRIC) {
+            showMenu();
+        }
     } else {
         $("#nricWarnDiv").css("display", "block");
     }
@@ -619,8 +658,8 @@ $("#postalsInput").on("input", function () {
 
 // Validate home phone number format
 $("#homesInput").on("input", function () {
-    var validNric = validatePhone($("#homesInput").val());
-    if (validNric !== false) {
+    var validNum = validatePhone($("#homesInput").val());
+    if (validNum !== false) {
         $("#homeWarning").css("display", "none");
         validHom = true;
     } else {

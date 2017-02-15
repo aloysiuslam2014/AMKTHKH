@@ -997,6 +997,11 @@ function populateTime() {
             if (count == 0) {
                 allowVisit = false;
                 $('#noVisitWarning').css("display", "block");
+                $("#selfRegNric").prop('disabled', true);
+            } else {
+                allowVisit = true;
+                $('#noVisitWarning').css("display", "none");
+                $("#selfRegNric").prop('disabled', false);
             }
         },
         error: function (err) {
