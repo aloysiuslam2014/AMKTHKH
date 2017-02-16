@@ -1160,7 +1160,13 @@ function populateTime() {
     var adjustedTime = false;
     var highTime = "";
     var count = 0;
-    var date = new Date();
+    var d = new Date();
+    var localTime = d.getTime();
+    var localOffset = d.getTimezoneOffset() * 60000;
+    var utc = localTime + localOffset;
+    var offset = 8;
+    var singaporeTime = utc + (3600000 * offset);
+    var date = new Date(singaporeTime);
     var timeStr = "";
     if (date.getMinutes() > 30) {
         if (date.getHours() == 23) {
@@ -1192,12 +1198,15 @@ function populateTime() {
             var mes = resultOfGeneration.Msg;
             var arr = mes.toString().split(",");
             lowTime = arr[3].toString();
-            if ((Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) && (Date.parse("01/01/2011 " + highTime) >= Date.parse("01/01/2011 " + timeStr))) {
+            highTime = arr[4].toString();
+            var upperLimitHit = Date.parse("01/01/2011 " + highTime) >= Date.parse("01/01/2011 " + timeStr);
+            var lowLimitHit = Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr);
+            if (upperLimitHit && lowLimitHit) {
                 if (!adjustedTime) {
                     if (Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) {
                         lowTime = timeStr;
                     }
-                    highTime = arr[4].toString();
+                    //highTime = arr[4].toString();
                     var time = [
                                 '00:00',
                                 '00:30',
@@ -1255,6 +1264,7 @@ function populateTime() {
                         $(optin).attr("value", time[i]);
                         $(optin).html(time[i]);
                         $('#visitbookingtime').append(optin);
+                        count++;
                     }
                 }
             }
@@ -1267,7 +1277,7 @@ function populateTime() {
                 allowVisit = true;
                 $('#noVisitWarning').css("display", "none");
                 $("#nric").prop('disabled', false);
-                $("#temp").prop('disabled', true);
+                $("#temp").prop('disabled', false);
             }
         },
         error: function (err) {
