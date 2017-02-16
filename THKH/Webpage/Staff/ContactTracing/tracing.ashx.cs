@@ -200,8 +200,8 @@ namespace THKH.Webpage.Staff.ContactTracing
                     innerItem.mobileTel = deserializedVisit["mobileTel"];
                     innerItem.nationality = deserializedVisit["nationality"];
 
-                    if (reg) { innerItem.reg = "Yes"; } else { innerItem.reg = "No"; }
-                    if (scan) { innerItem.scan = "Yes"; } else { innerItem.scan = "No"; }
+                    if (reg) { innerItem.reg = "Y"; } else { innerItem.reg = ""; }
+                    if (scan) { innerItem.scan = "Y"; } else { innerItem.scan = ""; }
 
                     datatable_arrayitem.Add((string)innerItem.location);
                     datatable_arrayitem.Add((string)innerItem.bedno);
