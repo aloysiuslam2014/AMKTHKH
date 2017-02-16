@@ -383,7 +383,7 @@
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="namesInput" />
                             </div>
-                            <label for="mobileinput"><span style="color:lightcoral">*</span>Mobile Number</label>
+                            <label for="mobileinput"><span style="color:lightcoral">*</span>Contact Number</label>
                             <div class="form-group">
                                 <input type="text" runat="server" class="form-control required regInput" id="mobilesInput" />
                                 <label for="mobilesInput" id="mobWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
@@ -397,7 +397,7 @@
                                 </select>
                                 <label for="sexinput" id="sexWarning" style="color: lightcoral">Please select a gender!</label>
                             </div>
-                            <label for="nationalinput"><span style="color:lightcoral">*</span>Nationality</label>
+                            <label for="nationalinput"><span style="color:lightcoral">*</span>Country (Nationality)</label>
                             <div class="form-group">
                                 <select class="form-control required regInput" onchange="checkNationals(); false;" id="nationalsInput">
                                     <option value="">-- Select One --</option>
@@ -905,7 +905,7 @@
                                     <input id="staffPostal" class="form-control required userInput" />
                                     <label id="posWarningUser" style="color: lightcoral">Invalid Postal Code Format!</label>
                                 </div>
-                                <label><span style="color:lightcoral">*</span>Mobile Number</label>
+                                <label><span style="color:lightcoral">*</span>Contact Number</label>
                                 <div class="form-group">
                                     <input id="staffMobileNum" class="form-control required userInput" />
                                     <label id="mobWarningUser" style="color: lightcoral">Invalid Phone Number Format!</label>
@@ -929,7 +929,7 @@
                                         <option value="F">Female</option>
                                     </select>
                                 </div>
-                                <label><span style="color:lightcoral">*</span>Nationality</label>
+                                <label><span style="color:lightcoral">*</span>Country (Nationality)</label>
                                 <div class="form-group">
                                      <select class="form-control required userInput" onchange="checkNationals(); false;" id="staffNationality" >
                                         <option value="">-- Select One --</option>
@@ -1019,13 +1019,13 @@
 
                                       <option value="namesInput">Full Name</option>
                                       <option value="emailsInput">Email</option>
-                                      <option value="mobilesInput">Mobile Number</option>
+                                      <option value="mobilesInput">Contact Number</option>
                                       <option value="homesInput">Home Number</option>
                                       <option value="altInput">Alternate Number</option>
                                       <option value="addressInput">Address</option>
                                       <option value="postalsInput">Postal</option>
                                       <option value="sexinput">sex</option>
-                                      <option value="nationsInput">Nationality</option>
+                                      <option value="nationsInput">Country (Nationality)</option>
                                       <option value="daterange">Date Of Birth</option>
                                       <option value="pInput">Purpose Of Visit</option>
                                       <option value="visitbookingdate">Visit Date</option>
@@ -1184,7 +1184,7 @@
                             <th>Name</th>
                             <th>NRIC</th>
                             <th>Handphone Number</th>
-                            <th>Nationality</th>
+                            <th>Country (Nationality)</th>
                             <th>Registered</th>
                             <th>Scanned</th>
                         </tr>

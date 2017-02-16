@@ -1206,7 +1206,6 @@ function populateTime() {
                     if (Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) {
                         lowTime = timeStr;
                     }
-                    //highTime = arr[4].toString();
                     var time = [
                                 '00:00',
                                 '00:30',
