@@ -38,15 +38,13 @@ namespace THKH.Webpage.Staff.UserManagement
                 var snric = context.Request.Form["snric"];
                 var email = context.Request.Form["email"];
                 var address = context.Request.Form["address"];
-                int postal = Int32.Parse(context.Request.Form["postal"]);
+                var postal = context.Request.Form["postal"].ToString();
                 var mobtel = context.Request.Form["mobtel"];
                 var hometel = context.Request.Form["hometel"];
                 var alttel = context.Request.Form["alttel"];
                 var sex = context.Request.Form["sex"];
                 var nationality = context.Request.Form["nationality"];
                 var dob = context.Request.Form["dob"];
-                //var race = context.Request.Form["race"];
-                //int age = Int32.Parse(context.Request.Form["age"]);
                 var title = context.Request.Form["title"];
                 int permissions = Int32.Parse(context.Request.Form["permissions"]);
                 var accessProfile = context.Request.Form["accessProfile"];
@@ -65,15 +63,14 @@ namespace THKH.Webpage.Staff.UserManagement
                 var snric = context.Request.Form["snric"];
                 var email = context.Request.Form["email"];
                 var address = context.Request.Form["address"];
-                int postal = Int32.Parse(context.Request.Form["postal"]);
+                var postal = context.Request.Form["postal"].ToString();
+                //int postal = Int32.Parse(context.Request.Form["postal"]);
                 var mobtel = context.Request.Form["mobtel"];
                 var hometel = context.Request.Form["hometel"];
                 var alttel = context.Request.Form["alttel"];
                 var sex = context.Request.Form["sex"];
                 var nationality = context.Request.Form["nationality"];
                 var dob = context.Request.Form["dob"];
-                //var race = context.Request.Form["race"];
-                //int age = Int32.Parse(context.Request.Form["age"]);
                 var title = context.Request.Form["title"];
                 int permissions = Int32.Parse(context.Request.Form["permissions"]);
                 var accessProfile = context.Request.Form["accessProfile"];
@@ -207,13 +204,17 @@ namespace THKH.Webpage.Staff.UserManagement
             return successString;
         }
 
-        private String addUser(String fname, String lname, String snric, String email, String address, int postal, String mobtel, String hometel, String alttel, String sex,
+        private String addUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.NVarChar, 250);
             respon.Direction = ParameterDirection.Output;
+            int pos = 0;
+            if (postal != "") {
+                pos = Int32.Parse(postal);
+            }
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_STAFF]", cnn);
@@ -225,15 +226,13 @@ namespace THKH.Webpage.Staff.UserManagement
                 command.Parameters.AddWithValue("@pLastName", lname);
                 command.Parameters.AddWithValue("@pNric", snric);
                 command.Parameters.AddWithValue("@pAddress",address);
-                command.Parameters.AddWithValue("@pPostal", postal);
+                command.Parameters.AddWithValue("@pPostal", pos);
                 command.Parameters.AddWithValue("@pHomeTel", hometel);
                 command.Parameters.AddWithValue("@pAltTel", alttel);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pSex", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
                 command.Parameters.AddWithValue("@pDOB", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                //command.Parameters.AddWithValue("@pAge", age);
-                //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pPermission", permissions);
                 command.Parameters.AddWithValue("@pAccessProfile", accessProfile);
                 command.Parameters.AddWithValue("@pPostion", title);
@@ -291,13 +290,18 @@ namespace THKH.Webpage.Staff.UserManagement
             return successString;
         }
 
-        private String updateUser(String fname, String lname, String snric, String email, String address, int postal, String mobtel, String hometel, String alttel, String sex,
+        private String updateUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
+            int pos = 0;
+            if (postal != "")
+            {
+                pos = Int32.Parse(postal);
+            }
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_STAFF]", cnn);
@@ -309,15 +313,13 @@ namespace THKH.Webpage.Staff.UserManagement
                 command.Parameters.AddWithValue("@pLastName", lname);
                 command.Parameters.AddWithValue("@pNric", snric);
                 command.Parameters.AddWithValue("@pAddress", address);
-                command.Parameters.AddWithValue("@pPostalCode", postal);
+                command.Parameters.AddWithValue("@pPostalCode", pos);
                 command.Parameters.AddWithValue("@pHomeTel", hometel);
                 command.Parameters.AddWithValue("@pAltTel", alttel);
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pSex", sex);
                 command.Parameters.AddWithValue("@pNationality", nationality);
                 command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture));
-                //command.Parameters.AddWithValue("@pAge", age);
-                //command.Parameters.AddWithValue("@pRace", race);
                 command.Parameters.AddWithValue("@pPermission", permissions);
                 command.Parameters.AddWithValue("@pAccessProfile", accessProfile);
                 command.Parameters.AddWithValue("@pPosition", title);

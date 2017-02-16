@@ -401,38 +401,41 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
+            String successString = "{\"Result\":\"Success\"";
             String msg = "";
-            try
+            if (amend == "1")
             {
-                SqlCommand command = new SqlCommand("[dbo].[CREATE_VISITOR_PROFILE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNRIC", nric.ToUpper());
-                command.Parameters.AddWithValue("@pFullName", fname);
-                command.Parameters.AddWithValue("@pGender", sex);
-                command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                command.Parameters.AddWithValue("@pMobileTel", mobtel);
-                command.Parameters.AddWithValue("@pHomeAddress", address);
-                command.Parameters.AddWithValue("@pPostalCode", postal);
-                command.Parameters.AddWithValue("@pAmend", Int32.Parse(amend));
-                command.Parameters.Add(respon);
-                cnn.Open();
+                try
+                {
+                    SqlCommand command = new SqlCommand("[dbo].[CREATE_VISITOR_PROFILE]", cnn);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@pNRIC", nric.ToUpper());
+                    command.Parameters.AddWithValue("@pFullName", fname);
+                    command.Parameters.AddWithValue("@pGender", sex);
+                    command.Parameters.AddWithValue("@pNationality", nationality);
+                    command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
+                    command.Parameters.AddWithValue("@pMobileTel", mobtel);
+                    command.Parameters.AddWithValue("@pHomeAddress", address);
+                    command.Parameters.AddWithValue("@pPostalCode", postal);
+                    command.Parameters.AddWithValue("@pAmend", Int32.Parse(amend));
+                    command.Parameters.Add(respon);
+                    cnn.Open();
 
-                command.ExecuteNonQuery();
-                msg += respon.Value + "\"";
-            }
-            catch (Exception ex)
-            {
-                successString = successString.Replace("Success", "Failure");
-                msg = ex.Message;
-                successString += msg;
-                successString += "\"}";
-                return successString;
-            }
-            finally
-            {
-                cnn.Close();
+                    command.ExecuteNonQuery();
+                    msg += respon.Value + "\"";
+                }
+                catch (Exception ex)
+                {
+                    successString = successString.Replace("Success", "Failure");
+                    msg = ex.Message;
+                    successString += ",\"Visitor\":\"" + msg;
+                    successString += "\"}";
+                    return successString;
+                }
+                finally
+                {
+                    cnn.Close();
+                }
             }
             try
             {

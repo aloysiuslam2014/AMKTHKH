@@ -103,15 +103,15 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                           <span class="input-group-addon">Lower Limit</span>
-                                    <input type="text" runat="server" class="form-control setInput" id="temSetInputLow" />
+                                    <input type="text" class="form-control setInput" id="temSetInputLow" />
                                         </div>
                                     <div class="input-group">
                                           <span class="input-group-addon">Upper Limit</span>
-                                    <input type="text" runat="server" class="form-control setInput" id="temSetInputHigh" />
+                                    <input type="text" class="form-control setInput" id="temSetInputHigh" />
                                         </div>
                                     <div class="input-group">
                                           <span class="input-group-addon">Warning Temperature</span>
-                                    <input type="text" runat="server" class="form-control setInput" id="temSetInputWarn" />
+                                    <input type="text" class="form-control setInput" id="temSetInputWarn" />
                                         </div>
                                     <label id="tempHighLowWarning" style="color: lightcoral">Upper limit is higher than the lower limit!</label>
                                     <label id="tempSetWarning" style="color: lightcoral">Please enter the temperature values in this format: "36.7"</label>
@@ -142,15 +142,24 @@
                                 </div>
                                     </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                    <label>Visitor Limit Per Bed</label>
+                                    <div class="col-sm-6">
+                                    <label>Visitor Limit/Bed</label>
                                     <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon">Limit</span>
-                                            <input type="text" runat="server" class="form-control setInput" placeholder="Please enter a numerical value" id="visLimInput" />
+                                            <input type="text" class="form-control setInput" placeholder="Please enter a numerical value" id="visLimInput" />
                                     </div>
                                 </div>
                                         </div>
+                                    <div class="col-sm-6">
+                                        <label>Self-Registration Settings</label>
+                                    <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Days in Advance</span>
+                                            <input type="text" class="form-control setInput" id="visAdvInput" />
+                                    </div>
+                                </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                 <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-floppy-saved"></span> Save Settings</button>
@@ -196,7 +205,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                           <span class="input-group-addon">Profile Name</span>
-                                    <input type="text" runat="server" class="form-control required" placeholder="Please enter a unique profile name/role" id="newProfNameInput" />
+                                    <input type="text" class="form-control required" placeholder="Please enter a unique profile name/role" id="newProfNameInput" />
                                         </div>
                                 </div>
                                     </div>
@@ -342,13 +351,11 @@
                         <div class="jumbotron" style="text-align: left">
                             <h3 style="color:lightblue">Search for Visitor</h3>
                             <label class="control-label" for="nric"><span style="color:lightcoral">*</span>Visitor's NRIC:</label>
-                            <%--<input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />--%>
                             <div class="input-group date" id="nricinputgroup">
-                                <input runat="server" id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" id="clearAllBtn" onclick="hideTags(true); false;" runat="server"><span class="glyphicon glyphicon-ban-circle"></span> Clear Fields</button>
-                                    
+                                    <button class="btn btn-default" id="clearAllBtn" onclick="hideTags(true); false;"><span class="glyphicon glyphicon-ban-circle"></span> Clear Fields</button>  
                                 </span>
+                                <input id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />       
                             </div>
                             <h4 id="emptyNricWarning" style="color: lightcoral">Please enter an NRIC/Identification Number!</h4>
                             <div id="nricWarnDiv">
@@ -368,7 +375,7 @@
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
                             <h5>Please click the "Check NRIC" button once you have filled in the NRIC & the Temperature</h5>
                             <div class="center-block">
-                            <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;" runat="server"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
+                            <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
                             <h5 id="noVisitWarning" style="color: lightcoral">You are not within Visiting Hours! Please approach the admin for assistance.</h5>
                             </div>
                         </div>
@@ -376,16 +383,16 @@
                 </div>
 
                 <div class="row" id="userData">
-                    <div id="newusercontent" class="col-sm-6" runat="server">
+                    <div id="newusercontent" class="col-sm-6">
                         <div class="jumbotron" style="text-align: left">
                             <h3 style="color:lightblue">Personal Details</h3>
                             <label for="namesinput"><span style="color:lightcoral">*</span>Full Name</label>
                             <div class="form-group">
-                                <input type="text" runat="server" class="form-control required regInput" id="namesInput" />
+                                <input type="text" class="form-control required regInput" id="namesInput" />
                             </div>
                             <label for="mobileinput"><span style="color:lightcoral">*</span>Contact Number</label>
                             <div class="form-group">
-                                <input type="text" runat="server" class="form-control required regInput" id="mobilesInput" />
+                                <input type="text" class="form-control required regInput" id="mobilesInput" />
                                 <label for="mobilesInput" id="mobWarning" style="color: lightcoral">Invalid Phone Number Format!</label>
                             </div>
                             <label for="sexinput"><span style="color:lightcoral">*</span>Gender</label>
@@ -407,24 +414,25 @@
                             <label for="daterange"><span style="color:lightcoral">*</span>Date of Birth (DD-MM-YYYY)</label>
                             <div class="form-group">
                                 <div class="input-group date" id="datetimepicker">
-                                    <input type='text' id="daterange" class="form-control required regInput" readonly="readonly"/>
+                                    <input type='text' id="daterange" class="form-control required regInput" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
                             </div>
+                            <label id="dateWarning" style="color: lightcoral">Invalid Date Format!</label>
                             <label for="addressinput"><span style="color:lightcoral">*</span>Address</label>
                             <div class="form-group">
-                                <input type="text" runat="server" class="form-control required regInput" id="addresssInput" />
+                                <input type="text" class="form-control required regInput" id="addresssInput" />
                             </div>
                             <label for="postalinput"><span style="color:lightcoral">*</span>Postal Code</label>
                             <div class="form-group">
-                                <input type="text" runat="server" class="form-control required regInput" id="postalsInput" />
+                                <input type="text" class="form-control required regInput" id="postalsInput" />
                                 <label for="postalsInput" id="posWarning" style="color: lightcoral">Invalid Postal Code Format!</label>
                             </div>
                         </div>
                     </div>
-                    <div id="staticinfocontainer" class="col-sm-6" style="text-align: left" runat="server">
+                    <div id="staticinfocontainer" class="col-sm-6" style="text-align: left">
                         <div class="jumbotron" style="text-align: left">
                             <h3 style="color:lightblue">Visit Details</h3>
                             <label for="pInput"><span style="color:lightcoral">*</span>Visit Purpose</label>
@@ -437,18 +445,18 @@
                                 </select>
                                 <label for="pInput" id="purWarning" style="color: lightcoral">Please select a Visit Purpose!</label>
                             </div>
-                            <div id="patientpurposevisit" class="container-fluid" runat="server">
+                            <div id="patientpurposevisit" class="container-fluid">
                                 <%--Show this only when Visit Purpose is "Visit Patient"--%>
                                 <label for="patientName"><span style="color:lightcoral">*</span>Patient Name</label>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control regInput" id="patientName" />
+                                    <input type="text" class="form-control regInput" id="patientName" />
                                 </div>
                                 <label for="bedno"><span style="color:lightcoral">*</span>Bed Number</label>
                                 <%--Bed Number--%>
                                 <div class="form-group">
                                     <input type="text" class="form-control regInput" id="bedno" />
                                 </div>
-                                <input type="hidden" runat="server" class="form-control regInput" id="patientNric" />
+                                <input type="hidden" class="form-control regInput" id="patientNric" />
                                 <label></label>
                                 <div class="form-group">
                                     <button id="validatePatientButton" value="Validate Patient Information" class="btn btn-warning" onclick="validatePatient(); false;"><span class="glyphicon glyphicon-ok-circle"></span>Add Patient</button>
@@ -462,7 +470,7 @@
 
                                 </div>
                             </div>
-                            <div id="otherpurposevisit" class="container-fluid" runat="server">
+                            <div id="otherpurposevisit" class="container-fluid">
                                 <%--Show this only when Visit Purpose is "Other Purpose"--%>
                                 <label for="visLoc"><span style="color:lightcoral">*</span>Intended Visit Location</label>
                                 <div class="form-group">
@@ -472,7 +480,7 @@
                                 </div>
                                 <label for="purposeInput"><span style="color:lightcoral">*</span>Purpose of Visit</label>
                                 <div class="form-group">
-                                    <input type="text" runat="server" class="form-control regInput" id="purposeInput" />
+                                    <input type="text" class="form-control regInput" id="purposeInput" />
                                 </div>
                             </div>
                             <%--Visit Date--%>
@@ -499,16 +507,10 @@
                                 <h3 style="color:lightblue">Additional Information</h3>
                                 <label for="remarksinput">Remarks</label>
                                 <div class="form-group">
-                                <input type="text" runat="server" class="form-control regInput" id="remarksinput" />
+                                <input type="text" class="form-control regInput" id="remarksinput" />
                             </div>
                             </div>
-                            <input type="hidden" runat="server" class="form-control regInput" id="qaid" />
-                            <%--<div class="checkbox">
-                                <label for="declaration"></label>
-                                <input type="checkbox" id="declaration" name="declare" class="regInput" onchange="declarationValidation()" value="true" />I declare that the above information given is accurate<br />
-                                <input type="hidden" name="declare" value="false" />
-                                <label for="declaration" id="declabel" style="color: lightcoral">Please check this option to continue</label>
-                            </div>--%>
+                            <input type="hidden" class="form-control regInput" id="qaid" />
                             <h4 id="emptyFields" style="color: lightcoral">Please fill in all the required fields with valid data (*) highlighted in yellow & rectify the fields with warning(s) shown.</h4>
                             <button class="btn btn-success btn-block" id="submitNewEntry" onclick="checkRequiredFields(); false;"><span class="glyphicon glyphicon-list-alt"></span> Submit</button>
                         </div>
@@ -538,7 +540,7 @@
                                         </div>
                                         <label id="emptyQuestionnaireWarning" style="color:red">Please enter a form name!</label>
                                             <label id="questionnaireWarning" style="color:red">Form name already exists! Please use a unique name.</label><br />
-                                        <button type="submit" runat="server" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                                        <button type="submit" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
                                     <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span> Add Form</button>
                                         </div>
                                    <%-- <div class="modal-footer" style="text-align: center !important;">
@@ -857,22 +859,14 @@
                 <div class="row inheritHeight">
                     <div class="col-sm-4 inheritHeight">
                         <h3 style="">Existing Users</h3>
-                        <%--<div class="input-group" id="searchUser">--%>
-                        <div class="form-group" id="searchUser">
+                        <%--<div class="form-group" id="searchUser">
                             <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterUserList(this)" />
-                            <%--<span class="input-group-btn">
-                                <button type="button" id="" onclick="selectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-check"></span> Select All</button>
-                                <button type="button" id="" onclick="deSelectAllUsers(); false;" class="btn btn-warning"><span class="glyphicon glyphicon-unchecked"></span> Unselect All</button>
-                            </span>--%>
-                        </div>
+                        </div>--%>
                         <div class=" " style="border: solid 1pt;margin-bottom: 25px; border-radius: 2px; height: 77%; overflow-y: auto; margin-top: 2px;">
                             <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
                                 <%--List of users here--%>
                             </ul>
                         </div>
-                        <%--<div>
-                            <button type="button" id="" onclick="deleteUser(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete Selected User(s)</button>
-                        </div>--%>
                     </div>
 
                     <div class="col-sm-8 row" id= "userInfo" style="overflow-y: auto">
@@ -891,23 +885,23 @@
                                 <label><span style="color:lightcoral">*</span>Last Name</label>
                                 <div class="form-group">
                                     <input id="staffLastName" class="form-control required userInput" /></div>
-                                <label><span style="color:lightcoral">*</span>NRIC</label>
+                                <label>NRIC</label>
                                 <div class="form-group">
-                                    <input id="staffNric" class="form-control required userInput" />
+                                    <input id="staffNric" class="form-control userInput" />
                                     <h4 id="emptyNricWarningUser" style="color: lightcoral">Please enter an NRIC/Identification Number!</h4>
                                     <h4 id="nricWarningUser" style="color: lightcoral">Non-Singapore Based NRIC/ID!</h4>
                                 </div>
-                                <label><span style="color:lightcoral">*</span>Address</label>
+                                <label>Address</label>
                                 <div class="form-group">
-                                    <input id="staffAddress" class="form-control required userInput" /></div>
-                                <label><span style="color:lightcoral">*</span>Postal Code</label>
+                                    <input id="staffAddress" class="form-control userInput" /></div>
+                                <label>Postal Code</label>
                                 <div class="form-group">
-                                    <input id="staffPostal" class="form-control required userInput" />
+                                    <input id="staffPostal" class="form-control userInput" />
                                     <label id="posWarningUser" style="color: lightcoral">Invalid Postal Code Format!</label>
                                 </div>
-                                <label><span style="color:lightcoral">*</span>Contact Number</label>
+                                <label>Contact Number</label>
                                 <div class="form-group">
-                                    <input id="staffMobileNum" class="form-control required userInput" />
+                                    <input id="staffMobileNum" class="form-control userInput" />
                                     <label id="mobWarningUser" style="color: lightcoral">Invalid Phone Number Format!</label>
                                 </div>
                                 <label>Home Number</label>
@@ -943,12 +937,6 @@
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
-                                <%--<label><span style="color:lightcoral">*</span>Age</label>
-                                <div class="form-group">
-                                    <input id="staffAge" class="form-control required userInput" /></div>--%>
-                                <%--<label><span style="color:lightcoral">*</span>Race</label>
-                                <div class="form-group">
-                                    <input id="staffRace" class="form-control required userInput" /></div>--%>
                                 <label><span style="color:lightcoral">*</span>Position Title</label>
                                 <div class="form-group">
                                     <input id="staffTitle" class="form-control required userInput" /></div>
@@ -1363,7 +1351,7 @@
              <div class="col-sm-2 panel" style="height: 50%; margin-top: 55px">
                  <div class="form-group">
                      <span class="input-group-btn">
-                         <button class="btn btn-warning" onclick="submitQueries(); false;" runat="server"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
+                         <button class="btn btn-warning" onclick="submitQueries(); false;"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
                      </span>
                  </div>
              </div>
