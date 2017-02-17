@@ -152,13 +152,19 @@
     </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="CSS\buttons.dataTables.min.css" />
-    <Content Include="CSS\font-awesome.css" />
-    <Content Include="CSS\font-awesome.min.css" />
+    <Content Include="CSS\font-awesome.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CSS\font-awesome.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="CSS\jquery-ui.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="CSS\jquery.dataTables.min.css" />
-    <Content Include="CSS\kc.fab.css" />
+    <Content Include="CSS\kc.fab.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="CSS\passManagement.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -186,7 +192,9 @@
     <Content Include="ExternalClass\GenCode128.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\fontawesome-webfont.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -297,13 +305,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\jszip.min.js" />
-    <Content Include="Scripts\kc.fab.js" />
-    <Content Include="Scripts\kc.fab.min.js" />
+    <Content Include="Scripts\kc.fab.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\kc.fab.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\pdfmake.min.js" />
     <Content Include="Scripts\qz-tray.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\vfs_fonts.js" />
+    <Content Include="Scripts\vfs_fonts.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Webpage\SQL Script\THKHDB_06Feb17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_13Feb17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_14Feb17.sql" />
@@ -556,11 +570,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Webpage\Staff\UserManagement\loadUsers.js" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.woff2" />
-    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\fontawesome-webfont.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\fontawesome-webfont.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\fontawesome-webfont.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\FontAwesome.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\Stepwise-is480.pubxml" />
     <None Include="Properties\PublishProfiles\stepwiseis480 - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\stepwiseis480 - Web Deploy %283%29.pubxml" />
