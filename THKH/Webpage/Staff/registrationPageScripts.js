@@ -467,21 +467,22 @@ function NewAssistReg() {
             try {
                 var resultOfGeneration = JSON.parse(returner);
                 if (resultOfGeneration.Result === "Success") {
-                    if (resultOfGeneration.Visitor.toString().includes("per bed has been reached")) {
-                        // Show Error Modal!
-                        showMaxLimitModal();
-                        hideTags(true);
-                        regCompleted = true;
-                    } else {
+                    
                         regCompleted = true;
                         showSuccessModal();
                         //after showin then we load the pass go to the method show success modal to see
                         
                         hideTags(false); //clearfields moved to close button on success modal
-                    }
+                    
 
-                } else {
-                    if (resultOfGeneration.Visitor !== "1") {
+            } else {
+                    if (resultOfGeneration.Visitor.toString().includes("per bed has been reached")) {
+                        // Show Error Modal!
+                        showMaxLimitModal();
+                        hideTags(true);
+                        regCompleted = true;
+                    } 
+                    else if (resultOfGeneration.Visitor !== "1") {
                         alert("Error: " + resultOfGeneration.Visitor);
                     } else if (resultOfGeneration.Questionnaire !== "1") {
                         alert("Error: " + resultOfGeneration.Visit);

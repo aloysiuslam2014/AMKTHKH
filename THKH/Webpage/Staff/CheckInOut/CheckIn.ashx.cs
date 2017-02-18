@@ -422,7 +422,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                     cnn.Open();
 
                     command.ExecuteNonQuery();
-                    msg += respon.Value + "\"";
+                    msg += ",\"Visitor\":\""+ respon.Value + "\"";
                 }
                 catch (Exception ex)
                 {
@@ -610,9 +610,9 @@ namespace THKH.Webpage.Staff.CheckInOut
                     }
                     else
                     {
-                        successString.Replace("Success", "Failure");
-                        msg = "\"Limit of " + visLim + " per bed has been reached.";
-                        msg += "\"";
+                        successString = successString.Replace("Success", "Failure");
+                        successString += "\"Limit of " + visLim + " per bed has been reached.";
+                        
                         successString += "\"}";
                         return successString;
                     }
