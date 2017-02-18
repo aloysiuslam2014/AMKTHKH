@@ -111,7 +111,7 @@ function updateCheckIn() {
             },
         });
     } else {
-        var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value };
+        var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value.toUpperCase() };
         $.ajax({
             url: './TerminalCalls/TerminalCheck.ashx',
             method: 'post',
