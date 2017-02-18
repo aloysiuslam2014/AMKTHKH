@@ -111,31 +111,36 @@ function updateCheckIn() {
             },
         });
     } else {
-        var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value };
+        var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value.toUpperCase() };
         $.ajax({
             url: './TerminalCalls/TerminalCheck.ashx',
             method: 'post',
             data: headersToProcess,
             success: function (returner) {
+                $("#userNric").attr("disabled", "disabled");
+                if (exisingTimeouts != "")
+                    clearTimeout(exisingTimeouts);
+
                 var result = String(returner)
                 if (result == "success") {
                     $("#userWelcome").html("Welcome! ");
+                    exisingTimeouts = setTimeout(function () { hideWelcome(); }, 500);
+                    $("#userWelcome").css('font-size', '12em');
                 } else {
                     if (result.split(',')[0] == "success") // Successfully found user but he is not suppossed to be there
                     {
-                        $("#userWelcome").html("You do not have access to this area.<br> Please head to the Lobby's front desk for assistance.");
+                        $("#userWelcome").html("No Entry!.<br> Wrong location.");
                         $("#userWelcome").css('color', 'lightcoral');
                     } else {
-                        $("#userWelcome").html("You have not registered.<br> Please head to the Lobby's front desk for assistance.");
+                        $("#userWelcome").html("Not Registered!.<br> Proceed to front desk.");
                         $("#userWelcome").css('color', 'lightcoral');
                     }
+                    exisingTimeouts = setTimeout(function () { hideWelcome(); }, 3000);
                    
                 }
-                $("#userNric").attr("disabled", "disabled");
-                if(exisingTimeouts != "")
-                    clearTimeout(exisingTimeouts);
+               
 
-                exisingTimeouts = setTimeout(function () { hideWelcome(); }, 3000);
+               
                
             },
             error: function (err) {
@@ -151,6 +156,7 @@ function hideWelcome(){
     $("#userNric").removeAttr("disabled");
     $("#userNric").focus();
     $("#userWelcome").css('color', '');
+    $("#userWelcome").css('font-size', '4em');
    
 }
 

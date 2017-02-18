@@ -4,11 +4,11 @@
  BEGIN
     -- Terminal_ID == 2 (FIXED VARIABLE)
     INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-    VALUES ('HOSPITAL ENTRANCE', 1, 1, '2016-06-06 00:00', NULL)
+    VALUES ('ENTRANCE HOSPITAL', 1, 1, '2016-06-06 00:00', NULL)
 
     -- Terminal_ID == 3 (FIXED VARIABLE)
     INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-    VALUES ('HOSPITAL EXIT', 1, 1, '2016-06-06 00:00', NULL)
+    VALUES ('EXIT HOSPITAL', 1, 1, '2016-06-06 00:00', NULL)
 
     INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
     VALUES ('Ward 1', 1, 1, '2016-01-01 00:00', NULL)
@@ -256,12 +256,12 @@ BEGIN
 
     INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
     VALUES ('Do you have any family members who travelled to overseas over the last 3 months? Please list down their name(s) if  applicable', 'text', '', SYSDATETIME(), NULL)
----------------------------------------------------------------------------------------------------------------------------------—
+---------------------------------------------------------------------------------------------------------------------------------Â—
 
     INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
     VALUES ('Have you suffered from any of the following symptoms in the past 7 days? Check those applicable', 'checkbox', 'Cough,Fever,Nasal Congestion,Diarrhoea,Breathing Difficulties', SYSDATETIME(), NULL)
 
----------------------------------------------------------------------------------------------------------------------------------------------------------—
+---------------------------------------------------------------------------------------------------------------------------------------------------------Â—
 
     INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
     VALUES ('Have you visited any of the following countries in the past 7 days? Check those applicable', 'checkbox', 'Australia,Canada,China', SYSDATETIME(), NULL)

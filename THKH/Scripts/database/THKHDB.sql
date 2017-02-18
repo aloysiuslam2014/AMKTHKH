@@ -1161,27 +1161,30 @@ BEGIN
   SET @pCheckedOut = (SELECT COUNT(*)
               FROM MOVEMENT WHERE nric = @pNric
               AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
-              AND locationID = 3)
+              AND locationID = 2)
   SET @PCheckedIn = (SELECT COUNT(*)
               FROM MOVEMENT WHERE nric = @pNric
               AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
-              AND locationID <> 3)
+              AND locationID <> 2)
   SET @pOriginal_Staff_Email = (SELECT email FROM STAFF WHERE 
                   SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pStaffEmail)
 
   IF(@pCheckedIn > 0)
   BEGIN
-	IF(@pCheckedOut = 0)
-    BEGIN
-      INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-      VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric), 3, (SELECT MAX(locationTime) FROM MOVEMENT WHERE nric = @pNric) + 1)
-  
-    END
+	  IF(@pCheckedOut = 0)
+	  BEGIN
+		  INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+		  VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric), 2, @pActualTimeVisit)
+ 
+	  END
   END
 
   BEGIN TRY  
     INSERT INTO CHECK_IN(nric, visitActualTime, temperature, staffEmail)
     VALUES (@pNRIC, @pActualTimeVisit, @pTemperature, @pOriginal_Staff_Email)
+
+   INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+      VALUES (@pNRIC, @pActualTimeVisit, 1, @pActualTimeVisit)
 
     SET @responseMessage = 1
   END TRY
@@ -1201,68 +1204,67 @@ CREATE PROCEDURE [dbo].[CREATE_MOVEMENT]
   
 AS  
 BEGIN  
-	SET NOCOUNT ON  
-	DECLARE @pVisit_Date DATETIME
-	SET @pVisit_Date = (SELECT TOP 1 visitActualTime FROM CHECK_IN WHERE nric = @pNRIC AND
-						CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
-						ORDER BY visitActualTime DESC) -- Compare Visit Date with System Date
-	
-	IF (@pVisit_Date != '')
+  SET NOCOUNT ON  
+  DECLARE @pVisit_Date DATETIME
+  SET @pVisit_Date = (SELECT TOP 1 visitActualTime FROM CHECK_IN WHERE nric = @pNRIC AND
+            CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
+            ORDER BY visitActualTime DESC) -- Compare Visit Date with System Date
+  
+  IF (@pVisit_Date != '')
     BEGIN TRY
-		IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
-		BEGIN
-			DECLARE @pTempBedTb TABLE (bedno VARCHAR(10))
-			DECLARE @pTerminalBedTb TABLE (bedno VARCHAR(10))
+    IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
+    BEGIN
+      DECLARE @pTempBedTb TABLE (bedno VARCHAR(10))
+      DECLARE @pTerminalBedTb TABLE (bedno VARCHAR(10))
 
-			DECLARE @pVisiting_Bedno VARCHAR(200)
-			DECLARE @pTerminal_Bedno VARCHAR(200)
+      DECLARE @pVisiting_Bedno VARCHAR(200)
+      DECLARE @pTerminal_Bedno VARCHAR(200)
 
-			SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = 'S123' AND
-									CONVERT(VARCHAR(10), visitRequestTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
-									ORDER BY visitRequestTime DESC)
-			
-			SET @pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
+      SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = @pNRIC AND
+                  CONVERT(VARCHAR(10), visitRequestTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
+                  ORDER BY visitRequestTime DESC)
+      
+      SET @pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
 
-			INSERT INTO @pTempBedTb
-				SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, ',')
+      INSERT INTO @pTempBedTb
+        SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, ',')
 
-			INSERT INTO @pTerminalBedTb
-				SELECT * FROM dbo.FUNC_SPLIT(@pTerminal_Bedno, ',')
+      INSERT INTO @pTerminalBedTb
+        SELECT * FROM dbo.FUNC_SPLIT(@pTerminal_Bedno, ',')
 
-			-- Retrieve Patient's BedNo according to the Visitor's registered Visit	
-			IF EXISTS (SELECT tb.bedno FROM @pTerminalBedTb tb
-						WHERE tb.bedno IN (SELECT bedno FROM @pTempBedTb))
-			BEGIN
-				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+      -- Retrieve Patient's BedNo according to the Visitor's registered Visit  
+      IF EXISTS (SELECT tb.bedno FROM @pTerminalBedTb tb
+            WHERE tb.bedno IN (SELECT bedno FROM @pTempBedTb))
+      BEGIN
+        INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+        VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
 
-				SET @responseMessage = 1
-			END
-				
-			-- If Patient's BedNo does not exist in Visitor's 
-			ELSE
-				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-		
-				SET @responseMessage = 2
-		END  
+        SET @responseMessage = 1
+      END
+        
+      -- If Patient's BedNo does not exist in Visitor's 
+      ELSE
+        INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+        VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+    
+        SET @responseMessage = 2
+    END  
  
-		ELSE
-			-- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
-			INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-			VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-						
-			SET @responseMessage = 1
-	END TRY
-	BEGIN CATCH  
-		SET @responseMessage = 0 
-	END CATCH 
+    ELSE
+      -- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
+      INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+      VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+            
+      SET @responseMessage = 1
+  END TRY
+  BEGIN CATCH  
+    SET @responseMessage = 0 
+  END CATCH 
 
-	-- Visitor do not have any VISIT and CHECK_IN record
-	ELSE
-		SET @responseMessage = 0
-END; 
-
+  -- Visitor do not have any VISIT and CHECK_IN record
+  ELSE
+    SET @responseMessage = 0
+END;
 
 ----------------------------------------------------------------------------------------------------------- Procedure for Checking-Out all visitors 
 GO
@@ -2400,7 +2402,7 @@ BEGIN
 			FULL OUTER JOIN MOVEMENT M ON m.NRIC = dbc.nric
 				AND m.visitActualTime = dbc.visitActualTime
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
-			WHERE t.tName LIKE '%EXIT%'
+			WHERE t.tName LIKE 'EXIT%'
 		)
 	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel'
 		FROM DAY_BED_CHECKINS dbc
@@ -2447,7 +2449,7 @@ BEGIN 
 			FULL OUTER JOIN MOVEMENT M ON m.NRIC = dbs.nric
 				AND m.visitActualTime = dbs.visitActualTime
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
-			WHERE t.tName LIKE '%EXIT%'
+			WHERE t.tName LIKE 'EXIT%'
 		)
 		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel'
 		FROM DAY_BED_SCANS dbs 
@@ -2492,7 +2494,7 @@ BEGIN
 			LEFT JOIN MOVEMENT M ON m.NRIC = dbc.nric
 				AND m.visitActualTime = dbc.visitActualTime
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
-			WHERE t.tName LIKE '%EXIT%'
+			WHERE t.tName LIKE 'EXIT%'
 		)
 	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel'
 		FROM DAY_BED_CHECKINS dbc
@@ -2535,7 +2537,7 @@ BEGIN 
 			LEFT JOIN MOVEMENT M ON m.NRIC = dbs.nric
 				AND m.visitActualTime = dbs.visitActualTime
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
-			WHERE t.tName LIKE '%EXIT%'
+			WHERE t.tName LIKE 'EXIT%'
 		)
 		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel'
 		FROM DAY_BED_SCANS dbs 
@@ -2743,6 +2745,7 @@ END; 
 
 
 --============= This is for Live DB to call the linked server & query the PATIENT DB ================================================================================================================
+-------------------------------------------------------------------------------------------------------------
 --GO
 --CREATE PROCEDURE [dbo].[CONFIRM_HOSPITAL_PATIENT] 
 --@pPatientFullName NVARCHAR(150),
@@ -2785,7 +2788,36 @@ END; 
 --END;
 
 
---===========================================================================================================================================================================================
+------------------------------------------------------------------------------ Get Patient's name
+--GO
+--CREATE PROCEDURE [dbo].[GET_PATIENT_NAME]  
+--@pBed_No VARCHAR(15),
+--@pPatient_Name VARCHAR(100) OUTPUT,   
+--@responseMessage INT OUTPUT  
+  
+--AS  
+--BEGIN  
+--  SET NOCOUNT ON  
 
+--  DECLARE @pBed_No_Int INT
+--  DECLARE @pActiveQns TABLE (Pat_Name VARCHAR(200), Bed VARCHAR(50))
+--  SET @pBed_No_Int = CONVERT(INT, @pBed_No)
+--  —SET @pBed_No_Int = CAST(@pBed_No AS INT)
+  
+--  INSERT INTO @pActiveQns
+--  SELECT * FROM OPENQUERY(APPSVR,'SELECT Pat_Name, Bed FROM [AMKH_InhouseDB_Production].[dbo].[Current_Patient_list]')
+
+--  IF EXISTS (SELECT Pat_Name FROM @pActiveQns WHERE @pBed_No_Int = Bed)  
+--  BEGIN    
+--    SET @responseMessage = 1
+--    SET @pPatient_Name = (SELECT TOP 1 Pat_Name FROM @pActiveQns WHERE @pBed_No_Int = Bed)
+--  END  
+   
+--    ELSE  
+--       SET @responseMessage = 0  
+--END;
+
+
+--===========================================================================================================================================================================================
 
 
