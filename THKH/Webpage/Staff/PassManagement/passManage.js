@@ -390,11 +390,18 @@ function createBarCodeImg(textToCreate,injectAfterLoad) {
             if (resultOfGeneration.Result == "Success") {
                 if (injectAfterLoad == null) {
                     imageToCreate.src = 'data:image/png;base64,' + resultOfGeneration.Msg;
+                    
                 } else {
+                    $(injectAfterLoad).unbind('load');
+                    $(injectAfterLoad).on('load', function () {
+                        /* Fire your image resize code here */
+                        convertDvToImg();
+                    });
+                   
                     injectAfterLoad.setAttribute('src', 'data:image/png;base64,' + resultOfGeneration.Msg);
                 }
                 if (creatingPass) {
-                    convertDvToImg();
+                   
                     creatingPass = false;
                 }
 

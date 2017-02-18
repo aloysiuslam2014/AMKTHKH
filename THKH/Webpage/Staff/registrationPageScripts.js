@@ -1,29 +1,31 @@
 ﻿/// <reference path="registrationPageScripts.js" />
 $(document).ready(function () {
-    hideTags(false);//when page loads
-    //only allow text evnts
-    $("#bedno").keydown(function (e) {
-        // Allow: backspace, delete, tab, escape, enter and .
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-            // Allow: Ctrl/cmd+A
-            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-            // Allow: Ctrl/cmd+C
-            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
-            // Allow: Ctrl/cmd+X
-            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
-            // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) {
-            // let it happen, don't do anything
-            return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-    });
+    if (allowVisit) {
+        hideTags(false);//when page loads
+        //only allow text evnts
+        $("#bedno").keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl/cmd+A
+                (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: Ctrl/cmd+C
+                (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: Ctrl/cmd+X
+                (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
 
-    // Boot the floating tab
-    $('.kc_fab_wrapper').kc_fab(links);
+        // Boot the floating tab
+        $('.kc_fab_wrapper').kc_fab(links);
+    }
 });
 
 $('#navigatePage a:first').tab('show');
@@ -40,6 +42,7 @@ var validPos = true;
 var validDate = true;
 var validEmail = true;
 var regCompleted = false;
+var allowVisit = true;
 var init = false;
 var lowTemp = "34";
 var highTemp = "40";
@@ -141,7 +144,6 @@ function callCheck (){
                             $("#visLoc").prop('value', visitArr[4]);
                             if (visitArr[5].length > 0) {
                                 $(visitArr[5].split('|')).each(function () {//split bed no if possible then create the beds
-
                                     loadBedPatientName(this);
                                 });
                             }
@@ -152,20 +154,17 @@ function callCheck (){
                                 var jsonAnswerObject = questionnaireArr[i];
                                 var qid = jsonAnswerObject.qid;
                                 var answer = jsonAnswerObject.answer
-                                //$("#" + qid).prop('value', answer);
                                 $('#' + qid).val(answer);
-                                $("#questionaireForm input[name='" + qid + "'][value='" + answer + "']").prop("checked", true);
+                                $("#questionaireForm input[name='" + qid + "'][value='" + answer + "']").prop("checked", true); // Checkbox
                                 $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
+                                $("#questionaireForm input[id='" + qid + "'][value='" + answer + "']").prop("checked", true) // Radio
                             }
-                            //$("#qaid").prop('value', qaid);
-                            //$("#nric").prop('readonly', true);
                         }
                         else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
                             clearFields(false);
                             // Except Visit Date
                             $('#visitbookingdate').val(visDate);
                             $("#nric").prop('value', nricValue);
-                            //$("#nric").prop('readonly', true);
                         }
                         $("#nric").prop('disabled', true);
                         $("#temp").prop('disabled', true);
@@ -468,22 +467,22 @@ function NewAssistReg() {
             try {
                 var resultOfGeneration = JSON.parse(returner);
                 if (resultOfGeneration.Result === "Success") {
-                    if (resultOfGeneration.Visitor === "Visitor Limit Reached!") {
-                        // Show Error Modal!
-                        showMaxLimitModal();
-                        hideTags(true);
-                        regCompleted = true;
-                    } else {
-                        var today = new Date();
+                    
                         regCompleted = true;
                         showSuccessModal();
                         //after showin then we load the pass go to the method show success modal to see
                         
                         hideTags(false); //clearfields moved to close button on success modal
-                    }
+                    
 
-                } else {
-                    if (resultOfGeneration.Visitor !== "1") {
+            } else {
+                    if (resultOfGeneration.Visitor.toString().includes("per bed has been reached")) {
+                        // Show Error Modal!
+                        showMaxLimitModal();
+                        hideTags(true);
+                        regCompleted = true;
+                    } 
+                    else if (resultOfGeneration.Visitor !== "1") {
                         alert("Error: " + resultOfGeneration.Visitor);
                     } else if (resultOfGeneration.Questionnaire !== "1") {
                         alert("Error: " + resultOfGeneration.Visit);
@@ -504,16 +503,8 @@ function NewAssistReg() {
 }
 
 function clearFields(overwrite) {
-    if (overwrite) {
-        $("#registration .regInput").each(function (idx, obj) {
-            if ($(obj).attr("id") != "visitbookingdate") {
-                $(obj).prop("value", "");
-                $(obj).css('background', '#ffffff');
-            }
-        });
-        regCompleted = false;
-    } else {
-        if (regCompleted) {
+    if (allowVisit) {
+        if (overwrite) {
             $("#registration .regInput").each(function (idx, obj) {
                 if ($(obj).attr("id") != "visitbookingdate") {
                     $(obj).prop("value", "");
@@ -522,20 +513,30 @@ function clearFields(overwrite) {
             });
             regCompleted = false;
         } else {
-            $("#registration .regInput").each(function (idx, obj) {
-                if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp") {
-                    $(obj).prop("value", "");
-                    $(obj).css('background', '#ffffff');
-                }
-            });
+            if (regCompleted) {
+                $("#registration .regInput").each(function (idx, obj) {
+                    if ($(obj).attr("id") != "visitbookingdate") {
+                        $(obj).prop("value", "");
+                        $(obj).css('background', '#ffffff');
+                    }
+                });
+                regCompleted = false;
+            } else {
+                $("#registration .regInput").each(function (idx, obj) {
+                    if ($(obj).attr("id") != "nric" && $(obj).attr("id") != "temp") {
+                        $(obj).prop("value", "");
+                        $(obj).css('background', '#ffffff');
+                    }
+                });
+            }
+            $('input[id="ignoreNric"]').prop('checked', false);
+
+            var allowNric = false;
         }
-        $('input[id="ignoreNric"]').prop('checked', false);
-        
-        var allowNric = false;
+        $("#bedsAdded").html("");
+        $("#nric").prop('disabled', false);
+        $("#temp").prop('disabled', false);
     }
-    $("#bedsAdded").html("");
-    $("#nric").prop('disabled', false);
-    $("#temp").prop('disabled', false);
 }
 
 // Display appropriate panels according to visit purpose

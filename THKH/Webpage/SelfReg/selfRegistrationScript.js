@@ -51,11 +51,15 @@ function NewSelfReg() {
 
 
             success: function (returner) {
-                var resultOfGeneration = JSON.parse(returner);
-                if (resultOfGeneration.Result === "Success") {
-                    showSuccessModal();
-                } else {
-                    alert("Error: " + resultOfGeneration.Msg);
+                try{
+                    var resultOfGeneration = JSON.parse(returner);
+                    if (resultOfGeneration.Result === "Success") {
+                        showSuccessModal();
+                    } else {
+                        alert("Error: Visit PK Issue");
+                    }
+                } catch (err) {
+                    alert(err.message + ". User has most likely checked-in previously today (PK Issue)");
                 }
             },
             error: function (err) {
@@ -215,6 +219,7 @@ function checkIfExistingVisitor() {
                 if (resultOfGeneration.Visitor === "new") {
                     showNewContent();
                     existUser = false;
+                    $("#amend").attr('value', 1);
                 }
                 else {
                     $('#newusercontent input').removeClass('required');
