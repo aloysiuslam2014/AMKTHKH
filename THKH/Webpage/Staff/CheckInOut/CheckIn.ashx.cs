@@ -222,8 +222,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             respon.Direction = ParameterDirection.Output;
             try
             {
-                //SqlCommand command = new SqlCommand("[dbo].[CONFIRM_HOSPITAL_PATIENT]", cnn);
-                SqlCommand command = new SqlCommand("[dbo].[CONFIRM_PATIENT]", cnn);
+                SqlCommand command = new SqlCommand("[dbo].[CONFIRM_HOSPITAL_PATIENT]", cnn);
+                //SqlCommand command = new SqlCommand("[dbo].[CONFIRM_PATIENT]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pBedNo", bedno);
                 command.Parameters.AddWithValue("@pPatientFullName", pName);
@@ -613,7 +613,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                         successString.Replace("Success", "Failure");
                         msg = "\"Limit of " + visLim + " per bed has been reached.";
                         msg += "\"";
-                        successString += "\"}";
+                        successString += msg + "\"}";
                         return successString;
                     }
                 }
@@ -621,7 +621,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 {
                     successString = successString.Replace("Success", "Failure");
                     msg = ex.Message;
-                    successString += "\"}";
+                    successString += msg + "\"}";
                     return successString;
                 }
             }
@@ -633,7 +633,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 catch (Exception ex) {
                     successString = successString.Replace("Success", "Failure");
                     msg = ex.Message;
-                    successString += "\"}";
+                    successString += msg + "\"}";
                     return successString;
                 }
             }

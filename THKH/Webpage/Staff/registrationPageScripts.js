@@ -1216,6 +1216,9 @@ function populateTime() {
             var arr = mes.toString().split(",");
             lowTime = arr[3].toString();
             highTime = arr[4].toString();
+            lowTemp = arr[0].toString();
+            highTemp = arr[1].toString();
+            warnTemp = arr[2].toString();
             var upperLimitHit = Date.parse("01/01/2011 " + highTime) >= Date.parse("01/01/2011 " + timeStr);
             var lowLimitHit = Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr);
             if (upperLimitHit && lowLimitHit) {
