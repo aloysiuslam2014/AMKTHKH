@@ -1005,6 +1005,7 @@
                                 <div>
                                   <select id="source" class="" style="width: 50%;margin: auto;color:black" onchange="ifCustom();">
 
+                                      <option value="nric">Visitor Nric</option>
                                       <option value="namesInput">Full Name</option>
                                       <option value="emailsInput">Email</option>
                                       <option value="mobilesInput">Contact Number</option>
