@@ -444,7 +444,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             catch (Exception ex)
             {
                 successString = successString.Replace("Success", "Failure");
-                msg = ex.Message;
+                msg = "\"" + ex.Message;
                 successString += msg;
                 successString += "\"}";
                 return successString;
@@ -529,6 +529,13 @@ namespace THKH.Webpage.Staff.CheckInOut
             String successString = "{\"Result\":\"Success\",\"Visitor\":";
             String msg = "\"";
             string qAid = qaid;
+            int pos = 0;
+            try
+            {
+                pos = Int32.Parse(postal);
+            }
+            catch (Exception ex) {
+            }
             //update visitor profile
             try
             {
@@ -541,7 +548,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
                 command.Parameters.AddWithValue("@pMobileTel", mobtel);
                 command.Parameters.AddWithValue("@pHomeAddress", address);
-                command.Parameters.AddWithValue("@pPostalCode", postal);
+                command.Parameters.AddWithValue("@pPostalCode", pos);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
@@ -552,7 +559,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 successString = successString.Replace("Success", "Failure");
                 msg = ex.Message;
-                successString += msg;
+                successString += "\"" + msg;
                 successString += "\"}";
                 return successString;
             }
@@ -584,7 +591,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 successString = successString.Replace("Success", "Failure");
                 msg = ex.Message;
-                successString += msg;
+                successString += "\"" + msg;
                 successString += "\"}";
                 return successString;
             }
@@ -620,7 +627,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 catch (Exception ex)
                 {
                     successString = successString.Replace("Success", "Failure");
-                    msg = ex.Message;
+                    msg = "\"" + ex.Message;
                     successString += "\"}";
                     return successString;
                 }
@@ -632,7 +639,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 }
                 catch (Exception ex) {
                     successString = successString.Replace("Success", "Failure");
-                    msg = ex.Message;
+                    msg = "\"" + ex.Message;
                     successString += "\"}";
                     return successString;
                 }

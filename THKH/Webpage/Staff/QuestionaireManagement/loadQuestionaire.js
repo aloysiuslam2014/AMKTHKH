@@ -518,9 +518,10 @@ function editQuestionShow(me) {
     $("#detailsQnType").val(qnType);
     $("#detailsQnValues").val(qnValues);
     if (qnType == "text") {
-        $("#detailsQnValues").prop('readonly', true);
+        $("#detailsQnValues").prop('value', "");
+        $("#detailsQnValues").prop('disabled', true);
     } else {
-        $("#detailsQnValues").prop('readonly', false);
+        $("#detailsQnValues").prop('disabled', false);
     }
     $("#searchQ").prop('readonly', true);
     $("#editQuestionTitle").html("Edit Question Details");
@@ -780,8 +781,9 @@ function hideFormManagementTags() {
 function checkAnsType() {
     var type = $("#detailsQnType").val();
     if (type == "text" || type == "") {
-        $("#detailsQnValues").prop('readonly', true);
+        $("#detailsQnValues").prop('value', "");
+        $("#detailsQnValues").prop('disabled', true);
     } else {
-        $("#detailsQnValues").prop('readonly', false);
+        $("#detailsQnValues").prop('disabled', false);
     }
 }

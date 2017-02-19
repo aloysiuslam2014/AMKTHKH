@@ -74,8 +74,14 @@ function updateAccessProfile() {
 // Creates a new access profile
 function newAccessProfile() {
     var profileName = $('#newProfNameInput').val();
-    var existProfile = $('#permissionProfile').find('input[value="' + profileName + '"]').val(); // Find here
-    if (existProfile == "") {
+    //var existProfile = $('#permissionProfile[name=' + profileName + ']').val(); // Find here
+    var existProfile = "";
+    $('#permissionProfile option').each(function () {
+        if (this.innerText == profileName) {
+            existProfile = this.value;
+        }
+    });
+    if (existProfile === "") {
         selectNewProfile(profileName);
         hideNewProfileModal();
     } else {

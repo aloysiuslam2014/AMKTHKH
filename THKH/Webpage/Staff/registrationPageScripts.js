@@ -149,7 +149,7 @@ function callCheck (){
                             }
                             $("#qaid").prop('value', visitArr[6]);
                             $("#remarks").prop('value', visitArr[7]);
-                        } if (questionnaireArr.length > 1) {
+                        } if (questionnaireArr.length >= 1) {
                             for (i = 0; i < questionnaireArr.length; i++) {
                                 var jsonAnswerObject = questionnaireArr[i];
                                 var qid = jsonAnswerObject.qid;
