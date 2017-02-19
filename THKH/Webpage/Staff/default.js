@@ -74,7 +74,7 @@ function updateAccessProfile() {
 // Creates a new access profile
 function newAccessProfile() {
     var profileName = $('#newProfNameInput').val();
-    var existProfile = $('#permissionProfile').find('value="' + profileName + '"').val(); // Find here
+    var existProfile = $('#permissionProfile').find('input[value="' + profileName + '"]').val(); // Find here
     if (existProfile == "") {
         selectNewProfile(profileName);
         hideNewProfileModal();

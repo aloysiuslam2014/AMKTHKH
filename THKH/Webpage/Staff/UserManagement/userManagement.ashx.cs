@@ -241,6 +241,9 @@ namespace THKH.Webpage.Staff.UserManagement
 
                 command.ExecuteNonQuery();
                 successString += respon.Value;
+                if (successString.Contains("PRIMARY KEY")) {
+                    successString = successString.Replace("Success", "Failure");
+                }
             }
             catch (Exception ex)
             {
