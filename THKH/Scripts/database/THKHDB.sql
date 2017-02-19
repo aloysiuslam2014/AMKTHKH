@@ -55,7 +55,7 @@
 
 --GO
 
-USE master;     
+USE MASTER;     
 
 IF EXISTS(SELECT * from sys.databases WHERE name='thkhdb')      
 --IF EXISTS(SELECT * from sys.databases WHERE name='stepwise')    
@@ -243,22 +243,22 @@ CREATE TABLE TEMP_RANGE
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------- New table for visit
-GO
 CREATE TABLE VISIT
 (
-	visitRequestTime DATETIME NOT NULL, 
-	--patientNric VARCHAR(15),  
-	visitorNric VARCHAR(15) NOT NULL,  
-	--patientFullName VARCHAR(150), 
-	purpose VARCHAR(1000) NOT NULL,
-	reason VARCHAR(1000),
-	visitLocation VARCHAR(300),    
-	bedNo VARCHAR(MAX),  
-	QaID VARCHAR(100) NOT NULL,
-	remarks VARCHAR(MAX),
-	confirm INT   
-	FOREIGN KEY (QaID) REFERENCES QUESTIONAIRE_ANS(QA_ID),
-	CONSTRAINT PK_VISIT PRIMARY KEY (visitRequestTime, visitorNric)
+  visitRequestTime DATETIME NOT NULL, 
+  --patientNric VARCHAR(15),  
+  visitorNric VARCHAR(15) NOT NULL,  
+  --patientFullName VARCHAR(150), 
+  purpose VARCHAR(1000) NOT NULL,
+  reason VARCHAR(1000),
+  visitLocation VARCHAR(300),    
+  bedNo VARCHAR(MAX),  
+  QaID VARCHAR(100) NOT NULL,
+  remarks VARCHAR(MAX),
+  confirm INT,
+  createdOn DATETIME   
+  FOREIGN KEY (QaID) REFERENCES QUESTIONAIRE_ANS(QA_ID),
+  CONSTRAINT PK_VISIT PRIMARY KEY (visitRequestTime, visitorNric, createdOn)
 );
 
 
@@ -1052,8 +1052,8 @@ BEGIN 
 
 	--IF (EXISTS (SELECT nric FROM dbo.PATIENT WHERE patientFullName LIKE '%' + @pPatientFullName + '%' AND bedNo = @pBedNo))  
 	BEGIN
-		INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks,confirm)
-		VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, @pConfirm)
+		INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdON)
+		VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, @pConfirm, SYSDATETIME())
 	END
 END; 
 
@@ -1095,13 +1095,14 @@ BEGIN 
 		bedNo = @pBedNo, 
 		QaID = @pQaID,
 		remarks = @pRemarks,
-		confirm = 1
+		confirm = 1,
+		createdOn = SYSDATETIME()
 		WHERE visitorNric = @pVisitorNRIC AND visitRequestTime = @pVisitRequestTime
 	END
 
 	ELSE
-		INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm)
-		VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, 1)
+		INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdOn)
+		VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, 1, SYSDATETIME())
 END; 
 
 
@@ -2819,5 +2820,8 @@ END; 
 
 
 --===========================================================================================================================================================================================
+
+
+
 
 
