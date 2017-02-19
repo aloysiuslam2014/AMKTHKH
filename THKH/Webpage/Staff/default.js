@@ -18,7 +18,7 @@ function updateConfig() {
     if (lowTime !== '' & highTime !== '') {
         validSetTime = true;
     }
-    if (validSetTemp && validSetTime) {
+    if (validSetTemp && validSetTime && compareTemp()) {
         var headersToProcess = {
             requestType: "updateSettings", lowTemp: lowTemp, highTemp: highTemp, warnTemp:warnTemp, lowTime: lowTime, highTime: highTime, staffUser: username, visLim: visLim
         };
@@ -43,35 +43,44 @@ function updateConfig() {
 function updateAccessProfile() {
     var profileName = $('#permissionProfile').val();
     var permissions = getPermissionSettingsInput();
-    var userName = user;
-    var headersToProcess = {
-        requestType: "updateProfile", profileName: profileName, permissions: permissions, userName: userName
-    };
-    $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
-        method: 'post',
-        data: headersToProcess,
+    if (permissions !== "") {
+        var userName = user;
+        var headersToProcess = {
+            requestType: "updateProfile", profileName: profileName, permissions: permissions, userName: userName
+        };
+        $.ajax({
+            url: '../Staff/MasterConfig/masterConfig.ashx',
+            method: 'post',
+            data: headersToProcess,
 
-        success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
-            if (resultOfGeneration.Msg == "1") {
-                alert("Profile Saved!");
-                getVisLim();
-            } else {
-                alert("Profile Not Saved!");
-            }
-        },
-        error: function (err) {
-            alert(err.msg);
-        },
-    });
+            success: function (returner) {
+                var resultOfGeneration = JSON.parse(returner);
+                if (resultOfGeneration.Msg == "1") {
+                    alert("Profile Saved!");
+                    getVisLim();
+                } else {
+                    alert("Profile Not Saved!");
+                }
+            },
+            error: function (err) {
+                alert(err.msg);
+            },
+        });
+    } else {
+        alert("You are not allowed to save an empty profile!");
+    }
 }
 
 // Creates a new access profile
 function newAccessProfile() {
     var profileName = $('#newProfNameInput').val();
-    selectNewProfile(profileName);
-    hideNewProfileModal();
+    var existProfile = $('#permissionProfile').find('value="' + profileName + '"').val(); // Find here
+    if (existProfile == "") {
+        selectNewProfile(profileName);
+        hideNewProfileModal();
+    } else {
+        alert("Profile Already Exists! Please Create a profile with a unique name.");
+    }
 }
 
 // Selects newly created questionnaire after adding
@@ -439,6 +448,7 @@ function compareTemp() {
             $('#tempHighWarnWarning').css("display", "none");
             $("#tempLowWarnWarning").css("display", "none");
             validSetTemp = false;
+            return false;
         } else {
             if (low > warn) {
                 $('#tempSetWarning').css("display", "none");
@@ -446,22 +456,26 @@ function compareTemp() {
                 $('#tempHighWarnWarning').css("display", "none");
                 $("#tempLowWarnWarning").css("display", "block");
                 validSetTemp = false;
+                return false;
             } else if (high < warn) {
                 $('#tempSetWarning').css("display", "none");
                 $("#tempHighLowWarning").css("display", "none");
                 $('#tempHighWarnWarning').css("display", "block");
                 $("#tempLowWarnWarning").css("display", "none");
                 validSetTemp = false;
+                return false;
             }else {
                 $('#tempSetWarning').css("display", "none");
                 $("#tempHighLowWarning").css("display", "none");
                 $('#tempHighWarnWarning').css("display", "none");
                 $("#tempLowWarnWarning").css("display", "none");
                 validSetTemp = true;
+                return true;
             }
         }
     } else {
         validSetTemp = false;
+        return false;
     }
 }
 

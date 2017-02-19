@@ -280,6 +280,7 @@ function addUser() {
                 }
             } else {
                 // Error
+                alert(resultOfGeneration.Msg + ". User already exists!");
             }
         },
         error: function (err) {

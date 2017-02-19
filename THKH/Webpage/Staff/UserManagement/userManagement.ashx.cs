@@ -11,7 +11,7 @@ using System.Web;
 namespace THKH.Webpage.Staff.UserManagement
 {
     /// <summary>
-    /// Summary description for Handler1
+    /// CRUD Actions for Hospital Staff
     /// </summary>
     public class Handler1 : IHttpHandler
     {
@@ -64,7 +64,6 @@ namespace THKH.Webpage.Staff.UserManagement
                 var email = context.Request.Form["email"];
                 var address = context.Request.Form["address"];
                 var postal = context.Request.Form["postal"].ToString();
-                //int postal = Int32.Parse(context.Request.Form["postal"]);
                 var mobtel = context.Request.Form["mobtel"];
                 var hometel = context.Request.Form["hometel"];
                 var alttel = context.Request.Form["alttel"];
@@ -83,6 +82,7 @@ namespace THKH.Webpage.Staff.UserManagement
             context.Response.Write(successString);
         }
 
+        // Gets a List in String form from the Staff Table
         private String loadUsers() {
             SqlConnection cnn;
             String successString = "";//result and msg 
@@ -137,6 +137,7 @@ namespace THKH.Webpage.Staff.UserManagement
             return successString;
         }
 
+        // Gets a specific row from the Staff Table
         private String getUser(String email)
         {
             SqlConnection cnn;
@@ -175,8 +176,6 @@ namespace THKH.Webpage.Staff.UserManagement
                         responseJson.sex = reader.GetString(9);
                         responseJson.nationality  = reader.GetString(10);
                         responseJson.dateOfBirth = reader.GetDateTime(11).ToString("dd/MM/yyyy");
-                        //responseJson.age = reader.GetInt32(12);
-                        //responseJson.race = reader.GetString(13);
                         responseJson.permissions = reader.GetInt32(14);
                         responseJson.position = reader.GetString(16);
                         responseJson.accessProfile = reader.GetString(15);
@@ -204,6 +203,7 @@ namespace THKH.Webpage.Staff.UserManagement
             return successString;
         }
 
+        // Creates a new row in the Staff Table
         private String addUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
             SqlConnection cnn;
@@ -244,7 +244,7 @@ namespace THKH.Webpage.Staff.UserManagement
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
+                successString = successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
@@ -257,6 +257,7 @@ namespace THKH.Webpage.Staff.UserManagement
             return successString;
         }
 
+        // Deletes a specific row in the Staff Table
         private String deleteUser(String snric, String email) {
             SqlConnection cnn;
             String successString = "{\"Result\":\"Success\",\"Msg\":";
@@ -290,6 +291,7 @@ namespace THKH.Webpage.Staff.UserManagement
             return successString;
         }
 
+        // Updates a specific row in the Staff Table
         private String updateUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
             SqlConnection cnn;
@@ -330,7 +332,7 @@ namespace THKH.Webpage.Staff.UserManagement
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
+                successString = successString.Replace("Success", "Failure");
                 successString += ex.Message;
                 successString += "\"}";
                 return successString;
