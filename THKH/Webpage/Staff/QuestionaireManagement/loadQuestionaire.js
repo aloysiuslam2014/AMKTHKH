@@ -417,6 +417,8 @@ function newQuestionnaire() {
                         showAddQuestionnaireSuccess();
                         $("#emptyQuestionnaireWarning").css("display", "none");
                         $("#questionnaireWarning").css("display", "none");
+                        $('#allQuestions > li').show();
+                        hideQuestionsAppearingInQuestionaire();
                     } else {
                         $("#questionnaireWarning").css("display", "block");
                         $("#emptyQuestionnaireWarning").css("display", "none");
@@ -636,12 +638,17 @@ function AddQtoQuestionnaire() {
     var questions = [];
     var count = 1;
     $.each($("#allQuestions li.active "), function (idx, li) {
-        $(this).toggle("hide");
-        $(li).find("span").triggerHandler("click");
-        var listobj = $(li).clone(true);
-        var listobjBtn = $(listobj).find(".btn");
-        $(listobjBtn).remove();
-        ids.push(listobj);
+        if ($("#sortable #" + li.id).length == 0) {
+            $(this).toggle("hide");
+            $(li).find("span").triggerHandler("click");
+            var listobj = $(li).clone(true);
+            var listobjBtn = $(listobj).find(".btn");
+            $(listobjBtn).remove();
+            ids.push(listobj);
+        } else {
+            alert("Question Already exist in the questionnaire!");
+            $(li).find("span").triggerHandler("click");
+        }
     });
     // Write HTML <li> & append to sortable ul
     for (i = 0; i < ids.length; i++) {

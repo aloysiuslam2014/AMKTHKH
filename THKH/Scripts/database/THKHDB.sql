@@ -1237,10 +1237,21 @@ BEGIN
       IF EXISTS (SELECT tb.bedno FROM @pTerminalBedTb tb
             WHERE tb.bedno IN (SELECT bedno FROM @pTempBedTb))
       BEGIN
-        INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-        VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+		DECLARE @pLast_LocationID INT
+		SET @pLast_LocationID = (SELECT TOP 1 locationID FROM MOVEMENT WHERE nric = @pNRIC AND
+								  CONVERT(VARCHAR(10), locationTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
+								  ORDER BY locationTime DESC)
 
-        SET @responseMessage = 1
+		IF (@pLast_LocationID <> 2 OR @pLast_LocationID = '')
+		BEGIN
+			INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+			VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+
+			SET @responseMessage = 1
+		END
+		ELSE
+			SELECT 'Please register in the counter to proceed.'
+			SET @responseMessage = 3
       END
         
       -- If Patient's BedNo does not exist in Visitor's 

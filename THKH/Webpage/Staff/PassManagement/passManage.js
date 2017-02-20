@@ -15,7 +15,7 @@ function convertDvToImg() {
 
 function convertMMtoPx(mmvalue) {
     //http://www.translatorscafe.com/unit-converter/typography/4-8/ convert to px from mm formula from here
-    var convertedpx = (mmvalue * 3.78) + "px";
+    var convertedpx = (parseInt(mmvalue.replace('mm','')) * 3.78) + "px";
     return convertedpx;
 }
 
@@ -207,6 +207,8 @@ function createPassAppendParent(parent, target, datapositions) {
     $(target).children().each(function () {
         //set the elements value based on id
         var name = this.id;
+        var currentItem = this;
+      
         if (name == "bedno") {
             
             var inputVal = $("#userData").find("#bedsAdded");
@@ -215,22 +217,27 @@ function createPassAppendParent(parent, target, datapositions) {
                 var numbOfBeds =  $(inputVal).children().length;
                 $(inputVal).children().each(function (index,item) {
 
-                    bedTodisplay += this.id;
+                    bedTodisplay += currentItem.id;
                     if (index + 1 < numbOfBeds) {
                         bedTodisplay += ",";
                     }
                 });
-                $(this).html(bedTodisplay);
+                $(currentItem).html(bedTodisplay);
             }
-        }else {
+        } else {
             var inputVal = $("#userData").find("#" + name);
-            var originWidth = $(this).width();
+            if (name == "vnric") {
+
+                inputVal = $("#nurseInputArea #nric");
+
+            }
+            var originWidth = $(currentItem).width();
                 if (inputVal != null) {
-                    $(this).html($(inputVal).val());
+                    $(currentItem).html($(inputVal).val());
                 }
-                if ($(this).css("text-align") == "center") {
-                    var updatedLeft = $(this).prop("offsetLeft") - (($(this).width() - originWidth) / 2);
-                    $(this).css("left", updatedLeft + "px")
+                if ($(currentItem).css("text-align") == "center") {
+                    var updatedLeft = $(currentItem).prop("offsetLeft") - (($(currentItem).width() - originWidth) / 2);
+                    $(currentItem).css("left", updatedLeft + "px")
                 }
         }
        

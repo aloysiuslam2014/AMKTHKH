@@ -24,7 +24,12 @@
 
     $('#addTerminalModal').on('shown.bs.modal', function () {
         $('#terminalNameInput').focus();
-    })
+    });
+
+    $('#addTerminalModal').on('hidden.bs.modal', function () {
+        $('#terminalNameInput').val("");
+        $('#addTerminalModal #beds').val("");
+    });
 
     $('#adminCloseTerminal').on('click', function (event) {
         $('#addTerminalModal').modal('hide');
@@ -72,12 +77,26 @@
             });
        
     });
+
     $('#cancelAction').on('click', function (event) {
         $('#genericTerminalModal').modal('hide');
+        $("#confirmAction").toggle(true);
     });
+
     $('#deactivateTerminal').on('click', function (event) {
         event.preventDefault();
-        $('#GenericMessage').html("Are you sure you want to <B>DEACTIVATE</B> the selected terminal(s)?");
+        if ($("#terminalList .active").length == 0) {
+            noTerminalSelected();
+            return;
+        }
+        var inavtiveTerminaltest = "";
+      
+        if ( $("#terminalList .active").hasClass("inactive")) {
+            inavtiveTerminaltest = "<i>Inactive terminal(s) selected.</i>";
+        }
+    
+        $('#GenericMessage').html("Are you sure you want to <B>DEACTIVATE</B> the selected terminal(s)? <br>" + inavtiveTerminaltest);
+        $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
         $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
         $('.modal-backdrop').appendTo('#TerminalManagement'); 
         $('#confirmAction').on('click', function (event) {
@@ -87,9 +106,9 @@
     });
     $('#deleteTerminal').on('click', function (event) {
         event.preventDefault();
-        
-        $('#GenericMessage').html("Are you sure you want to <B>DELETE</B> the selected terminal(s)?");
-        $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
+       
+         
+        $('#GenericMessage').html("Are you sure you want to <B>DELETE</B> the selected terminal(s)? ");
         $('.modal-backdrop').appendTo('#TerminalManagement');
         $('#confirmAction').on('click', function (event) {
             genericTerminalCofirmation("deleteTerminal");
@@ -120,6 +139,13 @@
       
     });
 });
+
+function noTerminalSelected() {
+    $('#GenericMessage').html("No terminals have been selected. Please select a terminal and try again.");
+    $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
+    $('.modal-backdrop').appendTo('#TerminalManagement');
+    $("#confirmAction").toggle(false);
+}
 
 function selectAllTerminals() {
    
@@ -163,6 +189,7 @@ function genericTerminalCofirmation(type){
                         loadTerminals();
 
                     }
+                    $(selectedItems[i]).addClass("inactive");
                 },
                 error: function (err) {
                     alert("error");
@@ -270,9 +297,11 @@ function generateTerminalListAndInit(terminalData) {
         if (datas[2].toString() == "1") {
            
             $(listElement).attr("style", "text-align: left;color:#3c763d");
+            
         } else {
            
             $(listElement).attr("style", "text-align: left;color: #a94442;");
+            $(listElement).addClass("inactive");
         }
        
         $(listElement).attr("id", terminalID);
