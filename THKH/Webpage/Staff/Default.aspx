@@ -16,6 +16,7 @@
 <%--    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery-1.12.4.js") %>"></script>--%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.dataTables.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.buttons.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.colVis.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.flash.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jszip.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/pdfmake.min.js") %>"></script>
@@ -1172,7 +1173,11 @@
                             <th>Exit Time</th>
                             <th>Name</th>
                             <th>NRIC</th>
-                            <th>Handphone Number</th>
+                            <th>Gender</th>
+                            <th>Date of Birth</th>
+                            <th>Contact Number</th>
+                            <th>Home Address</th>
+                            <th>Postal Code</th>
                             <th>Country (Nationality)</th>
                             <th>Registered</th>
                             <th>Scanned</th>
@@ -1192,12 +1197,17 @@
                             traceby = location
                         }
                         var table = $('#uq_resultstable').DataTable({
+                            "columnDefs": [
+                                { className: "export_only", "targets": [0] },
+
+                            ],
                             "searching": false,
                             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                             "deferRender": true,
                             dom: 'Bfrtipl',
+                            stateSave: true,
                             buttons: [
-                            'copy',
+                            'colvis',
                             {
                                 extend: 'csvHtml5',
                                 title: 'Trace done on ' + datetime_str
@@ -1205,15 +1215,16 @@
                             {
                                 extend: 'excelHtml5',
                                 title: 'Trace done on ' + datetime_str
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                title: 'Trace done on ' + datetime_str,
-                                orientation: 'landscape',
-                                pageSize: 'A4'
                             }
-                            ]
+                            ],
+                            language: {
+                                buttons: {
+                                    colvis: 'Toggle columns'
+                                }
+                            }
                         });
+                        //table.columns('export_only').visible(false);
+                        table.columns([6, 7, 9, 10]).visible(false, false);
                         $('#uq_resultstable').removeClass("dataTable");
                         $('#uq_resultstable_info').removeClass("dataTables_info");
                         $('#uq_resultstable_length').removeClass("dataTables_length");
