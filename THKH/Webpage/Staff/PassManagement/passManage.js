@@ -53,19 +53,34 @@ function loadPassState() {
                         //sPositions = elementPositionsJson;
                         //var layout = $(passLayout).html();
                         //$("#passLayout").append(layout);
-                       // cleanChildrenElements($("passLayout"));
-                        cleanChildrenElements($(passLayout));
-                        $("#passContainers").append(passLayout);
+                        // cleanChildrenElements($("passLayout"));
+                        var passProcess = $(passLayout);
+                        cleanChildrenElements(passProcess);
+                        $("#passContainers").append(passProcess);
                         $("#passContainers #passClone").attr("id", "passLayout");
                         
                         $("#passContainers #passLayout").children().each(function () {
-                            if (!$(this).hasClass('notResizable')) {
-                                $(this).resizable({
+                            if ($(this).attr("id").includes("img") || $(this).attr("id") == "barcode") {
+                                
+                                $(this).find("img").appendTo($(this));
+                                $(this).find(".ui-wrapper").remove();
+
+                                $(this).find("img").resizable({
                                     containment: "#passLayout"
                                 });
+                                
+
+                                createDraggablElement(this);
+                            } else {
+                                if (!$(this).hasClass('notResizable')) {
+                                    $(this).resizable({
+                                        containment: "#passLayout"
+                                    });
+                                }
+
+                                createDraggablElement(this);
                             }
-                            
-                            createDraggablElement(this);
+                           
                         });
                    
                     } else {
@@ -251,7 +266,7 @@ function createPassAppendParent(parent, target, datapositions) {
 function cleanChildrenElements(element) {
    
     if (element.id != "") {
-        $("#" + element.id + " .ui-resizable-handle").remove();//remove special symbols to adjust the image or barcode of text size
+        $(element).find(".ui-resizable-handle").remove();//remove special symbols to adjust the image or barcode of text size
     }
     $(element).removeClass("dashedBorderAbsolute");
     $(element).removeClass('ui-resizable');
