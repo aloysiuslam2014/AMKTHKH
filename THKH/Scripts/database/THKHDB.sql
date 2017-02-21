@@ -742,7 +742,7 @@ BEGIN
 
 	BEGIN TRY
 		DECLARE @pDateUpdated DATETIME
-		SET @pDateUpdated = SYSDATETIME();
+		SET @pDateUpdated = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00');
 
 		IF (EXISTS (SELECT email FROM STAFF WHERE nric= @pNric))
 		BEGIN
@@ -845,7 +845,7 @@ BEGIN 
 	SET NOCOUNT ON  
 
 	BEGIN TRY
-		SET @pTimestamp = SYSDATETIME();
+		SET @pTimestamp = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00');
 		INSERT INTO VISITOR_PROFILE(nric, fullName, gender, nationality, dateOfBirth, mobileTel,
 									homeAddress, postalCode, time_stamp, confirm, amend)
 		VALUES (@pNRIC, @pFullName, @pGender, @pNationality, @pDateOfBirth, @pMobileTel, 
@@ -905,7 +905,7 @@ BEGIN 
 	SET NOCOUNT ON  
 
 	BEGIN TRY
-		SET @pTimestamp = SYSDATETIME();
+		SET @pTimestamp = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00');
 		IF (EXISTS (SELECT TOP 1 nric FROM VISITOR_PROFILE WHERE nric= @pNRIC ORDER BY time_stamp DESC))
 		BEGIN
 			DECLARE @pLatestTimestamp DATETIME
@@ -1032,9 +1032,9 @@ END;
 -----------------------------------------------------------------------------------------------------  Procedures for creating visits
 GO
 CREATE PROCEDURE [dbo].[CREATE_VISIT]
-@pVisitRequestTime DATETIME,  
---@pPatientNRIC VARCHAR(15) = '',  
-@pVisitorNRIC VARCHAR(15),  
+@pVisitRequestTime DATETIME,  
+--@pPatientNRIC VARCHAR(15) = '',  
+@pVisitorNRIC VARCHAR(15),  
 --@pPatientFullName VARCHAR(150) = '',
 @pPurpose VARCHAR(MAX) = '',
 @pReason VARCHAR(MAX) = '',
@@ -1043,27 +1043,27 @@ CREATE PROCEDURE [dbo].[CREATE_VISIT]
 @pQaID VARCHAR(100),
 @pRemarks VARCHAR(MAX),
 @pConfirm INT = 0,
-@responseMessage INT OUTPUT  
--- Might need a timestamp for entry creation time
+@responseMessage INT OUTPUT  
+--Might need a timestamp for entry creation time
 
-AS  
-BEGIN  
-	SET NOCOUNT ON  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
 
-	--IF (EXISTS (SELECT nric FROM dbo.PATIENT WHERE patientFullName LIKE '%' + @pPatientFullName + '%' AND bedNo = @pBedNo))  
+	--IF (EXISTS (SELECT nric FROM dbo.PATIENT WHERE patientFullName LIKE '%' + @pPatientFullName + '%' AND bedNo = @pBedNo))  
 	BEGIN
-		INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdON)
-		VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, @pConfirm, SYSDATETIME())
+		INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdOn)
+		VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, @pConfirm, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
 	END
-END; 
+END;
 
 
 -----------------------------------------------------------------------------------------------------  Procedures for updating visits
 GO
 CREATE PROCEDURE [dbo].[UPDATE_VISIT]
-@pVisitRequestTime DATETIME,  
---@pPatientNRIC VARCHAR(15) = '',  
-@pVisitorNRIC VARCHAR(15),  
+@pVisitRequestTime DATETIME,  
+--@pPatientNRIC VARCHAR(15) = '',  
+@pVisitorNRIC VARCHAR(15),  
 --@pPatientFullName VARCHAR(150) = '',
 @pPurpose VARCHAR(MAX) = '',
 @pReason VARCHAR(MAX) = '',
@@ -1072,37 +1072,37 @@ CREATE PROCEDURE [dbo].[UPDATE_VISIT]
 @pQaID VARCHAR(100),
 @pRemarks VARCHAR(MAX) = '',
 @pConfirm INT = 1,
-@responseMessage INT OUTPUT  
--- Might need a timestamp for entry creation time
+@responseMessage INT OUTPUT  
+--Might need a timestamp for entry creation time
 
-AS  
-BEGIN  
-	SET NOCOUNT ON  
-	-- Change NOT EXISTS to EXISTS once we have the patient information
-	IF (EXISTS (SELECT visitorNric FROM dbo.VISIT WHERE visitorNric = @pVisitorNRIC 
-		AND bedNo = @pBedNo AND visitLocation = @pVisitLocation AND visitRequestTime = @pVisitRequestTime))  
-	BEGIN
-		-- Have some logic to update visit
-		UPDATE VISIT
-		SET 
-		--visitRequestTime = @pVisitRequestTime, 
-		--patientNric = @pPatientNRIC, 
-		--visitorNric = @pVisitorNRIC, 
-		--patientFullName = @pPatientFullName, 
-		purpose = @pPurpose, 
-		reason = @pReason, 
-		visitLocation = @pVisitLocation, 
-		bedNo = @pBedNo, 
-		QaID = @pQaID,
-		remarks = @pRemarks,
-		confirm = 1,
-		createdOn = SYSDATETIME()
-		WHERE visitorNric = @pVisitorNRIC AND visitRequestTime = @pVisitRequestTime
-	END
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+  --Change NOT EXISTS to EXISTS once we have the patient information
+  IF (EXISTS (SELECT visitorNric FROM dbo.VISIT WHERE visitorNric = @pVisitorNRIC 
+				AND bedNo = @pBedNo AND visitLocation = @pVisitLocation AND visitRequestTime = @pVisitRequestTime))  
+  BEGIN
+    -- Have some logic to update visit
+    UPDATE VISIT
+    SET 
+    --visitRequestTime = @pVisitRequestTime, 
+    --patientNric = @pPatientNRIC, 
+    --visitorNric = @pVisitorNRIC, 
+    --patientFullName = @pPatientFullName, 
+    purpose = @pPurpose, 
+    reason = @pReason, 
+    visitLocation = @pVisitLocation, 
+    bedNo = @pBedNo, 
+    QaID = @pQaID,
+    remarks = @pRemarks,
+    confirm = 1,
+    createdOn = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
+    WHERE visitorNric = @pVisitorNRIC AND visitRequestTime = @pVisitRequestTime
+  END
 
-	ELSE
-		INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdOn)
-		VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, 1, SYSDATETIME())
+  ELSE
+    INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdOn)
+    VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
 END; 
 
 
@@ -1205,78 +1205,89 @@ CREATE PROCEDURE [dbo].[CREATE_MOVEMENT]
   
 AS  
 BEGIN  
-  SET NOCOUNT ON  
-  DECLARE @pVisit_Date DATETIME
-  SET @pVisit_Date = (SELECT TOP 1 visitActualTime FROM CHECK_IN WHERE nric = @pNRIC AND
-            CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
-            ORDER BY visitActualTime DESC) -- Compare Visit Date with System Date
+
+SET NOCOUNT ON  
+DECLARE @pVisit_Date DATETIME
+DECLARE @pLast_LocationID INT
+SET @pVisit_Date = (SELECT TOP 1 visitActualTime FROM CHECK_IN WHERE nric = @pNRIC AND
+					CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
+					ORDER BY visitActualTime DESC) -- Compare Visit Date with System Date
+SET @pLast_LocationID = (SELECT TOP 1 locationID FROM MOVEMENT WHERE nric = @pNRIC AND
+						CONVERT(VARCHAR(10), locationTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
+						ORDER BY locationTime DESC)
+
+DECLARE @pLast_Location VARCHAR(200)
+SET @pLast_Location = (SELECT tName FROM TERMINAL WHERE terminalID = @pLast_LocationID)
   
-  IF (@pVisit_Date != '')
-    BEGIN TRY
-    IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
-    BEGIN
-      DECLARE @pTempBedTb TABLE (bedno VARCHAR(10))
-      DECLARE @pTerminalBedTb TABLE (bedno VARCHAR(10))
-
-      DECLARE @pVisiting_Bedno VARCHAR(200)
-      DECLARE @pTerminal_Bedno VARCHAR(200)
-
-      SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = @pNRIC AND
-                  CONVERT(VARCHAR(10), visitRequestTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
-                  ORDER BY visitRequestTime DESC)
-      
-      SET @pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
-
-      INSERT INTO @pTempBedTb
-        SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, ',')
-
-      INSERT INTO @pTerminalBedTb
-        SELECT * FROM dbo.FUNC_SPLIT(@pTerminal_Bedno, ',')
-
-      -- Retrieve Patient's BedNo according to the Visitor's registered Visit  
-      IF EXISTS (SELECT tb.bedno FROM @pTerminalBedTb tb
-            WHERE tb.bedno IN (SELECT bedno FROM @pTempBedTb))
-      BEGIN
-		DECLARE @pLast_LocationID INT
-		SET @pLast_LocationID = (SELECT TOP 1 locationID FROM MOVEMENT WHERE nric = @pNRIC AND
-								  CONVERT(VARCHAR(10), locationTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
-								  ORDER BY locationTime DESC)
-
-		IF (@pLast_LocationID <> 2 OR @pLast_LocationID = '')
+IF (@pVisit_Date != '')
+BEGIN TRY
+	IF (@pLast_Location NOT LIKE '%EXIT%')
+	BEGIN
+		IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
 		BEGIN
+			DECLARE @pVisitingBedTb TABLE (bedno VARCHAR(10))
+			DECLARE @pTerminalBedTb TABLE (bedno VARCHAR(10))
+
+			DECLARE @pVisiting_Bedno VARCHAR(MAX)
+			DECLARE @pTerminal_Bedno VARCHAR(MAX)
+
+			SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = 'S1442493H' AND
+									CONVERT(VARCHAR(10), visitRequestTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
+									ORDER BY visitRequestTime DESC)
+			SET	@pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
+
+			INSERT INTO @pVisitingBedTb 
+				SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, ',')
+			
+			INSERT INTO @pTerminalBedTb 
+				SELECT * FROM dbo.FUNC_SPLIT(@pTerminal_Bedno, ',')
+      
+			IF EXISTS (SELECT vb.bedno FROM @pVisitingBedTb vb WHERE vb.bedno IN (SELECT tb.bedno FROM @pTerminalBedTb tb))
+			BEGIN
+			-- Retrieve Patient's BedNo according to the Visitor's registered Visit
+				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+
+				SET @responseMessage = 1
+			END      
+			ELSE
+			BEGIN
+				-- If Patient's BedNo does not exist in Visitor's 
+				INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+				VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+    
+				SET @responseMessage = 2
+			END
+		END 
+
+		ELSE
+		BEGIN
+			-- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
 			INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
 			VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
 
 			SET @responseMessage = 1
 		END
-		ELSE
-			SELECT 'Please register in the counter to proceed.'
-			SET @responseMessage = 3
-      END
-        
-      -- If Patient's BedNo does not exist in Visitor's 
-      ELSE
-        INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-        VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+    END
     
-        SET @responseMessage = 2
-    END  
- 
-    ELSE
-      -- For visiting Facility in the hospital. (E.g. Pharmacy, Cafeteria, etc)
-      INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-      VALUES (@pNRIC, @pVisit_Date, @pLocationID, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-            
-      SET @responseMessage = 1
-  END TRY
-  BEGIN CATCH  
-    SET @responseMessage = 0 
-  END CATCH 
+	ELSE
+    BEGIN
+      -- Visitor has not registered at the counter or has already checked out
+		SET @responseMessage = 3
+    END
 
-  -- Visitor do not have any VISIT and CHECK_IN record
-  ELSE
-    SET @responseMessage = 0
+	END TRY
+	BEGIN CATCH  
+		SET @responseMessage = 0 
+	END CATCH 
+    
+	-- Visitor do not have any VISIT and CHECK_IN record
+	ELSE
+	BEGIN
+		SET @responseMessage = 0
+	END
 END;
+
 
 ----------------------------------------------------------------------------------------------------------- Procedure for Checking-Out all visitors 
 GO
@@ -1297,7 +1308,7 @@ BEGIN 
 	IF ((SELECT COUNT(visitor_nric) FROM @pVisitor_To_Checkout) > 0)
 	BEGIN TRY
 		INSERT INTO MOVEMENT (nric, visitActualTime, locationID, locationTime)
-			SELECT ci.nric, ci.visitActualTime, 3, SYSDATETIME() 
+			SELECT ci.nric, ci.visitActualTime, 2, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
 			FROM CHECK_IN ci
 				INNER JOIN @pVisitor_To_Checkout vc ON ci.nric = vc.visitor_nric
 
@@ -1328,7 +1339,7 @@ BEGIN
   IF (NOT EXISTS (SELECT terminalID FROM TERMINAL WHERE tName = @pTName) OR EXISTS(SELECT terminalID FROM TERMINAL WHERE tName = @pTName and endDate IS NOT NULL))
   BEGIN TRY
     INSERT INTO TERMINAL(tName, activated, tControl, startDate, endDate)
-    VALUES (@pTName, 0, @pTControl, SYSDATETIME(), NULL)
+    VALUES (@pTName, 0, @pTControl, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), NULL)
 
     IF (@pBedNoList != '' OR @pBedNoList IS NULL)
     BEGIN
@@ -1428,7 +1439,7 @@ BEGIN 
 		DELETE FROM TERMINAL_BED
 
 		UPDATE TERMINAL
-		SET endDate = SYSDATETIME()
+		SET endDate = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
 
  		SET @responseMessage = 1  
   
@@ -1455,7 +1466,7 @@ BEGIN 
 		WHERE terminalID = @pTerminal_ID 
 
 		UPDATE TERMINAL
-		SET endDate = SYSDATETIME()
+		SET endDate = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
 		WHERE terminalID = @pTerminal_ID
 
  		SET @responseMessage = 1  
@@ -1559,7 +1570,7 @@ BEGIN 
 	IF NOT EXISTS (SELECT QQ_ID FROM QUESTIONAIRE_QNS WHERE question = @pQuestion AND qnsType = @pQnsValue)
 	BEGIN TRY
 		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
-		VALUES (@pQuestion, @pQnsType, @pQnsValue, SYSDATETIME(), NULL)
+		VALUES (@pQuestion, @pQnsType, @pQnsValue, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), NULL)
 
  		SET @responseMessage = 1  
   
@@ -1590,7 +1601,7 @@ BEGIN 
 	IF EXISTS (SELECT QQ_ID FROM QUESTIONAIRE_QNS WHERE QQ_ID = @pQQ_ID)
 	BEGIN TRY  
 			UPDATE QUESTIONAIRE_QNS
-			SET question = @pQuestion, qnsType = @pQnsType, qnsValue = @pQnsValue, startDate = SYSDATETIME()
+			SET question = @pQuestion, qnsType = @pQnsType, qnsValue = @pQnsValue, startDate = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
 			WHERE QQ_ID = @pQQ_ID
 
 		SET @responseMessage = 1 
@@ -1640,7 +1651,7 @@ BEGIN 
 	IF EXISTS (SELECT QQ_ID FROM QUESTIONAIRE_QNS WHERE QQ_ID = @pQQ_ID)
 	BEGIN TRY
 		UPDATE QUESTIONAIRE_QNS
-		SET endDate = SYSDATETIME()
+		SET endDate = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
 		WHERE QQ_ID = @pQQ_ID
 
  		SET @responseMessage = 1  
@@ -1757,7 +1768,7 @@ BEGIN 
 	IF NOT EXISTS (SELECT Q_QuestionListID FROM QUESTIONAIRE_QNS_LIST WHERE Q_QuestionListID = @pQ_QuestionListID)
 		BEGIN TRY  
        		INSERT INTO QUESTIONAIRE_QNS_LIST(Q_QuestionListID, Q_Order, Q_Active, startDate, endDate)  
-       		VALUES(@pQ_QuestionListID, @pQ_Order, @pQ_Active, SYSDATETIME(), NULL)  
+       		VALUES(@pQ_QuestionListID, @pQ_Order, @pQ_Active, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), NULL)  
   
       	   SET @responseMessage = 1   
    		END TRY  
@@ -1785,7 +1796,7 @@ BEGIN 
 	IF NOT EXISTS (SELECT Q_QuestionListID FROM QUESTIONAIRE_QNS_LIST WHERE Q_QuestionListID = @pQ_QuestionListID)
 		BEGIN TRY  
        		INSERT INTO QUESTIONAIRE_QNS_LIST(Q_QuestionListID, Q_Order, Q_Active, startDate, endDate)  
-       		VALUES(@pQ_QuestionListID, '', @pQ_Active, SYSDATETIME(), NULL)  
+       		VALUES(@pQ_QuestionListID, '', @pQ_Active, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), NULL)  
   
       	   SET @responseMessage = 1   
    		END TRY  
@@ -1909,7 +1920,7 @@ BEGIN 
 	IF EXISTS (SELECT Q_QuestionListID FROM QUESTIONAIRE_QNS_LIST WHERE Q_QuestionListID = @pQ_QuestionList_ID)
 	BEGIN TRY  
 		UPDATE QUESTIONAIRE_QNS_LIST
-		SET endDate = SYSDATETIME()
+		SET endDate = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
 		WHERE Q_QuestionListID = @pQ_QuestionList_ID
   
 		SET @responseMessage = 1   
@@ -2831,8 +2842,4 @@ END; 
 
 
 --===========================================================================================================================================================================================
-
-
-
-
 
