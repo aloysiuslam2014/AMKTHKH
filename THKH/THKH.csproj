@@ -267,6 +267,7 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\buttons.colVis.min.js" />
     <Content Include="Scripts\buttons.flash.min.js" />
     <Content Include="Scripts\buttons.html5.min.js" />
     <Content Include="Scripts\buttons.print.min.js" />

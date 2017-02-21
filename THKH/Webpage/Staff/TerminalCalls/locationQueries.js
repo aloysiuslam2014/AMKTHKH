@@ -127,12 +127,12 @@ function updateCheckIn() {
                     exisingTimeouts = setTimeout(function () { hideWelcome(); }, 500);
                     $("#userWelcome").css('font-size', '12em');
                 } else {
-                    if (result.split(',')[0] == "success") // Successfully found user but he is not suppossed to be there
+                    if (result.split(',')[1] == "locationError") // Successfully found user but he is not suppossed to be there
                     {
-                        $("#userWelcome").html("No Entry!.<br> Wrong location.");
+                        $("#userWelcome").html("No Entry!<br> Wrong location.");
                         $("#userWelcome").css('color', 'lightcoral');
                     } else {
-                        $("#userWelcome").html("Not Registered!.<br> Proceed to front desk.");
+                        $("#userWelcome").html("Not Registered!<br> Proceed to front desk.");
                         $("#userWelcome").css('color', 'lightcoral');
                     }
                     exisingTimeouts = setTimeout(function () { hideWelcome(); }, 3000);

@@ -199,6 +199,11 @@ namespace THKH.Webpage.Staff.ContactTracing
                     innerItem.nric = deserializedVisit["nric"];
                     innerItem.mobileTel = deserializedVisit["mobileTel"];
                     innerItem.nationality = deserializedVisit["nationality"];
+             
+                    innerItem.gender = deserializedVisit["gender"];
+                    innerItem.dob = deserializedVisit["dob"];
+                    innerItem.homeadd = deserializedVisit["homeadd"];
+                    innerItem.postalcode = deserializedVisit["postalcode"];
 
                     if (reg) { innerItem.reg = "Y"; } else { innerItem.reg = ""; }
                     if (scan) { innerItem.scan = "Y"; } else { innerItem.scan = ""; }
@@ -209,7 +214,11 @@ namespace THKH.Webpage.Staff.ContactTracing
                     datatable_arrayitem.Add((string)innerItem.exit_time);
                     datatable_arrayitem.Add((string)innerItem.fullName);
                     datatable_arrayitem.Add((string)innerItem.nric);
+                    datatable_arrayitem.Add((string)innerItem.gender);
+                    datatable_arrayitem.Add((string)innerItem.dob);
                     datatable_arrayitem.Add((string)innerItem.mobileTel);
+                    datatable_arrayitem.Add((string)innerItem.homeadd);
+                    datatable_arrayitem.Add((string)innerItem.postalcode);
                     datatable_arrayitem.Add((string)innerItem.nationality);
 
                     datatable_arrayitem.Add((string)innerItem.reg);
@@ -269,8 +278,12 @@ namespace THKH.Webpage.Staff.ContactTracing
                     var exitTime = dt.Rows[i]["exit_time"];
                     var visitorNric = dt.Rows[i]["nric"];
                     var fullName = dt.Rows[i]["fullName"];
+                    var gender = dt.Rows[i]["gender"];
+                    var dob = dt.Rows[i]["dob"];
                     var nationality = dt.Rows[i]["nationality"];
                     var mobileTel = dt.Rows[i]["mobileTel"];
+                    var homeadd = dt.Rows[i]["homeadd"];
+                    var postalcode = dt.Rows[i]["postalcode"];
 
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
@@ -281,6 +294,12 @@ namespace THKH.Webpage.Staff.ContactTracing
                     innerItem.fullName = fullName.ToString();
                     innerItem.nationality = nationality.ToString();
                     innerItem.mobileTel = mobileTel.ToString();
+
+                    innerItem.gender = gender.ToString();
+                    innerItem.dob = dob.ToString();
+                    innerItem.homeadd = homeadd.ToString();
+                    innerItem.postalcode = postalcode.ToString();
+
                     jsonArray.Add(innerItem);
                 }
                 json.Result = "Success";
@@ -361,18 +380,27 @@ namespace THKH.Webpage.Staff.ContactTracing
                     var exitTime = dt.Rows[i]["exit_time"];
                     var visitorNric = dt.Rows[i]["nric"];
                     var fullName = dt.Rows[i]["fullName"];
+                    var gender = dt.Rows[i]["gender"];
+                    var dob = dt.Rows[i]["dob"];
                     var nationality = dt.Rows[i]["nationality"];
                     var mobileTel = dt.Rows[i]["mobileTel"];
+                    var homeadd = dt.Rows[i]["homeadd"];
+                    var postalcode = dt.Rows[i]["postalcode"];
 
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
                     innerItem.bedno = regbedno.ToString();
                     innerItem.checkin_time = visitActualTime.ToString();
-                    innerItem.exit_time = exitTime == null ? "" : exitTime.ToString();
+                    innerItem.exit_time = exitTime.ToString();
                     innerItem.nric = visitorNric.ToString();
                     innerItem.fullName = fullName.ToString();
                     innerItem.nationality = nationality.ToString();
                     innerItem.mobileTel = mobileTel.ToString();
+
+                    innerItem.gender = gender.ToString();
+                    innerItem.dob = dob.ToString();
+                    innerItem.homeadd = homeadd.ToString();
+                    innerItem.postalcode = postalcode.ToString();
                     jsonArray.Add(innerItem);
                 }
                 json.Result = "Success";
@@ -450,8 +478,12 @@ namespace THKH.Webpage.Staff.ContactTracing
                     var exitTime = dt.Rows[i]["exit_time"];
                     var visitorNric = dt.Rows[i]["nric"];
                     var fullName = dt.Rows[i]["fullName"];
+                    var gender = dt.Rows[i]["gender"];
+                    var dob = dt.Rows[i]["dob"];
                     var nationality = dt.Rows[i]["nationality"];
                     var mobileTel = dt.Rows[i]["mobileTel"];
+                    var homeadd = dt.Rows[i]["homeadd"];
+                    var postalcode = dt.Rows[i]["postalcode"];
 
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
@@ -462,6 +494,11 @@ namespace THKH.Webpage.Staff.ContactTracing
                     innerItem.fullName = fullName.ToString();
                     innerItem.nationality = nationality.ToString();
                     innerItem.mobileTel = mobileTel.ToString();
+
+                    innerItem.gender = gender.ToString();
+                    innerItem.dob = dob.ToString();
+                    innerItem.homeadd = homeadd.ToString();
+                    innerItem.postalcode = postalcode.ToString();
                     jsonArray.Add(innerItem);
                 }
                 json.Result = "Success";
@@ -522,18 +559,27 @@ namespace THKH.Webpage.Staff.ContactTracing
                     var exitTime = dt.Rows[i]["exit_time"];
                     var visitorNric = dt.Rows[i]["nric"];
                     var fullName = dt.Rows[i]["fullName"];
+                    var gender = dt.Rows[i]["gender"];
+                    var dob = dt.Rows[i]["dob"];
                     var nationality = dt.Rows[i]["nationality"];
                     var mobileTel = dt.Rows[i]["mobileTel"];
+                    var homeadd = dt.Rows[i]["homeadd"];
+                    var postalcode = dt.Rows[i]["postalcode"];
 
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
                     innerItem.bedno = regbedno.ToString();
                     innerItem.checkin_time = visitActualTime.ToString();
-                    innerItem.exit_time = exitTime == null ? "" : exitTime.ToString();
+                    innerItem.exit_time = exitTime.ToString();
                     innerItem.nric = visitorNric.ToString();
                     innerItem.fullName = fullName.ToString();
                     innerItem.nationality = nationality.ToString();
                     innerItem.mobileTel = mobileTel.ToString();
+
+                    innerItem.gender = gender.ToString();
+                    innerItem.dob = dob.ToString();
+                    innerItem.homeadd = homeadd.ToString();
+                    innerItem.postalcode = postalcode.ToString();
                     jsonArray.Add(innerItem);
                 }
                 json.Result = "Success";

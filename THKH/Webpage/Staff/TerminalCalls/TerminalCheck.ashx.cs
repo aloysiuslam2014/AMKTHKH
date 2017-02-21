@@ -529,6 +529,8 @@ namespace THKH.Webpage.Staff.TerminalCalls
             if (respon.Value.ToString().Equals("2"))
             {
                 toReturn = "success,locationError";
+            } else if (respon.Value.ToString().Equals("3")) {
+                toReturn = "success,noCheckIn";
             }
 
             return success;
