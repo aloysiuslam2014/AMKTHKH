@@ -2510,7 +2510,7 @@ BEGIN
 		SELECT DISTINCT ci.nric, ci.visitActualTime, v.bedNo, v.visitLocation
 		FROM CHECK_IN ci
 		LEFT JOIN VISIT v ON v.visitorNric = ci.nric
-		WHERE v.visitLocation = @pLocation
+		WHERE v.visitLocation LIKE '%' + @pLocation + '%'
 		AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
 	),
 	DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
@@ -2553,7 +2553,7 @@ BEGIN 
 			SELECT DISTINCT m.nric, m.visitActualTime, m.locationID, m.locationTime, t.tName
 			FROM MOVEMENT m
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
-			WHERE t.tName = @pLocation
+			WHERE t.tName LIKE '%' + @pLocation + '%'
 			AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
 		),		
 		------------------------------------------------ Find the corresponding exit terminals and exit times
