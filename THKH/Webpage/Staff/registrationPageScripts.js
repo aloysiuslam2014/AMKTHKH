@@ -1308,6 +1308,7 @@ function populateTime() {
 
 // Show Success Modal
 function showSuccessModal() {
+    $('#successModal').unbind("shown.bs.modal");
     $('#successModal').on('shown.bs.modal', function () {
         getPassState();
     })

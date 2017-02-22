@@ -468,8 +468,6 @@ function printPass() {
     }).then(function (printer) {
         var config = qz.configs.create(printer, { colorType: 'grayscale' });       // Create a default config for the found printer format: 'base64',
         var rawDataFromImg = $("#imgPass")[0].toDataURL("image/png", 1).split(',')[1];
-        var image = new Image();
-        // image.src = ;
         var data = [
      {
          type: 'image',
