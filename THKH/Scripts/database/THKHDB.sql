@@ -1172,12 +1172,13 @@ BEGIN
 
   IF(@pCheckedIn > 0)
   BEGIN
-	  IF(@pCheckedOut = 0)
-	  BEGIN
-		  INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		  VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric), 2, @pActualTimeVisit)
- 
-	  END
+	IF(@pCheckedOut = 0)
+	BEGIN
+      INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+      VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric AND 
+						CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)), 
+			  2, @pActualTimeVisit)
+    END
   END
 
   BEGIN TRY  
@@ -1185,15 +1186,16 @@ BEGIN
     VALUES (@pNRIC, @pActualTimeVisit, @pTemperature, @pOriginal_Staff_Email)
 
    INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-      VALUES (@pNRIC, @pActualTimeVisit, 1, @pActualTimeVisit)
+      VALUES (@pNRIC, @pActualTimeVisit, 1, DATEADD(ss,1,@pActualTimeVisit))
 
     SET @responseMessage = 1
   END TRY
 
-    BEGIN CATCH  
+  BEGIN CATCH  
        SET @responseMessage = 0  
   END CATCH
 END;
+
 
 
 ----------------------------------------------------------------------------------------------------------- Procedure for creating movement 
@@ -2427,10 +2429,11 @@ BEGIN
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
 			WHERE t.tName LIKE 'EXIT%'
 		)
-	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd',  vp.postalCode AS 'postalcode'
+	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd',  vp.postalCode AS 'postalcode', vp.confirm AS 'confirmed', vp.confirm AS 'confirmed'
 		FROM DAY_BED_CHECKINS dbc
 		LEFT JOIN DAY_BED_EXITS dbe ON dbe.nric = dbc.nric AND dbe.visitActualTime = dbc.visitActualTime
 		LEFT JOIN VISITOR_PROFILE vp ON vp.nric = dbc.nric
+		WHERE vp.confirm = 1
   END
 END;
 
@@ -2474,11 +2477,12 @@ BEGIN 
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
 			WHERE t.tName LIKE 'EXIT%'
 		)
-		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress as 'homeadd', vp.postalCode as 'postalcode'
+		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress as 'homeadd', vp.postalCode as 'postalcode', vp.confirm AS 'confirmed'
 		FROM DAY_BED_SCANS dbs 
 		LEFT JOIN DAY_BED_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
 		LEFT JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
 		LEFT JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
+		WHERE vp.confirm = 1
 	END
 END;
 
@@ -2519,10 +2523,11 @@ BEGIN
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
 			WHERE t.tName LIKE 'EXIT%'
 		)
-	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode'
+	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', vp.confirm AS 'confirmed'
 		FROM DAY_BED_CHECKINS dbc
 		LEFT JOIN DAY_BED_EXITS dbe ON dbe.nric = dbc.nric AND dbe.visitActualTime = dbc.visitActualTime
 		LEFT JOIN VISITOR_PROFILE vp ON vp.nric = dbc.nric
+		WHERE vp.confirm = 1
   END
 END;
 
@@ -2562,11 +2567,12 @@ BEGIN 
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
 			WHERE t.tName LIKE 'EXIT%'
 		)
-		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode'
+		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', vp.confirm AS 'confirmed'
 		FROM DAY_BED_SCANS dbs 
 		LEFT JOIN DAY_BED_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
 		LEFT JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
 		LEFT JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
+		WHERE vp.confirm = 1
 	END
 END;
 
