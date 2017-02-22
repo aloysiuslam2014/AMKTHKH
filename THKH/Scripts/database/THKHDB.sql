@@ -1172,12 +1172,13 @@ BEGIN
 
   IF(@pCheckedIn > 0)
   BEGIN
-	  IF(@pCheckedOut = 0)
-	  BEGIN
-		  INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-		  VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric), 2, @pActualTimeVisit)
- 
-	  END
+	IF(@pCheckedOut = 0)
+	BEGIN
+      INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
+      VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric AND 
+						CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)), 
+			  2, @pActualTimeVisit)
+    END
   END
 
   BEGIN TRY  
@@ -1185,15 +1186,16 @@ BEGIN
     VALUES (@pNRIC, @pActualTimeVisit, @pTemperature, @pOriginal_Staff_Email)
 
    INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-      VALUES (@pNRIC, @pActualTimeVisit, 1, @pActualTimeVisit)
+      VALUES (@pNRIC, @pActualTimeVisit, 1, DATEADD(ss,1,@pActualTimeVisit))
 
     SET @responseMessage = 1
   END TRY
 
-    BEGIN CATCH  
+  BEGIN CATCH  
        SET @responseMessage = 0  
   END CATCH
 END;
+
 
 
 ----------------------------------------------------------------------------------------------------------- Procedure for creating movement 
