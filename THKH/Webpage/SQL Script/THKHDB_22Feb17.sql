@@ -1,4 +1,4 @@
--- http://stackoverflow.com/questions/1260952/how-to-execute-a-stored-procedure-within-c-sharp-program For running stored procedures in C#  
+﻿-- http://stackoverflow.com/questions/1260952/how-to-execute-a-stored-procedure-within-c-sharp-program For running stored procedures in C#  
 -- I declare this region… mine! -- 
 -- http://stackoverflow.com/questions/7770924/how-to-use-output-parameter-in-stored-procedure This explains how to read from the output from stored procedures 
 -- To store Visitor Registration Data  
@@ -2842,4 +2842,8 @@ END; 
 
 
 --===========================================================================================================================================================================================
+
+
+
+
 
