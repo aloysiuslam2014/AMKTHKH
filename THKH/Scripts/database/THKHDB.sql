@@ -1233,7 +1233,7 @@ BEGIN TRY
 			DECLARE @pVisiting_Bedno VARCHAR(MAX)
 			DECLARE @pTerminal_Bedno VARCHAR(MAX)
 
-			SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = 'S1442493H' AND
+			SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = @pNric AND
 									CONVERT(VARCHAR(10), visitRequestTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
 									ORDER BY visitRequestTime DESC)
 			SET	@pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
