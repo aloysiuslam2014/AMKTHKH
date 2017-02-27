@@ -1394,14 +1394,16 @@
                     <h3 style="color:lightblue">Send SMS</h3>
                     <label>Send To</label>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="targetVisitor" placeholder="Please enter number(s) like +659712342,+658128763" />
+                        <input type="text" class="form-control" id="targetVisitor" placeholder="Please enter number(s) like 659712342,658128763" />
                     </div>
                     <label>Message</label>
                     <div class="form-group">
                         <%--<input type="text" class="form-control" id="messageContent" />--%>
                         <textarea id="smsMessage" class="form-control" rows="3" placeholder="Enter message content here"></textarea>
                     </div>
-                    <button class="btn btn-success btn-block" id="sendSMS" onclick="sendSMS(); false;"><span class="glyphicon glyphicon-send"></span> Send SMS</button>
+                    <button class="btn btn-success btn-block" id="sendSMS" onclick="checkSMSNumber(); false;"><span class="glyphicon glyphicon-send"></span> Send SMS</button>
+                    <label style="color:lightcoral" id="invalidSMSNumber">Invalid Contact Number</label>
+                    <label style="color:lightcoral" id="emptyMessage">Please enter message content!</label>
                 </div>
             </div>
             <!-- End of SMS -->
@@ -1428,6 +1430,7 @@
     <%}if (accessRightsStr.Contains('6'))
         { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/SMS/sms.js") %>"></script>
     <%} if (accessRightsStr.Contains('5') || accessRightsStr.Contains('1')) {%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/PassManagement/passManage.js") %>"></script>
     <%} %>

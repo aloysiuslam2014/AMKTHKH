@@ -1,6 +1,21 @@
-﻿// Validate contact numbers
-function checkNumber() {
+﻿$(document).ready(function () {
+    hideSMSTags();
+});
+
+// Validate contact numbers
+function checkSMSNumber() {
     var numbers = $("#targetVisitor").val();
+    checkMessage();
+}
+
+function checkMessage() {
+    var message = $("#smsMessage").val();
+    if (message === "") {
+        $('#emptyMessage').css("display", "block");
+    } else {
+        $('#emptyMessage').css("display", "none");
+        sendSMS();
+    }
 }
 
 // Send SMS
@@ -16,11 +31,17 @@ function sendSMS() {
         data: headersToProcess,
 
         success: function (returner) {
-            var resultOfGeneration = JSON.parse(returner);
+            //var resultOfGeneration = JSON.parse(returner);
             
         },
         error: function (err) {
             alert(err.msg);
         },
     });
+}
+
+// Hide all tags
+function hideSMSTags() {
+    $('#invalidSMSNumber').css("display", "none");
+    $('#emptyMessage').css("display", "none");
 }
