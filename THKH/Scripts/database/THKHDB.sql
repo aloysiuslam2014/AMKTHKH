@@ -1233,7 +1233,7 @@ BEGIN TRY
 			DECLARE @pVisiting_Bedno VARCHAR(MAX)
 			DECLARE @pTerminal_Bedno VARCHAR(MAX)
 
-			SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = 'S1442493H' AND
+			SET @pVisiting_Bedno = (SELECT TOP 1 bedNo FROM VISIT WHERE visitorNric = @pNric AND
 									CONVERT(VARCHAR(10), visitRequestTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)
 									ORDER BY visitRequestTime DESC)
 			SET	@pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
@@ -2510,7 +2510,7 @@ BEGIN
 		SELECT DISTINCT ci.nric, ci.visitActualTime, v.bedNo, v.visitLocation
 		FROM CHECK_IN ci
 		LEFT JOIN VISIT v ON v.visitorNric = ci.nric
-		WHERE v.visitLocation = @pLocation
+		WHERE v.visitLocation LIKE '%' + @pLocation + '%'
 		AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
 	),
 	DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
@@ -2553,7 +2553,7 @@ BEGIN 
 			SELECT DISTINCT m.nric, m.visitActualTime, m.locationID, m.locationTime, t.tName
 			FROM MOVEMENT m
 			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
-			WHERE t.tName = @pLocation
+			WHERE t.tName LIKE '%' + @pLocation + '%'
 			AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
 		),		
 		------------------------------------------------ Find the corresponding exit terminals and exit times
