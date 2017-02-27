@@ -322,6 +322,7 @@
     <Content Include="Webpage\SQL Script\THKHDB_13Feb17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_14Feb17.sql" />
     <Content Include="Webpage\SQL Script\THKHDB_17Feb17.sql" />
+    <Content Include="Webpage\Staff\SMS\sms.js" />
     <Content Include="Webpage\Staff\TerminalCalls\locationQueries.js" />
     <Content Include="Scripts\moment-with-locales.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -631,6 +632,7 @@
     <Content Include="Webpage\Staff\PassManagement\passMgmt.ashx" />
     <Content Include="Webpage\Staff\ContactTracing\tracing.ashx" />
     <Content Include="Webpage\Staff\MasterConfig\masterConfig.ashx" />
+    <Content Include="Webpage\Staff\SMS\SMSManagement.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config">
@@ -677,6 +679,9 @@
     </Compile>
     <Compile Include="Webpage\Staff\QuestionaireManagement\questionaireManagement.ashx.cs">
       <DependentUpon>questionaireManagement.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Webpage\Staff\SMS\SMSManagement.ashx.cs">
+      <DependentUpon>SMSManagement.ashx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Staff\TerminalCheckIn.aspx.cs">
       <DependentUpon>TerminalCheckIn.aspx</DependentUpon>
