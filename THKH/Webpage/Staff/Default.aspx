@@ -286,6 +286,13 @@
                         </a>
                     </li>
                     <%  }
+                    if (accessRightsStr.Contains('6'))
+                    {%>
+                    <li>
+                        <a href="#SMS" data-toggle="tab">SMS
+                        </a>
+                    </li>
+                    <%  }
                     if (accessRightsStr.Contains('4'))
                     {%>
                     <li>
@@ -374,9 +381,9 @@
                             <h4 id="tempLimitWarning" style="color: lightcoral">Visitor's Temperature is above the limit of 37.6 degrees celcius!</h4>
                             <h4 id="lowtempWarning" style="color: lightcoral">Visitor's Temperature is below the allowable 34 degrees celcius!</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
-                            <h5>Please click the "Check NRIC" button once you have filled in the NRIC & the Temperature</h5>
+                            <%--<h5>Please click the "Check NRIC" button once you have filled in the NRIC & the Temperature</h5>--%>
                             <div class="center-block">
-                            <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span> Check NRIC</button>
+                            <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span> Proceed</button>
                             <h5 id="noVisitWarning" style="color: lightcoral">You are not within Visiting Hours! Please approach the admin for assistance.</h5>
                             </div>
                         </div>
@@ -1163,8 +1170,8 @@
                 
             </div>
 
-            <div class="form-group col-sm-12" id="uq_results">
-                <table id ="uq_resultstable" class="table table-condensed table-hover" style:"padding-left:10px padding-right:10px">
+            <div class="form-group" id="uq_results">
+                <table id ="uq_resultstable" class="table table-responsive table-hover" style:"padding-left:10px padding-right:10px">
                     <thead id="uq_resultstable_head">
                         <tr>
                             <th>Registration Location</th>
@@ -1225,6 +1232,7 @@
                         });
                         //table.columns('export_only').visible(false);
                         table.columns([6, 7, 9, 10]).visible(false, false);
+                        $('#uq_resultstable').prop("style", "width:100%");
                         $('#uq_resultstable').removeClass("dataTable");
                         $('#uq_resultstable_info').removeClass("dataTables_info");
                         $('#uq_resultstable_length').removeClass("dataTables_length");
@@ -1380,6 +1388,25 @@
 
     </div>
     <!-- End of ContactTracing -->
+            <!-- SMS -->
+            <div class="tab-pane maxHeight" id="SMS">
+                <div id="SMSDiv" class="jumbotron center-block" style="text-align:left; width:50%">
+                    <h3 style="color:lightblue">Send SMS</h3>
+                    <label>Send To</label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="targetVisitor" placeholder="Please enter number(s) like 659712342,658128763" />
+                    </div>
+                    <label>Message</label>
+                    <div class="form-group">
+                        <%--<input type="text" class="form-control" id="messageContent" />--%>
+                        <textarea id="smsMessage" class="form-control" rows="3" placeholder="Enter message content here"></textarea>
+                    </div>
+                    <button class="btn btn-success btn-block" id="sendSMS" onclick="checkSMSNumber(); false;"><span class="glyphicon glyphicon-send"></span> Send SMS</button>
+                    <label style="color:lightcoral" id="invalidSMSNumber">Invalid Contact Number</label>
+                    <label style="color:lightcoral" id="emptyMessage">Please enter message content!</label>
+                </div>
+            </div>
+            <!-- End of SMS -->
     <%} %>
     </div>
         </div>
@@ -1403,6 +1430,7 @@
     <%}if (accessRightsStr.Contains('6'))
         { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/SMS/sms.js") %>"></script>
     <%} if (accessRightsStr.Contains('5') || accessRightsStr.Contains('1')) {%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/PassManagement/passManage.js") %>"></script>
     <%} %>
