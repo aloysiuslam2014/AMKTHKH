@@ -5,6 +5,8 @@
 // Validate contact numbers
 function checkSMSNumber() {
     var numbers = $("#targetVisitor").val();
+    var numArr = numbers.split(',');
+    // Some format check here
     checkMessage();
 }
 
@@ -32,7 +34,7 @@ function sendSMS() {
 
         success: function (returner) {
             //var resultOfGeneration = JSON.parse(returner);
-            
+            var responseArr = returner.split(',');
         },
         error: function (err) {
             alert(err.msg);
