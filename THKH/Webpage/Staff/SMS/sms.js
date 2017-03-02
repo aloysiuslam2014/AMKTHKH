@@ -35,6 +35,11 @@ function sendSMS() {
         success: function (returner) {
             //var resultOfGeneration = JSON.parse(returner);
             var responseArr = returner.split(',');
+            if (responseArr.length > 1) {
+                alert("One of the numbers have failed");
+            } else {
+                alert("SMS Sent!");
+            }
         },
         error: function (err) {
             alert(err.msg);

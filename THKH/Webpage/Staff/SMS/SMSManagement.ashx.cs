@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -25,14 +27,14 @@ namespace THKH.Webpage.Staff.SMS
             if (requestType == "sendSMS") {
                 var numbers = context.Request.Form["numbers"];
                 var message = context.Request.Form["message"];
-                List<String> sendStatus = sendSMS(message, numbers);
-                successString = String.Join(",", sendStatus);
+                successString = sendSMS(message, numbers);
+                //successString = String.Join(",", sendStatus);
             }
 
             context.Response.Write(successString);
         }
 
-        private List<String> sendSMS(String message, String numbers) {
+        private String sendSMS(String message, String numbers) {
             //HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://api.whispir.com/messages?apikey=");
             //req.Headers.Add("Authorization", "Basic ");
             //req.Headers.Add("Content-Type", "application/vnd.whispir.message-v1+json");
@@ -53,28 +55,43 @@ namespace THKH.Webpage.Staff.SMS
             List<String> responses = new List<String>();
             string AccountSid = "AC9a49d86e66165ef9470571e0be7c892c";
             string AuthToken = "a750950b96a75c3ab36d4508bfd1db31";
-            //HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://" + AccountSid + ":" + AuthToken + "@api.twilio.com/2010-04-01/Accounts");
             TwilioClient.Init(AccountSid, AuthToken);
             String[] numArr = numbers.Split(',');
+            SqlConnection cnn;
+            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
             for (int i = 0; i < numArr.Length; i++)
             {
-            var to = new PhoneNumber("+65" + numArr[i]);
+                String number = numArr[i];
+            var to = new PhoneNumber("+65" + number);
                 try
                 {
                     var msg = MessageResource.Create(
                         to,
                         from: new PhoneNumber("+18324632876"),
                         body: message);
-                    responses.Add(msg.Sid);
+                    SqlCommand command = new SqlCommand("[dbo].[RECORD_SMS]", cnn);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@pSID", msg.Sid);
+                    command.Parameters.AddWithValue("@pContact", number);
+                    command.Parameters.AddWithValue("@pMessage", message);
+                    command.Parameters.Add(respon);
+                    cnn.Open();
+
+                    command.ExecuteNonQuery();
+                    if (respon.Value.ToString() == "0") {
+                        responses.Add(msg.Sid);
+                    } 
                 }
                 catch (Exception ex) {
                     responses.Add(ex.Message);
                 }
         }
-            if (responses.Count() == 0) {
-                responses.Add("Failure");
+            if (responses.Count() > 1) {
+                return String.Join(",", responses);
             }
-            return responses;
+            return "Success";
         }
 
         public bool IsReusable
