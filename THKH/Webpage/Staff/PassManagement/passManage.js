@@ -232,7 +232,7 @@ function createPassAppendParent(parent, target, datapositions) {
                 var numbOfBeds =  $(inputVal).children().length;
                 $(inputVal).children().each(function (index,item) {
 
-                    bedTodisplay += currentItem.id;
+                    bedTodisplay += item.id;
                     if (index + 1 < numbOfBeds) {
                         bedTodisplay += ",";
                     }
