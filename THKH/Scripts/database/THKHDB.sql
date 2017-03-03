@@ -94,6 +94,17 @@ CREATE TABLE PASS_FORMAT
 ); 
 
 
+------------------------------------------------------------------------------------------------------------------------------------
+GO
+CREATE TABLE SMS
+(
+  mid VARCHAR(500) NOT NULL,
+  contactNumber VARCHAR(100) NOT NULL,
+  messageBody VARCHAR(MAX) NOT NULL,
+  sendTime DATETIME NOT NULL
+);
+
+
 -------------------------------------------------------------------------------------------------------
 GO
 CREATE TABLE MASTER_CONFIG  
@@ -2768,6 +2779,31 @@ BEGIN 
     ELSE  
        SET @responseMessage = 0  
 END; 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+GO
+CREATE PROCEDURE [dbo].[RECORD_SMS]  
+@pSID VARCHAR(500),
+@pContact VARCHAR(100),
+@pMessage VARCHAR(MAX),
+@responseMessage INT OUTPUT
+
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+  
+  BEGIN TRY
+    INSERT INTO SMS (mid, contactNumber, messageBody, sendTime)
+    VALUES(@pSID, @pContact, @pMessage, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+  
+    SET @responseMessage = 1   
+    END TRY  
+
+    BEGIN CATCH  
+        SET @responseMessage = 0
+    END CATCH 
+END;
 
 
 
