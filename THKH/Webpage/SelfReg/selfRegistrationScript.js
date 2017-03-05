@@ -70,24 +70,24 @@ function NewSelfReg() {
 
 // Check nationality input field
 function checkNationals() {
-    if ($("#nationalsInput").val() == '') {    
+    var blank = checkBlankField($("#nationalsInput").val());
+    if (blank) {    
         $("#natWarning").css("display", "block");
-        return false;
     } else {
         $("#natWarning").css("display", "none");
     }
-    return true;
+    return blank;
 }
 
 // Check gender input field
 function checkGender() {
-    if ($("#sexinput").val() == '') {
+    var blank = checkBlankField($("#sexinput").val());
+    if (blank) {
         $("#sexWarning").css("display", "block");
-        return false;
     } else {
         $("#sexWarning").css("display", "none");
     }
-    return true;
+    return blank;
 }
 
 // Reload Page & Clear Cache
@@ -272,7 +272,7 @@ function checkRequiredFields() {
     timeCheck = checkTime();
     $.each($("#selfregistration input.required"), function (index, value) {
         var element = $(value).val();
-        if (!element || element == "") {
+        if (!element || element === "") {
             valid = false;
             $(value).css('background', '#f3f78a');
         }
@@ -385,8 +385,15 @@ $("#mobilesInput").on("input", function () {
 // Check date format
 $("#daterange").on("input", function () {
     var dateStr = $('#daterange').val();
-    var filter = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
-    if (filter.test(dateStr) !== false) {
+    //var filter = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+    //if (filter.test(dateStr) !== false) {
+    //    $("#dateWarning").css("display", "none");
+    //    validDate = true;
+    //} else {
+    //    $("#dateWarning").css("display", "block");
+    //    validDate = false;
+    //}
+    if (validateDate(dateStr)) {
         $("#dateWarning").css("display", "none");
         validDate = true;
     } else {
@@ -430,21 +437,11 @@ $("#altInput").on("input", function () {
 // Check Other Purpose Input
 function checkOtherInput() {
     var purpose = $("#purposeInput").val();
-    if (purpose == "") {
-        enablePurpose();
+    if (checkBlankField(purpose)) {
+        $('#pInput').prop('disabled', false);
     } else {
-        disablePurpose();
+        $('#pInput').prop('disabled', true);
     }
-}
-
-// Disable Visit Purpose
-function disablePurpose() {
-    $('#pInput').prop('disabled', true);
-}
-
-// Disable Visit Purpose
-function enablePurpose() {
-    $('#pInput').prop('disabled', false);
 }
 
 // Display appropriate panels according to visit purpose
@@ -549,10 +546,11 @@ function hideTags() {
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
     var answers = '';
-    var jsonObject = "{\"Main\":[";
+    //var jsonObject = "{\"Main\":[";
     var questions = [];
     var qIds = [];
     var allAnswers = [];
+    var holder = [];
     // Get label values
     $("#selfregistration .question").each(function (index, value) {
         var question = $(this).text();
@@ -589,22 +587,27 @@ function getQuestionnaireAnswers() {
     // construct json answers
     for (var i = 0; i < qIds.length; i++) {
         var currentQid = qIds[i];
-        var answerObject = "{\"qid\":\"" + currentQid + "\",\"question\":\"" + questions[i] + "\",\"answer\":\"";
+        //var answerObject = "{\"qid\":\"" + currentQid + "\",\"question\":\"" + questions[i] + "\",\"answer\":\"";
         for (var j = 0; j < allAnswers.length; j++) {
             var row = allAnswers[j];
             var arr = row.split(':');
             var id = arr[0];
             if (id == currentQid) {
                 var ans = arr[1];
-                answerObject += ans + ",";
+                //answerObject += ans + ",";
+                answers += ans + ",";
             }
         }
-        answerObject = answerObject.substring(0, answerObject.length - 1);
-        answerObject += "\"},";
-        jsonObject += answerObject;
+        //answerObject = answerObject.substring(0, answerObject.length - 1);
+        //answerObject += "\"},";
+        //jsonObject += answerObject;
+        answers = answers.substring(0, answers.length - 1);
+        var obj = { qid: currentQid, question: questions[i], answer: answers };
+        holder.push(obj);
     }
-    jsonObject = jsonObject.substring(0, jsonObject.length - 1);
-    jsonObject += "]}";
+    //jsonObject = jsonObject.substring(0, jsonObject.length - 1);
+    //jsonObject += "]}";
+    var jsonObject = { Main: holder };
     var jsonString = JSON.stringify(jsonObject);
     return jsonString;
 }
@@ -1055,34 +1058,53 @@ function populateTime() {
 
 // Check visit time input field
 function checkTime() {
-    if ($("#visitbookingtime").val() == '') {
+    //if ($("#visitbookingtime").val() == '') {
+    //    $("#timelabel").css("display", "block");
+    //    return false;
+    //} else {
+    //    $("#timelabel").css("display", "none");
+    //}
+    var blank = checkBlankField($("#visitbookingtime").val());
+    if (blank) {
         $("#timelabel").css("display", "block");
-        return false;
     } else {
         $("#timelabel").css("display", "none");
     }
-    return true;
+    return !blank;
 }
 
 // Check visit location input field
 function checkLocation() {
-    if ($("#visLoc").val() == '') {
+    //if ($("#visLoc").val() == '') {
+    //    $("#locWarning").css("display", "block");
+    //    return false;
+    //} else {
+    //    $("#locWarning").css("display", "none");
+    //}
+    var blank = checkBlankField($("#visLoc").val());
+    if (blank) {
         $("#locWarning").css("display", "block");
-        return false;
     } else {
         $("#locWarning").css("display", "none");
     }
-    return true;
+    return blank;
 }
 
 // Email Format Validation
 $("#emailsInput").on("input", function () {
     var email = $("#emailsInput").val();
-    if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+    //if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+    //    $("#emailWarning").css("display", "none");
+    //    validEmail = true;
+    //} else {
+    //    $("#emailWarning").css("display", "block");
+    //    validEmail = false;
+    //}
+    var valid = validateEmail(email);
+    if (valid) {
         $("#emailWarning").css("display", "none");
-        validEmail = true;
     } else {
         $("#emailWarning").css("display", "block");
-        validEmail = false;
     }
+    validEmail = valid;
 });

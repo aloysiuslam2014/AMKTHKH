@@ -112,7 +112,7 @@ function callCheck (){
                             visitorArr = visitorString.split(",");
                             if (resultOfGeneration.Questionnaire != null) {
                                 try {
-                                    questionnaireArr = JSON.parse(resultOfGeneration.Questionnaire).Main;
+                                    questionnaireArr = resultOfGeneration.Questionnaire.Main;
                                 } catch (err) {
 
                                 }
@@ -183,7 +183,7 @@ function callCheck (){
         dataFound = true;
 }
 
-//
+// Load patient name & bed number
 function loadBedPatientName(bedno) {
     var patientBedRequest = { requestType: "pName", bedNo: "" + bedno };
     var patientName = "";
@@ -243,39 +243,39 @@ function loadFacilities() {
 
 // Check nationality input field
 function checkNationals() {
-    if ($("#nationalsInput").val() == '') {
+    var blank = checkBlankField($("#nationalsInput").val());
+    if (blank) {
         $("#natWarning").css("display", "block");
-        return false;
     } else {
         $("#natWarning").css("display", "none");
     }
-    return true;
+    return !blank;
 }
 
 // Check gender input field
 function checkGender() {
-    if ($("#sexinput").val() == '') {
+    var blank = checkBlankField($("#sexinput").val());
+    if (blank) {
         $("#sexWarning").css("display", "block");
-        return false;
     } else {
         $("#sexWarning").css("display", "none");
     }
-    return true;
+    return !blank;
 }
 
 // Check visit time input field
 function checkTime() {
-    if ($("#visitbookingtime").val() == null || $("#visitbookingtime").val() == '') {
+    var blank = checkBlankField($("#visitbookingtime").val());
+    if (blank) {
         $("#timelabel").css("display", "block");
-        return false;
     } else {
         $("#timelabel").css("display", "none");
     }
-    return true;
+    return !blank;
 }
 
 
-//
+// Add bed to list
 function addBedToVisit(patientName, patientBedNo) {
 
     if ($("#bedsAdded #"+patientBedNo).prop("id") != null) {
@@ -357,7 +357,7 @@ function validatePatient() {
 // Check visitor's temperature
 $("#temp").on("input", function () {
     var temper = $("#temp").val();
-    if (temper == "") {
+    if (checkBlankField(temper)) {
         $('#tempLimitWarning').css("display", "none");
         $('#tempWarning').css("display", "none");
         $("#invalidTempWarning").css("display", "none");
@@ -586,13 +586,20 @@ function purposePanels() {
 
 // Check visit location input field
 function checkLocation() {
-    if ($("#visLoc").val() == '') {
+    //if ($("#visLoc").val() == '') {
+    //    $("#locWarning").css("display", "block");
+    //    return false;
+    //} else {
+    //    $("#locWarning").css("display", "none");
+    //}
+    //return true;
+    var blank = checkBlankField($("#visLoc").val());
+    if (blank) {
         $("#locWarning").css("display", "block");
-        return false;
     } else {
         $("#locWarning").css("display", "none");
     }
-    return true;
+    return !blank;
 }
 
 // For field validations
@@ -643,7 +650,7 @@ $("#nric").on("input", function () {
 // Validate mobile phone number format
 $("#mobilesInput").on("input", function () {
     var validNric = validatePhone($("#mobilesInput").val());
-    if (validNric !== false) {
+    if (!validNric) {
         $("#mobWarning").css("display", "none");
         //validMob = true;
     } else {
@@ -655,37 +662,40 @@ $("#mobilesInput").on("input", function () {
 // Validate postal code number format
 $("#postalsInput").on("input", function () {
     var validPostal = validatePostal($("#postalsInput").val());
-    if (validPostal !== false) {
+    if (!validPostal) {
         $("#posWarning").css("display", "none");
-        validPos = true;
+        //validPos = true;
     } else {
         $("#posWarning").css("display", "block");
-        validPos = false;
+        //validPos = false;
     }
+    validPos = validPostal;
 });
 
 // Validate home phone number format
 $("#homesInput").on("input", function () {
     var validNum = validatePhone($("#homesInput").val());
-    if (validNum !== false) {
+    if (!validNum) {
         $("#homeWarning").css("display", "none");
-        validHom = true;
+        //validHom = true;
     } else {
         $("#homeWarning").css("display", "block");
-        validHom = false;
+        //validHom = false;
     }
+    validHom = validNum;
 });
 
 // Validate alt phone number format
 $("#altInput").on("input", function () {
-    var validNric = validatePhone($("#altInput").val());
-    if (validNric !== false) {
+    var validNum = validatePhone($("#altInput").val());
+    if (!validNum) {
         $("#altWarning").css("display", "none");
-        validAlt = true;
+        //validAlt = true;
     } else {
         $("#altWarning").css("display", "block");
-        validAlt = false;
+        //validAlt = false;
     }
+    validAlt = validNum;
 });
 
 // Check if visitor record exists in database
@@ -703,10 +713,11 @@ function checkExistOrNew() {
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
     var answers = '';
-    var jsonObject = "{\"Main\":[";
+    //var jsonObject = "{\"Main\":[";
     var questions = [];
     var qIds = [];
     var allAnswers = [];
+    var holder = [];
     // Get label values
     $("#questionaireForm .question").each(function (index, value) {
         var question = $(this).text();
@@ -743,36 +754,31 @@ function getQuestionnaireAnswers() {
     // construct json answers
     for (var i = 0; i < qIds.length; i++) {
         var currentQid = qIds[i];
-        var answerObject = "{\"qid\":\"" + currentQid + "\",\"question\":\"" + questions[i] + "\",\"answer\":\"";
+        //var answerObject = "{\"qid\":\"" + currentQid + "\",\"question\":\"" + questions[i] + "\",\"answer\":\"";
+        var answers = "";
         for (var j = 0; j < allAnswers.length; j++) {
             var row = allAnswers[j];
             var arr = row.split(':');
             var id = arr[0];
             if (id == currentQid) {
                 var ans = arr[1];
-                answerObject += ans + ",";
+                //answerObject += ans + ",";
+                answers += ans + ",";
             }
         }
-        answerObject = answerObject.substring(0, answerObject.length - 1);
-        answerObject += "\"},";
-        jsonObject += answerObject;
+        //answerObject = answerObject.substring(0, answerObject.length - 1);
+        answers = answers.substring(0, answers.length - 1);
+        var obj = { qid: currentQid, question: questions[i], answer: answers };
+        holder.push(obj);
+        //answerObject += "\"},";
+        //jsonObject += answerObject;
     }
-    jsonObject = jsonObject.substring(0, jsonObject.length - 1);
-    jsonObject += "]}";
+    //jsonObject = jsonObject.substring(0, jsonObject.length - 1);
+    //jsonObject += "]}";
+    var jsonObject = {Main:holder};
     var jsonString = JSON.stringify(jsonObject);
     return jsonString;
 }
-
-// Check if user has checked the "I declare the info to be accurate" checkbox
-//function declarationValidation() {
-//    if ($("#declaration").prop('checked') == true) {
-//        $("#declabel").css("display", "none");
-//        $("#submitNewEntry").css("display", "block");
-//    } else {
-//        $("#declabel").css("display", "block");
-//        $("#submitNewEntry").css("display", "none");
-//    }
-//}
 
 // Datetime Picker JQuery
 $(function () {
@@ -803,14 +809,21 @@ function getFormattedDate(date) {
 // Check date format
 $("#daterange").on("input", function () {
     var dateStr = $('#daterange').val();
-    var filter = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
-    if (filter.test(dateStr) !== false) {
+    //var filter = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+    //if (filter.test(dateStr) !== false) {
+    //    $("#dateWarning").css("display", "none");
+    //    validDate = true;
+    //} else {
+    //    $("#dateWarning").css("display", "block");
+    //    validDate = false;
+    //}
+    var valid = validateDate(dateStr);
+    if (valid) {
         $("#dateWarning").css("display", "none");
-        validDate = true;
     } else {
-        $("#dateWarning").css("display", "block");
-        validDate = false;
+        $("#dateWarning").css("display", "block");     
     }
+    validDate = valid;
 });
 
 // hide all warnings on page load
@@ -862,7 +875,7 @@ function enterToCheckNric(e) {
 
 //
 function checkNricWarningDeclaration() {
-    if ($("#nric").val() == "") {
+    if (checkBlankField($("#nric").val())) {
         $("#emptyNricWarning").css("display", "block");
     } else {
         $("#emptyNricWarning").css("display", "none");
@@ -1336,13 +1349,13 @@ function hideMaxLimitModal() {
 // Email Format Validation
 $("#emailsInput").on("input", function () {
     var email = $("#emailsInput").val();
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    var valid = validateEmail(email);
+    if (valid) {
         $("#emailWarning").css("display", "none");
-        validEmail = true;
     } else {
         $("#emailWarning").css("display", "block");
-        validEmail = false;
     }
+    validEmail = valid;
 });
 
 // Get visitor limit

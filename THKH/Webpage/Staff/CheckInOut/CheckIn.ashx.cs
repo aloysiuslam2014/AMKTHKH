@@ -120,8 +120,11 @@ namespace THKH.Webpage.Staff.CheckInOut
         }
 
         private String getFacilities() {
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Facilities\":\"";
+            String fac = "";
+            //String successString = "{\"Result\":\"Success\",\"Facilities\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -140,27 +143,33 @@ namespace THKH.Webpage.Staff.CheckInOut
                     {
                         if (count > 1)
                         {
-                            successString += ",";
+                            fac += ",";
+                            //successString += ",";
                         }
-                        successString += reader.GetString(1);
+                        fac += reader.GetString(1);
+                        //successString += reader.GetString(1);
                         count++;
                     }
                 }
                 reader.Close();
+                result.Facilities = fac;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                //successString.Replace("Success", "Failure");
+                result.Result = "Failure";
+                result.Facilities = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                //successString += ex.Message;
+                //successString += "\"}";
+                //return successString;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            //successString += "\"}";
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         private String loadForm() {
@@ -215,8 +224,10 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         // Check if patient exists in the Patient Database
         private String checkPatient(String pName, String bedno) {
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, 500);
             respon.Direction = ParameterDirection.Output;
@@ -231,25 +242,32 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                result.Msg = respon.Value;
+                //successString += respon.Value;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
+                //successString.Replace("Success", "Failure");
+                //successString += ex.Message;
+                //successString += "\"}";
+                result.Result = "Failure";
+                result.Msg = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            //successString += "\"}";
+            //return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         private String getVisitorDetails(String nric) {
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
+            //String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@returnValue", SqlDbType.VarChar, -1);
             respon.Direction = ParameterDirection.Output;
@@ -267,20 +285,26 @@ namespace THKH.Webpage.Staff.CheckInOut
                 String response = respon.Value.ToString();
                 if (!response.Contains("Visitor not found"))
                 {
-                    msg += response;
+                    //msg += response;
+                    result.Visitor = response;
                 }
                 else {
-                    successString += "new";
-                    successString += "\"}";
-                    return successString;
+                    //successString += "new";
+                    //successString += "\"}";
+                    //return successString;
+                    result.Visitor = "new";
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
                 }   
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                //successString.Replace("Success", "Failure");
+                //successString += ex.Message;
+                //successString += "\"}";
+                //return successString;
+                result.Result = "Failure";
+                result.Visitor = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
             finally
             {
@@ -289,34 +313,42 @@ namespace THKH.Webpage.Staff.CheckInOut
             try
             {
                 var tempMsg = getVisitDetails(nric);
-                if (tempMsg != "\"Visit\":\"none\"}")
+                if (tempMsg != "none")
                 {
-                    msg += "\"," + tempMsg;
+                    //msg += "\"," + tempMsg;
+                    result.Visit = tempMsg;
                     var arr = tempMsg.Split(',');
                     var qAID = arr[arr.Length - 3];
-                    msg += "\"," + getSubmittedQuestionnaireResponse(qAID);
+                    //msg += "\"," + getSubmittedQuestionnaireResponse(qAID);
+                    result.Questionnaire = Newtonsoft.Json.JsonConvert.DeserializeObject(getSubmittedQuestionnaireResponse(qAID));
                 }
                 else {
-                    successString += msg;
-                    successString += "\"}";
-                    return successString;
+                    //successString += msg;
+                    //successString += "\"}";
+                    //return successString;
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
                 }
             }
             catch (Exception ex) {
-                successString.Replace("Success", "Failure");
-                msg = ex.Message;
-                successString += "\"}";
-                return successString;
+                //successString.Replace("Success", "Failure");
+                result.Result = "Failure";
+                result.Visitor = ex.Message;
+                //msg = ex.Message;
+                //successString += "\"}";
+                //return successString;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
-            successString += msg;
-            successString += "}";
-            return successString;
+            //successString += msg;
+            //successString += "}";
+            //return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         private String getVisitDetails(String nric)
         {
+            dynamic result = new ExpandoObject();
             SqlConnection cnn;
-            String successString = "\"Visit\":\"";
+            String successString = "";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
             respon.Direction = ParameterDirection.Output;
@@ -333,12 +365,15 @@ namespace THKH.Webpage.Staff.CheckInOut
                 if (response.Length > 4)
                 {
                     successString += response;
+                    //result.Visit = response;
                 }
                 else
                 {
                     successString += "none";
-                    successString += "\"}";
+                    //successtring += "\"}";
                     return successString;
+                    //result.Visit = "none";
+                    //return result;
                 }
             }
             catch (Exception ex)
@@ -350,12 +385,15 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Close();
             }
             return successString;
+            //return result;
         }
 
         private String getSubmittedQuestionnaireResponse(String qAID) {
             SqlConnection cnn;
+            //dynamic result = new ExpandoObject();
             //String successString = "\"QAID\":\"" + qAID + "\",\"Questionnaire\":";
-            String successString = "\"Questionnaire\":";
+            //String successString = "\"Questionnaire\":";
+            String successString = "";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
             respon.Direction = ParameterDirection.Output;
@@ -374,13 +412,16 @@ namespace THKH.Webpage.Staff.CheckInOut
                     while (reader.Read())
                     {
                         successString += reader.GetString(0);
+                        //result.Questionnaire = reader.GetString(0);
                     }
                 }
                 else {
                     successString += "none";
+                    //result.Questionnaire = "none";
                 }
                 successString.Replace("{", String.Empty);
                 successString.Replace("}", String.Empty);
+                //result.Questionnaire = successString;
             }
             catch (Exception ex)
             {
@@ -391,6 +432,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Close();
             }
             return successString;
+            //return result;
         }
 
         // Write to Visitor & Visit Table
@@ -401,8 +443,13 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = "{\"Result\":\"Success\"";
-            String msg = "";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
+            var visitor = "";
+            var visit = "";
+            var questionnaire = "";
+            //String successString = "{\"Result\":\"Success\"";
+            //String msg = "";
             if (amend == "1")
             {
                 try
@@ -422,15 +469,19 @@ namespace THKH.Webpage.Staff.CheckInOut
                     cnn.Open();
 
                     command.ExecuteNonQuery();
-                    msg += ",\"Visitor\":\""+ respon.Value + "\"";
+                    //msg += ",\"Visitor\":\""+ respon.Value + "\"";
+                    visitor = respon.Value.ToString();
                 }
                 catch (Exception ex)
                 {
-                    successString = successString.Replace("Success", "Failure");
-                    msg = ex.Message;
-                    successString += ",\"Visitor\":\"" + msg;
-                    successString += "\"}";
-                    return successString;
+                    //successString = successString.Replace("Success", "Failure");
+                    //msg = ex.Message;
+                    //successString += ",\"Visitor\":\"" + msg;
+                    //successString += "\"}";
+                    //return successString;
+                    result.Result = "Failure";
+                    result.Visitor = ex.Message;
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
                 }
                 finally
                 {
@@ -439,16 +490,22 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             try
             {
-                msg += writeQuestionnaireResponse(qaid, qListID, qAns);
+                //msg += writeQuestionnaireResponse(qaid, qListID, qAns);
+                questionnaire = writeQuestionnaireResponse(qaid, qListID, qAns);
             }
             catch (Exception ex)
             {
-                successString = successString.Replace("Success", "Failure");
-                msg = "\"" + ex.Message;
-                successString += msg;
-                successString += "\"}";
-                return successString;
+                //successString = successString.Replace("Success", "Failure");
+                //msg = "\"" + ex.Message;
+                //successString += msg;
+                //successString += "\"}";
+                //return successString;
+                result.Result = "Failure";
+                result.Visitor = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
+            respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+            respon.Direction = ParameterDirection.Output;
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[CREATE_VISIT]", cnn);
@@ -465,20 +522,30 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                msg += ",\"Visit\":\"" + respon.Value + "\"";
+                //msg += ",\"Visit\":\"" + respon.Value + "\"";
+                if (respon.Value != null) { 
+                    visit = respon.Value.ToString();
+                }
             }
             catch (Exception ex)
             {
-                successString = successString.Replace("Success", "Failure");
-                msg = ",\"Visit\":\"" + ex.Message + "\"";
+                //successString = successString.Replace("Success", "Failure");
+                //msg = ",\"Visit\":\"" + ex.Message + "\"";
+                result.Result = "Failure";
+                result.Visit = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
             finally
             {
                 cnn.Close();
             }
-            successString += msg;
-            successString += "}";
-            return successString;
+            //successString += msg;
+            //successString += "}";
+            //return successString;
+            result.Visitor = visitor;
+            result.Visit = visit;
+            result.Questionnaire = questionnaire;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         //Gets patient name from db 
@@ -526,8 +593,14 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = "{\"Result\":\"Success\",\"Visitor\":";
-            String msg = "\"";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
+            String visitor = "";
+            String visit = "";
+            String questionnaire = "";
+            String checkin = "";
+            //String successString = "{\"Result\":\"Success\",\"Visitor\":";
+            //String msg = "\"";
             string qAid = qaid;
             int pos = 0;
             try
@@ -553,15 +626,19 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                msg += respon.Value + "\"";
+                //msg += respon.Value + "\"";
+                visitor = respon.Value.ToString();
             }
             catch (Exception ex)
             {
-                successString = successString.Replace("Success", "Failure");
-                msg = ex.Message;
-                successString += "\"" + msg;
-                successString += "\"}";
-                return successString;
+                //successString = successString.Replace("Success", "Failure");
+                //msg = ex.Message;
+                //successString += "\"" + msg;
+                //successString += "\"}";
+                //return successString;
+                result.Result = "Failure";
+                result.Visitor = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
             finally
             {
@@ -579,21 +656,26 @@ namespace THKH.Webpage.Staff.CheckInOut
                                             .Replace('+', '_')
                                             .Replace('/', '-')
                                             .TrimEnd('=');
-                    msg += writeQuestionnaireResponse(qAid, qListID, qAns);
+                    //msg += writeQuestionnaireResponse(qAid, qListID, qAns);
+                    questionnaire = writeQuestionnaireResponse(qAid, qListID, qAns);
 
                 }
                 else
                 {
-                    msg += updateQuestionnaireResponse(qAid, qListID, qAns);
+                    //msg += updateQuestionnaireResponse(qAid, qListID, qAns);
+                    questionnaire = updateQuestionnaireResponse(qAid, qListID, qAns);
                 }
             }
             catch (Exception ex)
             {
-                successString = successString.Replace("Success", "Failure");
-                msg = ex.Message;
-                successString += "\"" + msg;
-                successString += "\"}";
-                return successString;
+                //successString = successString.Replace("Success", "Failure");
+                //msg = ex.Message;
+                //successString += "\"" + msg;
+                //successString += "\"}";
+                //return successString;
+                result.Result = "Failure";
+                result.Visitor = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
             //check number of visitors currently with patient
             if (purpose == "Visit Patient")
@@ -613,35 +695,46 @@ namespace THKH.Webpage.Staff.CheckInOut
                     }
                     if (valid) // May need to change to DB side
                     {
-                        msg += CheckIn(staffuser, nric, temperature);
+                        //msg += CheckIn(staffuser, nric, temperature);
+                        checkin = CheckIn(staffuser, nric, temperature);
                     }
                     else
                     {
-                        successString = successString.Replace("Success", "Failure");
-                        successString += "\"Limit of " + visLim + " per bed has been reached.";
+                        //successString = successString.Replace("Success", "Failure");
+                        //successString += "\"Limit of " + visLim + " per bed has been reached.";
                         
-                        successString += "\"}";
-                        return successString;
+                        //successString += "\"}";
+                        //return successString;
+                        result.Result = "Failure";
+                        result.Visitor = "Limit of " + visLim + " per bed has been reached.";
+                        return Newtonsoft.Json.JsonConvert.SerializeObject(result);
                     }
                 }
                 catch (Exception ex)
                 {
-                    successString = successString.Replace("Success", "Failure");
-                    msg = "\"" + ex.Message;
-                    successString += "\"}";
-                    return successString;
+                    //successString = successString.Replace("Success", "Failure");
+                    //msg = "\"" + ex.Message;
+                    //successString += "\"}";
+                    //return successString;
+                    result.Result = "Failure";
+                    result.Visitor = ex.Message;
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
                 }
             }
             else {
                 try
                 {
-                    msg += CheckIn(staffuser, nric, temperature);
+                    //msg += CheckIn(staffuser, nric, temperature);
+                    checkin = CheckIn(staffuser, nric, temperature);
                 }
                 catch (Exception ex) {
-                    successString = successString.Replace("Success", "Failure");
-                    msg = "\"" + ex.Message;
-                    successString += "\"}";
-                    return successString;
+                    //successString = successString.Replace("Success", "Failure");
+                    //msg = "\"" + ex.Message;
+                    //successString += "\"}";
+                    //return successString;
+                    result.Result = "Failure";
+                    result.Visitor = ex.Message;
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
                 }
             }
 
@@ -663,26 +756,35 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                msg += ",\"Visit\":\"" + respon.Value + "\"";
+                //msg += ",\"Visit\":\"" + respon.Value + "\"";
+                visit = respon.Value.ToString();
             }
             catch (Exception ex)
             {
-                successString = successString.Replace("Success", "Failure");
-                successString += msg;
-                msg = ",\"Visit\":\"" + ex.Message;
-                successString += msg;
-                successString += "\"}";
-                return successString;
+                //successString = successString.Replace("Success", "Failure");
+                //successString += msg;
+                //msg = ",\"Visit\":\"" + ex.Message;
+                //successString += msg;
+                //successString += "\"}";
+                //return successString;
+                result.Result = "Failure";
+                result.Visit = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
             finally
             {
                 cnn.Close();
             }
 
-           
-            successString += msg;
-            successString += "}";
-            return successString;
+
+            //successString += msg;
+            //successString += "}";
+            //return successString;
+            result.Visitor = visitor;
+            result.Visit = visit;
+            result.Questionnaire = questionnaire;
+            result.CheckIn = checkin;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         
@@ -691,7 +793,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = ",\"Questionnaire\":\"";
+            String result = "";
+            //String successString = ",\"Questionnaire\":\"";
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[INSERT_QUESTIONNARIE_RESPONSE]", cnn);
@@ -703,7 +806,8 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value +"\"";
+                //successString += respon.Value +"\"";
+                result += respon.Value.ToString();
             }
             catch (Exception ex)
             {
@@ -713,7 +817,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-            return successString;
+            return result;
+            //return successString;
         }
 
         private String updateQuestionnaireResponse(String qaid, String qListID, String qAns)
@@ -722,7 +827,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = ",\"Questionnaire\":\"";
+            String result = "";
+            //String successString = ",\"Questionnaire\":\"";
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTIONNARIE_RESPONSE]", cnn);
@@ -733,7 +839,8 @@ namespace THKH.Webpage.Staff.CheckInOut
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value + "\"";
+                //successString += respon.Value + "\"";
+                result = respon.Value.ToString();
             }
             catch (Exception ex)
             {
@@ -743,7 +850,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-            return successString;
+            //return successString;
+            return result;
         }
 
         private dynamic checkNumCheckedIn(string bedno, int limit) {
@@ -796,20 +904,21 @@ namespace THKH.Webpage.Staff.CheckInOut
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            String successString = ",\"CheckIn\":\""; 
+            //String successString = ",\"CheckIn\":\""; 
+            String result = "";
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[CONFIRM_CHECK_IN]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pNric", nric.ToUpper());
-                command.Parameters.AddWithValue("@pActualTimeVisit", DateTime.Now); // Take from DB side
                 command.Parameters.AddWithValue("@pStaffEmail", staffuser);
                 command.Parameters.AddWithValue("@pTemperature", temp);
                 command.Parameters.Add(respon);
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value + "\"";
+                //successString += respon.Value + "\"";
+                result = respon.Value.ToString();
             }
             catch (Exception ex)
             {
@@ -819,7 +928,8 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 cnn.Close();
             }
-            return successString;
+            //return successString;
+            return result;
         }
 
         public bool IsReusable

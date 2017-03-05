@@ -45,9 +45,9 @@ namespace THKH.Webpage.Staff
                 
         }
 
+        //Create sql connection and try to log in
         private bool ValidateUser(string user, string pass)
         {
-            //Create sql connection and try to log in
             //Assume for now the user and pass checks out. Create the cookie
             int rows = 0;
             Object[] userInfo;
@@ -71,8 +71,7 @@ namespace THKH.Webpage.Staff
                 }
             }
             cnn.Close();
-                // Assign user access rights string to session
-                Session["accessRights"] = userInfo[14];
+                assignSessionInfo(userInfo[14].ToString());
             }
             catch (Exception ex)
             {
@@ -83,6 +82,11 @@ namespace THKH.Webpage.Staff
                 return false;
             }
             return true;
+        }
+
+        // Assign user access rights string to session
+        private void assignSessionInfo(String info) {
+            Session["accessRights"] = info;
         }
 
         private byte[] ComputeHash(string plainText)

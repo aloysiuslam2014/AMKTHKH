@@ -58,7 +58,7 @@ namespace THKH.Webpage.Staff
             context.Response.Write(successString);
         }
 
-        //
+        // Gets all the User Access Profile names & returns a JSON String
         private String getAccessProfile() {
             dynamic json = new ExpandoObject();
             SqlConnection cnn;
@@ -112,10 +112,12 @@ namespace THKH.Webpage.Staff
             //return successString;
         }
 
-        //
+        // updates the registration configuration & returns a JSON String
         private String updateTempTime(String lowTemp, String highTemp, String warnTemp, String lowTime, String highTime, String staffUser, String visLim) {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            dynamic json = new ExpandoObject();
+            json.Result = "Success";
+            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -134,28 +136,36 @@ namespace THKH.Webpage.Staff
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                //successString += respon.Value;
+                json.Msg = respon.Value.ToString();
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                //successString.Replace("Success", "Failure");
+                //successString += ex.Message;
+                //successString += "\"}";
+                //return successString;
+                json.Result = "Failure";
+                json.Msg = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            //successString += "\"}";
+            //return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        //
+        // Gets the registration configuration & returns a JSON String
         private String getConfig()
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            dynamic json = new ExpandoObject();
+            json.Result = "Success";
+            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            String successString = "";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, 500);
             respon.Direction = ParameterDirection.Output;
@@ -181,26 +191,33 @@ namespace THKH.Webpage.Staff
                     }
                 }
                 reader.Close();
+                json.Msg = successString;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                //successString.Replace("Success", "Failure");
+                //successString += ex.Message;
+                //successString += "\"}";
+                //return successString;
+                json.Result = "Failure";
+                json.Msg = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            //successString += "\"}";
+            //return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        //
+        // Updates the Selected User Access Profile & returns a JSON String
         private String updateAccessProfile(String name, String permissions, String username) {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            dynamic json = new ExpandoObject();
+            json.Result = "Success";
+            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -215,27 +232,34 @@ namespace THKH.Webpage.Staff
                 cnn.Open();
                 command.ExecuteNonQuery();
 
-                successString += respon.Value;
+                //successString += respon.Value;
+                json.Msg = respon.Value.ToString();
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                //successString.Replace("Success", "Failure");
+                //successString += ex.Message;
+                //successString += "\"}";
+                //return successString;
+                json.Result = "Failure";
+                json.Msg = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            //successString += "\"}";
+            //return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        //
+        // Deletes Selected User Access Profile & returns a JSON String
         private String deleteAccessProfile(String name) {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            dynamic json = new ExpandoObject();
+            json.Result = "Success";
+            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -248,23 +272,29 @@ namespace THKH.Webpage.Staff
                 cnn.Open();
                 command.ExecuteNonQuery();
 
-                successString += respon.Value;
+                //successString += respon.Value;
+                json.Msg = respon.Value.ToString();
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                //successString.Replace("Success", "Failure");
+                //successString += ex.Message;
+                //successString += "\"}";
+                //return successString;
+                json.Result = "Failure";
+                json.Msg = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            //successString += "\"}";
+            //return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
+        // Gets Selected User Access Profile & returns a JSON String
         private String getSelectedProfile(String name) {
             dynamic json = new ExpandoObject();
             SqlConnection cnn;
