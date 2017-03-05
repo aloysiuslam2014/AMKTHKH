@@ -1050,22 +1050,29 @@ CREATE PROCEDURE [dbo].[CREATE_VISIT]
 @pPurpose VARCHAR(MAX) = '',
 @pReason VARCHAR(MAX) = '',
 @pVisitLocation VARCHAR(200) = '',
-@pBedNo VARCHAR(MAX),
+@pBedNo VARCHAR(MAX) = '',
 @pQaID VARCHAR(100),
-@pRemarks VARCHAR(MAX),
+@pRemarks VARCHAR(MAX) = '',
 @pConfirm INT = 0,
 @responseMessage INT OUTPUT  
 --Might need a timestamp for entry creation time
 
 AS  
 BEGIN  
-	SET NOCOUNT ON  
+  SET NOCOUNT ON  
 
-	--IF (EXISTS (SELECT nric FROM dbo.PATIENT WHERE patientFullName LIKE '%' + @pPatientFullName + '%' AND bedNo = @pBedNo))  
-	BEGIN
-		INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdOn)
-		VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, @pConfirm, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-	END
+  --IF (EXISTS (SELECT nric FROM dbo.PATIENT WHERE patientFullName LIKE '%' + @pPatientFullName + '%' AND bedNo = @pBedNo))  
+  BEGIN
+    BEGIN TRY
+      INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdOn)
+      VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, @pConfirm, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+
+      SET @responseMessage = 1
+    END TRY
+    BEGIN CATCH
+      SET @responseMessage = 0
+    END CATCH
+  END
 END;
 
 
@@ -1089,17 +1096,12 @@ CREATE PROCEDURE [dbo].[UPDATE_VISIT]
 AS  
 BEGIN  
   SET NOCOUNT ON  
-  --Change NOT EXISTS to EXISTS once we have the patient information
   IF (EXISTS (SELECT visitorNric FROM dbo.VISIT WHERE visitorNric = @pVisitorNRIC 
-				AND bedNo = @pBedNo AND visitLocation = @pVisitLocation AND visitRequestTime = @pVisitRequestTime))  
+        AND bedNo = @pBedNo AND visitLocation = @pVisitLocation AND visitRequestTime = @pVisitRequestTime))  
   BEGIN
-    -- Have some logic to update visit
+  BEGIN TRY
     UPDATE VISIT
     SET 
-    --visitRequestTime = @pVisitRequestTime, 
-    --patientNric = @pPatientNRIC, 
-    --visitorNric = @pVisitorNRIC, 
-    --patientFullName = @pPatientFullName, 
     purpose = @pPurpose, 
     reason = @pReason, 
     visitLocation = @pVisitLocation, 
@@ -1109,12 +1111,25 @@ BEGIN
     confirm = 1,
     createdOn = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
     WHERE visitorNric = @pVisitorNRIC AND visitRequestTime = @pVisitRequestTime
+
+    SET @responseMessage = 1
+  END TRY
+  BEGIN CATCH
+    SET @responseMessage = 0
+  END CATCH
   END
 
   ELSE
-    INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdOn)
-    VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
-END; 
+    BEGIN TRY
+      INSERT INTO VISIT(visitRequestTime, visitorNric, purpose, reason, visitLocation, bedNo, QaID, remarks, confirm, createdOn)
+      VALUES (@pVisitRequestTime, @pVisitorNRIC, @pPurpose, @pReason, @pVisitLocation, @pBedNo, @pQaID, @pRemarks, 1, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'))
+
+      SET @responseMessage = 1
+    END TRY
+    BEGIN CATCH
+      SET @responseMessage = 0
+    END CATCH
+END;
 
 
 -----------------------------------------------------------------------------------------------------  Procedures for retrieving Visit details   
