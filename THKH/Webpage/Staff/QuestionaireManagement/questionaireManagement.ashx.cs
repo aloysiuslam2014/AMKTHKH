@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Dynamic;
+using System.Collections;
 
 namespace THKH.Webpage.Staff.QuestionaireManagement
 {
@@ -17,26 +19,34 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         {
 
             context.Response.ContentType = "text/plain";
-            String successString = "{\"Result\":\"Success\",";
+            String successString = "";
+
             var typeOfRequest = context.Request.Form["requestType"];
 
-            if (typeOfRequest == "initialize") {
-                successString += retrieveQuestionnaires();
-                successString += ",";
-                successString += retrieveQuestions();//retrieveQuestionnaireQuestions
+            if (typeOfRequest == "initialize")
+            {
+                dynamic formsInit = new ExpandoObject();
+                formsInit.Result = "Success";
+                retrieveQuestionnaires(formsInit);
+                retrieveQuestions(formsInit);//retrieveQuestionnaireQuestions
+                successString = Newtonsoft.Json.JsonConvert.SerializeObject(formsInit);
             }
             if (typeOfRequest == "getQuestionaireFromList")
             {
                 var idList = context.Request.Form["ListID"];
-                successString += retrieveQuestionnaireQuestions(idList);
-               // successString += "}";
+                dynamic getQns = new ExpandoObject();
+                getQns.Result = "Success";
+                retrieveQuestionnaireQuestions(idList, getQns);
+                successString = Newtonsoft.Json.JsonConvert.SerializeObject(getQns); ;
+
+
             }
             if (typeOfRequest == "addQuestion")
             {
                 var qn = context.Request.Form["question"];
                 var qnType = context.Request.Form["questionType"];
                 var qnVals = context.Request.Form["questionValues"];
-                successString = addQuestion(qn,qnType,qnVals);
+                successString = addQuestion(qn, qnType, qnVals);
             }
             if (typeOfRequest == "updateQuestion")
             {
@@ -44,7 +54,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 var qn = context.Request.Form["question"];
                 var qnType = context.Request.Form["questionType"];
                 var qnVals = context.Request.Form["questionValues"];
-                successString = updateQuestion(qnId,qn, qnType, qnVals);
+                successString = updateQuestion(qnId, qn, qnType, qnVals);
             }
             if (typeOfRequest == "deleteQuestion")
             {
@@ -82,7 +92,8 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Generate JSON String for Questionnaire & Questions - Initial Page Load
-        private String generateJSONFromData() {
+        private String generateJSONFromData()
+        {
             String successString = "";
             return successString;
         }
@@ -91,7 +102,8 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         private String addQuestionnaire(String qName)
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -104,36 +116,34 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                var result = Int32.Parse(respon.Value.ToString());
-                if (result == 1 || result == 0)
+                var results = Int32.Parse(respon.Value.ToString());
+                if (results == 1 || results == 0)
                 {
-                    successString += "\"" + result.ToString();
+                    result.Msg = "" + results.ToString();
                 }
                 else
                 {
-                    successString.Replace("Success", "Failure");
+                    result.Result = "Failure";
                 }
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // Update questionnaire with new question order
         private String updateQuestionnaire(String qnaire, String order)
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -147,28 +157,26 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                result.Msg = respon.Value;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // Sets the selected questionnaire as active & deactivates the rest
         private String setActiveQuestionnaire(String qName)
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -181,28 +189,26 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                result.Msg = respon.Value;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // removes questionnaire
         private String deleteQuestionnaire()
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -215,28 +221,26 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                result.Msg = respon.Value;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // Adds new question
-        private String addQuestion(String qn,String qnType,String qnValues)
+        private String addQuestion(String qn, String qnType, String qnValues)
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -252,28 +256,26 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                result.Msg = respon.Value;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // Updates a question
-        private String updateQuestion(String qnId,String qn, String qnType, String qnValues)
+        private String updateQuestion(String qnId, String qn, String qnType, String qnValues)
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -282,7 +284,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTION]", cnn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 // Add params Question, Question Type, Question Values
-                command.Parameters.AddWithValue("@pQQ_ID", Int32.Parse( qnId));
+                command.Parameters.AddWithValue("@pQQ_ID", Int32.Parse(qnId));
                 command.Parameters.AddWithValue("@pQuestion", qn);
                 command.Parameters.AddWithValue("@pQnsType", qnType);
                 command.Parameters.AddWithValue("@pQnsValue", qnValues);
@@ -290,28 +292,26 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                result.Msg = respon.Value;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // Delete question
         private String deleteQuestion()
         {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -324,28 +324,27 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                result.Msg = respon.Value;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "}";
-            return successString;
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // retrieves all the questionnaires from the DB
-        private String retrieveQuestionnaires()
+        private void retrieveQuestionnaires(dynamic toSend)
         {
             SqlConnection cnn;
-            String successString = "\"Qnaires\":";
+
+            ArrayList questionaires = new ArrayList();
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -357,45 +356,39 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
-                int count = 1;
+
                 if (reader.HasRows)
                 {
-                    successString += "[";
                     while (reader.Read())
                     {
-                        if (count > 1)
-                        {
-                            successString += ",";
-                        }
-                        successString += "{\"ListName\":\"" + reader.GetString(0) + "\",\"Active\":\""
-                            + reader.GetInt32(2);
-                        successString += "\"}";
-                        count++;
+                        dynamic qnItems = new ExpandoObject();
+                        qnItems.ListName = reader.GetString(0);
+                        qnItems.Active = reader.GetInt32(2);
+                        questionaires.Add(qnItems);
                     }
-                    successString += "]";
+
+                    toSend.Qnaires = questionaires;
                 }
-                successString += respon.Value;
                 reader.Close();
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += "\"" + ex.Message;
-                successString += "\"}";
-                return successString;
+                toSend.Result = "Failure";
+                toSend.Msg = ex.Message;
+
             }
             finally
             {
                 cnn.Close();
             }
-            return successString;
+
         }
 
         // retrieves all the questions in the SELECTED questionnaire
-        private String retrieveQuestionnaireQuestions(string idList)
+        private void retrieveQuestionnaireQuestions(string idList, dynamic toSend)
         {
             SqlConnection cnn;
-            String successString = "\"qnQns\":";
+            ArrayList qnsQns = new ArrayList();
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -430,19 +423,24 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                     }
                 }
                 var response = respon.Value;
-                if (response != null && response.ToString() == "0") {
-                    successString += "[{\"question\":\"0\"}]}";
-                    return successString;
+                if (response != null && response.ToString() == "0")
+                {
+                    dynamic noQns = new ExpandoObject();
+                    noQns.question = 0;
+                    ArrayList temp = new ArrayList();
+                    temp.Add(noQns);
+                    toSend.qnQns = temp;
+
+                    return;
                 }
                 reader.Close();
                 cnn.Close();
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += "\"" + ex.Message;
-                successString += "\"}";
-                return successString;
+                toSend.Result = "Failure";
+                toSend.Msg = ex.Message;
+                return;
             }
             respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -465,52 +463,46 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                         count++;
                     }
                 }
-                successString += respon.Value;
                 reader.Close();
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += "\"" + ex.Message;
-                successString += "\"}";
-                return successString;
+                toSend.Result = "Failure";
+                toSend.Msg = ex.Message;
+                return;
             }
             finally
             {
                 cnn.Close();
             }
             String[] orderArr = order.Split(',');
-            successString += "[";
+
             for (int j = 0; j < orderArr.Length; j++)
             {
                 String thisQid = orderArr[j];
                 for (int i = 0; i < questions.Count(); i++)
                 {
+                    dynamic qnObj = new ExpandoObject();
                     String listQid = qids[i];
-                    if (thisQid == listQid) {
-                        if (j > 0)
-                        {
-                            successString += ",";
-                        }
-                        successString += "{";
-                        successString += "\"qId\":\"" + listQid + "\",";
-                        successString += "\"question\":\"" + questions[i] + "\",";
-                        successString += "\"qnType\":\"" + qnTypes[i] + "\",";
-                        successString += "\"values\":\"" + qnValues[i] + "\"";
-                        successString += "}";
+                    if (thisQid == listQid)
+                    {
+
+                        qnObj.qId = listQid;
+                        qnObj.question = questions[i];
+                        qnObj.qnType = qnTypes[i];
+                        qnObj.values = qnValues[i];
+                        qnsQns.Add(qnObj);
                     }
                 }
             }
-            successString += "]";
-            successString += "}";
-            return successString;
+            toSend.qnQns = qnsQns;
         }
 
         // Retrieves all the questions from the DB
-        private String retrieveQuestions()
+        private void retrieveQuestions(dynamic toSend)
         {
             SqlConnection cnn;
-            String successString = "\"Qns\":";
+            ArrayList qns = new ArrayList();
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -522,45 +514,40 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
-                int count = 1;
                 if (reader.HasRows)
                 {
-                    successString += "[";
                     while (reader.Read())
                     {
-                        if (count > 1)
-                        {
-                            successString += ",";
-                        }
-                        successString += "{\"qId\":\"" + reader.GetInt32(0) + "\",\"question\":\"" 
-                            + reader.GetString(1) + "\",\"qnType\":\"" + reader.GetString(2) + "\",\"values\":\"" 
-                            + reader.GetString(3);
-                        successString += "\"}";
-                        count++;
+                        dynamic question = new ExpandoObject();
+                        question.qId = reader.GetInt32(0);
+                        question.question = reader.GetString(1);
+                        question.qnType = reader.GetString(2);
+                        question.values = reader.GetString(3);
+                        qns.Add(question);
                     }
-                    successString += "]";
+                    toSend.Qns = qns;
                 }
-                successString += respon.Value;
+
                 reader.Close();
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                toSend.Result = "Failure";
+                toSend.Msg = ex.Message;
+
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "}";
-            return successString;
+
         }
 
-        private String addQuestionToQuestionnaire(String qnaireId, String qns) {
+        private String addQuestionToQuestionnaire(String qnaireId, String qns)
+        {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -574,21 +561,19 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                result.Msg += respon.Value;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "}";
-            return successString;
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         public bool IsReusable

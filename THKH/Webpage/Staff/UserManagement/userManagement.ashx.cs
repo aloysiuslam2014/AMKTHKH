@@ -85,7 +85,6 @@ namespace THKH.Webpage.Staff.UserManagement
         // Gets a List in String form from the Staff Table
         private String loadUsers() {
             SqlConnection cnn;
-            String successString = "";//result and msg 
             dynamic jsonObj = new ExpandoObject();
             dynamic responseJson = new ExpandoObject();
             ArrayList contentOf = new ArrayList();
@@ -126,15 +125,14 @@ namespace THKH.Webpage.Staff.UserManagement
             {
                 jsonObj.Msg = "Failed";
                 jsonObj.Result = ex.Message;
-                successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); 
-                return successString;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); 
             }
             finally
             {
                 cnn.Close();
             }
-            successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
-            return successString;
+             
+            return Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
         }
 
         // Gets a specific row from the Staff Table
@@ -199,7 +197,7 @@ namespace THKH.Webpage.Staff.UserManagement
             {
                 cnn.Close();
             }
-            successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
+            successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); 
             return successString;
         }
 
@@ -207,7 +205,8 @@ namespace THKH.Webpage.Staff.UserManagement
         private String addUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            dynamic responseJson = new ExpandoObject();
+            responseJson.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.NVarChar, 250);
             respon.Direction = ParameterDirection.Output;
@@ -240,30 +239,28 @@ namespace THKH.Webpage.Staff.UserManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
-                if (successString.Contains("PRIMARY KEY")) {
-                    successString = successString.Replace("Success", "Failure");
+                responseJson.Msg = respon.Value;
+                if (respon.Value.ToString().Contains("PRIMARY KEY")) {
+                    responseJson.Result = "Failure";
                 }
             }
             catch (Exception ex)
             {
-                successString = successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                responseJson.Result = "Failure";
+                responseJson.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(responseJson); 
         }
 
         // Deletes a specific row in the Staff Table
         private String deleteUser(String snric, String email) {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            dynamic responseJson = new ExpandoObject();
+            responseJson.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -277,28 +274,26 @@ namespace THKH.Webpage.Staff.UserManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                responseJson.Msg = respon.Value;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                responseJson.Result = "Failure";
+                responseJson.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(responseJson);
         }
 
         // Updates a specific row in the Staff Table
         private String updateUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":\"";
+            dynamic responseJson = new ExpandoObject();
+            responseJson.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -331,21 +326,18 @@ namespace THKH.Webpage.Staff.UserManagement
                 cnn.Open();
 
                 command.ExecuteNonQuery();
-                successString += respon.Value;
+                responseJson.Msg = respon.Value;
             }
             catch (Exception ex)
             {
-                successString = successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                responseJson.Result = "Failure";
+                responseJson.Msg = ex.Message;
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "\"}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(responseJson);
         }
 
         private String getPermissions()

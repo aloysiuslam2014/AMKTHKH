@@ -22,11 +22,11 @@ namespace THKH.Webpage.Staff.ContactTracing
         {
             context.Response.ContentType = "text/plain";
             var action = context.Request.Form["action"];
-            var returnoutput="";
+            var returnoutput = "";
             if (action.Equals("getValidTerminals"))
             {
                 var query = context.Request.Form["queries"];
-                returnoutput =  getValidTerminals(query);
+                returnoutput = getValidTerminals(query);
             }
             if (action.Equals("traceByReg"))
             {
@@ -41,7 +41,8 @@ namespace THKH.Webpage.Staff.ContactTracing
             context.Response.Write(returnoutput);
         }
 
-        private String unifiedTrace(String query) {
+        private String unifiedTrace(String query)
+        {
             String result = "";
 
             String[] queryParts = query.Split('~');
@@ -50,48 +51,45 @@ namespace THKH.Webpage.Staff.ContactTracing
             String uq_enddate_str = queryParts[2];
             DateTime uq_startdate = DateTime.ParseExact(uq_startdate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture); // Might be time format issue
             DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            //DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "MM/dd/yyyy h:mm tt", null);
             String uq_place = queryParts[3];
             String[] uq_place_arr = uq_place.Split(',');
 
             String[] processed_uq_place_arr = uq_place_arr;
-   
+
             if (bedORloc == "bybed")
             {
                 processed_uq_place_arr = processBedNos(uq_place_arr);
             }
-            
+
 
             List<String> byReg_response_visitors = new List<String>();
             List<String> byScan_response_visitors = new List<String>();
-            
+
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
 
             //trace by bedno
-            if (bedORloc == "bybed") {
+            if (bedORloc == "bybed")
+            {
                 for (var i = 0; i < processed_uq_place_arr.Length; i++)
                 {
                     String singleBedResult = traceByRegBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
-                    //List<String> singleBedResult_toList = new List<String>();
-                    if (singleBedResult != "") {
-                        //Object obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Object>(singleBedResult);
+                    if (singleBedResult != "")
+                    {
                         JObject obj = JObject.Parse(singleBedResult);
                         JArray arr = (JArray)obj["Msg"];
-                        foreach (JToken item in arr.Children()) {
+                        foreach (JToken item in arr.Children())
+                        {
                             String entry = item.Value<JObject>().ToString(Formatting.None);
                             byReg_response_visitors.Add(entry);
                         }
-                        // singleBedResult_toList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<String>>(singleBedResult); // Invalid Cast
                     }
-                    //byReg_response_visitors.AddRange(singleBedResult_toList);
 
                 }
 
                 for (var i = 0; i < processed_uq_place_arr.Length; i++)
                 {
                     String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
-                    //List<String> singleBedResult_toList = new List<String>();
                     if (singleBedResult != "")
                     {
                         JObject obj = JObject.Parse(singleBedResult);
@@ -101,17 +99,15 @@ namespace THKH.Webpage.Staff.ContactTracing
                             String entry = item.Value<JObject>().ToString(Formatting.None);
                             byScan_response_visitors.Add(entry);
                         }
-                        //singleBedResult_toList = (List<String>)Newtonsoft.Json.JsonConvert.DeserializeObject(singleBedResult);
                     }
-                    //byScan_response_visitors.AddRange(singleBedResult_toList);
                 }
             }
 
-            if (bedORloc == "byloc") {
+            if (bedORloc == "byloc")
+            {
                 for (var i = 0; i < processed_uq_place_arr.Length; i++)
                 {
                     String singleBedResult = traceByRegLoc(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
-                    //List<String> singleBedResult_toList = new List<String>();
                     if (singleBedResult != "")
                     {
                         JObject obj = JObject.Parse(singleBedResult);
@@ -122,14 +118,12 @@ namespace THKH.Webpage.Staff.ContactTracing
                             byReg_response_visitors.Add(entry);
                         }
                     }
-                    //byReg_response_visitors.AddRange(singleBedResult_toList);
 
                 }
 
                 for (var i = 0; i < processed_uq_place_arr.Length; i++)
                 {
                     String singleBedResult = traceByScanLoc(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
-                    //List<String> singleBedResult_toList = new List<String>();
                     if (singleBedResult != "")
                     {
                         JObject obj = JObject.Parse(singleBedResult);
@@ -139,13 +133,10 @@ namespace THKH.Webpage.Staff.ContactTracing
                             String entry = item.Value<JObject>().ToString(Formatting.None);
                             byScan_response_visitors.Add(entry);
                         }
-                        //singleBedResult_toList = (List<String>)Newtonsoft.Json.JsonConvert.DeserializeObject(singleBedResult);
                     }
-                    //byScan_response_visitors.AddRange(singleBedResult_toList);
                 }
             }
 
-            //find the intersects, and derive the other 2 categories.
             List<String> reg_and_scan = (List<String>)byReg_response_visitors.Intersect(byScan_response_visitors).ToList();
             List<String> reg_only = (List<String>)byReg_response_visitors.Except(reg_and_scan).ToList();
             List<String> scan_only = (List<String>)byScan_response_visitors.Except(reg_and_scan).ToList();
@@ -155,40 +146,30 @@ namespace THKH.Webpage.Staff.ContactTracing
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_only, true, false));
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(scan_only, false, true));
 
-            //construct and return Expando Object with only the parameters required for the display table.
             result = buildDisplayResults(categorizedResults);
 
             return result;
         }
 
-        private String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults) {
+        private String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults)
+        {
             String result = "";
-            //List<String> serializedResults = new List<String>();
             List<dynamic> serializedResults1 = new List<dynamic>();
             List<List<String>> datatable_array = new List<List<String>>();
 
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
 
-            foreach (Tuple<List<String>, bool, bool> category in categorizedResults) {
+            foreach (Tuple<List<String>, bool, bool> category in categorizedResults)
+            {
                 List<String> visitList = category.Item1;
                 bool reg = category.Item2;
                 bool scan = category.Item3;
 
-                foreach (String visit in visitList) {
-                    //dynamic deserializedVisit = Newtonsoft.Json.JsonConvert.DeserializeObject(visit);
+                foreach (String visit in visitList)
+                {
                     JObject deserializedVisit = JObject.Parse(visit);
                     innerItem = new ExpandoObject();
-
-                    //innerItem.location = deserializedVisit.visitLocation;
-                    //innerItem.bedno = deserializedVisit.bedNo;
-                    //innerItem.checkin_time = deserializedVisit.visitActualTime;
-                    //innerItem.exit_time = deserializedVisit.exitTime;
-                    //innerItem.fullName = deserializedVisit.fullName;
-                    //innerItem.nric = deserializedVisit.visitorNric;
-                    //innerItem.mobileTel = deserializedVisit.mobileTel;
-                    //innerItem.nationality = deserializedVisit.nationality;
-
                     List<String> datatable_arrayitem = new List<String>();
 
                     innerItem.location = deserializedVisit["location"];
@@ -199,7 +180,7 @@ namespace THKH.Webpage.Staff.ContactTracing
                     innerItem.nric = deserializedVisit["nric"];
                     innerItem.mobileTel = deserializedVisit["mobileTel"];
                     innerItem.nationality = deserializedVisit["nationality"];
-             
+
                     innerItem.gender = deserializedVisit["gender"];
                     innerItem.dob = deserializedVisit["dob"];
                     innerItem.homeadd = deserializedVisit["homeadd"];
@@ -220,25 +201,15 @@ namespace THKH.Webpage.Staff.ContactTracing
                     datatable_arrayitem.Add((string)innerItem.homeadd);
                     datatable_arrayitem.Add((string)innerItem.postalcode);
                     datatable_arrayitem.Add((string)innerItem.nationality);
-
                     datatable_arrayitem.Add((string)innerItem.reg);
                     datatable_arrayitem.Add((string)innerItem.scan);
-
                     datatable_array.Add(datatable_arrayitem);
-
                     serializedResults1.Add(innerItem);
-                    //String serializedResult = Newtonsoft.Json.JsonConvert.SerializeObject(innerItem);
-                    //serializedResults.Add(serializedResult);
                 }
             }
             json.Result = "Success";
-            //json.Msg = serializedResults1.ToArray();
             json.Msg = datatable_array;
-            //json.Msg = serializedResults;
-
-            result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
-
-            return result;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json); ;
         }
 
         private String traceByScanBed(DateTime startdatetime, DateTime enddatetime, String bedno)
@@ -247,9 +218,6 @@ namespace THKH.Webpage.Staff.ContactTracing
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            //SqlParameter visitors = new SqlParameter("@pVisits", System.Data.SqlDbType.NVarChar);
-            //visitors.Direction = ParameterDirection.Output;
-            //visitors.Size = 4000;
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
@@ -266,9 +234,6 @@ namespace THKH.Webpage.Staff.ContactTracing
 
                 command.Parameters.Add(respon);
                 da.Fill(dt);
-                //command.Parameters.Add(visitors);
-                //cnn.Open();
-                //command.ExecuteNonQuery();
 
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
@@ -310,26 +275,15 @@ namespace THKH.Webpage.Staff.ContactTracing
                 json.Result = "Failed";
                 json.Msg = ex.Message;
             }
-
-            //String byScanBed_response_visitors = visitors.Value.ToString(); // json array of json objects, each of which is a visitor
-
-            //json.Result = "Success";
-            //json.Msg = byScanBed_response_visitors;
-
-            String result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
-
-            return result;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        private String traceByRegBed(DateTime startdatetime, DateTime enddatetime, String bedno) {
-
+        private String traceByRegBed(DateTime startdatetime, DateTime enddatetime, String bedno)
+        {
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            //SqlParameter visitors = new SqlParameter("@pVisits", System.Data.SqlDbType.NVarChar);
-            //visitors.Direction = ParameterDirection.Output;
-            //visitors.Size = 4000;
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
@@ -343,35 +297,8 @@ namespace THKH.Webpage.Staff.ContactTracing
                 command.Parameters.AddWithValue("@pEnd_Date", enddatetime);
                 command.Parameters.AddWithValue("@pBed_No", bedno);
                 SqlDataAdapter da = new SqlDataAdapter(command);
-
                 command.Parameters.Add(respon);
                 da.Fill(dt);
-                //command.Parameters.Add(visitors);
-                //cnn.Open();
-                //command.ExecuteNonQuery();
-
-                // Initiate reader here & construct JSON Object
-                // columns will be returned like this
-                //visitLocation VARCHAR(100),
-                //bedno INT,
-                //visitActualTime DATETIME,
-                //exitTime DATETIME,
-                //visitorNric VARCHAR(15),
-                //fullName VARCHAR(150),
-                //nationality VARCHAR(300),
-                //mobileTel VARCHAR(20))
-
-                //SqlDataReader reader = command.ExecuteReader();
-                //if (reader.HasRows)
-                //{
-                //    while (reader.Read())
-                //    {
-                //        // Construct JSON Object here
-
-                //    }
-                //}
-                //reader.Close();
-
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
                     var location = dt.Rows[i]["location"];
@@ -386,7 +313,6 @@ namespace THKH.Webpage.Staff.ContactTracing
                     var mobileTel = dt.Rows[i]["mobileTel"];
                     var homeadd = dt.Rows[i]["homeadd"];
                     var postalcode = dt.Rows[i]["postalcode"];
-
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
                     innerItem.bedno = regbedno.ToString();
@@ -396,7 +322,6 @@ namespace THKH.Webpage.Staff.ContactTracing
                     innerItem.fullName = fullName.ToString();
                     innerItem.nationality = nationality.ToString();
                     innerItem.mobileTel = mobileTel.ToString();
-
                     innerItem.gender = gender.ToString();
                     innerItem.dob = dob.ToString();
                     innerItem.homeadd = homeadd.ToString();
@@ -406,55 +331,25 @@ namespace THKH.Webpage.Staff.ContactTracing
                 json.Result = "Success";
                 json.Msg = jsonArray;
 
-                //dt.Load(command.ExecuteReader());
-                //List<Object> jsonArray = new List<Object>();
-                //foreach (DataRow row in dt.Rows) {
-                //    dynamic innerJson = new ExpandoObject();
-                //    var itemArr = row.ItemArray;
-                //    innerJson.location = itemArr[0];
-                //    innerJson.bedno = itemArr[1];
-                //    innerJson.checkin_time = itemArr[2];
-                //    innerJson.exit_time = itemArr[3];
-                //    innerJson.fullName = itemArr[5];
-                //    innerJson.nric = itemArr[4];
-                //    innerJson.mobileTel = itemArr[7];
-                //    innerJson.nationality = itemArr[6];
-                //    // Add to JSON Array
-                //    jsonArray.Add(innerJson);
-                //}
-                //// Add JSON Array to JSON Object
-                //json.Msg = jsonArray;
             }
             catch (Exception ex)
             {
                 json.Result = "Failed";
                 json.Msg = ex.Message;
             }
-
-            //String byRegBed_response_visitors = visitors.Value.ToString(); // json array of json objects, each of which is a visitor
-
-            //json.Result = "Success";
-            //json.Msg = byRegBed_response_visitors;
-
-            String result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
-            return result;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         private String traceByScanLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
-           
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            //SqlParameter visitors = new SqlParameter("@pVisits", System.Data.SqlDbType.NVarChar);
-            //visitors.Direction = ParameterDirection.Output;
-            //visitors.Size = 4000;
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
             List<Object> jsonArray = new List<Object>();
-
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[TRACE_BY_SCAN_LOC]", cnn);
@@ -463,13 +358,8 @@ namespace THKH.Webpage.Staff.ContactTracing
                 command.Parameters.AddWithValue("@pEnd_Date", enddatetime);
                 command.Parameters.AddWithValue("@pLocation", loc);
                 SqlDataAdapter da = new SqlDataAdapter(command);
-
                 command.Parameters.Add(respon);
                 da.Fill(dt);
-                //command.Parameters.Add(visitors);
-                //cnn.Open();
-                //command.ExecuteNonQuery();
-
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
                     var location = dt.Rows[i]["location"];
@@ -494,7 +384,6 @@ namespace THKH.Webpage.Staff.ContactTracing
                     innerItem.fullName = fullName.ToString();
                     innerItem.nationality = nationality.ToString();
                     innerItem.mobileTel = mobileTel.ToString();
-
                     innerItem.gender = gender.ToString();
                     innerItem.dob = dob.ToString();
                     innerItem.homeadd = homeadd.ToString();
@@ -510,32 +399,19 @@ namespace THKH.Webpage.Staff.ContactTracing
                 json.Result = "Failed";
                 json.Msg = ex.Message;
             }
-
-            //String byScanLoc_response_visitors = visitors.Value.ToString(); // json array of json objects, each of which is a visitor
-
-            //json.Result = "Success";
-            //json.Msg = byScanBed_response_visitors;
-
-            String result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
-
-            return result;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json); ;
         }
 
         private String traceByRegLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
-
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
-            //SqlParameter visitors = new SqlParameter("@pVisits", System.Data.SqlDbType.NVarChar);
-            //visitors.Direction = ParameterDirection.Output;
-            //visitors.Size = 4000;
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
             List<Object> jsonArray = new List<Object>();
-
             try
             {
                 SqlCommand command = new SqlCommand("[dbo].[TRACE_BY_REG_LOC]", cnn);
@@ -544,13 +420,8 @@ namespace THKH.Webpage.Staff.ContactTracing
                 command.Parameters.AddWithValue("@pEnd_Date", enddatetime);
                 command.Parameters.AddWithValue("@pLocation", loc);
                 SqlDataAdapter da = new SqlDataAdapter(command);
-
                 command.Parameters.Add(respon);
                 da.Fill(dt);
-                //command.Parameters.Add(visitors);
-                //cnn.Open();
-                //command.ExecuteNonQuery();
-
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
                     var location = dt.Rows[i]["location"];
@@ -575,7 +446,6 @@ namespace THKH.Webpage.Staff.ContactTracing
                     innerItem.fullName = fullName.ToString();
                     innerItem.nationality = nationality.ToString();
                     innerItem.mobileTel = mobileTel.ToString();
-
                     innerItem.gender = gender.ToString();
                     innerItem.dob = dob.ToString();
                     innerItem.homeadd = homeadd.ToString();
@@ -591,20 +461,15 @@ namespace THKH.Webpage.Staff.ContactTracing
                 json.Result = "Failed";
                 json.Msg = ex.Message;
             }
-
-            //String byRegLoc_response_visitors = visitors.Value.ToString(); // json array of json objects, each of which is a visitor
-
-            //json.Result = "Success";
-            //json.Msg = byRegBed_response_visitors;
-
-            String result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
-            return result;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        private String[] processBedNos(String[] bedno_arr) {
+        private String[] processBedNos(String[] bedno_arr)
+        {
             ArrayList result = new ArrayList();
 
-            for (var i = 0; i < bedno_arr.Length; i++) {
+            for (var i = 0; i < bedno_arr.Length; i++)
+            {
                 String thisBedNoToken = bedno_arr[i];
 
                 if (thisBedNoToken.Contains("-"))
@@ -616,7 +481,8 @@ namespace THKH.Webpage.Staff.ContactTracing
 
                     int[] processed_bedrange = Enumerable.Range(rangeStart, rangeCount).ToArray();
 
-                    foreach (int bedno in processed_bedrange) {
+                    foreach (int bedno in processed_bedrange)
+                    {
                         result.Add(bedno.ToString());
                     }
                 }
@@ -625,11 +491,11 @@ namespace THKH.Webpage.Staff.ContactTracing
                     result.Add(thisBedNoToken);
                 }
             }
-
             return (String[])result.ToArray(typeof(string));
         }
 
-        private String traceByReg(String query) {
+        private String traceByReg(String query)
+        {
             String result = "";
             String[] queryParts = query.Split('~');
             DateTime ri_dateStart = DateTime.Parse(queryParts[0]);
@@ -663,7 +529,6 @@ namespace THKH.Webpage.Staff.ContactTracing
                 command.Parameters.Add(visitorDetails);
                 cnn.Open();
                 command.ExecuteNonQuery();
-
             }
             catch (Exception ex)
             {
@@ -676,13 +541,9 @@ namespace THKH.Webpage.Staff.ContactTracing
             innerItem.visitors = response_visitors;
             innerItem.visitorDetails = response_visitorDetails;
             byBedNoResults.Add(innerItem);
-
             json.Result = "Success";
             json.Msg = byBedNoResults;
-
-            result = Newtonsoft.Json.JsonConvert.SerializeObject(json);
-
-            return result;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         private String getValidTerminals(String query)
@@ -697,7 +558,6 @@ namespace THKH.Webpage.Staff.ContactTracing
             dynamic innerItem = new ExpandoObject();
             ArrayList terminalDetails = new ArrayList();
             SqlConnection cnn;
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
 
             SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -734,14 +594,10 @@ namespace THKH.Webpage.Staff.ContactTracing
                 innerItem.endd = endd == null ? "" : endd.ToString();
                 terminalDetails.Add(innerItem);
 
-
                 json.Result = "Success";
                 json.Msg = terminalDetails;
             }
-
-            result = Newtonsoft.Json.JsonConvert.SerializeObject(json); 
-            
-            return result;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         public bool IsReusable
