@@ -713,7 +713,11 @@
       <DependentUpon>userManagement.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Classes\Controller\" />
+    <Folder Include="Classes\DAO\" />
+    <Folder Include="Classes\Entity\" />
+  </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>

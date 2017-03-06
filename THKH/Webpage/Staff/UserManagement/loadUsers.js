@@ -7,6 +7,8 @@ var validMobUser = true;
 var validAltUser = true;
 var validHomUser = true;
 var validPosUser = true;
+var userPageUrl = '../Staff/UserManagement/userManagement.ashx';
+var configPageUrl = '../Staff/MasterConfig/masterConfig.ashx';
 
 //Load users once
 function loadUsersOnce() {
@@ -25,7 +27,7 @@ function getAllUsers() {
         requestType: "loadUsers"
     };
     $.ajax({
-        url: '../Staff/UserManagement/userManagement.ashx',
+        url: userPageUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -154,7 +156,7 @@ function getUserDetails(listObj) {
         requestType: "getUser"
     };
     $.ajax({
-        url: '../Staff/UserManagement/userManagement.ashx',
+        url: userPageUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -216,7 +218,7 @@ function updateUser() {
         email: Email, title: staffTitle, permissions: permissions, staffPwd: staffPwd, requestType: "updateUser", accessProfile: accessProfile
     };
     $.ajax({
-        url: '../Staff/UserManagement/userManagement.ashx',
+        url: userPageUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -264,7 +266,7 @@ function addUser() {
         email:Email, title:staffTitle, permissions:permissions, staffPwd:staffPwd, requestType: "addUser", accessProfile: accessProfile
     };
     $.ajax({
-        url: '../Staff/UserManagement/userManagement.ashx',
+        url: userPageUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -570,7 +572,7 @@ function fillAccessProfileListUser() {
         requestType: "getProfiles"
     };
     $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
+        url: configPageUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -612,7 +614,7 @@ function getSelectedAccessProfileUser() {
         profileName: profile, requestType: "getSelectedProfile"
     };
     $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
+        url: configPageUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -648,7 +650,7 @@ function loadPermissionsField() {
         requestType: "getPermissions"
     };
     $.ajax({
-        url: '../Staff/UserManagement/userManagement.ashx',
+        url: userPageUrl,
         method: 'post',
         data: headersToProcess,
 
