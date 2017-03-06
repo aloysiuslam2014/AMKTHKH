@@ -66,9 +66,10 @@ namespace THKH.Webpage.Staff.PassManagement
 
         private dynamic getPassState()
         {
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_PASS_FORMAT", false, true, true);
             DataTable dataTable = new DataTable();
             dynamic stateOfPass = new ExpandoObject();
+
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_PASS_FORMAT", false, true, true);
             procedureCall.addParameter("@responseMessage", SqlDbType.Int);
             try
             {
@@ -127,12 +128,13 @@ namespace THKH.Webpage.Staff.PassManagement
         public string setPassState(string state,string statePositions)
         {
             string successString = "";
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("SET_PASS_FORMAT", true, true, false);
+            
             dynamic stateOfPass = new ExpandoObject();
             stateOfPass.divState = state;
             stateOfPass.positions = statePositions;
-
             string jsonState = Newtonsoft.Json.JsonConvert.SerializeObject(stateOfPass);
+
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("SET_PASS_FORMAT", true, true, false);
             procedureCall.addParameter("@responseMessage", SqlDbType.Int);
             procedureCall.addParameterWithValue("@pPass_Format", jsonState);
             try
