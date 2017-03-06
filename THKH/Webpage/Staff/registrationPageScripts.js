@@ -837,7 +837,7 @@ function hideTags(clear) {
     $("#emptyFields").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
     $("#emailWarning").css("display", "none");
-    $('#noVisitWarning').css("display", "none");
+    //$('#noVisitWarning').css("display", "none");
     $('#lowtempWarning').css("display", "none");
     $('#tempWarning').css("display", "none");
     $('#tempLimitWarning').css("display", "none");
@@ -1192,7 +1192,7 @@ function populateTime() {
     var lowTime = "";
     var adjustedTime = false;
     var highTime = "";
-    var count = 0;
+    //var count = 0;
     var d = new Date();
     var localTime = d.getTime();
     var localOffset = d.getTimezoneOffset() * 60000;
@@ -1303,17 +1303,17 @@ function populateTime() {
                     }
                 }
             }
-            if (count == 0) {
-                allowVisit = false;
-                $('#noVisitWarning').css("display", "block");
-                $("#nric").prop('disabled', true);
-                $("#temp").prop('disabled', true);
-            } else {
-                allowVisit = true;
-                $('#noVisitWarning').css("display", "none");
-                $("#nric").prop('disabled', false);
-                $("#temp").prop('disabled', false);
-            }
+            //if (count == 0) {
+            //    allowVisit = false;
+            //    $('#noVisitWarning').css("display", "block");
+            //    $("#nric").prop('disabled', true);
+            //    $("#temp").prop('disabled', true);
+            //} else {
+            //    allowVisit = true;
+            //    $('#noVisitWarning').css("display", "none");
+            //    $("#nric").prop('disabled', false);
+            //    $("#temp").prop('disabled', false);
+            //}
         },
         error: function (err) {
             alert("Error: " + err.Msg);

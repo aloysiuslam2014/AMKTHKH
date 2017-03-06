@@ -384,7 +384,7 @@
                             <%--<h5>Please click the "Check NRIC" button once you have filled in the NRIC & the Temperature</h5>--%>
                             <div class="center-block">
                             <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span> Proceed</button>
-                            <h5 id="noVisitWarning" style="color: lightcoral">You are not within Visiting Hours! Please approach the admin for assistance.</h5>
+                            <%--<h5 id="noVisitWarning" style="color: lightcoral">You are not within Visiting Hours! Please approach the admin for assistance.</h5>--%>
                             </div>
                         </div>
                     </div>

@@ -6,6 +6,8 @@ using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using THKH.Classes.DAO;
+using THKH.Classes.Entity;
 
 namespace THKH.Webpage.Staff.CheckInOut
 {
@@ -866,8 +868,9 @@ namespace THKH.Webpage.Staff.CheckInOut
         }
 
         private dynamic checkNumCheckedIn(string bedno, int limit) {
+            DataTable dataTable = new DataTable();
             dynamic result = new ExpandoObject();
-
+            
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
            
@@ -877,24 +880,30 @@ namespace THKH.Webpage.Staff.CheckInOut
                 string[] beds = bedno.Split('|');
                 foreach(string bed in beds)
                 {
-                    SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@pBedNo", bed);
-                    command.Parameters.AddWithValue("@pLimit", limit);
-                    SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-                    respon.Direction = ParameterDirection.Output;
-                    command.Parameters.Add(respon);
-                    cnn.Open();
+                    GenericProcedureDAO procedureCall = new GenericProcedureDAO("CHECK_NUM_VISITORS", true, true, false);
+                    procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+                    procedureCall.addParameterWithValue("@pBedNo", bed);
+                    procedureCall.addParameterWithValue("@pLimit", limit.ToString());
+                    ProcedureResponse res = procedureCall.runProcedure();
+                    result.visitors = res.getResponses()["@responseMessage"];
+                    //SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
+                    //command.CommandType = System.Data.CommandType.StoredProcedure;
+                    //command.Parameters.AddWithValue("@pBedNo", bed);
+                    //command.Parameters.AddWithValue("@pLimit", limit);
+                    //SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+                    //respon.Direction = ParameterDirection.Output;
+                    //command.Parameters.Add(respon);
+                    //cnn.Open();
 
-                    command.ExecuteNonQuery();
-                    cnn.Close();
-                    result.visitors = respon.Value;
-                    if (Int32.Parse(respon.Value.ToString()) > limit)
+                    //command.ExecuteNonQuery();
+                    //cnn.Close();
+                    //result.visitors = respon.Value;
+                    if (result.visitors >= limit)
                     {
                         result.bedno = bed;
                         break;
                     }
-                    
+
                 }
                
             }
