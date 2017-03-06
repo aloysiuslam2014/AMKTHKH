@@ -657,6 +657,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\DAO\GenericProcedureDAO.cs" />
+    <Compile Include="Classes\Entity\procedureResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
@@ -715,8 +717,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Controller\" />
-    <Folder Include="Classes\DAO\" />
-    <Folder Include="Classes\Entity\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

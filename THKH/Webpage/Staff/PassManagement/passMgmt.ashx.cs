@@ -10,6 +10,8 @@ using System.Text;
 using System.Data.SqlClient;
 using System.Data;
 using System.Net;
+using THKH.Classes.DAO;
+using THKH.Classes.Entity;
 
 namespace THKH.Webpage.Staff.PassManagement
 {
@@ -64,27 +66,14 @@ namespace THKH.Webpage.Staff.PassManagement
 
         private dynamic getPassState()
         {
-             
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_PASS_FORMAT", false, true, true);
             DataTable dataTable = new DataTable();
             dynamic stateOfPass = new ExpandoObject();
-            
-            string jsonState = Newtonsoft.Json.JsonConvert.SerializeObject(stateOfPass);
-
-            SqlConnection cnn;
-
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_PASS_FORMAT]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(respon);
-                cnn.Open();
-                SqlDataAdapter da = new SqlDataAdapter();
-                da.SelectCommand = command;
-                da.Fill(dataTable);
-
+                ProcedureResponse result = procedureCall.runProcedure();
+                dataTable = result.getDataTable();
                 stateOfPass.Result = "Success";
             }
             catch (Exception ex)
@@ -92,23 +81,15 @@ namespace THKH.Webpage.Staff.PassManagement
                 stateOfPass.Result = "Failure";
                 stateOfPass.Msg = ex.Message;
                 return stateOfPass;
-
             }
-            finally
-            {
-                cnn.Close();
-            }
+           
             String placeName = "";
             for (var i = 0; i < dataTable.Rows.Count; i++)
             {
                 placeName = dataTable.Rows[i]["passFormat"].ToString();
-
-
             }
-
             stateOfPass.Msg = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(placeName);//Json object contains: divState(div object holding pass contents) and positions(position offsets of elements within div) in json format
-             
-            
+
             return stateOfPass;
         }
 
@@ -146,36 +127,24 @@ namespace THKH.Webpage.Staff.PassManagement
         public string setPassState(string state,string statePositions)
         {
             string successString = "";
-
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("SET_PASS_FORMAT", true, true, false);
             dynamic stateOfPass = new ExpandoObject();
             stateOfPass.divState = state;
             stateOfPass.positions = statePositions;
-            string jsonState = Newtonsoft.Json.JsonConvert.SerializeObject(stateOfPass);
 
-            SqlConnection cnn;
-            
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            string jsonState = Newtonsoft.Json.JsonConvert.SerializeObject(stateOfPass);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pPass_Format", jsonState);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[SET_PASS_FORMAT]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pPass_Format", jsonState);
-                command.Parameters.Add(respon);
-                cnn.Open();
+                procedureCall.runProcedure();
 
-                command.ExecuteNonQuery();
                 successString = "Success";
             }
             catch (Exception ex)
             {
                 successString = "Error occured. Sql error";
                 
-            }
-            finally
-            {
-                cnn.Close();
             }
             return successString;
         }
