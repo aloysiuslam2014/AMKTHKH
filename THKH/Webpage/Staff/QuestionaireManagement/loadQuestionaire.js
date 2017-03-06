@@ -1,4 +1,7 @@
-﻿//create a case insensitive jquery contains method
+﻿var pathToQuesMgmt = '../Staff/QuestionaireManagement/questionaireManagement.ashx';
+var updateError = "An error has occured. Please Contact the administrator";
+var addQuestionError = "SQL error. Please Contact the administrator";
+//create a case insensitive jquery contains method
 $.extend($.expr[':'], {
     'containsi': function (elem, i, match, array) {
         return (elem.textContent || elem.innerText || '').toLowerCase()
@@ -110,7 +113,7 @@ function formManagementInit() {
             requestType: "initialize"
         };
         $.ajax({
-            url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+            url: pathToQuesMgmt,
             method: 'post',
             data: headersToProcess,
 
@@ -327,7 +330,7 @@ function displayQuestionnaireQuestions() {
         ListID: idl
     };
     $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+        url: pathToQuesMgmt,
         method: 'post',
         data: headersToProcess,
 
@@ -403,7 +406,7 @@ function newQuestionnaire() {
             requestType: "addQuestionnaire", qName: qname
         };
         $.ajax({
-            url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+            url: pathToQuesMgmt,
             method: 'post',
             data: headersToProcess,
 
@@ -424,7 +427,7 @@ function newQuestionnaire() {
                         $("#emptyQuestionnaireWarning").css("display", "none");
                     }    
                 } else {
-                    alert("SQL Error: Please contact the administrator");
+                    alert(addQuestionError);
                 }
             },
             error: function (err) {
@@ -464,11 +467,9 @@ function deleteQuestionnaire() {
         requestType: "deleteQuestionnaire"
     };
     $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+        url: pathToQuesMgmt,
         method: 'post',
         data: headersToProcess,
-
-
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Msg;
@@ -579,11 +580,9 @@ function updateOrCreate() {
 
 
             $.ajax({
-                url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+                url: pathToQuesMgmt,
                 method: 'post',
                 data: headersToProcess,
-
-
                 success: function (returner) {
                     resultOfGeneration = JSON.parse(returner);
                     var res = resultOfGeneration.Result;
@@ -594,7 +593,7 @@ function updateOrCreate() {
                         closeEditor();
 
                     } else {
-                        alert("An error has occured. Please Contact the administrator");
+                        alert(updateError);
                     }
                 },
                 error: function (err) {
@@ -614,7 +613,7 @@ function deleteQuestion() {
         requestType: "deleteQuestion"
     };
     $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+        url: pathToQuesMgmt,
         method: 'post',
         data: headersToProcess,
 
@@ -675,7 +674,7 @@ function updateQuestionnaire() {
         qnQns: qnQns, qnaireId: qnaireId, requestType: "update"
     };
     $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+        url: pathToQuesMgmt,
         method: 'post',
         data: headersToProcess,
 
@@ -715,7 +714,7 @@ function setActiveQuestionnaire() {
         qnaireId: qnaireId, requestType: "active"
     };
     $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+        url: pathToQuesMgmt,
         method: 'post',
         data: headersToProcess,
 
@@ -739,7 +738,7 @@ function selectActiveQuestionnaire() {
         requestType: "initialize"
     };
     $.ajax({
-        url: '../Staff/QuestionaireManagement/questionaireManagement.ashx',
+        url: pathToQuesMgmt,
         method: 'post',
         data: headersToProcess,
 

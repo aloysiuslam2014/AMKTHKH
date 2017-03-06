@@ -1,4 +1,8 @@
-﻿$(document).ready(function () {
+﻿var pathToSms = '../Staff/SMS/SMSManagement.ashx';
+var smsSendError = "One of the numbers have failed";
+var smsSendSuccess = "SMS Sent!";
+
+$(document).ready(function () {
     hideSMSTags();
 });
 
@@ -28,7 +32,7 @@ function sendSMS() {
         requestType: "sendSMS", message: message, numbers: numbers
     };
     $.ajax({
-        url: '../Staff/SMS/SMSManagement.ashx',
+        url: pathToSms,
         method: 'post',
         data: headersToProcess,
 
@@ -36,9 +40,9 @@ function sendSMS() {
             //var resultOfGeneration = JSON.parse(returner);
             var responseArr = returner.split(',');
             if (responseArr.length > 1) {
-                alert("One of the numbers have failed");
+                alert(smsSendError);
             } else {
-                alert("SMS Sent!");
+                alert(smsSendSuccess);
             }
         },
         error: function (err) {

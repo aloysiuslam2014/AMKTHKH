@@ -1,6 +1,7 @@
-﻿$(function () {
-   
+﻿var pathToTerminal = './TerminalCalls/TerminalCheck.ashx';
+var ajaxServerError = "Server Error. Please contact the administrator. Please check the path or check if the file exist.";
 
+$(function () {
     $('#addTerminal').on('click', function (event) {
         $('#addTerminalModal').modal({ backdrop: 'static', keyboard: false });
         $('.modal-backdrop').appendTo('#TerminalManagement');
@@ -9,12 +10,9 @@
         $('#addTerminalModal').css('position', 'absolute');
         $('#addTerminalModal').css('width', 'inherit');
         $('#addTerminalModal').css('height', 'inherit');
-      
     });
-
     
     $('#terminalBedLink').on('change', function () {
-        
         if (this.value == "Yes") {
             $("#beds").prop('disabled', false);
         } else {
@@ -55,7 +53,7 @@
             isInfectious: terminalInfectious.value == "Yes" ? 1 : 0
         };
             $.ajax({
-                url: './TerminalCalls/TerminalCheck.ashx',
+                url: pathToTerminal,
                 method: 'post',
                 data: headersToProcess,
 
@@ -72,7 +70,7 @@
                     
                 },
                 error: function (err) {
-                    alert("error");
+                    alert(ajaxServerError);
                 },
             });
        
@@ -106,9 +104,8 @@
     });
     $('#deleteTerminal').on('click', function (event) {
         event.preventDefault();
-       
-         
         $('#GenericMessage').html("Are you sure you want to <B>DELETE</B> the selected terminal(s)? ");
+        $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
         $('.modal-backdrop').appendTo('#TerminalManagement');
         $('#confirmAction').on('click', function (event) {
             genericTerminalCofirmation("deleteTerminal");
@@ -135,8 +132,6 @@
         $('#confirmAction').on('click', function (event) {
             genericTerminalCofirmation("deleteAllTerminal")
         });
-         
-      
     });
 });
 
@@ -148,42 +143,31 @@ function noTerminalSelected() {
 }
 
 function selectAllTerminals() {
-   
         //get the list and get all the options
     $("#terminalList li:not(.active)").each(function (idx, li) {
             $(li).triggerHandler('click');
         });
-
-   
 }
  
 function deselectAllTerminals() {
-        
     //get the list and get all the options
     $("#terminalList li.active").each(function (idx, li) {
         $(li).triggerHandler('click');
     });
-
-
 }
 
 function genericTerminalCofirmation(type){
     //All buttons will have a warning before proceeding on...
-  
-    
     var selectedItems = getSelectedTerminals();
     if (type == "deactivateTerminal") {
        
         //create looped ajax call to deactivate Terminal
         for (var i = 0; i < selectedItems.length ; i++) {
-
             var headersToProcess = { action: "deactivate", id: selectedItems[i] };
             $.ajax({
-                url: './TerminalCalls/TerminalCheck.ashx',
+                url: pathToTerminal,
                 method: 'post',
                 data: headersToProcess,
-
-
                 success: function (returner) {
                     if (i == selectedItems.length) {
                         loadTerminals();
@@ -192,7 +176,7 @@ function genericTerminalCofirmation(type){
                     $(selectedItems[i]).addClass("inactive");
                 },
                 error: function (err) {
-                    alert("error");
+                    alert(ajaxServerError);
                 },
             });
         }
@@ -200,19 +184,15 @@ function genericTerminalCofirmation(type){
     else if (type === "deleteTerminal") {
         //create looped ajax call to delete terminal
         for (var i = 0; i < selectedItems.length ; i++) {
-
             var headersToProcess = { action: "deleteTerminals", id: selectedItems[i] };
             $.ajax({
-                url: './TerminalCalls/TerminalCheck.ashx',
+                url: pathToTerminal,
                 method: 'post',
                 data: headersToProcess,
-
-
                 success: function (returner) {
                     if (i == selectedItems.length) {
                         loadTerminals();
                     }
-
                 },
                 error: function (err) {
                     alert("error");
@@ -224,17 +204,15 @@ function genericTerminalCofirmation(type){
         //deactivate all terminal
         var headersToProcess = { action: "deactivateAllTerminals", id: selectedItems[i] };
         $.ajax({
-            url: './TerminalCalls/TerminalCheck.ashx',
+            url: pathToTerminal,
             method: 'post',
             data: headersToProcess,
-
-
             success: function (returner) {
 
                 loadTerminals();
             },
             error: function (err) {
-                alert("error");
+                alert(ajaxServerError);
             },
         });
     }
@@ -242,20 +220,16 @@ function genericTerminalCofirmation(type){
         //delete all terminal
         var headersToProcess = { action: "deleteAllTerminals", id: selectedItems[i] };
         $.ajax({
-            url: './TerminalCalls/TerminalCheck.ashx',
+            url: pathToTerminal,
             method: 'post',
             data: headersToProcess,
-
-
             success: function (returner) {
-
                 loadTerminals()
             },
             error: function (err) {
-                alert("error");
+                alert(ajaxServerError);
             },
         });
-
     }
   
     $('#genericTerminalModal').modal('hide');
@@ -266,22 +240,17 @@ function loadTerminals() {
     var headersToProcess = { action: "getAllTerminals", id: "" };
     //get the terminals
     $.ajax({
-        url: './TerminalCalls/TerminalCheck.ashx',
+        url: pathToTerminal,
         method: 'post',
         data: headersToProcess,
-
-
         success: function (returner) {
             //generate elements and append to the ul
             generateTerminalListAndInit(returner);
-            
         },
         error: function (err) {
-            alert("error");
+            alert(ajaxServerError);
         },
     });
-
-   
 }
 
 function generateTerminalListAndInit(terminalData) {
@@ -295,15 +264,11 @@ function generateTerminalListAndInit(terminalData) {
         $(listElement).attr("class", "list-group-item");
         $(listElement).attr("data-color", "info");
         if (datas[2].toString() == "1") {
-           
             $(listElement).attr("style", "text-align: left;color:#3c763d");
-            
         } else {
-           
             $(listElement).attr("style", "text-align: left;color: #a94442;");
             $(listElement).addClass("inactive");
         }
-       
         $(listElement).attr("id", terminalID);
         $(listElement).html(terminalName);
         $("#terminalList").append(listElement);
@@ -323,10 +288,8 @@ function generateTerminalListAndInit(terminalData) {
                     icon: 'glyphicon glyphicon-unchecked'
                 }
             };
-
         $widget.css('cursor', 'pointer')
         $widget.append($checkbox);
-
         // Event Handlers
         $widget.on('click', function () {
             $checkbox.prop('checked', !$checkbox.is(':checked'));
@@ -336,20 +299,15 @@ function generateTerminalListAndInit(terminalData) {
         $checkbox.on('change', function () {
             updateDisplay();
         });
-
-
         // Actions
         function updateDisplay() {
             var isChecked = $checkbox.is(':checked');
-
             // Set the button's state
             $widget.data('state', (isChecked) ? "on" : "off");
-
             // Set the button's icon
             $widget.find('.state-icon')
                 .removeClass()
                 .addClass('state-icon ' + settings[$widget.data('state')].icon);
-
             // Update the button's color
             if (isChecked) {
                 $widget.addClass(style + color + ' active');
@@ -364,9 +322,7 @@ function generateTerminalListAndInit(terminalData) {
             if ($widget.data('checked') == true) {
                 $checkbox.prop('checked', !$checkbox.is(':checked'));
             }
-
             updateDisplay();
-
             // Inject the icon if applicable
             if ($widget.find('.state-icon').length == 0) {
                 $widget.prepend('<span class="state-icon ' + settings[$widget.data('state')].icon + '"></span>');
@@ -374,17 +330,12 @@ function generateTerminalListAndInit(terminalData) {
         }
         init();
     });
-
-   
 }
 
 function getSelectedTerminals() {
-    
-       
     var checkedItems = [];
     $("#terminalList li.active").each(function (idx, li) {
         checkedItems.push($(li).attr('id'));
-            
         });
         //$('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
         return checkedItems;

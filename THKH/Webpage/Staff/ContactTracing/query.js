@@ -1,4 +1,9 @@
-﻿var visitors, visitDetails;
+﻿var toTracing = './ContactTracing/tracing.ashx';
+var selfRegNoDataError = "Selected period returns no data. Please try another date";
+var serverAjaxFailureError = "There was a problem retrieving valid terminals.";
+
+
+var visitors, visitDetails;
 var uq_bednos = document.getElementById("uq_bednos");
 var uq_loc = document.getElementById("uq_loc");
 
@@ -23,10 +28,8 @@ function unifiedTrace() {
         alert("End date of query period must be before start date!");
         return;
     }
-
     var uq_querybeds = $("#uq_bednos").val();
     var uq_loc = $("#uq_loc").val();
-
     uq_params = "";
     if (uq_loc == "") {
         uq_params = "bybed~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_querybeds;
@@ -37,7 +40,7 @@ function unifiedTrace() {
 
     var headersToProcess = { action: "unifiedTrace", queries: uq_params };
     $.ajax({
-        url: './ContactTracing/tracing.ashx',
+        url: toTracing,
         method: 'post',
         data: headersToProcess,
 
@@ -52,15 +55,8 @@ function unifiedTrace() {
 
                 for (i = 0; i < arrLen; i++) {
                     var uqResultJSON = uqResult.Msg[i];
-
-                    //writeUQResultsTable(uqResultJSON);
-                    
                     result_table.fnAddData(uqResultJSON);
                 }
-                //var uqResultJSON = uqResult.Msg[0];
-
-                //writeUQResultsTable(uqResultJSON);
-
             } catch (err) {
                 alert("Selected period returns no data. Please try again. " + err);
             }
@@ -74,14 +70,7 @@ function unifiedTrace() {
 
 function writeUQResultsTable(uqResultJSON) {
 
-    //$("#uq_resultstable_body").html('');//already cleared child elements at top of unifiedTrace()
     $("#generateCSV").removeClass('disabled');//Enable csv download button
-    //$("#uq_resultstable_head").removeAttribute('style');//unhide table headers
-    // var traced_visitors = JSON.parse(uqResultJSON); //Why parse when a JSON object is given to you already?
-
-    //try {
-        //for (index = 0; index < traced_visitors.length; ++index) {
-            //var v = visitors[index];
             var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "reg", "scan"];
 
             //visitor
@@ -96,11 +85,6 @@ function writeUQResultsTable(uqResultJSON) {
             }
 
             $("#uq_resultstable_body").append(row);
-        //}
-    //} catch (err) {
-    //    alert("Unable to print any traced visitors.");
-    //}
-    
 }
 
 function traceByReg() {
@@ -113,7 +97,7 @@ function traceByReg() {
 
     var headersToProcess = { action: "traceByReg", queries: byRegQueryParams };
     $.ajax({
-        url: './ContactTracing/tracing.ashx',
+        url: toTracing,
         method: 'post',
         data: headersToProcess,
 
@@ -125,12 +109,12 @@ function traceByReg() {
                 var visitDetailsk = byRegResultsJson.visitorDetails;
                 writeByRegResultsTable(visitorsk, visitDetailsk);
             } else {
-                alert("Selected period returns no data. Please try another date");
+                alert(selfRegNoDataError);
             }
            
         },
         error: function (err) {
-            alert("There was a problem retrieving valid terminals.");
+            alert(serverAjaxFailureError);
         },
     });
 }
@@ -146,8 +130,6 @@ function writeByRegResultsTable(visitorsx, visitorDetails) {
     for (index = 0; index < visitors.length; ++index) {
         var v = visitors[index];
         var vparams = ["nric", "fullName", "gender", "nationality", "dateOfBirth", "race", "mobileTel", "homeTel", "altTel", "email", "homeAddress", "postalCode", "time_stamp", "confirm", "amend"];
-
-
         //visitor
         var row = document.createElement("tr");
 
@@ -196,20 +178,16 @@ function generateCSV() {
         csvGenerate.push(visitProfileCSV + "," + visitDetailToCSV);
     }
     var csvContent = "data:text/csv;charset=utf-8,";
-    
     csvGenerate.forEach(function (infoArray, index) {
-
         csvContent += index < csvGenerate.length ? infoArray + "\n" : infoArray;
 
     });
 
     var encodedUri = encodeURI(csvContent);
-  
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", "traceResultsForBed.csv");
     document.body.appendChild(link); // Required for FF
-
     link.click(); // This will download the data file named "my_data.csv".
 }
 
@@ -217,12 +195,10 @@ function getValidTerminals() {
     $(validTerminalList).html("");
     var dateStart = $("#qstartdatetime").val();// value in real time // DOM-live value , Static-web value
     var dateEnd = $("#qenddatetime").val();
-
     queryDates = dateStart + '~' + dateEnd
-
     var headersToProcess = { action: "getValidTerminals", queries: queryDates };
     $.ajax({
-        url: './ContactTracing/tracing.ashx',
+        url: toTracing,
         method: 'post',
         data: headersToProcess,
 
@@ -262,20 +238,15 @@ function getValidTerminals() {
                 $checkbox.on('change', function () {
                     updateDisplay();
                 });
-
-
                 // Actions
                 function updateDisplay() {
                     var isChecked = $checkbox.is(':checked');
-
                     // Set the button's state
                     $widget.data('state', (isChecked) ? "on" : "off");
-
                     // Set the button's icon
                     $widget.find('.state-icon')
                         .removeClass()
                         .addClass('state-icon ' + settings[$widget.data('state')].icon);
-
                     // Update the button's color
                     if (isChecked) {
                         $widget.addClass(style + color + ' active');
@@ -283,14 +254,12 @@ function getValidTerminals() {
                         $widget.removeClass(style + color + ' active');
                     }
                 }
-
                 // Initialization
                 function init() {
 
                     if ($widget.data('checked') == true) {
                         $checkbox.prop('checked', !$checkbox.is(':checked'));
                     }
-
                     updateDisplay();
 
                     // Inject the icon if applicable
@@ -302,7 +271,7 @@ function getValidTerminals() {
             });
         },
         error: function (err) {
-            alert("There was a problem retrieving valid terminals.");
+            alert(serverAjaxFailureError);
         },
     });
 }
@@ -310,21 +279,17 @@ function getValidTerminals() {
 function writeTerminalResult(terminal, startdate, enddate) {
     var queryStartDate = Date.parse(startdate);
     var queryEndDate = Date.parse(enddate);
-
     var tname = terminal.tname;
     var tstartdate = terminal.startd;
     var tenddate = terminal.endd;
-
     var qstartdate = tstartdate;
     var qenddate = tenddate;
-
     if (Date.parse(tstartdate) > queryStartDate) {
         qstartdate = queryStartDate;
     }
     if (tenddate === "" || Date.parse(tenddate) < queryEndDate) {
         qenddate = queryEndDate;
     }
-
     var listObj = document.createElement("LI");
     $(listObj).prop("style","cursor: pointer;display: inline-flex;width: 100%;")
     var listDiv = document.createElement("DIV");
@@ -375,9 +340,6 @@ function addDateTimeRange() {
     var dateStart = $("#qstartdatetime").val();// value in real time // DOM-live value , Static-web value
     var dateEnd = $("#qenddatetime").val();
     var beds = $("#querybeds").val();
-    //  var dateStart = $("#querystartdatetime").attr("value");//Static-web
-    // var dateStart = $("#querystartdatetime").prop("value");//dom-live value
-    //alert(dateStart);
     var listObj = document.createElement("LI");
 
     //startDate
@@ -417,8 +379,6 @@ function addDateTimeRange() {
 function submitQueries() {
     var queryDates = "";
     $("#querylist .qtem").each(function (idx, li) {
-
-        //var child = $(li).find("#IDOfElement .ClassOfElement");//Find an element inside of the object
         var qstart = $(li).find(".dateStartLabel");
         var qitem_sd = $(qstart).val();//Get value
 
@@ -428,19 +388,15 @@ function submitQueries() {
         var qbed = $(li).find(".bedsLabel");
         var qitem_bed = $(qbed).val();
 
-        //$(child).attr("someting") // get id or value or any property from the element
-        //var startDate = $(child).find(".startDate").html();
-
         thisQuery = qitem_sd + '~~' + qitem_ed + '~~' + qitem_bed
         queryDates += thisQuery + "@@@";
     });
 
     var headersToProcess = { action: "traceByBed", queries: queryDates};
     $.ajax({
-        url: './ContactTracing/tracing.ashx',
+        url: toTracing,
         method: 'post',
         data: headersToProcess,
-
         success: function (returner) {
             traceQuery = JSON.parse(returner);
             var tracearr = [];
@@ -450,7 +406,7 @@ function submitQueries() {
             }
         },
         error: function (err) {
-            alert("There was a problem performing the tracing query.");
+            alert(serverAjaxFailureError);
         },
     });
 }
