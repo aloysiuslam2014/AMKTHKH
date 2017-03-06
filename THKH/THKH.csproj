@@ -663,6 +663,8 @@
     <Compile Include="Classes\Entity\Terminal.cs" />
     <Compile Include="Classes\Entity\Visit.cs" />
     <Compile Include="Classes\Entity\Visitor.cs" />
+    <Compile Include="Classes\DAO\GenericProcedureDAO.cs" />
+    <Compile Include="Classes\Entity\procedureResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
