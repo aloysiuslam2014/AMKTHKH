@@ -1,8 +1,7 @@
-﻿/// <reference path="C:\Users\iamth\Source\Repos\AMKTHKH\THKH\Webpage/Staff/Login.aspx" />
-/// <reference path="C:\Users\iamth\Source\Repos\AMKTHKH\THKH\Webpage/Staff/Login.aspx" />
+﻿
+
 $(document).ready(function () {
     
-  
     $("#myModal").modal({
         backdrop: 'static',
         keyboard: false
