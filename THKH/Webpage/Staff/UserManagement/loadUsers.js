@@ -739,13 +739,13 @@ $("#staffNric").on("input", function () {
 // Email Format Validation
 $("#staffEmail").on("input", function () {
     var email = $("#staffEmail").val();
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    var valid = validateEmail(email);
+    if (valid) {
         $("#emailWarningUser").css("display", "none");
-        validEmail = true;
     } else {
         $("#emailWarningUser").css("display", "block");
-        validEmail = false;
     }
+    validEmail = valid;
 });
 
 // Validate mobile phone number format
@@ -753,11 +753,10 @@ $("#staffMobileNum").on("input", function () {
     var validPhone = validatePhone($("#staffMobileNum").val());
     if (validPhone !== false) {
         $("#mobWarningUser").css("display", "none");
-        validMobUser = true;
     } else {
         $("#mobWarningUser").css("display", "block");
-        validMobUser = false;
     }
+    validMobUser = validPhone;
 });
 
 // Validate postal code number format
@@ -765,11 +764,10 @@ $("#staffPostal").on("input", function () {
     var validPostal = validatePostal($("#staffPostal").val());
     if (validPostal !== false) {
         $("#posWarningUser").css("display", "none");
-        validPosUser = true;
     } else {
-        $("#posWarningUser").css("display", "block");
-        validPosUser = false;
+        $("#posWarningUser").css("display", "block");    
     }
+    validPosUser = validPostal;
 });
 
 // Validate home phone number format
@@ -777,11 +775,10 @@ $("#staffHomeNum").on("input", function () {
     var validPhone = validatePhone($("#staffHomeNum").val());
     if (validPhone !== false) {
         $("#homWarningUser").css("display", "none");
-        validHomUser = true;
     } else {
         $("#homWarningUser").css("display", "block");
-        validHomUser = false;
     }
+    validHomUser = validPhone;
 });
 
 // Validate alt phone number format
@@ -789,11 +786,10 @@ $("#staffAltNum").on("input", function () {
     var validPhone = validatePhone($("#staffAltNum").val());
     if (validPhone !== false) {
         $("#altWarningUser").css("display", "none");
-        validAltUser = true;
     } else {
         $("#altWarningUser").css("display", "block");
-        validAltUser = false;
     }
+    validAltUser = validPhone;
 });
 
 // Show Success Modal
@@ -819,13 +815,4 @@ function showUpdateUserSuccessModal(text) {
 // Hide Success Modal
 function hideUpdateUserSuccessModal() {
     $('#updateUserSuccessModal').modal('hide');
-}
-
-// Email Format Validation
-function ValidateEmail() {
-    var email = $('#staffEmail').val();
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-        return true;
-    }
-    return false;
 }

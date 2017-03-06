@@ -36,14 +36,10 @@ namespace THKH.Webpage.Staff.CheckInOut
             if (typeOfRequest == "self")
             {
                 var nric = context.Request.Form["nric"].ToString();
-                //var temperature = context.Request.Form["temperature"];
-                //var age = context.Request.Form["AGE"];
                 var fname = context.Request.Form["fullName"];
                 var address = context.Request.Form["ADDRESS"];
                 var postal = context.Request.Form["POSTAL"];
                 var mobtel = context.Request.Form["MobTel"];
-                //var alttel = context.Request.Form["AltTel"];
-                //var hometel = context.Request.Form["HomeTel"];
                 var sex = context.Request.Form["SEX"];
                 var nationality = context.Request.Form["Natl"];
                 var dob = context.Request.Form["DOB"];
@@ -174,7 +170,9 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         private String loadForm() {
             SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
+            //String successString = "{\"Result\":\"Success\",\"Msg\":";
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
             SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -187,39 +185,52 @@ namespace THKH.Webpage.Staff.CheckInOut
 
                 //command.ExecuteNonQuery();
                 SqlDataReader reader = command.ExecuteReader();
+                List<ExpandoObject> list = new List<ExpandoObject>();
                 int count = 1;
                 if (reader.HasRows)
                 {
-                    successString += "[";
+                    //successString += "[";
                     while (reader.Read())
                     {
-                        if (count > 1) {
-                            successString += ",";
-                        }
-                        successString += "{\"QuestionNumber\":\"";
-                        successString += reader.GetInt32(1) + "\",\"QuestionList\":\"" + reader.GetString(0) +"\",\"Question\":\"" + reader.GetString(2) + "\",\"QuestionType\":\"" + reader.GetString(3) + "\",\"QuestionAnswers\":\"" + reader.GetString(4);
-                        successString += "\"}";
+                        dynamic row = new ExpandoObject();
+                        row.QuestionNumber = reader.GetInt32(1);
+                        row.QuestionList = reader.GetString(0);
+                        row.Question = reader.GetString(2);
+                        row.QuestionType = reader.GetString(3);
+                        row.QuestionAnswers = reader.GetString(4);
+                        //if (count > 1) {
+                        //successString += ",";
+                        //}
+                        //successString += "{\"QuestionNumber\":\"";
+                        //successString += reader.GetInt32(1) + "\",\"QuestionList\":\"" + reader.GetString(0) +"\",\"Question\":\"" + reader.GetString(2) + "\",\"QuestionType\":\"" + reader.GetString(3) + "\",\"QuestionAnswers\":\"" + reader.GetString(4);
+                        //successString += "\"}";
+                        list.Add(row);
                         count++;
                     }
-                    successString += "]";
+                    //successString += "]";
                 }
-                successString += respon.Value;
+                //successString += respon.Value;
                 reader.Close();
+                result.Msg = list;
                 //successString += "\"}";
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                //successString.Replace("Success", "Failure");
+                //successString += ex.Message;
+                //successString += "\"}";
+                //return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
             finally
             {
                 cnn.Close();
             }
-            successString += "}";
-            return successString;
+            //successString += "}";
+            //return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // Check if patient exists in the Patient Database

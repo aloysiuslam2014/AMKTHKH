@@ -657,6 +657,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Entity\Question.cs" />
+    <Compile Include="Classes\Entity\Questionnaire.cs" />
+    <Compile Include="Classes\Entity\QuestionnaireAnswer.cs" />
+    <Compile Include="Classes\Entity\Terminal.cs" />
+    <Compile Include="Classes\Entity\Visit.cs" />
+    <Compile Include="Classes\Entity\Visitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
@@ -716,7 +722,6 @@
   <ItemGroup>
     <Folder Include="Classes\Controller\" />
     <Folder Include="Classes\DAO\" />
-    <Folder Include="Classes\Entity\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
