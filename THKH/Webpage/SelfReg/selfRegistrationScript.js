@@ -344,12 +344,14 @@ $(function () {
     $('#visitbookingtimediv').datetimepicker(
         {
             defaultDate: new Date(),
-            format: 'HH:mm' // Change to 15 Min Intervals
+            format: 'HH:mm'
         });
     $('#visitbookingdatediv').datetimepicker(
         {
             defaultDate: new Date(),
             format: 'DD-MM-YYYY',
+            minDate: moment(),
+            maxDate: moment().add(1, 'days'),
             ignoreReadonly: true
         });
 });
@@ -508,7 +510,7 @@ function amendVisitorDetails() {
 function hideTags() {
     $('#emptyNricWarning').css("display", "none");
     $('#nricWarning').css("display", "none");
-    $('#noVisitWarning').css("display", "none");
+    //$('#noVisitWarning').css("display", "none");
     $('#visitDetailsDiv').css("display", "none");
     $("#emailWarning").css("display", "none");
     $('#staticinfocontainer').css("display", "none");
@@ -967,18 +969,18 @@ function populateTime() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-            var count = 0;
+            //var count = 0;
             var mes = resultOfGeneration.Msg;
             var arr = mes.toString().split(",");
             lowTime = arr[3].toString();
             highTime = arr[4].toString();
-            var upperLimitHit = Date.parse("01/01/2011 " + highTime) >= Date.parse("01/01/2011 " + timeStr);
-            var lowLimitHit = Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr);
-            if (upperLimitHit && lowLimitHit) {
+            //var upperLimitHit = Date.parse("01/01/2011 " + highTime) >= Date.parse("01/01/2011 " + timeStr);
+            //var lowLimitHit = Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr);
+            //if (upperLimitHit && lowLimitHit) {
                 if (!adjustedTime) {
-                    if (Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) {
-                        lowTime = timeStr;
-                    }
+                    //if (Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) {
+                    //    lowTime = timeStr;
+                    //}
                     var time = [
                                 '00:00',
                                 '00:30',
@@ -1035,20 +1037,23 @@ function populateTime() {
                         $(optin).attr("name", time[i]);
                         $(optin).attr("value", time[i]);
                         $(optin).html(time[i]);
+                        if (time[i] == timeStr) {
+                            $(optin).prop("selected", true);
+                        }
                         $('#visitbookingtime').append(optin);
-                        count++;
+                        //count++;
                     }
-                }
+                //}
             }
-            if (count == 0) {
-                allowVisit = false;
-                $('#noVisitWarning').css("display", "block");
-                $("#selfRegNric").prop('disabled', true);
-            } else {
-                allowVisit = true;
-                $('#noVisitWarning').css("display", "none");
-                $("#selfRegNric").prop('disabled', false);
-            }
+            //if (count == 0) {
+            //    allowVisit = false;
+            //    $('#noVisitWarning').css("display", "block");
+            //    $("#selfRegNric").prop('disabled', true);
+            //} else {
+            //    allowVisit = true;
+            //    $('#noVisitWarning').css("display", "none");
+            //    $("#selfRegNric").prop('disabled', false);
+            //}
         },
         error: function (err) {
             alert("Error: " + err.Msg);

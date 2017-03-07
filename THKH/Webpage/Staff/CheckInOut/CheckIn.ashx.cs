@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
@@ -220,32 +221,44 @@ namespace THKH.Webpage.Staff.CheckInOut
             result.Result = "Success";
             SqlConnection cnn;
             //String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@returnValue", SqlDbType.VarChar, -1);
-            respon.Direction = ParameterDirection.Output;
+            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            //SqlParameter respon = new SqlParameter("@returnValue", SqlDbType.VarChar, -1);
+            
+            //respon.Direction = ParameterDirection.Output;
             String msg = "";
+            String visJson = "";
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_VISITOR]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNRIC", nric);
-                command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
-                command.Parameters.Add(respon);
-                cnn.Open();
+                //SqlCommand command = new SqlCommand("[dbo].[GET_VISITOR]", cnn);
+                //command.CommandType = System.Data.CommandType.StoredProcedure;
+                //command.Parameters.AddWithValue("@pNRIC", nric);
+                //command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
+                //command.Parameters.Add(respon);
+                //cnn.Open();
 
-                command.ExecuteNonQuery();
-                String response = respon.Value.ToString();
+                //command.ExecuteNonQuery();
+                //String response = respon.Value.ToString();
+                GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_VISITOR", true, true, false);
+                procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+                procedureCall.addParameter("@returnValue", SqlDbType.VarChar);
+                procedureCall.addParameterWithValue("@pNRIC", nric);
+                ProcedureResponse res = procedureCall.runProcedure();
+                String response = res.getResponses()["@returnValue"].ToString();
+
                 if (!response.Contains("Visitor not found"))
                 {
                     //msg += response;
                     result.Visitor = response;
+                    var arr = response.Split(',');
+                    Visitor vistr = new Visitor(arr[1], arr[0], arr[2].Trim(), arr[3], arr[4], arr[5], arr[6], arr[7]);
+                    visJson = vistr.toJson();
                 }
                 else {
                     //successString += "new";
                     //successString += "\"}";
                     //return successString;
                     result.Visitor = "new";
-                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                    return JsonConvert.SerializeObject(result);
                 }   
             }
             catch (Exception ex)
@@ -256,11 +269,11 @@ namespace THKH.Webpage.Staff.CheckInOut
                 //return successString;
                 result.Result = "Failure";
                 result.Visitor = ex.Message;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
             }
             finally
             {
-                cnn.Close();
+                //cnn.Close();
             }
             try
             {
@@ -272,13 +285,13 @@ namespace THKH.Webpage.Staff.CheckInOut
                     var arr = tempMsg.Split(',');
                     var qAID = arr[arr.Length - 3];
                     //msg += "\"," + getSubmittedQuestionnaireResponse(qAID);
-                    result.Questionnaire = Newtonsoft.Json.JsonConvert.DeserializeObject(getSubmittedQuestionnaireResponse(qAID));
+                    result.Questionnaire = JsonConvert.DeserializeObject(getSubmittedQuestionnaireResponse(qAID));
                 }
                 else {
                     //successString += msg;
                     //successString += "\"}";
                     //return successString;
-                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                    return JsonConvert.SerializeObject(result);
                 }
             }
             catch (Exception ex) {
@@ -288,12 +301,12 @@ namespace THKH.Webpage.Staff.CheckInOut
                 //msg = ex.Message;
                 //successString += "\"}";
                 //return successString;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
             }
             //successString += msg;
             //successString += "}";
             //return successString;
-            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result);
         }
 
         private String getVisitDetails(String nric)
@@ -433,7 +446,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                     //return successString;
                     result.Result = "Failure";
                     result.Visitor = ex.Message;
-                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                    return JsonConvert.SerializeObject(result);
                 }
                 finally
                 {
@@ -454,7 +467,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 //return successString;
                 result.Result = "Failure";
                 result.Visitor = ex.Message;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
             }
             respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
             respon.Direction = ParameterDirection.Output;
@@ -485,7 +498,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 //msg = ",\"Visit\":\"" + ex.Message + "\"";
                 result.Result = "Failure";
                 result.Visit = ex.Message;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
             }
             finally
             {
@@ -497,7 +510,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             result.Visitor = visitor;
             result.Visit = visit;
             result.Questionnaire = questionnaire;
-            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result);
         }
 
         //Gets patient name from db 
@@ -528,11 +541,11 @@ namespace THKH.Webpage.Staff.CheckInOut
             catch(Exception e)
             {
                 toSend.error = e.Message.ToString();
-                successString = Newtonsoft.Json.JsonConvert.SerializeObject(toSend);
+                successString = JsonConvert.SerializeObject(toSend);
                 return successString;
             }
             toSend.name = patientName.Value.ToString();
-            successString = Newtonsoft.Json.JsonConvert.SerializeObject(toSend);
+            successString = JsonConvert.SerializeObject(toSend);
             return successString;
         }
 
@@ -590,7 +603,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 //return successString;
                 result.Result = "Failure";
                 result.Visitor = ex.Message;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
             }
             finally
             {
@@ -627,7 +640,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 //return successString;
                 result.Result = "Failure";
                 result.Visitor = ex.Message;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
             }
             //check number of visitors currently with patient
             if (purpose == "Visit Patient")
@@ -659,7 +672,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                         //return successString;
                         result.Result = "Failure";
                         result.Visitor = "Limit of " + visLim + " per bed has been reached.";
-                        return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                        return JsonConvert.SerializeObject(result);
                     }
                 }
                 catch (Exception ex)
@@ -670,7 +683,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                     //return successString;
                     result.Result = "Failure";
                     result.Visitor = ex.Message;
-                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                    return JsonConvert.SerializeObject(result);
                 }
             }
             else {
@@ -686,7 +699,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                     //return successString;
                     result.Result = "Failure";
                     result.Visitor = ex.Message;
-                    return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                    return JsonConvert.SerializeObject(result);
                 }
             }
 
@@ -721,7 +734,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 //return successString;
                 result.Result = "Failure";
                 result.Visit = ex.Message;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
             }
             finally
             {
@@ -736,7 +749,7 @@ namespace THKH.Webpage.Staff.CheckInOut
             result.Visit = visit;
             result.Questionnaire = questionnaire;
             result.CheckIn = checkin;
-            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result);
         }
 
         
@@ -807,8 +820,9 @@ namespace THKH.Webpage.Staff.CheckInOut
         }
 
         private dynamic checkNumCheckedIn(string bedno, int limit) {
+            DataTable dataTable = new DataTable();
             dynamic result = new ExpandoObject();
-
+            
             SqlConnection cnn;
             cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
            
@@ -818,24 +832,30 @@ namespace THKH.Webpage.Staff.CheckInOut
                 string[] beds = bedno.Split('|');
                 foreach(string bed in beds)
                 {
-                    SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@pBedNo", bed);
-                    command.Parameters.AddWithValue("@pLimit", limit);
-                    SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-                    respon.Direction = ParameterDirection.Output;
-                    command.Parameters.Add(respon);
-                    cnn.Open();
+                    GenericProcedureDAO procedureCall = new GenericProcedureDAO("CHECK_NUM_VISITORS", true, true, false);
+                    procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+                    procedureCall.addParameterWithValue("@pBedNo", bed);
+                    procedureCall.addParameterWithValue("@pLimit", limit.ToString());
+                    ProcedureResponse res = procedureCall.runProcedure();
+                    result.visitors = res.getResponses()["@responseMessage"];
+                    //SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
+                    //command.CommandType = System.Data.CommandType.StoredProcedure;
+                    //command.Parameters.AddWithValue("@pBedNo", bed);
+                    //command.Parameters.AddWithValue("@pLimit", limit);
+                    //SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
+                    //respon.Direction = ParameterDirection.Output;
+                    //command.Parameters.Add(respon);
+                    //cnn.Open();
 
-                    command.ExecuteNonQuery();
-                    cnn.Close();
-                    result.visitors = respon.Value;
-                    if (Int32.Parse(respon.Value.ToString()) > limit)
+                    //command.ExecuteNonQuery();
+                    //cnn.Close();
+                    //result.visitors = respon.Value;
+                    if (result.visitors >= limit)
                     {
                         result.bedno = bed;
                         break;
                     }
-                    
+
                 }
                
             }

@@ -149,7 +149,7 @@ margin-bottom:10px;
                                 <h5 id="emptyNricWarning">Please enter your NRIC/Identification Number!</h5>
                                 <button class="btn btn-block btn-success" id="submitNric" onclick="showVisitDetails(); false;"><span class="glyphicon glyphicon-ok"></span> Submit</button>
                                 <h5 id="nricWarning" style="color: lightcoral">Invalid ID number! Please register at the front counter.</h5>
-                                <h5 id="noVisitWarning" style="color: lightcoral">You are registering after visiting hours! Please approach the front counter for assistance.</h5>
+                                <%--<h5 id="noVisitWarning" style="color: lightcoral">You are registering after visiting hours! Please approach the front counter for assistance.</h5>--%>
                             </div>
                             <%--<div class="modal-body text-center">
                                 
@@ -232,7 +232,7 @@ margin-bottom:10px;
                                 <%--Visit Time--%>
                             <div class="form-group">
                                     <div class="input-group date" id="visitbookingdatediv">
-                                    <input type='text' id="visitbookingdate" class="form-control required" disabled />
+                                    <input type='text' id="visitbookingdate" class="form-control required" readonly="readonly" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>

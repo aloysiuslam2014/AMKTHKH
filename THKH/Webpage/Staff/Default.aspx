@@ -377,14 +377,14 @@
                             <br />
                             <label class="control-label" for="temp"><span style="color:lightcoral">*</span>Temperature</label>
                             <input id="temp" onkeypress=" return enterToCheckNric(event)" class="form-control required regInput" type="text" />
-                            <h4 id="tempWarning" style="color: lightcoral">Visitor's Temperature is above the allowable 37.6 degrees celcius!</h4>
-                            <h4 id="tempLimitWarning" style="color: lightcoral">Visitor's Temperature is above the limit of 37.6 degrees celcius!</h4>
-                            <h4 id="lowtempWarning" style="color: lightcoral">Visitor's Temperature is below the allowable 34 degrees celcius!</h4>
+                            <h4 id="tempWarning" style="color: lightcoral">Warning! Fever!</h4>
+                            <h4 id="tempLimitWarning" style="color: lightcoral">Invalid Temperature</h4>
+                            <h4 id="lowtempWarning" style="color: lightcoral">Invalid Temperature</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
                             <%--<h5>Please click the "Check NRIC" button once you have filled in the NRIC & the Temperature</h5>--%>
                             <div class="center-block">
                             <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span> Proceed</button>
-                            <h5 id="noVisitWarning" style="color: lightcoral">You are not within Visiting Hours! Please approach the admin for assistance.</h5>
+                            <%--<h5 id="noVisitWarning" style="color: lightcoral">You are not within Visiting Hours! Please approach the admin for assistance.</h5>--%>
                             </div>
                         </div>
                     </div>

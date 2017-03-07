@@ -48,6 +48,8 @@ var lowTemp = "34";
 var highTemp = "40";
 var warnTemp = "37.6";
 var visLim = 3;
+var regUrl = '../Staff/CheckInOut/checkIn.ashx';
+var configUrl = '../Staff/MasterConfig/masterConfig.ashx';
 var links = [
 {
     "bgcolor":"#03A9F4",
@@ -85,7 +87,7 @@ function callCheck (){
         var msg;
         var headersToProcess = { nric: nricValue, requestType: "getdetails" }; //Store objects in this manner 
         $.ajax({
-            url: './CheckInOut/checkIn.ashx',
+            url: regUrl,
             method: 'post',
             data: headersToProcess,
 
@@ -188,7 +190,7 @@ function loadBedPatientName(bedno) {
     var patientBedRequest = { requestType: "pName", bedNo: "" + bedno };
     var patientName = "";
     $.ajax({
-        url: './CheckInOut/checkIn.ashx',
+        url: regUrl,
         method: 'post',
         data: patientBedRequest,
 
@@ -213,7 +215,7 @@ function loadFacilities() {
         requestType: "facilities"
     };
     $.ajax({
-        url: '../Staff/CheckInOut/checkIn.ashx',
+        url: regUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -319,7 +321,7 @@ function validatePatient() {
         pName: pName, bedno: bedno, requestType: "patient"
     };
     $.ajax({
-        url: './CheckInOut/checkIn.ashx',
+        url: regUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -458,7 +460,7 @@ function NewAssistReg() {
         otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp, qListID: qListID, qAnswers: qAnswers, qaid: qaid, visLim: visLim
     };
     $.ajax({
-        url: './CheckInOut/checkIn.ashx',
+        url: regUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -835,7 +837,7 @@ function hideTags(clear) {
     $("#emptyFields").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
     $("#emailWarning").css("display", "none");
-    $('#noVisitWarning').css("display", "none");
+    //$('#noVisitWarning').css("display", "none");
     $('#lowtempWarning').css("display", "none");
     $('#tempWarning').css("display", "none");
     $('#tempLimitWarning').css("display", "none");
@@ -910,7 +912,7 @@ function loadActiveForm() {
         requestType: "form"
     };
     $.ajax({
-        url: './CheckInOut/checkIn.ashx',
+        url: regUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -1190,7 +1192,7 @@ function populateTime() {
     var lowTime = "";
     var adjustedTime = false;
     var highTime = "";
-    var count = 0;
+    //var count = 0;
     var d = new Date();
     var localTime = d.getTime();
     var localOffset = d.getTimezoneOffset() * 60000;
@@ -1219,7 +1221,7 @@ function populateTime() {
         requestType: "getConfig"
     };
     $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
+        url: configUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -1301,17 +1303,17 @@ function populateTime() {
                     }
                 }
             }
-            if (count == 0) {
-                allowVisit = false;
-                $('#noVisitWarning').css("display", "block");
-                $("#nric").prop('disabled', true);
-                $("#temp").prop('disabled', true);
-            } else {
-                allowVisit = true;
-                $('#noVisitWarning').css("display", "none");
-                $("#nric").prop('disabled', false);
-                $("#temp").prop('disabled', false);
-            }
+            //if (count == 0) {
+            //    allowVisit = false;
+            //    $('#noVisitWarning').css("display", "block");
+            //    $("#nric").prop('disabled', true);
+            //    $("#temp").prop('disabled', true);
+            //} else {
+            //    allowVisit = true;
+            //    $('#noVisitWarning').css("display", "none");
+            //    $("#nric").prop('disabled', false);
+            //    $("#temp").prop('disabled', false);
+            //}
         },
         error: function (err) {
             alert("Error: " + err.Msg);
@@ -1364,7 +1366,7 @@ function getVisLim() {
         requestType: "getConfig"
     };
     $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
+        url: configUrl,
         method: 'post',
         data: headersToProcess,
 

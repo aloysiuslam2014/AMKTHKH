@@ -2,6 +2,7 @@
 var loadedTime = false;
 var validSetTemp = false;
 var validSetTime = false;
+var configUrl = '../Staff/MasterConfig/masterConfig.ashx';
 
 // update configurations
 function updateConfig() {
@@ -15,7 +16,7 @@ function updateConfig() {
     if (lowTemp !== '' & highTemp !== '') {
         validSetTemp = true;
     }
-    if (lowTime !== '' & highTime !== '') {
+    if (!checkBlankField(lowTime) & !checkBlankField(highTime)) {
         validSetTime = true;
     }
     if (validSetTemp && validSetTime && compareTemp()) {
@@ -23,7 +24,7 @@ function updateConfig() {
             requestType: "updateSettings", lowTemp: lowTemp, highTemp: highTemp, warnTemp:warnTemp, lowTime: lowTime, highTime: highTime, staffUser: username, visLim: visLim
         };
         $.ajax({
-            url: '../Staff/MasterConfig/masterConfig.ashx',
+            url: configUrl,
             method: 'post',
             data: headersToProcess,
 
@@ -49,7 +50,7 @@ function updateAccessProfile() {
             requestType: "updateProfile", profileName: profileName, permissions: permissions, userName: userName
         };
         $.ajax({
-            url: '../Staff/MasterConfig/masterConfig.ashx',
+            url: configUrl,
             method: 'post',
             data: headersToProcess,
 
@@ -106,7 +107,7 @@ function delAccessProfile() {
         requestType: "deleteProfile", profileName: profileName
     };
     $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
+        url: configUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -133,7 +134,7 @@ function fillAccessProfileList() {
         requestType: "getProfiles"
     };
     $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
+        url: configUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -175,7 +176,7 @@ function getSelectedAccessProfile() {
         profileName: profile, requestType: "getSelectedProfile"
     };
     $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
+        url: configUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -213,7 +214,7 @@ function getCurrentConfig() {
         requestType: "getConfig"
     };
     $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
+        url: configUrl,
         method: 'post',
         data: headersToProcess,
 
@@ -488,7 +489,7 @@ function compareTemp() {
 // Check upper limit time settings
 $("#visTimeSetInputHigh").on("input", function () {
     var time = $("#visTimeSetInputHigh").val();
-    if (time == "") {
+    if (checkBlankField(time)) {
         $('#timeSetWarning').css("display", "block");
         validSetTime = false;
     } else {
@@ -500,7 +501,7 @@ $("#visTimeSetInputHigh").on("input", function () {
 // Check lower limit time settings
 $("#visTimeSetInputLower").on("input", function () {
     var time = $("#visTimeSetInputLower").val();
-    if (time == "") {
+    if (checkBlankField(time)) {
         $('#timeSetWarning').css("display", "block");
         validSetTime = false;
     } else {
@@ -513,7 +514,7 @@ $("#visTimeSetInputLower").on("input", function () {
 function compareTime() {
     var time1 = $("#visTimeSetInputHigh").val();
     var time2 = $("#visTimeSetInputLower").val();
-    if (time1 !== '' && time2 !== '') {
+    if (!checkBlankField(time1) & !checkBlankField(time2)) {
         var lower = Date.parse(time1);
         var higher = Date.parse(time2);
         if (lower > higher) {
