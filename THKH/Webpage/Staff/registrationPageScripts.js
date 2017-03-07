@@ -1299,7 +1299,7 @@ function populateTime() {
                         $(optin).attr("value", time[i]);
                         $(optin).html(time[i]);
                         $('#visitbookingtime').append(optin);
-                        count++;
+                        //count++;
                     }
                 }
             }

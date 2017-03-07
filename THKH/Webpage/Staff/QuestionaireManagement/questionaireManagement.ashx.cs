@@ -38,7 +38,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 dynamic getQns = new ExpandoObject();
                 getQns.Result = "Success";
                 retrieveQuestionnaireQuestions(idList, getQns);
-                successString = Newtonsoft.Json.JsonConvert.SerializeObject(getQns); ;
+                successString = Newtonsoft.Json.JsonConvert.SerializeObject(getQns);
 
 
             }

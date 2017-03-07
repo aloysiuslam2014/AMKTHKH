@@ -173,7 +173,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                     {
                         dynamic questionO = new ExpandoObject();
                         questionO.QuestionNumber = reader.GetInt32(1);
-                        questionO.QuestionList = reader.GetString(1);
+                        questionO.QuestionList = reader.GetString(0);
                         questionO.Question = reader.GetString(2);
                         questionO.QuestionType = reader.GetString(3);
                         questionO.QuestionAnswers = reader.GetString(4);
@@ -224,7 +224,7 @@ namespace THKH.Webpage.Staff.CheckInOut
           
                 GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_VISITOR", true, true, false);
                 procedureCall.addParameter("@responseMessage", SqlDbType.Int);
-                procedureCall.addParameter("@returnValue", SqlDbType.VarChar);
+                procedureCall.addParameter("@returnValue", SqlDbType.VarChar, -1);
                 procedureCall.addParameterWithValue("@pNRIC", nric);
                 ProcedureResponse res = procedureCall.runProcedure();
                 String response = res.getResponses()["@returnValue"].ToString();
