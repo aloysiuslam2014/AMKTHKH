@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Data;
-using System.Data.SqlClient;
 using System.Dynamic;
 using System.Globalization;
 using System.Web;
@@ -219,25 +218,10 @@ namespace THKH.Webpage.Staff.CheckInOut
         private String getVisitorDetails(String nric) {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            SqlConnection cnn;
-            //String successString = "{\"Result\":\"Success\",\"Visitor\":\"";
-            //cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            //SqlParameter respon = new SqlParameter("@returnValue", SqlDbType.VarChar, -1);
-            
-            //respon.Direction = ParameterDirection.Output;
-            String msg = "";
             String visJson = "";
             try
             {
-                //SqlCommand command = new SqlCommand("[dbo].[GET_VISITOR]", cnn);
-                //command.CommandType = System.Data.CommandType.StoredProcedure;
-                //command.Parameters.AddWithValue("@pNRIC", nric);
-                //command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
-                //command.Parameters.Add(respon);
-                //cnn.Open();
-
-                //command.ExecuteNonQuery();
-                //String response = respon.Value.ToString();
+          
                 GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_VISITOR", true, true, false);
                 procedureCall.addParameter("@responseMessage", SqlDbType.Int);
                 procedureCall.addParameter("@returnValue", SqlDbType.VarChar);
@@ -254,204 +238,141 @@ namespace THKH.Webpage.Staff.CheckInOut
                     visJson = vistr.toJson();
                 }
                 else {
-                    //successString += "new";
-                    //successString += "\"}";
-                    //return successString;
+                  
                     result.Visitor = "new";
                     return JsonConvert.SerializeObject(result);
                 }   
             }
             catch (Exception ex)
             {
-                //successString.Replace("Success", "Failure");
-                //successString += ex.Message;
-                //successString += "\"}";
-                //return successString;
+              
                 result.Result = "Failure";
                 result.Visitor = ex.Message;
                 return JsonConvert.SerializeObject(result);
             }
-            finally
-            {
-                //cnn.Close();
-            }
+            
             try
             {
-                var tempMsg = getVisitDetails(nric);
-                if (tempMsg != "none")
+                dynamic tempMsg = getVisitDetails(nric);
+                if (tempMsg.Visit != "none")
                 {
-                    //msg += "\"," + tempMsg;
-                    result.Visit = tempMsg;
+                   
+                    result.Visit = tempMsg.Visit;
                     var arr = tempMsg.Split(',');
                     var qAID = arr[arr.Length - 3];
-                    //msg += "\"," + getSubmittedQuestionnaireResponse(qAID);
+                   
                     result.Questionnaire = JsonConvert.DeserializeObject(getSubmittedQuestionnaireResponse(qAID));
                 }
                 else {
-                    //successString += msg;
-                    //successString += "\"}";
-                    //return successString;
+                  
                     return JsonConvert.SerializeObject(result);
                 }
             }
             catch (Exception ex) {
-                //successString.Replace("Success", "Failure");
                 result.Result = "Failure";
                 result.Visitor = ex.Message;
-                //msg = ex.Message;
-                //successString += "\"}";
-                //return successString;
-                return JsonConvert.SerializeObject(result);
+              
             }
-            //successString += msg;
-            //successString += "}";
-            //return successString;
+        
             return JsonConvert.SerializeObject(result);
         }
 
-        private String getVisitDetails(String nric)
+        private dynamic getVisitDetails(String nric)
         {
             dynamic result = new ExpandoObject();
-            SqlConnection cnn;
-            String successString = "";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_VISIT_DETAILS", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
+            procedureCall.addParameterWithValue("@pNric", nric);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_VISIT_DETAILS]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNric", nric);
-                command.Parameters.Add(respon);
-                cnn.Open();
+                ProcedureResponse resultdata =  procedureCall.runProcedure();
 
-                command.ExecuteNonQuery();
-                String response = respon.Value.ToString();
+
+                String response = resultdata.getSqlParameterValue("@responseMessage").ToString();
                 if (response.Length > 4)
                 {
-                    successString += response;
-                    //result.Visit = response;
+                    result.Visit = response;
                 }
                 else
                 {
-                    successString += "none";
-                    //successtring += "\"}";
-                    return successString;
-                    //result.Visit = "none";
-                    //return result;
+                    result.Visit = "none";
+                    return result;
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            finally
-            {
-                cnn.Close();
-            }
-            return successString;
-            //return result;
+            
+            
+            return result;
         }
 
         private String getSubmittedQuestionnaireResponse(String qAID) {
-            SqlConnection cnn;
-            //dynamic result = new ExpandoObject();
-            //String successString = "\"QAID\":\"" + qAID + "\",\"Questionnaire\":";
-            //String successString = "\"Questionnaire\":";
             String successString = "";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_QUESTIONNARIE_RESPONSE", true, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
+            procedureCall.addParameterWithValue("@pQA_ID", qAID);
+            
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_QUESTIONNARIE_RESPONSE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pQA_ID", qAID);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-
-                SqlDataReader reader = command.ExecuteReader();
+                ProcedureResponse responseResult = procedureCall.runProcedure();
+                DataTableReader reader = responseResult.getDataTable().CreateDataReader();
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
                         successString += reader.GetString(0);
-                        //result.Questionnaire = reader.GetString(0);
                     }
                 }
                 else {
                     successString += "none";
-                    //result.Questionnaire = "none";
                 }
                 successString.Replace("{", String.Empty);
                 successString.Replace("}", String.Empty);
-                //result.Questionnaire = successString;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            finally
-            {
-                cnn.Close();
-            }
+           
             return successString;
-            //return result;
         }
 
         // Write to Visitor & Visit Table
         private String selfReg(String nric, String fname, String address, String postal, String mobtel,
             String sex, String nationality, String dob, String purpose, String otherPurpose, String bedno, String appTime,
             String visitLocation, String qListID, String qAns, String qaid, String amend) {
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("CREATE_VISITOR_PROFILE", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pNRIC", nric.ToUpper());
+            procedureCall.addParameterWithValue("@pFullName", fname);
+            procedureCall.addParameterWithValue("@pGender", sex);
+            procedureCall.addParameterWithValue("@pNationality", nationality);
+            procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
+            procedureCall.addParameterWithValue("@pMobileTel", mobtel);
+            procedureCall.addParameterWithValue("@pHomeAddress", address);
+            procedureCall.addParameterWithValue("@pPostalCode", postal);
+            procedureCall.addParameterWithValue("@pAmend", Int32.Parse(amend));
             dynamic result = new ExpandoObject();
             result.Result = "Success";
             var visitor = "";
             var visit = "";
             var questionnaire = "";
-            //String successString = "{\"Result\":\"Success\"";
-            //String msg = "";
             if (amend == "1")
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand("[dbo].[CREATE_VISITOR_PROFILE]", cnn);
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@pNRIC", nric.ToUpper());
-                    command.Parameters.AddWithValue("@pFullName", fname);
-                    command.Parameters.AddWithValue("@pGender", sex);
-                    command.Parameters.AddWithValue("@pNationality", nationality);
-                    command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                    command.Parameters.AddWithValue("@pMobileTel", mobtel);
-                    command.Parameters.AddWithValue("@pHomeAddress", address);
-                    command.Parameters.AddWithValue("@pPostalCode", postal);
-                    command.Parameters.AddWithValue("@pAmend", Int32.Parse(amend));
-                    command.Parameters.Add(respon);
-                    cnn.Open();
-
-                    command.ExecuteNonQuery();
-                    //msg += ",\"Visitor\":\""+ respon.Value + "\"";
-                    visitor = respon.Value.ToString();
+                    ProcedureResponse outputdata = procedureCall.runProcedure();
+                    visitor = outputdata.getSqlParameterValue("@responseMessage").ToString();
                 }
                 catch (Exception ex)
                 {
-                    //successString = successString.Replace("Success", "Failure");
-                    //msg = ex.Message;
-                    //successString += ",\"Visitor\":\"" + msg;
-                    //successString += "\"}";
-                    //return successString;
                     result.Result = "Failure";
                     result.Visitor = ex.Message;
                     return JsonConvert.SerializeObject(result);
                 }
-                finally
-                {
-                    cnn.Close();
-                }
+               
             }
             try
             {
@@ -460,53 +381,35 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                //successString = successString.Replace("Success", "Failure");
-                //msg = "\"" + ex.Message;
-                //successString += msg;
-                //successString += "\"}";
-                //return successString;
                 result.Result = "Failure";
                 result.Visitor = ex.Message;
                 return JsonConvert.SerializeObject(result);
             }
-            respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            procedureCall = new GenericProcedureDAO("CREATE_VISIT", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
+            procedureCall.addParameterWithValue("@pVisitorNRIC", nric.ToUpper());
+            procedureCall.addParameterWithValue("@pPurpose", purpose);
+            procedureCall.addParameterWithValue("@pReason", otherPurpose);
+            procedureCall.addParameterWithValue("@pVisitLocation", visitLocation);
+            procedureCall.addParameterWithValue("@pBedNo", bedno);
+            procedureCall.addParameterWithValue("@pQaID", qaid);
+            procedureCall.addParameterWithValue("@pRemarks", "");
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[CREATE_VISIT]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
-                command.Parameters.AddWithValue("@pVisitorNRIC", nric.ToUpper());
-                command.Parameters.AddWithValue("@pPurpose", purpose);
-                command.Parameters.AddWithValue("@pReason", otherPurpose);
-                command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
-                command.Parameters.AddWithValue("@pBedNo", bedno);
-                command.Parameters.AddWithValue("@pQaID", qaid);
-                command.Parameters.AddWithValue("@pRemarks", "");
-                command.Parameters.Add("@responseMessage", SqlDbType.Int).Direction = ParameterDirection.Output;
-                cnn.Open();
-
-                command.ExecuteNonQuery();
+                ProcedureResponse responsedata = procedureCall.runProcedure();
+                string respon = responsedata.getSqlParameterValue("@responseMessage").ToString();
                 //msg += ",\"Visit\":\"" + respon.Value + "\"";
-                if (respon.Value != null) { 
-                    visit = respon.Value.ToString();
+                if (respon != null) {
+                    visit = respon;
                 }
             }
             catch (Exception ex)
             {
-                //successString = successString.Replace("Success", "Failure");
-                //msg = ",\"Visit\":\"" + ex.Message + "\"";
                 result.Result = "Failure";
                 result.Visit = ex.Message;
                 return JsonConvert.SerializeObject(result);
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //successString += msg;
-            //successString += "}";
-            //return successString;
             result.Visitor = visitor;
             result.Visit = visit;
             result.Questionnaire = questionnaire;
@@ -518,25 +421,15 @@ namespace THKH.Webpage.Staff.CheckInOut
         {
             string successString = "";
             dynamic toSend = new ExpandoObject();
-            SqlConnection cnn;
-
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            SqlParameter patientName = new SqlParameter("@pPatient_Name", SqlDbType.VarChar);
-            respon.Direction = ParameterDirection.Output;
-            patientName.Direction = ParameterDirection.Output;
-            patientName.Size = 1000;
+            
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_PATIENT_NAME", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameter("@pPatient_Name", SqlDbType.VarChar,1000);
+            procedureCall.addParameterWithValue("@pBed_No", beds); 
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_PATIENT_NAME]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pBed_No", beds);
-                command.Parameters.Add(respon);
-                command.Parameters.Add(patientName);
-                cnn.Open();
-                command.ExecuteNonQuery();
-                cnn.Close(); 
-
+                ProcedureResponse responseOutput =  procedureCall.runProcedure();
+                toSend.name = responseOutput.getSqlParameterValue("@pPatient_Name").ToString();
             }
             catch(Exception e)
             {
@@ -544,7 +437,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 successString = JsonConvert.SerializeObject(toSend);
                 return successString;
             }
-            toSend.name = patientName.Value.ToString();
+            
             successString = JsonConvert.SerializeObject(toSend);
             return successString;
         }
@@ -554,18 +447,13 @@ namespace THKH.Webpage.Staff.CheckInOut
         private String AssistReg(String staffuser, String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
             String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
             String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature, String qListID, String qAns, String qaid, String visLim) {
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            
             dynamic result = new ExpandoObject();
             result.Result = "Success";
             String visitor = "";
             String visit = "";
             String questionnaire = "";
             String checkin = "";
-            //String successString = "{\"Result\":\"Success\",\"Visitor\":";
-            //String msg = "\"";
             string qAid = qaid;
             int pos = 0;
             try
@@ -575,41 +463,28 @@ namespace THKH.Webpage.Staff.CheckInOut
             catch (Exception ex) {
             }
             //update visitor profile
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_VISITOR_PROFILE", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pNRIC", nric.ToUpper());
+            procedureCall.addParameterWithValue("@pFullName", fname);
+            procedureCall.addParameterWithValue("@pGender", sex);
+            procedureCall.addParameterWithValue("@pNationality", nationality);
+            procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
+            procedureCall.addParameterWithValue("@pMobileTel", mobtel);
+            procedureCall.addParameterWithValue("@pHomeAddress", address);
+            procedureCall.addParameterWithValue("@pPostalCode", pos);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISITOR_PROFILE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNRIC", nric.ToUpper());
-                command.Parameters.AddWithValue("@pFullName", fname);
-                command.Parameters.AddWithValue("@pGender", sex);
-                command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                command.Parameters.AddWithValue("@pMobileTel", mobtel);
-                command.Parameters.AddWithValue("@pHomeAddress", address);
-                command.Parameters.AddWithValue("@pPostalCode", pos);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                //msg += respon.Value + "\"";
-                visitor = respon.Value.ToString();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                visitor = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
-                //successString = successString.Replace("Success", "Failure");
-                //msg = ex.Message;
-                //successString += "\"" + msg;
-                //successString += "\"}";
-                //return successString;
                 result.Result = "Failure";
                 result.Visitor = ex.Message;
                 return JsonConvert.SerializeObject(result);
             }
-            finally
-            {
-                cnn.Close();
-            }
-
+           
             //update or add questionaire ans
             try
             {
@@ -621,23 +496,17 @@ namespace THKH.Webpage.Staff.CheckInOut
                                             .Replace('+', '_')
                                             .Replace('/', '-')
                                             .TrimEnd('=');
-                    //msg += writeQuestionnaireResponse(qAid, qListID, qAns);
                     questionnaire = writeQuestionnaireResponse(qAid, qListID, qAns);
 
                 }
                 else
                 {
-                    //msg += updateQuestionnaireResponse(qAid, qListID, qAns);
                     questionnaire = updateQuestionnaireResponse(qAid, qListID, qAns);
                 }
             }
             catch (Exception ex)
             {
-                //successString = successString.Replace("Success", "Failure");
-                //msg = ex.Message;
-                //successString += "\"" + msg;
-                //successString += "\"}";
-                //return successString;
+              
                 result.Result = "Failure";
                 result.Visitor = ex.Message;
                 return JsonConvert.SerializeObject(result);
@@ -665,11 +534,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                     }
                     else
                     {
-                        //successString = successString.Replace("Success", "Failure");
-                        //successString += "\"Limit of " + visLim + " per bed has been reached.";
-                        
-                        //successString += "\"}";
-                        //return successString;
                         result.Result = "Failure";
                         result.Visitor = "Limit of " + visLim + " per bed has been reached.";
                         return JsonConvert.SerializeObject(result);
@@ -677,10 +541,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                 }
                 catch (Exception ex)
                 {
-                    //successString = successString.Replace("Success", "Failure");
-                    //msg = "\"" + ex.Message;
-                    //successString += "\"}";
-                    //return successString;
                     result.Result = "Failure";
                     result.Visitor = ex.Message;
                     return JsonConvert.SerializeObject(result);
@@ -689,62 +549,36 @@ namespace THKH.Webpage.Staff.CheckInOut
             else {
                 try
                 {
-                    //msg += CheckIn(staffuser, nric, temperature);
                     checkin = CheckIn(staffuser, nric, temperature);
                 }
                 catch (Exception ex) {
-                    //successString = successString.Replace("Success", "Failure");
-                    //msg = "\"" + ex.Message;
-                    //successString += "\"}";
-                    //return successString;
                     result.Result = "Failure";
                     result.Visitor = ex.Message;
                     return JsonConvert.SerializeObject(result);
                 }
             }
 
-            respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            procedureCall = new GenericProcedureDAO("UPDATE_VISIT", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
+            procedureCall.addParameterWithValue("@pVisitorNRIC", nric.ToUpper()); 
+            procedureCall.addParameterWithValue("@pPurpose", purpose); 
+            procedureCall.addParameterWithValue("@pReason", otherPurpose); 
+            procedureCall.addParameterWithValue("@pVisitLocation", visitLocation); 
+            procedureCall.addParameterWithValue("@pBedNo", bedno); 
+            procedureCall.addParameterWithValue("@pQaID", qAid); 
+            procedureCall.addParameterWithValue("@pRemarks", remarks);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE_VISIT]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
-                command.Parameters.AddWithValue("@pVisitorNRIC", nric.ToUpper());
-                command.Parameters.AddWithValue("@pPurpose", purpose);
-                command.Parameters.AddWithValue("@pReason", otherPurpose);
-                command.Parameters.AddWithValue("@pVisitLocation", visitLocation);
-                command.Parameters.AddWithValue("@pBedNo", bedno);
-                command.Parameters.AddWithValue("@pQaID", qAid);
-                command.Parameters.AddWithValue("@pRemarks", remarks);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                //msg += ",\"Visit\":\"" + respon.Value + "\"";
-                visit = respon.Value.ToString();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                visit = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
-                //successString = successString.Replace("Success", "Failure");
-                //successString += msg;
-                //msg = ",\"Visit\":\"" + ex.Message;
-                //successString += msg;
-                //successString += "\"}";
-                //return successString;
                 result.Result = "Failure";
                 result.Visit = ex.Message;
                 return JsonConvert.SerializeObject(result);
             }
-            finally
-            {
-                cnn.Close();
-            }
-
-
-            //successString += msg;
-            //successString += "}";
-            //return successString;
             result.Visitor = visitor;
             result.Visit = visit;
             result.Questionnaire = questionnaire;
@@ -754,78 +588,49 @@ namespace THKH.Webpage.Staff.CheckInOut
 
         
         private String writeQuestionnaireResponse(String qaid, String qListID, String qAns) {
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+          
             String result = "";
-            //String successString = ",\"Questionnaire\":\"";
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("INSERT_QUESTIONNARIE_RESPONSE", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQA_ID", qaid);
+            procedureCall.addParameterWithValue("@pQ_QuestionListID", qListID);
+            procedureCall.addParameterWithValue("@pQA_JSON", qAns);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[INSERT_QUESTIONNARIE_RESPONSE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pQA_ID", qaid);
-                command.Parameters.AddWithValue("@pQ_QuestionListID", qListID);
-                command.Parameters.AddWithValue("@pQA_JSON", qAns);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                //successString += respon.Value +"\"";
-                result += respon.Value.ToString();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                result += responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            finally
-            {
-                cnn.Close();
-            }
+           
             return result;
-            //return successString;
         }
 
         private String updateQuestionnaireResponse(String qaid, String qListID, String qAns)
         {
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+           
             String result = "";
-            //String successString = ",\"Questionnaire\":\"";
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_QUESTIONNARIE_RESPONSE", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQA_ID", qaid);
+            procedureCall.addParameterWithValue("@pQA_JSON", qAns);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTIONNARIE_RESPONSE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pQA_ID", qaid);
-                command.Parameters.AddWithValue("@pQA_JSON", qAns);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                //successString += respon.Value + "\"";
-                result = respon.Value.ToString();
+                ProcedureResponse dataResponse = procedureCall.runProcedure();
+                result = dataResponse.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //return successString;
             return result;
         }
 
         private dynamic checkNumCheckedIn(string bedno, int limit) {
             DataTable dataTable = new DataTable();
             dynamic result = new ExpandoObject();
-            
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-           
            
             try
             {
@@ -838,18 +643,6 @@ namespace THKH.Webpage.Staff.CheckInOut
                     procedureCall.addParameterWithValue("@pLimit", limit.ToString());
                     ProcedureResponse res = procedureCall.runProcedure();
                     result.visitors = res.getResponses()["@responseMessage"];
-                    //SqlCommand command = new SqlCommand("[dbo].[CHECK_NUM_VISITORS]", cnn);
-                    //command.CommandType = System.Data.CommandType.StoredProcedure;
-                    //command.Parameters.AddWithValue("@pBedNo", bed);
-                    //command.Parameters.AddWithValue("@pLimit", limit);
-                    //SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-                    //respon.Direction = ParameterDirection.Output;
-                    //command.Parameters.Add(respon);
-                    //cnn.Open();
-
-                    //command.ExecuteNonQuery();
-                    //cnn.Close();
-                    //result.visitors = respon.Value;
                     if (result.visitors >= limit)
                     {
                         result.bedno = bed;
@@ -863,44 +656,28 @@ namespace THKH.Webpage.Staff.CheckInOut
             {
                 throw ex;
             }
-            finally
-            {
-                if(cnn.State.ToString() == "open")
-                cnn.Close();
-            }
+            
             return result;
         }
 
         private String CheckIn(String staffuser,String nric, String temp) {
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
-            //String successString = ",\"CheckIn\":\""; 
+            
             String result = "";
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("CONFIRM_CHECK_IN", true, true, false);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pNric", nric.ToUpper());
+            procedureCall.addParameterWithValue("@pStaffEmail", staffuser);
+            procedureCall.addParameterWithValue("@pTemperature", temp);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[CONFIRM_CHECK_IN]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNric", nric.ToUpper());
-                command.Parameters.AddWithValue("@pStaffEmail", staffuser);
-                command.Parameters.AddWithValue("@pTemperature", temp);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                //successString += respon.Value + "\"";
-                result = respon.Value.ToString();
+                ProcedureResponse dataResponse = procedureCall.runProcedure();
+                result = dataResponse.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //return successString;
+          
             return result;
         }
 

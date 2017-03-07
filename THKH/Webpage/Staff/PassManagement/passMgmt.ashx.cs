@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Dynamic;
 using System.Data;
-
 using THKH.Classes.DAO;
 using THKH.Classes.Entity;
 

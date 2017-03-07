@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using THKH.Classes.DAO;
+using THKH.Classes.Entity;
 
 namespace THKH.Webpage.Staff.TerminalCalls
 {
@@ -93,48 +93,18 @@ namespace THKH.Webpage.Staff.TerminalCalls
 
         private bool deleteAllTerminals(string id)
         {
-            //string connectionString = null;
             bool success = false;
-       
-            SqlConnection cnn;
-            // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DELETE_ALL_TERMINAL", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[DELETE_ALL_TERMINAL]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-
-                    while (reader.Read())
-                    {
-
-
-                        //Get txtPwd with Salt using SHA2-512 & compare hash values
-                    }
-                }
-                //rows = command.ExecuteNonQuery();
-
-
-                cnn.Close();
-
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                success = responseOutput.getSqlParameterValue("@responseMessage").ToString().Equals("1") ? true : false;
             }
             catch (Exception ex)
             {
 
             }
-
-
-            success = respon.Value.ToString().Equals("1") ? true : false;
-
             return success;
         }
 
@@ -216,323 +186,153 @@ namespace THKH.Webpage.Staff.TerminalCalls
             else {
                 formattedBedNoList = bedNoList;
             }
-            
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-          
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("ADD_TERMINAL", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pTName", id);
+            procedureCall.addParameterWithValue("@pTControl", infectious);
+            procedureCall.addParameterWithValue("@pBedNoList", formattedBedNoList);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[ADD_TERMINAL]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pTName", id);
-                command.Parameters.AddWithValue("@pTControl", infectious);
-                command.Parameters.AddWithValue("@pBedNoList", formattedBedNoList);
-
-                command.Parameters.Add(respon);
-                cnn.Open();
-                command.ExecuteNonQuery();
-
-
-                //rows = command.ExecuteNonQuery();
-
-
-                cnn.Close();
-
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+                success = respon.Equals("1") ? true : false;
             }
             catch (Exception ex)
             {
                 var d = ex;//to read any errors
             }
-
-            if (respon != null & respon.Value.ToString().Equals("1"))
-            {
-                success = true;
-            }
-            else
-            {
-                success = false;
-            }
-
             return success;
         }
 
         private bool deleteTerminal(string id)
         {
-
             bool success = false;
-
-            SqlConnection cnn;
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            Object[] test;
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DELETE_TERMINAL", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pTerminal_ID", id);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[DELETE_TERMINAL]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pTerminal_ID", id);
-
-                command.Parameters.Add(respon);
-                cnn.Open();
-                command.ExecuteNonQuery();
-
-
-                //rows = command.ExecuteNonQuery();
-
-
-                cnn.Close();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+                success = respon.Equals("1") ? true : false;
 
             }
             catch (Exception ex)
             {
                 var d = ex;//to read any errors
             }
-
-            if (respon.Value.ToString().Equals("1"))
-            {
-                success = true;
-            }
-            else
-            {
-                success = false;
-            }
-
             return success;
         }
 
         public bool verify(String id)
         {
-            
             bool success = false;
-           
-            SqlConnection cnn;
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            Object[] test;
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("VERIFY_STAFF", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pEmail", id);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[VERIFY_STAFF]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pEmail", id);
-                
-                command.Parameters.Add(respon);
-                cnn.Open();
-                command.ExecuteNonQuery();
-
-
-                //rows = command.ExecuteNonQuery();
-
-
-                cnn.Close();
-
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+                success = respon.Equals("1") ? true : false;
             }
             catch (Exception ex)
             {
                 var d = ex;//to read any errors
             }
-
-            if (respon.Value.ToString().Equals("1"))
-            {
-                success = true;
-            }
-            else
-            {
-                success = false;
-            }
-
             return success;
         }
 
         public bool activateTerminal(String id)
         {
-          //string connectionString = null;
             bool success = false;
             int locationId=Convert.ToInt32(id);
-            SqlConnection cnn;
-           // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("ACTIVATE_TERMINAL", true, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pTerminal_ID", id);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[ACTIVATE_TERMINAL]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pTerminal_Id", locationId);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                   
-                    while (reader.Read())
-                    {
-
-                        
-                        //Get txtPwd with Salt using SHA2-512 & compare hash values
-                    }
-                }
-                //rows = command.ExecuteNonQuery();
-
-
-                cnn.Close();
-
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+                success = respon.Equals("1") ? true : false;
             }
             catch (Exception ex)
             {
                 var a= ex;
             }
-         
-
-            success = respon.Value.ToString().Equals("1") ? true : false;
-
             return success;
         }
 
         public bool deactivateTerminal(String id)
         {
-            //string connectionString = null;
             bool success = false;
             int locationId = Convert.ToInt32(id);
-            SqlConnection cnn;
-            // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DEACTIVATE_TERMINAL", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pTerminal_ID", id);
+
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[DEACTIVATE_TERMINAL]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pTerminal_Id", locationId);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    
-                    while (reader.Read())
-                    {
-
-                        
-                        //Get txtPwd with Salt using SHA2-512 & compare hash values
-                    }
-                }
-                //rows = command.ExecuteNonQuery();
-
-
-                cnn.Close();
-
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+                success = respon.Equals("1") ? true : false;
             }
             catch (Exception ex)
             {
 
             }
-
-
-            success = respon.Value.ToString().Equals("1") ? true : false;
-
             return success;
-
         }
 
         public bool deactivateAllTerminal(String id)
         {
-            //string connectionString = null;
             bool success = false;
             int locationId = Convert.ToInt32(id);
-            SqlConnection cnn;
-            // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DEACTIVATE_ALL_TERMINALS", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[DEACTIVATE_ALL_TERMINALS]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-
-                    while (reader.Read())
-                    {
-
-
-                        //Get txtPwd with Salt using SHA2-512 & compare hash values
-                    }
-                }
-                //rows = command.ExecuteNonQuery();
-
-
-                cnn.Close();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+                success = respon.Equals("1") ? true : false;
 
             }
             catch (Exception ex)
             {
 
             }
-
-
-            success = respon.Value.ToString().Equals("1") ? true : false;
-
             return success;
 
         }
 
         public bool checkInUser(String locationId, String userId)
         {
-          //  string connectionString = null;
             bool success = false;
             int id = Convert.ToInt32(locationId);
-            SqlConnection cnn;
-           // connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            //connectionString = "Data Source=SHAH\\SQLEXPRESS;Initial Catalog=thkhdb;Integrated Security=SSPI;";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("CREATE_MOVEMENT", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pLocationId", locationId);
+            procedureCall.addParameterWithValue("@pNRIC", userId);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[CREATE_MOVEMENT]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pLocationId", locationId);
-                command.Parameters.AddWithValue("@pNRIC", userId);
-                command.Parameters.Add(respon);
-                cnn.Open();
 
-                command.ExecuteNonQuery();
-
-                //rows = command.ExecuteNonQuery();
-
-
-                cnn.Close();
-
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+                success = respon.Equals("1") || respon.Equals("2") ? true : false;
+                if (respon.Equals("2"))
+                {
+                    toReturn = "success,locationError";
+                }
+                else if (respon.Equals("3"))
+                {
+                    toReturn = "success,noCheckIn";
+                }
             }
             catch (Exception ex)
             {
                 var test = ex;
             }
-
-            success = respon.Value.ToString().Equals("1") || respon.Value.ToString().Equals("2") ? true : false;
-
-            if (respon.Value.ToString().Equals("2"))
-            {
-                toReturn = "success,locationError";
-            } else if (respon.Value.ToString().Equals("3")) {
-                toReturn = "success,noCheckIn";
-            }
-
             return success;
         }
 
@@ -540,23 +340,11 @@ namespace THKH.Webpage.Staff.TerminalCalls
         {
             
             DataTable dataTable = new DataTable();
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_ALL_TERMINALS", true, true, true);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_ALL_TERMINALS]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                //command.Parameters.AddWithValue("@pNric", txtUserName.Value.ToString());
-                cnn.Open();
-
-                SqlDataAdapter da = new SqlDataAdapter();
-                da.SelectCommand = command;
-                da.Fill(dataTable);
-                //rows = command.ExecuteNonQuery();
-
-
-                cnn.Close();
-
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                dataTable = responseOutput.getDataTable();
             }
             catch (Exception ex)
             {

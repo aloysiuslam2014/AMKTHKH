@@ -4,11 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using THKH.Classes.DAO;
+using THKH.Classes.Entity;
 
 namespace THKH.Webpage.Staff.ContactTracing
 {
@@ -153,7 +154,6 @@ namespace THKH.Webpage.Staff.ContactTracing
 
         private String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults)
         {
-            String result = "";
             List<dynamic> serializedResults1 = new List<dynamic>();
             List<List<String>> datatable_array = new List<List<String>>();
 
@@ -214,27 +214,20 @@ namespace THKH.Webpage.Staff.ContactTracing
 
         private String traceByScanBed(DateTime startdatetime, DateTime enddatetime, String bedno)
         {
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
             List<Object> jsonArray = new List<Object>();
-
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("TRACE_BY_SCAN_BED", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pStart_Date", startdatetime);
+            procedureCall.addParameterWithValue("@pEnd_Date", enddatetime);
+            procedureCall.addParameterWithValue("@pBed_No", bedno);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[TRACE_BY_SCAN_BED]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pStart_Date", startdatetime);
-                command.Parameters.AddWithValue("@pEnd_Date", enddatetime);
-                command.Parameters.AddWithValue("@pBed_No", bedno);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-
-                command.Parameters.Add(respon);
-                da.Fill(dt);
-
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dt = resultss.getDataTable();
+               
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
                     var location = dt.Rows[i]["location"];
@@ -280,25 +273,19 @@ namespace THKH.Webpage.Staff.ContactTracing
 
         private String traceByRegBed(DateTime startdatetime, DateTime enddatetime, String bedno)
         {
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
             List<Object> jsonArray = new List<Object>();
-
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("TRACE_BY_REG_BED", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pStart_Date", startdatetime);
+            procedureCall.addParameterWithValue("@pEnd_Date", enddatetime);
+            procedureCall.addParameterWithValue("@pBed_No", bedno);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[TRACE_BY_REG_BED]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pStart_Date", startdatetime);
-                command.Parameters.AddWithValue("@pEnd_Date", enddatetime);
-                command.Parameters.AddWithValue("@pBed_No", bedno);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                command.Parameters.Add(respon);
-                da.Fill(dt);
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dt = resultss.getDataTable();
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
                     var location = dt.Rows[i]["location"];
@@ -342,24 +329,19 @@ namespace THKH.Webpage.Staff.ContactTracing
 
         private String traceByScanLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
             List<Object> jsonArray = new List<Object>();
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("TRACE_BY_REG_BED", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pStart_Date", startdatetime);
+            procedureCall.addParameterWithValue("@pEnd_Date", enddatetime);
+            procedureCall.addParameterWithValue("@pLocation", loc);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[TRACE_BY_SCAN_LOC]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pStart_Date", startdatetime);
-                command.Parameters.AddWithValue("@pEnd_Date", enddatetime);
-                command.Parameters.AddWithValue("@pLocation", loc);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                command.Parameters.Add(respon);
-                da.Fill(dt);
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dt = resultss.getDataTable();
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
                     var location = dt.Rows[i]["location"];
@@ -404,24 +386,19 @@ namespace THKH.Webpage.Staff.ContactTracing
 
         private String traceByRegLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
             List<Object> jsonArray = new List<Object>();
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("TRACE_BY_REG_LOC", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pStart_Date", startdatetime);
+            procedureCall.addParameterWithValue("@pEnd_Date", enddatetime);
+            procedureCall.addParameterWithValue("@pLocation", loc);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[TRACE_BY_REG_LOC]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pStart_Date", startdatetime);
-                command.Parameters.AddWithValue("@pEnd_Date", enddatetime);
-                command.Parameters.AddWithValue("@pLocation", loc);
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                command.Parameters.Add(respon);
-                da.Fill(dt);
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dt = resultss.getDataTable();
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
                     var location = dt.Rows[i]["location"];
@@ -496,7 +473,6 @@ namespace THKH.Webpage.Staff.ContactTracing
 
         private String traceByReg(String query)
         {
-            String result = "";
             String[] queryParts = query.Split('~');
             DateTime ri_dateStart = DateTime.Parse(queryParts[0]);
             DateTime ri_dateEnd = DateTime.Parse(queryParts[1]);
@@ -506,29 +482,21 @@ namespace THKH.Webpage.Staff.ContactTracing
             dynamic innerItem = new ExpandoObject();
             ArrayList byBedNoResults = new ArrayList();
 
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
-            SqlParameter visitors = new SqlParameter("@Visitors", System.Data.SqlDbType.NVarChar);
-            visitors.Direction = ParameterDirection.Output;
-            visitors.Size = 4000;
-            SqlParameter visitorDetails = new SqlParameter("@Visitor_Details", System.Data.SqlDbType.NVarChar);
-            visitorDetails.Direction = ParameterDirection.Output;
-            visitorDetails.Size = 4000;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_TRACE_BEDNO", true, true, false);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameter("@Visitors", System.Data.SqlDbType.NVarChar, 4000);
+            procedureCall.addParameter("@Visitor_Details", System.Data.SqlDbType.NVarChar, 4000);
+            procedureCall.addParameterWithValue("@pStart_Date", ri_dateStart);
+            procedureCall.addParameterWithValue("@pEnd_Date", ri_dateEnd);
+            procedureCall.addParameterWithValue("@pBed_No", bedNo);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_TRACE_BEDNO]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pStart_Date", ri_dateStart);
-                command.Parameters.AddWithValue("@pEnd_Date", ri_dateEnd);
-                command.Parameters.AddWithValue("@pBed_No", bedNo);
-
-                command.Parameters.Add(respon);
-                command.Parameters.Add(visitors);
-                command.Parameters.Add(visitorDetails);
-                cnn.Open();
-                command.ExecuteNonQuery();
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                String response_visitors = resultss.getSqlParameterValue("@Visitors").ToString();
+                String response_visitorDetails = resultss.getSqlParameterValue("@Visitor_Details").ToString();
+                innerItem.visitors = response_visitors;
+                innerItem.visitorDetails = response_visitorDetails;
+                byBedNoResults.Add(innerItem);
             }
             catch (Exception ex)
             {
@@ -536,11 +504,6 @@ namespace THKH.Webpage.Staff.ContactTracing
                 json.Msg = ex.Message;
             }
 
-            String response_visitors = visitors.Value.ToString();
-            String response_visitorDetails = visitorDetails.Value.ToString();
-            innerItem.visitors = response_visitors;
-            innerItem.visitorDetails = response_visitorDetails;
-            byBedNoResults.Add(innerItem);
             json.Result = "Success";
             json.Msg = byBedNoResults;
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
@@ -549,7 +512,6 @@ namespace THKH.Webpage.Staff.ContactTracing
         private String getValidTerminals(String query)
         {
             DataTable dataTable = new DataTable();
-            string result = "";
             string startString = query.Split('~').First();
             string endString = query.Split('~').Last();
             DateTime startDate = DateTime.Parse(startString);
@@ -557,24 +519,14 @@ namespace THKH.Webpage.Staff.ContactTracing
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
             ArrayList terminalDetails = new ArrayList();
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-
-            SqlParameter respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_TRACE_TERMINALS", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pStart_Date", startDate);
+            procedureCall.addParameterWithValue("@pEnd_Date", endDate);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_TRACE_TERMINALS]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pStart_Date", startDate);
-                command.Parameters.AddWithValue("@pEnd_Date", endDate);
-
-                command.Parameters.Add(respon);
-                cnn.Open();
-                SqlDataAdapter da = new SqlDataAdapter();
-                da.SelectCommand = command;
-                da.Fill(dataTable);
-
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dataTable = resultss.getDataTable();
             }
             catch (Exception ex)
             {

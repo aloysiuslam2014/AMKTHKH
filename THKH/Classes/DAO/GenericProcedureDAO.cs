@@ -11,7 +11,7 @@ namespace THKH.Classes.DAO
 {
     public class GenericProcedureDAO 
     {
-        Dictionary<String,String> parameters;
+        Dictionary<String,object> parameters;
         Dictionary<String, ArrayList> responses;
         string procedureName;
         bool dataTableExpected;
@@ -31,7 +31,7 @@ namespace THKH.Classes.DAO
         {
             this.procedureName = procedureName;
             if(sqlParametersWithValues)
-                this.parameters = new Dictionary<string, string>() ;
+                this.parameters = new Dictionary<string, object>() ;
             this.dataTableExpected = dataTableExpected;
             if(sqlParameters)
                 this.responses = new Dictionary<string, ArrayList>();
@@ -73,7 +73,7 @@ namespace THKH.Classes.DAO
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 if(parameters != null)
                 {
-                    foreach (KeyValuePair<string,string> item in parameters)
+                    foreach (KeyValuePair<string,object> item in parameters)
                     {
                         command.Parameters.AddWithValue(item.Key, item.Value);
                     }
@@ -115,7 +115,7 @@ namespace THKH.Classes.DAO
             return toReturn;
         }
 
-        public void addParameterWithValue(string parameterName, string parameterValue)
+        public void addParameterWithValue(string parameterName, object parameterValue)
         {
             parameters[parameterName] = parameterValue;
         }

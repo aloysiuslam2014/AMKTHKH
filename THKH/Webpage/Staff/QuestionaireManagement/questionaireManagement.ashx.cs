@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Dynamic;
 using System.Collections;
+using THKH.Classes.DAO;
+using THKH.Classes.Entity;
 
 namespace THKH.Webpage.Staff.QuestionaireManagement
 {
@@ -101,22 +102,15 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         // Add new questionnaire to DB
         private String addQuestionnaire(String qName)
         {
-            SqlConnection cnn;
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("ADD_BLANK_QUESTIONNARIE_LIST", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQ_QuestionListID", qName);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[ADD_BLANK_QUESTIONNARIE_LIST]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pQ_QuestionListID", qName);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                var results = Int32.Parse(respon.Value.ToString());
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                var results = Int32.Parse(responseOutput.getSqlParameterValue("@responseMessage").ToString());
                 if (results == 1 || results == 0)
                 {
                     result.Msg = "" + results.ToString();
@@ -131,42 +125,27 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 result.Result = "Failure";
                 result.Msg = ex.Message;
             }
-            finally
-            {
-                cnn.Close();
-            }
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // Update questionnaire with new question order
         private String updateQuestionnaire(String qnaire, String order)
         {
-            SqlConnection cnn;
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_QUESTIONNARIE_LIST", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQ_QuestionList_ID", qnaire);
+            procedureCall.addParameterWithValue("@pQ_Order", order);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTIONNARIE_LIST]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pQ_QuestionList_ID", qnaire);
-                command.Parameters.AddWithValue("@pQ_Order", order);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                result.Msg = respon.Value;
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                result.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 result.Result = "Failure";
                 result.Msg = ex.Message;
-            }
-            finally
-            {
-                cnn.Close();
             }
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
@@ -174,31 +153,20 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         // Sets the selected questionnaire as active & deactivates the rest
         private String setActiveQuestionnaire(String qName)
         {
-            SqlConnection cnn;
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("ACTIVATE_QUESTIONNARIE_LIST", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQ_QuestionList_ID", qName);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[ACTIVATE_QUESTIONNARIE_LIST]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pQ_QuestionList_ID", qName);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                result.Msg = respon.Value;
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                result.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 result.Result = "Failure";
                 result.Msg = ex.Message;
-            }
-            finally
-            {
-                cnn.Close();
             }
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
@@ -206,31 +174,20 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         // removes questionnaire
         private String deleteQuestionnaire()
         {
-            SqlConnection cnn;
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DELETE_QUESTIONNARIE_LIST", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[DELETE_QUESTIONNARIE_LIST]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params Questionnaire ID
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                result.Msg = respon.Value;
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                result.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 result.Result = "Failure";
                 result.Msg = ex.Message;
-            }
-            finally
-            {
-                cnn.Close();
             }
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
@@ -238,34 +195,22 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         // Adds new question
         private String addQuestion(String qn, String qnType, String qnValues)
         {
-            SqlConnection cnn;
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("ADD_QUESTION", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQuestion", qn);
+            procedureCall.addParameterWithValue("@pQnsType", qnType);
+            procedureCall.addParameterWithValue("@pQnsValue", qnValues);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[ADD_QUESTION]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params Question, Question Type, Question Values
-                command.Parameters.AddWithValue("@pQuestion", qn);
-                command.Parameters.AddWithValue("@pQnsType", qnType);
-                command.Parameters.AddWithValue("@pQnsValue", qnValues);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                result.Msg = respon.Value;
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                result.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 result.Result = "Failure";
                 result.Msg = ex.Message;
-            }
-            finally
-            {
-                cnn.Close();
             }
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
@@ -273,35 +218,23 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         // Updates a question
         private String updateQuestion(String qnId, String qn, String qnType, String qnValues)
         {
-            SqlConnection cnn;
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_QUESTION", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQQ_ID", Int32.Parse(qnId));
+            procedureCall.addParameterWithValue("@pQuestion", qn);
+            procedureCall.addParameterWithValue("@pQnsType", qnType);
+            procedureCall.addParameterWithValue("@pQnsValue", qnValues);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTION]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params Question, Question Type, Question Values
-                command.Parameters.AddWithValue("@pQQ_ID", Int32.Parse(qnId));
-                command.Parameters.AddWithValue("@pQuestion", qn);
-                command.Parameters.AddWithValue("@pQnsType", qnType);
-                command.Parameters.AddWithValue("@pQnsValue", qnValues);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                result.Msg = respon.Value;
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                result.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 result.Result = "Failure";
                 result.Msg = ex.Message;
-            }
-            finally
-            {
-                cnn.Close();
             }
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
@@ -309,53 +242,33 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         // Delete question
         private String deleteQuestion()
         {
-            SqlConnection cnn;
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DELETE_QUESTION", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[DELETE_QUESTION]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params Question_ID
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                result.Msg = respon.Value;
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                result.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 result.Result = "Failure";
                 result.Msg = ex.Message;
             }
-            finally
-            {
-                cnn.Close();
-            }
-
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // retrieves all the questionnaires from the DB
         private void retrieveQuestionnaires(dynamic toSend)
         {
-            SqlConnection cnn;
-
             ArrayList questionaires = new ArrayList();
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_ALL_QUESTIONNAIRE_LIST", false, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_ALL_QUESTIONNAIRE_LIST]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                DataTableReader reader = responseOutput.getDataTable().CreateDataReader();
 
                 if (reader.HasRows)
                 {
@@ -377,35 +290,24 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 toSend.Msg = ex.Message;
 
             }
-            finally
-            {
-                cnn.Close();
-            }
 
         }
 
         // retrieves all the questions in the SELECTED questionnaire
         private void retrieveQuestionnaireQuestions(string idList, dynamic toSend)
         {
-            SqlConnection cnn;
             ArrayList qnsQns = new ArrayList();
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
             List<String> qids = new List<string>();
             List<String> questions = new List<string>();
             List<String> qnTypes = new List<string>();
             List<String> qnValues = new List<string>();
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_SELECTED_QUESTIONNARIE", true, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQ_QuestionList_ID", idList);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_SELECTED_QUESTIONNARIE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params
-                command.Parameters.AddWithValue("@pQ_QuestionList_ID", idList);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                DataTableReader reader = responseOutput.getDataTable().CreateDataReader();
                 int count = 1;
                 if (reader.HasRows)
                 {
@@ -422,7 +324,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                         count++;
                     }
                 }
-                var response = respon.Value;
+                var response = responseOutput.getSqlParameterValue("@responseMessage").ToString();
                 if (response != null && response.ToString() == "0")
                 {
                     dynamic noQns = new ExpandoObject();
@@ -434,7 +336,6 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                     return;
                 }
                 reader.Close();
-                cnn.Close();
             }
             catch (Exception ex)
             {
@@ -442,18 +343,14 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 toSend.Msg = ex.Message;
                 return;
             }
-            respon = new SqlParameter("@responseMessage", System.Data.SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            procedureCall = new GenericProcedureDAO("GET_SELECTED_QUESTIONNARIE_ORDER", true, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQ_QuestionList_ID", idList);
             String order = "";
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_SELECTED_QUESTIONNARIE_ORDER]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                // Add params
-                command.Parameters.AddWithValue("@pQ_QuestionList_ID", idList);
-                command.Parameters.Add(respon);
-                cnn.Open();
-                SqlDataReader reader = command.ExecuteReader();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                DataTableReader reader = responseOutput.getDataTable().CreateDataReader();
                 int count = 1;
                 if (reader.HasRows)
                 {
@@ -470,10 +367,6 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 toSend.Result = "Failure";
                 toSend.Msg = ex.Message;
                 return;
-            }
-            finally
-            {
-                cnn.Close();
             }
             String[] orderArr = order.Split(',');
 
@@ -501,19 +394,13 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         // Retrieves all the questions from the DB
         private void retrieveQuestions(dynamic toSend)
         {
-            SqlConnection cnn;
             ArrayList qns = new ArrayList();
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_QUESTIONS", true, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_QUESTIONS]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                DataTableReader reader = responseOutput.getDataTable().CreateDataReader();
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -536,43 +423,27 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 toSend.Msg = ex.Message;
 
             }
-            finally
-            {
-                cnn.Close();
-            }
-
+           
         }
 
         private String addQuestionToQuestionnaire(String qnaireId, String qns)
         {
-            SqlConnection cnn;
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_QUESTIONNARIE_LIST", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pQ_QuestionList_ID", qnaireId);
+            procedureCall.addParameterWithValue("@pQ_Order", qns);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE_QUESTIONNARIE_LIST]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pQ_QuestionList_ID", qnaireId);
-                command.Parameters.AddWithValue("@pQ_Order", qns);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                result.Msg += respon.Value;
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                result.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 result.Result = "Failure";
                 result.Msg = ex.Message;
             }
-            finally
-            {
-                cnn.Close();
-            }
-
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 

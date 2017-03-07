@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
 using System.Globalization;
-using System.Linq;
 using System.Web;
+using THKH.Classes.DAO;
+using THKH.Classes.Entity;
 
 namespace THKH.Webpage.Staff.UserManagement
 {
@@ -84,22 +84,15 @@ namespace THKH.Webpage.Staff.UserManagement
 
         // Gets a List in String form from the Staff Table
         private String loadUsers() {
-            SqlConnection cnn;
             dynamic jsonObj = new ExpandoObject();
             dynamic responseJson = new ExpandoObject();
             ArrayList contentOf = new ArrayList();
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_STAFFS", false, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_STAFFS]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                //command.Parameters.AddWithValue('@pNric', nric);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                DataTableReader reader = responseOutput.getDataTable().CreateDataReader();
                 int count = 1;
                 jsonObj.Msg = "Success";
                 if (reader.HasRows)
@@ -118,43 +111,30 @@ namespace THKH.Webpage.Staff.UserManagement
                   
                 }
                 jsonObj.Result = contentOf;
-               // successString += respon.Value;
                 reader.Close();
             }
             catch (Exception ex)
             {
                 jsonObj.Msg = "Failed";
                 jsonObj.Result = ex.Message;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); 
             }
-            finally
-            {
-                cnn.Close();
-            }
-             
             return Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
         }
 
         // Gets a specific row from the Staff Table
         private String getUser(String email)
         {
-            SqlConnection cnn;
             String successString = "";//result and msg 
             dynamic jsonObj = new ExpandoObject();
             dynamic responseJson = new ExpandoObject();
             ArrayList contentOf = new ArrayList();
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_SELECTED_STAFF", true, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pStaff_Email", email);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_SELECTED_STAFF]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pStaff_Email", email);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                DataTableReader reader = responseOutput.getDataTable().CreateDataReader();
                 int count = 1;
                 jsonObj.Msg = "Success";
                 if (reader.HasRows)
@@ -180,10 +160,8 @@ namespace THKH.Webpage.Staff.UserManagement
 
                         count++;
                     }
-
                 }
                 jsonObj.Result = responseJson;
-                // successString += respon.Value;
                 reader.Close();
             }
             catch (Exception ex)
@@ -191,11 +169,6 @@ namespace THKH.Webpage.Staff.UserManagement
                 jsonObj.Msg = "Failed";
                 jsonObj.Result = ex.Message;
                 successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
-                return successString;
-            }
-            finally
-            {
-                cnn.Close();
             }
             successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); 
             return successString;
@@ -204,43 +177,37 @@ namespace THKH.Webpage.Staff.UserManagement
         // Creates a new row in the Staff Table
         private String addUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
-            SqlConnection cnn;
             dynamic responseJson = new ExpandoObject();
             responseJson.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.NVarChar, 250);
-            respon.Direction = ParameterDirection.Output;
             int pos = 0;
-            if (postal != "") {
+            if (postal != "")
+            {
                 pos = Int32.Parse(postal);
             }
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("CREATE_STAFF", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.NVarChar,250);
+            procedureCall.addParameterWithValue("@pEmail", email);
+            procedureCall.addParameterWithValue("@pPassword", password);
+            procedureCall.addParameterWithValue("@pFirstName",fname);
+            procedureCall.addParameterWithValue("@pLastName", lname);
+            procedureCall.addParameterWithValue("@pNric", snric);
+            procedureCall.addParameterWithValue("@pAddress",address);
+            procedureCall.addParameterWithValue("@pPostal", pos);
+            procedureCall.addParameterWithValue("@pHomeTel", hometel);
+            procedureCall.addParameterWithValue("@pAltTel", alttel);
+            procedureCall.addParameterWithValue("@pMobileTel", mobtel);
+            procedureCall.addParameterWithValue("@pSex", sex);
+            procedureCall.addParameterWithValue("@pNationality", nationality);
+            procedureCall.addParameterWithValue("@pDOB", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
+            procedureCall.addParameterWithValue("@pPermission", permissions);
+            procedureCall.addParameterWithValue("@pAccessProfile", accessProfile);
+            procedureCall.addParameterWithValue("@pPostion", title);
+            procedureCall.addParameterWithValue("@pCreatedBy", staffUser);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[CREATE_STAFF]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(respon);
-                command.Parameters.AddWithValue("@pEmail",email);
-                command.Parameters.AddWithValue("@pPassword", password);
-                command.Parameters.AddWithValue("@pFirstName",fname);
-                command.Parameters.AddWithValue("@pLastName", lname);
-                command.Parameters.AddWithValue("@pNric", snric);
-                command.Parameters.AddWithValue("@pAddress",address);
-                command.Parameters.AddWithValue("@pPostal", pos);
-                command.Parameters.AddWithValue("@pHomeTel", hometel);
-                command.Parameters.AddWithValue("@pAltTel", alttel);
-                command.Parameters.AddWithValue("@pMobileTel", mobtel);
-                command.Parameters.AddWithValue("@pSex", sex);
-                command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDOB", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                command.Parameters.AddWithValue("@pPermission", permissions);
-                command.Parameters.AddWithValue("@pAccessProfile", accessProfile);
-                command.Parameters.AddWithValue("@pPostion", title);
-                command.Parameters.AddWithValue("@pCreatedBy", staffUser);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                responseJson.Msg = respon.Value;
-                if (respon.Value.ToString().Contains("PRIMARY KEY")) {
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                responseJson.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+                if (responseJson.Msg.Contains("PRIMARY KEY")) {
                     responseJson.Result = "Failure";
                 }
             }
@@ -249,116 +216,84 @@ namespace THKH.Webpage.Staff.UserManagement
                 responseJson.Result = "Failure";
                 responseJson.Msg = ex.Message;
             }
-            finally
-            {
-                cnn.Close();
-            }
             return Newtonsoft.Json.JsonConvert.SerializeObject(responseJson); 
         }
 
         // Deletes a specific row in the Staff Table
         private String deleteUser(String snric, String email) {
-            SqlConnection cnn;
             dynamic responseJson = new ExpandoObject();
             responseJson.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DELETE_STAFF", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pNric", snric);
+            procedureCall.addParameterWithValue("@pEmail", email);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[DELETE_STAFF]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pNric", snric);
-                command.Parameters.AddWithValue("@pEmail", email);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                responseJson.Msg = respon.Value;
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                responseJson.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 responseJson.Result = "Failure";
                 responseJson.Msg = ex.Message;
             }
-            finally
-            {
-                cnn.Close();
-            }
+          
             return Newtonsoft.Json.JsonConvert.SerializeObject(responseJson);
         }
 
         // Updates a specific row in the Staff Table
         private String updateUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile) {
-            SqlConnection cnn;
             dynamic responseJson = new ExpandoObject();
             responseJson.Result = "Success";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
             int pos = 0;
             if (postal != "")
             {
                 pos = Int32.Parse(postal);
             }
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_STAFF", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pEmail", email);
+            procedureCall.addParameterWithValue("@pPassword", password);
+            procedureCall.addParameterWithValue("@pFirstName", fname);
+            procedureCall.addParameterWithValue("@pLastName", lname);
+            procedureCall.addParameterWithValue("@pNric", snric);
+            procedureCall.addParameterWithValue("@pAddress", address);
+            procedureCall.addParameterWithValue("@pPostalCode", pos);
+            procedureCall.addParameterWithValue("@pHomeTel", hometel);
+            procedureCall.addParameterWithValue("@pAltTel", alttel);
+            procedureCall.addParameterWithValue("@pMobileTel", mobtel);
+            procedureCall.addParameterWithValue("@pSex", sex);
+            procedureCall.addParameterWithValue("@pNationality", nationality);
+            procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+            procedureCall.addParameterWithValue("@pPermission", permissions);
+            procedureCall.addParameterWithValue("@pAccessProfile", accessProfile);
+            procedureCall.addParameterWithValue("@pPosition", title);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE_STAFF]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(respon);
-                command.Parameters.AddWithValue("@pEmail", email);
-                command.Parameters.AddWithValue("@pPassword", password);
-                command.Parameters.AddWithValue("@pFirstName", fname);
-                command.Parameters.AddWithValue("@pLastName", lname);
-                command.Parameters.AddWithValue("@pNric", snric);
-                command.Parameters.AddWithValue("@pAddress", address);
-                command.Parameters.AddWithValue("@pPostalCode", pos);
-                command.Parameters.AddWithValue("@pHomeTel", hometel);
-                command.Parameters.AddWithValue("@pAltTel", alttel);
-                command.Parameters.AddWithValue("@pMobileTel", mobtel);
-                command.Parameters.AddWithValue("@pSex", sex);
-                command.Parameters.AddWithValue("@pNationality", nationality);
-                command.Parameters.AddWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture));
-                command.Parameters.AddWithValue("@pPermission", permissions);
-                command.Parameters.AddWithValue("@pAccessProfile", accessProfile);
-                command.Parameters.AddWithValue("@pPosition", title);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                responseJson.Msg = respon.Value;
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                responseJson.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
                 responseJson.Result = "Failure";
                 responseJson.Msg = ex.Message;
             }
-            finally
-            {
-                cnn.Close();
-            }
             return Newtonsoft.Json.JsonConvert.SerializeObject(responseJson);
         }
 
         private String getPermissions()
         {
-            SqlConnection cnn;
             String successString = "";//result and msg 
             dynamic jsonObj = new ExpandoObject();
             dynamic responseJson = new ExpandoObject();
             ArrayList contentOf = new ArrayList();
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_USER_PERMISSIONS", false, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_USER_PERMISSIONS]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                //command.Parameters.AddWithValue('@pNric', nric);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                DataTableReader reader = responseOutput.getDataTable().CreateDataReader();
                 jsonObj.Msg = "Success";
                 if (reader.HasRows)
                 {
@@ -379,12 +314,6 @@ namespace THKH.Webpage.Staff.UserManagement
             {
                 jsonObj.Msg = "Failure";
                 jsonObj.Result = ex.Message;
-                successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj);
-                return successString;
-            }
-            finally
-            {
-                cnn.Close();
             }
             successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
             return successString;

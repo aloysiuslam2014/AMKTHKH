@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Dynamic;
-using System.Globalization;
-using System.Linq;
 using System.Web;
+using THKH.Classes.DAO;
+using THKH.Classes.Entity;
 
 namespace THKH.Webpage.Staff
 {
@@ -61,21 +60,13 @@ namespace THKH.Webpage.Staff
         // Gets all the User Access Profile names & returns a JSON String
         private String getAccessProfile() {
             dynamic json = new ExpandoObject();
-            SqlConnection cnn;
-            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_ACCESS_PROFILES", true, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             DataTable dt = new DataTable();
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_ACCESS_PROFILES]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                dt.Load(command.ExecuteReader());
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                dt = responseOutput.getDataTable();
                 List<Object> jsonArray = new List<Object>();
                 foreach (DataRow row in dt.Rows)
                 {
@@ -91,92 +82,57 @@ namespace THKH.Webpage.Staff
                 }
                 json.Msg = jsonArray;
                 json.Result = "Success";
-                //successString += respon.Value;
             }
             catch (Exception ex)
             {
                 json.Msg = ex.Message.ToString();
                 json.Result = "Failure";
-                //successString.Replace("Success", "Failure");
-                //successString += ex.Message;
-                //successString += "\"}";
-                return Newtonsoft.Json.JsonConvert.SerializeObject(json);
-                //return successString;
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //successString += "\"}";
+            
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
-            //return successString;
         }
 
         // updates the registration configuration & returns a JSON String
         private String updateTempTime(String lowTemp, String highTemp, String warnTemp, String lowTime, String highTime, String staffUser, String visLim) {
-            SqlConnection cnn;
+            
             dynamic json = new ExpandoObject();
             json.Result = "Success";
-            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_CONFIG", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pLowTemp", lowTemp);
+            procedureCall.addParameterWithValue("@pHighTemp", highTemp);
+            procedureCall.addParameterWithValue("@pWarnTemp", warnTemp);
+            procedureCall.addParameterWithValue("@pLowTime", lowTime);
+            procedureCall.addParameterWithValue("@pHighTime", highTime);
+            procedureCall.addParameterWithValue("@pUpdatedBy", staffUser);
+            procedureCall.addParameterWithValue("@pVisLim", Int32.Parse(visLim));
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE_CONFIG]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pLowTemp", lowTemp);
-                command.Parameters.AddWithValue("@pHighTemp", highTemp);
-                command.Parameters.AddWithValue("@pWarnTemp", warnTemp);
-                command.Parameters.AddWithValue("@pLowTime", lowTime);
-                command.Parameters.AddWithValue("@pHighTime", highTime);
-                command.Parameters.AddWithValue("@pUpdatedBy", staffUser);
-                command.Parameters.AddWithValue("@pVisLim", Int32.Parse(visLim));
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                //successString += respon.Value;
-                json.Msg = respon.Value.ToString();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                json.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
-                //successString.Replace("Success", "Failure");
-                //successString += ex.Message;
-                //successString += "\"}";
-                //return successString;
                 json.Result = "Failure";
                 json.Msg = ex.Message;
                 return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //successString += "\"}";
-            //return successString;
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         // Gets the registration configuration & returns a JSON String
         private String getConfig()
         {
-            SqlConnection cnn;
             dynamic json = new ExpandoObject();
             json.Result = "Success";
-            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
             String successString = "";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, 500);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_CONFIG", false, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.VarChar,500);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_CONFIG]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(respon);
-                cnn.Open();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
 
-                SqlDataReader reader = command.ExecuteReader();
+                DataTableReader reader = responseOutput.getDataTable().CreateDataReader();
                 int count = 1;
                 if (reader.HasRows)
                 {
@@ -195,122 +151,70 @@ namespace THKH.Webpage.Staff
             }
             catch (Exception ex)
             {
-                //successString.Replace("Success", "Failure");
-                //successString += ex.Message;
-                //successString += "\"}";
-                //return successString;
                 json.Result = "Failure";
                 json.Msg = ex.Message;
                 return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //successString += "\"}";
-            //return successString;
+           
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         // Updates the Selected User Access Profile & returns a JSON String
         private String updateAccessProfile(String name, String permissions, String username) {
-            SqlConnection cnn;
             dynamic json = new ExpandoObject();
             json.Result = "Success";
-            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_ACCESS_PROFILE", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pProfileName", name);
+            procedureCall.addParameterWithValue("@pAccessRights", permissions); 
+            procedureCall.addParameterWithValue("@pUpdatedBy", username);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[UPDATE_ACCESS_PROFILE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pProfileName", name);
-                command.Parameters.AddWithValue("@pAccessRights", permissions); 
-                command.Parameters.AddWithValue("@pUpdatedBy", username);
-                command.Parameters.Add(respon);
-                cnn.Open();
-                command.ExecuteNonQuery();
-
-                //successString += respon.Value;
-                json.Msg = respon.Value.ToString();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                json.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
-                //successString.Replace("Success", "Failure");
-                //successString += ex.Message;
-                //successString += "\"}";
-                //return successString;
                 json.Result = "Failure";
                 json.Msg = ex.Message;
                 return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //successString += "\"}";
-            //return successString;
+         
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         // Deletes Selected User Access Profile & returns a JSON String
         private String deleteAccessProfile(String name) {
-            SqlConnection cnn;
             dynamic json = new ExpandoObject();
             json.Result = "Success";
-            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DELETE_ACCESS_PROFILE", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pProfileName", name);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[DELETE_ACCESS_PROFILE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pProfileName", name);
-                command.Parameters.Add(respon);
-                cnn.Open();
-                command.ExecuteNonQuery();
-
-                //successString += respon.Value;
-                json.Msg = respon.Value.ToString();
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                json.Msg = responseOutput.getSqlParameterValue("@responseMessage").ToString();
             }
             catch (Exception ex)
             {
-                //successString.Replace("Success", "Failure");
-                //successString += ex.Message;
-                //successString += "\"}";
-                //return successString;
                 json.Result = "Failure";
                 json.Msg = ex.Message;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //successString += "\"}";
-            //return successString;
+           
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         // Gets Selected User Access Profile & returns a JSON String
         private String getSelectedProfile(String name) {
             dynamic json = new ExpandoObject();
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_SELECTED_PROFILE", true, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pProfileName", name);
             DataTable dt = new DataTable();
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_SELECTED_PROFILE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pProfileName", name);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                dt.Load(command.ExecuteReader());
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                dt = responseOutput.getDataTable();
                 List<Object> jsonArray = new List<Object>();
                 foreach (DataRow row in dt.Rows)
                 {
@@ -326,25 +230,15 @@ namespace THKH.Webpage.Staff
                 }
                 json.Msg = jsonArray;
                 json.Result = "Success";
-                //successString += respon.Value;
             }
             catch (Exception ex)
             {
                 json.Msg = ex.Message.ToString();
                 json.Result = "Failure";
-                //successString.Replace("Success", "Failure");
-                //successString += ex.Message;
-                //successString += "\"}";
                 return Newtonsoft.Json.JsonConvert.SerializeObject(json);
-                //return successString;
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //successString += "\"}";
+           
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
-            //return successString;
         }
 
         public bool IsReusable

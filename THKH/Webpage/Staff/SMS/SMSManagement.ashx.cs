@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Web;
+using THKH.Classes.DAO;
+using THKH.Classes.Entity;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
@@ -39,10 +37,7 @@ namespace THKH.Webpage.Staff.SMS
             string AuthToken = "a750950b96a75c3ab36d4508bfd1db31";
             TwilioClient.Init(AccountSid, AuthToken);
             String[] numArr = numbers.Split(',');
-            SqlConnection cnn;
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+           
             for (int i = 0; i < numArr.Length; i++)
             {
                 String number = numArr[i];
@@ -53,16 +48,15 @@ namespace THKH.Webpage.Staff.SMS
                         to,
                         from: new PhoneNumber("+18324632876"),
                         body: message);
-                    SqlCommand command = new SqlCommand("[dbo].[RECORD_SMS]", cnn);
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@pSID", msg.Sid);
-                    command.Parameters.AddWithValue("@pContact", number);
-                    command.Parameters.AddWithValue("@pMessage", message);
-                    command.Parameters.Add(respon);
-                    cnn.Open();
 
-                    command.ExecuteNonQuery();
-                    if (respon.Value.ToString() == "0") {
+                    GenericProcedureDAO procedureCall = new GenericProcedureDAO("RECORD_SMS", true, true, false);
+                    procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+                    procedureCall.addParameterWithValue("@pSID", msg.Sid);
+                    procedureCall.addParameterWithValue("@pContact", number);
+                    procedureCall.addParameterWithValue("@pMessage", message);
+                    ProcedureResponse responseOutput = procedureCall.runProcedure();
+
+                    if (responseOutput.getSqlParameterValue("@responseMessage").ToString() == "0") {
                         responses.Add(msg.Sid);
                     } 
                 }
