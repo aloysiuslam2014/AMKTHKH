@@ -104,14 +104,14 @@ function callCheck (){
                     } else {
                         var visitString = resultOfGeneration.Visit;
                         var questionnaireAns = resultOfGeneration.Questionnaire;
-                        var visitorArr = [];
+                        //var visitorArr = [];
                         var visitArr = [];
                         var questionnaireArr = [];
                         if (resultOfGeneration.Visit != null & resultOfGeneration.Visit != "0") {
                             visitArr = visitString.split(",");
                         }
                         if (resultOfGeneration.Visitor != null) {
-                            visitorArr = visitorString.split(",");
+                            //visitorArr = visitorString.split(",");
                             if (resultOfGeneration.Questionnaire != null) {
                                 try {
                                     questionnaireArr = resultOfGeneration.Questionnaire.Main;
@@ -120,16 +120,16 @@ function callCheck (){
                                 }
                             }
                         }
-                        if (visitorArr.length > 1) {
+                        if (resultOfGeneration.Visitor !== "new") {
                             // Populate fields if data exists
-                            $("#nric").prop('value', visitorArr[0]);
-                            $("#namesInput").prop('value', visitorArr[1]);
-                            $("#sexinput").prop('value', visitorArr[2].trim());
-                            $("#nationalsInput").val(visitorArr[3]);
-                            $("#daterange").val(visitorArr[4].toString()); // Error
-                            $("#addresssInput").prop('value', visitorArr[6]);
-                            $("#postalsInput").prop('value', visitorArr[7]);
-                            $("#mobilesInput").prop('value', visitorArr[5]);
+                            $("#nric").prop('value', resultOfGeneration.Visitor.nric);
+                            $("#namesInput").prop('value', resultOfGeneration.Visitor.name);
+                            $("#sexinput").prop('value', resultOfGeneration.Visitor.gender);
+                            $("#nationalsInput").val(resultOfGeneration.Visitor.nationality);
+                            $("#daterange").val(resultOfGeneration.Visitor.dob.toString()); // Error
+                            $("#addresssInput").prop('value', resultOfGeneration.Visitor.address);
+                            $("#postalsInput").prop('value', resultOfGeneration.Visitor.postal);
+                            $("#mobilesInput").prop('value', resultOfGeneration.Visitor.contactNum);
                         } if (visitArr.length > 1) {
                             $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10));
                             $("#visitbookingtime").val(visitArr[0].toString().substring(11, 16));
@@ -162,7 +162,7 @@ function callCheck (){
                                 $("#questionaireForm input[id='" + qid + "'][value='" + answer + "']").prop("checked", true) // Radio
                             }
                         }
-                        else if (visitorArr.length == 0 & visitArr.length == 0 & questionnaireArr.length == 0) {
+                        else if (resultOfGeneration.Visitor === "new" & visitArr.length == 0 & questionnaireArr.length == 0) {
                             clearFields(false);
                             // Except Visit Date
                             $('#visitbookingdate').val(visDate);

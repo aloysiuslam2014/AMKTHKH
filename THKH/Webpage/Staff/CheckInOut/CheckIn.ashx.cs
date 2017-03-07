@@ -218,7 +218,7 @@ namespace THKH.Webpage.Staff.CheckInOut
         private String getVisitorDetails(String nric) {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            String visJson = "";
+            dynamic visJson = null;
             try
             {
           
@@ -232,10 +232,11 @@ namespace THKH.Webpage.Staff.CheckInOut
                 if (!response.Contains("Visitor not found"))
                 {
                     //msg += response;
-                    result.Visitor = response;
+                    //result.Visitor = response;
                     var arr = response.Split(',');
                     Visitor vistr = new Visitor(arr[1], arr[0], arr[2].Trim(), arr[3], arr[4], arr[5], arr[6], arr[7]);
-                    visJson = vistr.toJson();
+                    visJson = vistr.toJsonObject();
+                    result.Visitor = visJson;
                 }
                 else {
                   

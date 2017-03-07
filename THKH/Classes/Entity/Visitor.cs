@@ -43,6 +43,19 @@ namespace THKH.Classes.Entity
             return JsonConvert.SerializeObject(this);
         }
 
+        public dynamic toJsonObject()
+        {
+            //dynamic vis = new ExpandoObject();
+            //vis.Name = name;
+            //vis.Nric = nric;
+            //vis.Gender = gender;
+            //vis.Nationality = nationality;
+            //vis.Dob = dob;
+            //vis.Contact = contactNum;
+            //vis.Address = address;
+            //vis.Postal = postal;
+            return JsonConvert.DeserializeObject(toJson());
+        }
 
     }
 }
