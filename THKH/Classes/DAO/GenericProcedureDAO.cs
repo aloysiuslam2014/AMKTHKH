@@ -52,7 +52,7 @@ namespace THKH.Classes.DAO
             {
                 foreach (var item in responses)
                 {
-                    sqlparameter = new SqlParameter(item.Key,item.Value);
+                    sqlparameter = new SqlParameter(item.Key,item.Value,-1);
                     sqlparameter.Direction = ParameterDirection.Output;
                     responseObjectList.Add(sqlparameter);
                 }

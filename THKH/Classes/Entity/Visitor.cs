@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace THKH.Classes.Entity
 {
     public class Visitor
     {
 
-        String name;
-        String nric;
-        String gender;
-        String nationality;
-        String dob;
-        String contactNum;
-        String address;
-        String postal;
+        [JsonProperty] String name;
+        [JsonProperty] String nric;
+        [JsonProperty] String gender;
+        [JsonProperty] String nationality;
+        [JsonProperty] String dob;
+        [JsonProperty] String contactNum;
+        [JsonProperty] String address;
+        [JsonProperty] String postal;
 
         public Visitor(String name, String nric, String gender, String nationality, String dob, String contactNum, String address, String postal) {
             this.name = name;
@@ -38,7 +40,7 @@ namespace THKH.Classes.Entity
             //vis.Contact = contactNum;
             //vis.Address = address;
             //vis.Postal = postal;
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(this);
         }
 
 

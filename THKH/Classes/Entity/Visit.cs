@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,14 +8,14 @@ namespace THKH.Classes.Entity
 {
     public class Visit
     {
-        String visReqTime;
-        String nric;
-        String purpose;
-        String otherPurpose;
-        String visitLocation;
-        String bedno;
-        String qAid;
-        String remarks;
+        [JsonProperty] String visReqTime;
+        [JsonProperty] String nric;
+        [JsonProperty] String purpose;
+        [JsonProperty] String otherPurpose;
+        [JsonProperty] String visitLocation;
+        [JsonProperty] String bedno;
+        [JsonProperty] String qAid;
+        [JsonProperty] String remarks;
 
         public Visit(String visReqTime, String nric, String purpose, String otherPurpose, String visitLocation, String bedno, String qAid, String remarks)
         {
@@ -30,7 +31,7 @@ namespace THKH.Classes.Entity
 
         public String toJson()
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(this);
         }
 
     }

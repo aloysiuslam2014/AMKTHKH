@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,8 +8,8 @@ namespace THKH.Classes.Entity
 {
     public class Questionnaire
     {
-        String qName;
-        String qns;
+        [JsonProperty] String qName;
+        [JsonProperty] String qns;
 
         public Questionnaire(String qName, String qns)
         {
@@ -18,7 +19,7 @@ namespace THKH.Classes.Entity
 
         public String toJson()
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(this);
         }
 
     }
