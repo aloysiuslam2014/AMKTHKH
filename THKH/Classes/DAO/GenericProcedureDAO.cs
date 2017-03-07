@@ -12,7 +12,7 @@ namespace THKH.Classes.DAO
     public class GenericProcedureDAO 
     {
         Dictionary<String,String> parameters;
-        Dictionary<String, SqlDbType> responses;
+        Dictionary<String, ArrayList> responses;
         string procedureName;
         bool dataTableExpected;
         SqlParameter sqlparameter;
@@ -34,7 +34,7 @@ namespace THKH.Classes.DAO
                 this.parameters = new Dictionary<string, string>() ;
             this.dataTableExpected = dataTableExpected;
             if(sqlParameters)
-                this.responses = new Dictionary<string, SqlDbType>();
+                this.responses = new Dictionary<string, ArrayList>();
         }
 
         public ProcedureResponse runProcedure()
@@ -52,7 +52,16 @@ namespace THKH.Classes.DAO
             {
                 foreach (var item in responses)
                 {
-                    sqlparameter = new SqlParameter(item.Key,item.Value);
+                    ArrayList parameterTypeAndLength = item.Value;
+                    if(parameterTypeAndLength.Count > 1)
+                    {
+                        sqlparameter = new SqlParameter(item.Key,(SqlDbType)parameterTypeAndLength[0],(int)parameterTypeAndLength[1]);
+                    }
+                    else
+                    {
+                        sqlparameter = new SqlParameter(item.Key, (SqlDbType)parameterTypeAndLength[0]);
+                    }
+                    
                     sqlparameter.Direction = ParameterDirection.Output;
                     responseObjectList.Add(sqlparameter);
                 }
@@ -111,9 +120,14 @@ namespace THKH.Classes.DAO
             parameters[parameterName] = parameterValue;
         }
 
-        public void addParameter(string parameterName, SqlDbType type)
+        public void addParameter(string parameterName, SqlDbType type,int length = 0)
         {
-            responses[parameterName] = type;
+            ArrayList parameterTypeAndLength = new ArrayList();
+            parameterTypeAndLength.Add(type);
+            if (length != 0)
+                parameterTypeAndLength.Add(length);
+
+            responses[parameterName] = parameterTypeAndLength;
         }
     }
 }

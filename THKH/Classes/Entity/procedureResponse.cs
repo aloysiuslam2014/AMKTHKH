@@ -31,9 +31,9 @@ namespace THKH.Classes.Entity
             return this.response;
         }
 
-        public SqlParameter getSqlParameter()
+        public object getSqlParameterValue(String nameOfParam)
         {
-            return this.parameter;
+            return this.response[nameOfParam];
         }
 
     }

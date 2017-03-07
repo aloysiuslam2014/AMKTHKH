@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using GenCode128;
 using System.Drawing;
 using System.IO;
 using System.Dynamic;
-using System.Text;
-using System.Data.SqlClient;
 using System.Data;
-using System.Net;
+
 using THKH.Classes.DAO;
 using THKH.Classes.Entity;
 

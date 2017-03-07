@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
 using System.Globalization;
-using System.Linq;
 using System.Web;
+using THKH.Classes.DAO;
+using THKH.Classes.Entity;
+
 
 namespace THKH.Webpage.Staff.CheckInOut
 {
@@ -36,14 +38,10 @@ namespace THKH.Webpage.Staff.CheckInOut
             if (typeOfRequest == "self")
             {
                 var nric = context.Request.Form["nric"].ToString();
-                //var temperature = context.Request.Form["temperature"];
-                //var age = context.Request.Form["AGE"];
                 var fname = context.Request.Form["fullName"];
                 var address = context.Request.Form["ADDRESS"];
                 var postal = context.Request.Form["POSTAL"];
                 var mobtel = context.Request.Form["MobTel"];
-                //var alttel = context.Request.Form["AltTel"];
-                //var hometel = context.Request.Form["HomeTel"];
                 var sex = context.Request.Form["SEX"];
                 var nationality = context.Request.Form["Natl"];
                 var dob = context.Request.Form["DOB"];
@@ -122,20 +120,15 @@ namespace THKH.Webpage.Staff.CheckInOut
         private String getFacilities() {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            SqlConnection cnn;
             String fac = "";
-            //String successString = "{\"Result\":\"Success\",\"Facilities\":\"";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_ALL_FACILITIES", false, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[GET_ALL_FACILITIES]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                DataTable response = resultss.getDataTable();
+                DataTableReader reader = response.CreateDataReader();
                 int count = 1;
                 if (reader.HasRows)
                 {
@@ -144,10 +137,8 @@ namespace THKH.Webpage.Staff.CheckInOut
                         if (count > 1)
                         {
                             fac += ",";
-                            //successString += ",";
                         }
                         fac += reader.GetString(1);
-                        //successString += reader.GetString(1);
                         count++;
                     }
                 }
@@ -156,110 +147,71 @@ namespace THKH.Webpage.Staff.CheckInOut
             }
             catch (Exception ex)
             {
-                //successString.Replace("Success", "Failure");
                 result.Result = "Failure";
                 result.Facilities = ex.Message;
                 return Newtonsoft.Json.JsonConvert.SerializeObject(result);
-                //successString += ex.Message;
-                //successString += "\"}";
-                //return successString;
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //successString += "\"}";
+            
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         private String loadForm() {
-            SqlConnection cnn;
-            String successString = "{\"Result\":\"Success\",\"Msg\":";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.Int);
-            respon.Direction = ParameterDirection.Output;
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
+            ArrayList questionItems = new ArrayList();
+
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("RETRIEVE_ACTIVE_QUESTIONNARIE", false, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
             try
             {
-                SqlCommand command = new SqlCommand("[dbo].[RETRIEVE_ACTIVE_QUESTIONNARIE]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                //command.ExecuteNonQuery();
-                SqlDataReader reader = command.ExecuteReader();
-                int count = 1;
+                ProcedureResponse responses = procedureCall.runProcedure();
+                DataTableReader reader = responses.getDataTable().CreateDataReader();
                 if (reader.HasRows)
                 {
-                    successString += "[";
+                     
                     while (reader.Read())
                     {
-                        if (count > 1) {
-                            successString += ",";
-                        }
-                        successString += "{\"QuestionNumber\":\"";
-                        successString += reader.GetInt32(1) + "\",\"QuestionList\":\"" + reader.GetString(0) +"\",\"Question\":\"" + reader.GetString(2) + "\",\"QuestionType\":\"" + reader.GetString(3) + "\",\"QuestionAnswers\":\"" + reader.GetString(4);
-                        successString += "\"}";
-                        count++;
+                        dynamic questionO = new ExpandoObject();
+                        questionO.QuestionNumber = reader.GetInt32(1);
+                        questionO.QuestionList = reader.GetString(1);
+                        questionO.Question = reader.GetString(2);
+                        questionO.QuestionType = reader.GetString(3);
+                        questionO.QuestionAnswers = reader.GetString(4);
+                        questionItems.Add(questionO);
                     }
-                    successString += "]";
+                     
                 }
-                successString += respon.Value;
+                
                 reader.Close();
-                //successString += "\"}";
+                result.Msg = questionItems;
             }
             catch (Exception ex)
             {
-                successString.Replace("Success", "Failure");
-                successString += ex.Message;
-                successString += "\"}";
-                return successString;
+                result.Result = "Failure";
+                result.Msg = ex.Message;
+               
             }
-            finally
-            {
-                cnn.Close();
-            }
-            successString += "}";
-            return successString;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
         // Check if patient exists in the Patient Database
         private String checkPatient(String pName, String bedno) {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            SqlConnection cnn;
-            //String successString = "{\"Result\":\"Success\",\"Msg\":\"";
-            cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["offlineConnection"].ConnectionString);
-            SqlParameter respon = new SqlParameter("@responseMessage", SqlDbType.VarChar, 500);
-            respon.Direction = ParameterDirection.Output;
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("CONFIRM_PATIENT", true, true, false);
+            procedureCall.addParameter("@responseMessage", SqlDbType.VarChar, 500);
+            procedureCall.addParameterWithValue("@pBedNo", bedno);
+            procedureCall.addParameterWithValue("@pPatientFullName", pName);
             try
             {
-                //SqlCommand command = new SqlCommand("[dbo].[CONFIRM_HOSPITAL_PATIENT]", cnn);
-                SqlCommand command = new SqlCommand("[dbo].[CONFIRM_PATIENT]", cnn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@pBedNo", bedno);
-                command.Parameters.AddWithValue("@pPatientFullName", pName);
-                command.Parameters.Add(respon);
-                cnn.Open();
-
-                command.ExecuteNonQuery();
-                result.Msg = respon.Value;
-                //successString += respon.Value;
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                result.Msg = resultss.getSqlParameterValue("@responseMessage");
             }
             catch (Exception ex)
             {
-                //successString.Replace("Success", "Failure");
-                //successString += ex.Message;
-                //successString += "\"}";
                 result.Result = "Failure";
                 result.Msg = ex.Message;
-                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
             }
-            finally
-            {
-                cnn.Close();
-            }
-            //successString += "\"}";
-            //return successString;
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
