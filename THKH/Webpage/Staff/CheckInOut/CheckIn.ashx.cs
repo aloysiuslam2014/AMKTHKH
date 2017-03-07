@@ -218,7 +218,6 @@ namespace THKH.Webpage.Staff.CheckInOut
         private String getVisitorDetails(String nric) {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            dynamic visJson = null;
             try
             {
           
@@ -235,8 +234,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                     //result.Visitor = response;
                     var arr = response.Split(',');
                     Visitor vistr = new Visitor(arr[1], arr[0], arr[2].Trim(), arr[3], arr[4], arr[5], arr[6], arr[7]);
-                    visJson = vistr.toJsonObject();
-                    result.Visitor = visJson;
+                    result.Visitor = vistr.toJsonObject(); ;
                 }
                 else {
                   
@@ -254,13 +252,14 @@ namespace THKH.Webpage.Staff.CheckInOut
             
             try
             {
-                dynamic tempMsg = getVisitDetails(nric);
-                if (tempMsg.Visit != "none")
+                Visit visit = getVisitDetails(nric);
+                if (visit != null)
                 {
                    
-                    result.Visit = tempMsg.Visit;
-                    var arr = tempMsg.Split(',');
-                    var qAID = arr[arr.Length - 3];
+                    result.Visit = visit.toJsonObject();
+                    //var arr = tempMsg.Split(',');
+                    //var qAID = arr[arr.Length - 3];
+                    String qAID = result.Visit.qAid.Value;
                    
                     result.Questionnaire = JsonConvert.DeserializeObject(getSubmittedQuestionnaireResponse(qAID));
                 }
@@ -278,12 +277,13 @@ namespace THKH.Webpage.Staff.CheckInOut
             return JsonConvert.SerializeObject(result);
         }
 
-        private dynamic getVisitDetails(String nric)
+        private Visit getVisitDetails(String nric)
         {
-            dynamic result = new ExpandoObject();
+            //dynamic result = new ExpandoObject();
             GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_VISIT_DETAILS", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
             procedureCall.addParameterWithValue("@pNric", nric);
+            Visit vis = null;
             try
             {
                 ProcedureResponse resultdata =  procedureCall.runProcedure();
@@ -292,27 +292,30 @@ namespace THKH.Webpage.Staff.CheckInOut
                 String response = resultdata.getSqlParameterValue("@responseMessage").ToString();
                 if (response.Length > 4)
                 {
-                    result.Visit = response;
+                    //result.Visit = response;
+                    var resArr = response.Split(',');
+                    vis = new Visit(resArr[0], resArr[1], resArr[2], resArr[3], resArr[4], resArr[5], resArr[6], resArr[7]);
                 }
-                else
-                {
-                    result.Visit = "none";
-                    return result;
-                }
+                //else
+                //{
+                //    result.Visit = "none";
+                //    return result;
+                //}
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            
-            
-            return result;
+
+
+            //return result;
+            return vis;
         }
 
         private String getSubmittedQuestionnaireResponse(String qAID) {
             String successString = "";
             GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_QUESTIONNARIE_RESPONSE", true, true, true);
-            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int, -1);
             procedureCall.addParameterWithValue("@pQA_ID", qAID);
             
             try

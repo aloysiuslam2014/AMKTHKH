@@ -102,14 +102,14 @@ function callCheck (){
                         clearFields(false);
                         $('#visitbookingdate').val(visDate);
                     } else {
-                        var visitString = resultOfGeneration.Visit;
+                        var visitObj = resultOfGeneration.Visit;
                         var questionnaireAns = resultOfGeneration.Questionnaire;
                         //var visitorArr = [];
-                        var visitArr = [];
+                        //var visitArr = [];
                         var questionnaireArr = [];
-                        if (resultOfGeneration.Visit != null & resultOfGeneration.Visit != "0") {
-                            visitArr = visitString.split(",");
-                        }
+                        //if (resultOfGeneration.Visit != null & resultOfGeneration.Visit != "0") {
+                        //    visitArr = visitString.split(",");
+                        //}
                         if (resultOfGeneration.Visitor != null) {
                             //visitorArr = visitorString.split(",");
                             if (resultOfGeneration.Questionnaire != null) {
@@ -130,27 +130,27 @@ function callCheck (){
                             $("#addresssInput").prop('value', resultOfGeneration.Visitor.address);
                             $("#postalsInput").prop('value', resultOfGeneration.Visitor.postal);
                             $("#mobilesInput").prop('value', resultOfGeneration.Visitor.contactNum);
-                        } if (visitArr.length > 1) {
-                            $("#visitbookingdate").val(visitArr[0].toString().substring(0, 10));
-                            $("#visitbookingtime").val(visitArr[0].toString().substring(11, 16));
-                            var visPurpose = visitArr[2];
-                            $('#pInput').val(visitArr[2]); // Purpose of visit "Visit Patient" or "Other Purpose"
+                        } if (visitObj !== undefined) {
+                            $("#visitbookingdate").val(visitObj.visReqTime.substring(0, 10));
+                            $("#visitbookingtime").val(visitObj.visReqTime.substring(11, 16));
+                            var visPurpose = visitObj.purpose;
+                            $('#pInput').val(visPurpose); // Purpose of visit "Visit Patient" or "Other Purpose"
                             if (visPurpose == "Visit Patient") {
                                 $("#patientpurposevisit").css("display", "block");
                                 $("#otherpurposevisit").css("display", "none");
                             } else if (visPurpose == "Other Purpose") {
                                 $("#patientpurposevisit").css("display", "none");
                                 $("#otherpurposevisit").css("display", "block");
+                                $("#visLoc").prop('value', visitObj.visitLocation);
+                                $("#purposeInput").prop('value', visitObj.otherPurpose);
                             }
-                            $("#purposeInput").prop('value', visitArr[3]);
-                            $("#visLoc").prop('value', visitArr[4]);
-                            if (visitArr[5].length > 0) {
-                                $(visitArr[5].split('|')).each(function () {//split bed no if possible then create the beds
+                            if (visitObj.bedno.length > 0) {
+                                $(visitObj.bedno.split('|')).each(function () {//split bed no if possible then create the beds
                                     loadBedPatientName(this);
                                 });
                             }
-                            $("#qaid").prop('value', visitArr[6]);
-                            $("#remarks").prop('value', visitArr[7]);
+                            $("#qaid").prop('value', visitObj.qAid);
+                            $("#remarks").prop('value', visitObj.remarks);
                         } if (questionnaireArr.length >= 1) {
                             for (i = 0; i < questionnaireArr.length; i++) {
                                 var jsonAnswerObject = questionnaireArr[i];
@@ -162,7 +162,7 @@ function callCheck (){
                                 $("#questionaireForm input[id='" + qid + "'][value='" + answer + "']").prop("checked", true) // Radio
                             }
                         }
-                        else if (resultOfGeneration.Visitor === "new" & visitArr.length == 0 & questionnaireArr.length == 0) {
+                        else if (resultOfGeneration.Visitor === "new" & visitObj === undefined & questionnaireArr.length == 0) {
                             clearFields(false);
                             // Except Visit Date
                             $('#visitbookingdate').val(visDate);
@@ -984,200 +984,7 @@ function loadActiveForm() {
 
 // Populates Nationality Field
 function populateRegNationalities() {
-    var nationalities = [
-        'Singapore | Singaporean',
-        'Afghanistan | Afghan',
-        'Albania | Albanian',
-        'Algeria | Algerian',
-        'USA | American',
-        'Andorra | Andorran',
-        'Angola | Angolan',
-        'Antigua | Antiguans',
-        'Argentina | Argentinean',
-        'Armenia | Armenian',
-        'Australia | Australian',
-        'Austria | Austrian',
-        'Azerbaijan | Azerbaijani',
-        'Bahamas | Bahamian',
-        'Bahrain | Bahraini',
-        'Bangladesh | Bangladeshi',
-        'Barbados | Barbadian',
-        'Barbuda | Barbudans',
-        'Bostwana | Batswana',
-        'Belarus | Belarusian',
-        'Belgium | Belgian',
-        'Belize | Belizean',
-        'Benin | Beninese',
-        'Bhutan | Bhutanese',
-        'Bolivia | Bolivian',
-        'Bosnia | Bosnian',
-        'Brazil | Brazilian',
-        'United Kingdom | British',
-        'Brunei | Bruneian',
-        'Bulgaria | Bulgarian',
-        'Burkina Faso | Burkinabe',
-        'Burma | Burmese',
-        'Burundi | Burundian',
-        'Cambodia | Cambodian',
-        'Cameron | Cameroonian',
-        'Canada | Canadian',
-        'Cape Verde | Cape Verdean',
-        'Africa | Central African',
-        'Chad | Chadian',
-        'Chile | Chilean',
-        'China | Chinese',
-        'Colombia | Colombian',
-        'Comoros | Comoran',
-        'Congo | Congolese',
-        'Costa Rica | Costa Rican',
-        'Croatia | Croatian',
-        'Cuba | Cuban',
-        'Cyprus | Cypriot',
-        'Czech Republic | Czech',
-        'Denmark | Danish',
-        'Djibouti',
-        'Dominican',
-        'Netherlands | Dutch',
-        'East Timor | East Timorese',
-        'Ecuador | Ecuadorean',
-        'Egypt | Egyptian',
-        'United Arab Emirates | Emirian',
-        'Equatorial Guinea | Equatorial Guinean',
-        'Eritrea | Eritrean',
-        'Estonia | Estonian',
-        'Ethiopia | Ethiopian',
-        'Fiji | Fijian',
-        'Philippines | Filipino',
-        'Finland | Finnish',
-        'France | French',
-        'Gabon | Gabonese',
-        'Gambia | Gambian',
-        'Georgia | Georgian',
-        'Germany | German',
-        'Ghana | Ghanaian',
-        'Greece | Greek',
-        'Grenada | Grenadian',
-        'Guatemala | Guatemalan',
-        'Guinea-Bissauan',
-        'Guinea | Guinean',
-        'Guyana | Guyanese',
-        'Haiti | Haitian',
-        'Herzegovina | Herzegovinian',
-        'Honduras | Honduran',
-        'Hungary | Hungarian',
-        'Kiribati | I-Kiribati',
-        'Iceland | Icelander',
-        'India | Indian',
-        'Indonesia | Indonesian',
-        'Iran | Iranian',
-        'Iraq | Iraqi',
-        'Ireland | Irish',
-        'Israel | Israeli',
-        'Italy | Italian',
-        'Ivory Coast | Ivorian',
-        'Jamaica | Jamaican',
-        'Japan | Japanese',
-        'Jordan | Jordanian',
-        'Kazakhstan | Kazakhstani',
-        'Kenya | Kenyan',
-        'Kittian and Nevisian',
-        'Kuwait | Kuwaiti',
-        'Kyrgyzstan | Kyrgyz',
-        'Laos | Laotian',
-        'Lativa | Latvian',
-        'Lebanon | Lebanese',
-        'Liberia | Liberian',
-        'Libya | Libyan',
-        'Liechtenstein | Liechtensteiner',
-        'Lituania | Lithuanian',
-        'Luxembourg | Luxembourger',
-        'Macedonia | Macedonian',
-        'Madagascar | Malagasy',
-        'Malawi | Malawian',
-        'Malaysia | Malaysian',
-        'Maldives | Maldivan',
-        'Mali | Malian',
-        'Malta | Maltese',
-        'Marshallese',
-        'Mauritanian',
-        'Mauritius | Mauritian',
-        'Mexico | Mexican',
-        'Micronesia | Micronesian',
-        'Moldovan',
-        'Monaco | Monacan',
-        'Mongolia | Mongolian',
-        'Morocco | Moroccan',
-        'Mosotho',
-        'Motswana',
-        'Mozambique | Mozambican',
-        'Namibia | Namibian',
-        'Nauruan',
-        'Nepal | Nepalese',
-        'New Zealand | New Zealander',
-        'Nicaraguan',
-        'Nigeria | Nigerian',
-        'Nigerien',
-        'North Korean',
-        'Northern Irish',
-        'Norway | Norwegian',
-        'Omani',
-        'Pakistan | Pakistani',
-        'Palauan',
-        'Panamanian',
-        'Papua New Guinean',
-        'Paraguay | Paraguayan',
-        'Peru | Peruvian',
-        'Poland | Polish',
-        'Portugal | Portuguese',
-        'Qatar | Qatari',
-        'Romania | Romanian',
-        'Russia | Russian',
-        'Rwanda | Rwandan',
-        'Saint Lucian',
-        'Salvadoran',
-        'Samoan',
-        'San Marinese',
-        'Sao Tomean',
-        'Saudi Arabia | Saudi',
-        'Scotland | Scottish',
-        'Senegalese',
-        'Serbia | Serbian',
-        'Seychellois',
-        'Sierra Leone | Sierra Leonean',
-        'Slovakia | Slovakian',
-        'Slovenia | Slovenian',
-        'Solomon Islander',
-        'Somali',
-        'South African',
-        'Korea | South Korean',
-        'Spain | Spanish',
-        'Sri Lanka | Sri Lankan',
-        'Sudan | Sudanese',
-        'Surinamer',
-        'Swazi',
-        'Sweden | Swedish',
-        'Switzerland | Swiss',
-        'Syria | Syrian',
-        'Taiwan | Taiwanese',
-        'Tajik',
-        'Tanzania | Tanzanian',
-        'Thailand | Thai',
-        'Togolese',
-        'Tongan',
-        'Trinidadian/Tobagonian',
-        'Tunisia | Tunisian',
-        'Turkey | Turkish',
-        'Tuvaluan',
-        'Uganda | Ugandan',
-        'Ukrain | Ukrainian',
-        'Uruguay | Uruguayan',
-        'Uzbekistan | Uzbekistani',
-        'Venezuela | Venezuelan',
-        'Vietnam | Vietnamese',
-        'Welsh',
-        'Yemenite',
-        'Zambian',
-'Zimbabwean'];
+    var nationalities = getNationalityArray();
     for (var i = 0; i < nationalities.length; i++) {
         var optin = document.createElement("option");
         $(optin).attr("style", "background:white");
@@ -1242,54 +1049,7 @@ function populateTime() {
                     if (Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) {
                         lowTime = timeStr;
                     }
-                    var time = [
-                                '00:00',
-                                '00:30',
-                                '01:30',
-                                '02:00',
-                                '02:30',
-                                '03:00',
-                                '03:30',
-                                '04:00',
-                                '04:30',
-                                '05:00',
-                                '05:30',
-                                '06:00',
-                                '06:30',
-                                '07:00',
-                                '07:30',
-                                '08:00',
-                                '08:30',
-                                '09:00',
-                                '09:30',
-                                '10:00',
-                                '10:30',
-                                '11:00',
-                                '11:30',
-                                '12:00',
-                                '12:30',
-                                '13:00',
-                                '13:30',
-                                '14:00',
-                                '14:30',
-                                '15:00',
-                                '15:30',
-                                '16:00',
-                                '16:30',
-                                '17:00',
-                                '17:30',
-                                '18:00',
-                                '18:30',
-                                '19:00',
-                                '19:30',
-                                '20:00',
-                                '20:30',
-                                '21:00',
-                                '21:30',
-                                '22:00',
-                                '22:30',
-                                '23:00',
-                                '23:30'];
+                    var time = getTimeArray();
                     var start = time.indexOf(lowTime);
                     var end = time.indexOf(highTime);
                     for (i = start; i <= end; i++) {

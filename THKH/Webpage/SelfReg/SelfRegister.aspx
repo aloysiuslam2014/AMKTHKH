@@ -336,6 +336,7 @@ margin-bottom:10px;
                 </div>
                 </div>
     </form>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/regData.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/SelfReg/selfRegistrationScript.js") %>"></script>
     <input type="hidden" id="isNew" value="true" />

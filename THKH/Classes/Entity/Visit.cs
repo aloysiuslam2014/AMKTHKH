@@ -8,14 +8,22 @@ namespace THKH.Classes.Entity
 {
     public class Visit
     {
-        [JsonProperty] String visReqTime;
-        [JsonProperty] String nric;
-        [JsonProperty] String purpose;
-        [JsonProperty] String otherPurpose;
-        [JsonProperty] String visitLocation;
-        [JsonProperty] String bedno;
-        [JsonProperty] String qAid;
-        [JsonProperty] String remarks;
+        [JsonProperty]
+        String visReqTime;
+        [JsonProperty]
+        String nric;
+        [JsonProperty]
+        String purpose;
+        [JsonProperty]
+        String otherPurpose;
+        [JsonProperty]
+        String visitLocation;
+        [JsonProperty]
+        String bedno;
+        [JsonProperty]
+        String qAid;
+        [JsonProperty]
+        String remarks;
 
         public Visit(String visReqTime, String nric, String purpose, String otherPurpose, String visitLocation, String bedno, String qAid, String remarks)
         {
@@ -34,5 +42,9 @@ namespace THKH.Classes.Entity
             return JsonConvert.SerializeObject(this);
         }
 
+        public dynamic toJsonObject()
+        {
+            return JsonConvert.DeserializeObject(toJson());
+        }
     }
 }

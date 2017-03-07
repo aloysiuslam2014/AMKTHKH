@@ -1420,6 +1420,7 @@
     <%} if (accessRightsStr.Contains('2')) { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/QuestionaireManagement/loadQuestionaire.js") %>"></script>
     <%} %>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/regData.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
      <%if (accessRightsStr.Contains('1'))
          { %>

@@ -332,6 +332,7 @@
     <Content Include="Scripts\qz-tray.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\regData.js" />
     <Content Include="Scripts\vfs_fonts.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -723,7 +724,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Controller\" />
-    <Folder Include="Classes\DAO\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
