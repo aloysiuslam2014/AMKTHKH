@@ -7,8 +7,8 @@ var validMobUser = true;
 var validAltUser = true;
 var validHomUser = true;
 var validPosUser = true;
-var userPageUrl = '../Staff/UserManagement/userManagement.ashx';
-var configPageUrl = '../Staff/MasterConfig/masterConfig.ashx';
+var userPageUrl = '../Staff/UserManagement/UserManagementGateway.ashx';
+var configPageUrl = '../Staff/MasterConfig/MasterConfigGateway.ashx';
 
 //Load users once
 function loadUsersOnce() {

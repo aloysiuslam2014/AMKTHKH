@@ -2,65 +2,17 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
-using System.Web;
 using THKH.Classes.DAO;
 using THKH.Classes.Entity;
-
-namespace THKH.Webpage.Staff
+namespace THKH.Classes.Controller
 {
-    /// <summary>
-    /// Summary description for masterConfig
-    /// </summary>
-    public class masterConfig : IHttpHandler
+    public class MasterConfigController
     {
-
-        public void ProcessRequest(HttpContext context)
+        GenericProcedureDAO procedureCall;
+        public String getAccessProfile()
         {
-            context.Response.ContentType = "text/plain";
-            String successString = "";
-
-            var requestType = context.Request.Form["requestType"];
-            if (requestType.ToString() == "updateSettings") {
-                var staffUser = context.Request.Form["staffUser"].ToString();
-                var lowTemp = context.Request.Form["lowTemp"];
-                var highTemp = context.Request.Form["highTemp"];
-                var warnTemp = context.Request.Form["warnTemp"];
-                var lowTime = context.Request.Form["lowTime"];
-                var highTime = context.Request.Form["highTime"];
-                var visLim = context.Request.Form["visLim"];
-                successString = updateTempTime(lowTemp, highTemp, warnTemp, lowTime, highTime, staffUser, visLim);
-            }
-            else if (requestType.ToString() == "getConfig")
-            {
-                successString = getConfig();
-            }
-            else if (requestType.ToString() == "updateProfile")
-            {
-                var name = context.Request.Form["profileName"];
-                var username = context.Request.Form["userName"];
-                var permissions = context.Request.Form["permissions"];
-                successString = updateAccessProfile(name, permissions, username);
-            }
-            else if (requestType.ToString() == "deleteProfile")
-            {
-                var name = context.Request.Form["profileName"];
-                successString = deleteAccessProfile(name);
-            }else if (requestType.ToString() == "getProfiles")
-            {
-                successString = getAccessProfile();
-            }
-            else if (requestType.ToString() == "getSelectedProfile")
-            {
-                var name = context.Request.Form["profileName"];
-                successString = getSelectedProfile(name);
-            }
-            context.Response.Write(successString);
-        }
-
-        // Gets all the User Access Profile names & returns a JSON String
-        private String getAccessProfile() {
             dynamic json = new ExpandoObject();
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_ACCESS_PROFILES", true, true, true);
+            procedureCall = new GenericProcedureDAO("GET_ACCESS_PROFILES", true, true, true);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             DataTable dt = new DataTable();
             try
@@ -88,16 +40,17 @@ namespace THKH.Webpage.Staff
                 json.Msg = ex.Message.ToString();
                 json.Result = "Failure";
             }
-            
+
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         // updates the registration configuration & returns a JSON String
-        private String updateTempTime(String lowTemp, String highTemp, String warnTemp, String lowTime, String highTime, String staffUser, String visLim) {
-            
+        public String updateTempTime(String lowTemp, String highTemp, String warnTemp, String lowTime, String highTime, String staffUser, String visLim)
+        {
+
             dynamic json = new ExpandoObject();
             json.Result = "Success";
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_CONFIG", true, true, false);
+            procedureCall = new GenericProcedureDAO("UPDATE_CONFIG", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pLowTemp", lowTemp);
             procedureCall.addParameterWithValue("@pHighTemp", highTemp);
@@ -121,13 +74,13 @@ namespace THKH.Webpage.Staff
         }
 
         // Gets the registration configuration & returns a JSON String
-        private String getConfig()
+        public String getConfig()
         {
             dynamic json = new ExpandoObject();
             json.Result = "Success";
             String successString = "";
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_CONFIG", false, true, true);
-            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.VarChar,500);
+            procedureCall = new GenericProcedureDAO("GET_CONFIG", false, true, true);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.VarChar, 500);
             try
             {
                 ProcedureResponse responseOutput = procedureCall.runProcedure();
@@ -155,18 +108,19 @@ namespace THKH.Webpage.Staff
                 json.Msg = ex.Message;
                 return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
-           
+
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         // Updates the Selected User Access Profile & returns a JSON String
-        private String updateAccessProfile(String name, String permissions, String username) {
+        public String updateAccessProfile(String name, String permissions, String username)
+        {
             dynamic json = new ExpandoObject();
             json.Result = "Success";
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("UPDATE_ACCESS_PROFILE", true, true, false);
+            procedureCall = new GenericProcedureDAO("UPDATE_ACCESS_PROFILE", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pProfileName", name);
-            procedureCall.addParameterWithValue("@pAccessRights", permissions); 
+            procedureCall.addParameterWithValue("@pAccessRights", permissions);
             procedureCall.addParameterWithValue("@pUpdatedBy", username);
             try
             {
@@ -179,15 +133,16 @@ namespace THKH.Webpage.Staff
                 json.Msg = ex.Message;
                 return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
-         
+
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         // Deletes Selected User Access Profile & returns a JSON String
-        private String deleteAccessProfile(String name) {
+        public String deleteAccessProfile(String name)
+        {
             dynamic json = new ExpandoObject();
             json.Result = "Success";
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DELETE_ACCESS_PROFILE", true, true, false);
+            procedureCall = new GenericProcedureDAO("DELETE_ACCESS_PROFILE", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pProfileName", name);
             try
@@ -200,14 +155,15 @@ namespace THKH.Webpage.Staff
                 json.Result = "Failure";
                 json.Msg = ex.Message;
             }
-           
+
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
         // Gets Selected User Access Profile & returns a JSON String
-        private String getSelectedProfile(String name) {
+        public String getSelectedProfile(String name)
+        {
             dynamic json = new ExpandoObject();
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_SELECTED_PROFILE", true, true, true);
+            procedureCall = new GenericProcedureDAO("GET_SELECTED_PROFILE", true, true, true);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pProfileName", name);
             DataTable dt = new DataTable();
@@ -237,16 +193,8 @@ namespace THKH.Webpage.Staff
                 json.Result = "Failure";
                 return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
-           
-            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
-        }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿var pathToTerminal = './TerminalCalls/TerminalCheckGateway.ashx';
 
 $(document).ready(function () {
     
@@ -41,7 +41,7 @@ function activateMe(me) {
     
     var headersToProcess = { action: "activate", id: termID };
     $.ajax({
-        url: './TerminalCalls/TerminalCheck.ashx',
+        url: pathToTerminal,
         method: 'post',
         data: headersToProcess,
         success: function (returner) {
@@ -73,7 +73,7 @@ function activaTab(tab) {
 function verifyUser() {
     var headersToProcess = { action: "verify", id: termValue.value, user: usrname.value };
     $.ajax({
-        url: './TerminalCalls/TerminalCheck.ashx',
+        url: pathToTerminal,
         method: 'post',
         data: headersToProcess,
         success: function (returner) {
@@ -98,7 +98,7 @@ function updateCheckIn() {
     if ($("#userNric").val() == "deactivate") {
         var headersToProcess = { action: "deactivate", id: termValue.value};
         $.ajax({
-            url: './TerminalCalls/TerminalCheck.ashx',
+            url: pathToTerminal,
             method: 'post',
             data: headersToProcess,
             success: function (returner) {
@@ -112,7 +112,7 @@ function updateCheckIn() {
     } else {
         var headersToProcess = { action: "checkIn", id: termValue.value, user: userNric.value.toUpperCase() };
         $.ajax({
-            url: './TerminalCalls/TerminalCheck.ashx',
+            url: pathToTerminal,
             method: 'post',
             data: headersToProcess,
             success: function (returner) {

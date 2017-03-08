@@ -1,4 +1,4 @@
-﻿var pathToQuesMgmt = '../Staff/QuestionaireManagement/questionaireManagement.ashx';
+﻿var pathToQuesMgmt = '../Staff/QuestionaireManagement/QuestionaireManagementGateway.ashx';
 var updateError = "An error has occured. Please Contact the administrator";
 var addQuestionError = "SQL error. Please Contact the administrator";
 //create a case insensitive jquery contains method

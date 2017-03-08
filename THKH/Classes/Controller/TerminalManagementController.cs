@@ -1,100 +1,19 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
-using System.Web;
 using THKH.Classes.DAO;
 using THKH.Classes.Entity;
 
-namespace THKH.Webpage.Staff.TerminalCalls
+namespace THKH.Classes.Controller
 {
-    /// <summary>
-    /// Summary description for TerminalCheck
-    /// </summary>
-    public class TerminalCheck : IHttpHandler, System.Web.SessionState.IRequiresSessionState
+    public class TerminalManagementController
     {
+        private GenericProcedureDAO procedureCall;
         private String toReturn = "";
-
-        public void ProcessRequest(HttpContext context)
-        {
-            var success = false;
-            var action = context.Request.Form["action"];
-            var msgg = context.Request.Form["id"];
-            if (action.Equals("activate"))
-            {
-                success = activateTerminal(msgg);
-            }
-            else if (action.Equals("checkIn"))
-            {
-                var userNric = context.Request.Form["user"];
-                success = checkInUser(msgg, userNric);
-            }
-            else if (action.Equals("verify"))
-            {
-                var userNric = context.Request.Form["user"];
-                success = verify(userNric);
-
-            }
-            else if (action.Equals("addTerminal"))
-            {
-                var bedNoList = context.Request.Form["bedList"];
-                var infectious = context.Request.Form["isInfectious"];
-
-                success = addTerminal(msgg,bedNoList, infectious);
-
-            }
-           
-            else if (action.Equals("getAllTerminals"))
-            {
-
-                success = getAllTerminals();
-
-            }
-            else if (action.Equals("deleteTerminals"))
-            {
-
-                success = deleteTerminal(msgg);
-
-            }
-            else if (action.Equals("deactivateAllTerminals"))
-            {
-
-                success = deactivateAllTerminal(msgg);
-
-            }
-            else if (action.Equals("deleteAllTerminals"))
-            {
-
-                success = deleteAllTerminals(msgg);
-
-            }
-            else { 
-                success = deactivateTerminal(msgg);
-            }
-            context.Response.ContentType = "text/plain";
-            if (success)
-            {
-                if (!toReturn.Equals(""))
-                {
-                    context.Response.Write(toReturn);
-                    toReturn = "";
-                }
-                else
-                {
-                    context.Response.Write("success");
-                }
-                
-            }
-            else{
-                context.Response.Write("failed");
-            }
-            
-
-        }
-
-        private bool deleteAllTerminals(string id)
+        public String deleteAllTerminals(string id)
         {
             bool success = false;
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DELETE_ALL_TERMINAL", true, true, false);
+            procedureCall = new GenericProcedureDAO("DELETE_ALL_TERMINAL", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             try
             {
@@ -105,10 +24,10 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
 
             }
-            return success;
+            return success ? "true" : "false";
         }
 
-        private bool addTerminal(string id,String bedNoList,String infectious)
+        public String addTerminal(string id, String bedNoList, String infectious)
         {
             bool success = false;
             String formattedBedNoList = "";
@@ -183,11 +102,12 @@ namespace THKH.Webpage.Staff.TerminalCalls
                     }
                 }
             }
-            else {
+            else
+            {
                 formattedBedNoList = bedNoList;
             }
 
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("ADD_TERMINAL", true, true, false);
+            procedureCall = new GenericProcedureDAO("ADD_TERMINAL", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pTName", id);
             procedureCall.addParameterWithValue("@pTControl", infectious);
@@ -202,13 +122,13 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
                 var d = ex;//to read any errors
             }
-            return success;
+            return success ? "true" : "false";
         }
 
-        private bool deleteTerminal(string id)
+        public String deleteTerminal(string id)
         {
             bool success = false;
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DELETE_TERMINAL", true, true, false);
+            procedureCall = new GenericProcedureDAO("DELETE_TERMINAL", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pTerminal_ID", id);
             try
@@ -222,13 +142,13 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
                 var d = ex;//to read any errors
             }
-            return success;
+            return success ? "true" : "false";
         }
 
-        public bool verify(String id)
+        public String verify(String id)
         {
             bool success = false;
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("VERIFY_STAFF", true, true, false);
+            procedureCall = new GenericProcedureDAO("VERIFY_STAFF", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pEmail", id);
             try
@@ -241,14 +161,14 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
                 var d = ex;//to read any errors
             }
-            return success;
+            return success ? "true" : "false";
         }
 
-        public bool activateTerminal(String id)
+        public String activateTerminal(String id)
         {
             bool success = false;
-            int locationId=Convert.ToInt32(id);
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("ACTIVATE_TERMINAL", true, true, true);
+            int locationId = Convert.ToInt32(id);
+            procedureCall = new GenericProcedureDAO("ACTIVATE_TERMINAL", true, true, true);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pTerminal_ID", id);
             try
@@ -259,16 +179,16 @@ namespace THKH.Webpage.Staff.TerminalCalls
             }
             catch (Exception ex)
             {
-                var a= ex;
+                var a = ex;
             }
-            return success;
+            return success ? "true" : "false";
         }
 
-        public bool deactivateTerminal(String id)
+        public String deactivateTerminal(String id)
         {
             bool success = false;
             int locationId = Convert.ToInt32(id);
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DEACTIVATE_TERMINAL", true, true, false);
+            procedureCall = new GenericProcedureDAO("DEACTIVATE_TERMINAL", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pTerminal_ID", id);
 
@@ -282,14 +202,14 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
 
             }
-            return success;
+            return success ? "true" : "false";
         }
 
-        public bool deactivateAllTerminal(String id)
+        public String deactivateAllTerminal(String id)
         {
             bool success = false;
             int locationId = Convert.ToInt32(id);
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("DEACTIVATE_ALL_TERMINALS", true, true, false);
+            procedureCall = new GenericProcedureDAO("DEACTIVATE_ALL_TERMINALS", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             try
             {
@@ -302,15 +222,15 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
 
             }
-            return success;
+            return success ? "true" : "false";
 
         }
 
-        public bool checkInUser(String locationId, String userId)
+        public String  checkInUser(String locationId, String userId)
         {
             bool success = false;
             int id = Convert.ToInt32(locationId);
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("CREATE_MOVEMENT", true, true, false);
+            procedureCall = new GenericProcedureDAO("CREATE_MOVEMENT", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pLocationId", locationId);
             procedureCall.addParameterWithValue("@pNRIC", userId);
@@ -333,14 +253,14 @@ namespace THKH.Webpage.Staff.TerminalCalls
             {
                 var test = ex;
             }
-            return success;
+            return success ? toReturn : "false";
         }
 
-        public bool getAllTerminals()
+        public String getAllTerminals()
         {
-            
+
             DataTable dataTable = new DataTable();
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_ALL_TERMINALS", true, true, true);
+            procedureCall = new GenericProcedureDAO("GET_ALL_TERMINALS", true, true, true);
             try
             {
                 ProcedureResponse responseOutput = procedureCall.runProcedure();
@@ -360,17 +280,8 @@ namespace THKH.Webpage.Staff.TerminalCalls
                 toReturn += id + "," + placeName + "," + activated + "|";
             }
 
-            return true;
+            return toReturn;
         }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
     }
-
-   
 }

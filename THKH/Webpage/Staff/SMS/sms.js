@@ -1,4 +1,4 @@
-﻿var pathToSms = '../Staff/SMS/SMSManagement.ashx';
+﻿var pathToSms = '../Staff/SMS/SMSManagementGateway.ashx';
 var smsSendError = "One of the numbers have failed";
 var smsSendSuccess = "SMS Sent!";
 

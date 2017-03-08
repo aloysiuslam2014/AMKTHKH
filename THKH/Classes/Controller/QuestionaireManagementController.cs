@@ -2,105 +2,25 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web;
 using System.Dynamic;
 using System.Collections;
 using THKH.Classes.DAO;
 using THKH.Classes.Entity;
 
-namespace THKH.Webpage.Staff.QuestionaireManagement
+namespace THKH.Classes.Controller
 {
-    /// <summary>
-    /// Summary description for questionaireManagement
-    /// </summary>
-    public class questionaireManagement : IHttpHandler
+    public class QuestionaireManagementController
     {
 
-        public void ProcessRequest(HttpContext context)
-        {
-
-            context.Response.ContentType = "text/plain";
-            String successString = "";
-
-            var typeOfRequest = context.Request.Form["requestType"];
-
-            if (typeOfRequest == "initialize")
-            {
-                dynamic formsInit = new ExpandoObject();
-                formsInit.Result = "Success";
-                retrieveQuestionnaires(formsInit);
-                retrieveQuestions(formsInit);//retrieveQuestionnaireQuestions
-                successString = Newtonsoft.Json.JsonConvert.SerializeObject(formsInit);
-            }
-            if (typeOfRequest == "getQuestionaireFromList")
-            {
-                var idList = context.Request.Form["ListID"];
-                dynamic getQns = new ExpandoObject();
-                getQns.Result = "Success";
-                retrieveQuestionnaireQuestions(idList, getQns);
-                successString = Newtonsoft.Json.JsonConvert.SerializeObject(getQns);
-
-
-            }
-            if (typeOfRequest == "addQuestion")
-            {
-                var qn = context.Request.Form["question"];
-                var qnType = context.Request.Form["questionType"];
-                var qnVals = context.Request.Form["questionValues"];
-                successString = addQuestion(qn, qnType, qnVals);
-            }
-            if (typeOfRequest == "updateQuestion")
-            {
-                var qnId = context.Request.Form["qnId"];
-                var qn = context.Request.Form["question"];
-                var qnType = context.Request.Form["questionType"];
-                var qnVals = context.Request.Form["questionValues"];
-                successString = updateQuestion(qnId, qn, qnType, qnVals);
-            }
-            if (typeOfRequest == "deleteQuestion")
-            {
-                successString = deleteQuestion();
-            }
-            if (typeOfRequest == "deleteQuestionFromQuestionnaire")
-            {
-                successString = deleteQuestion();
-            }
-            if (typeOfRequest == "addQuestionToQuestionnaire")
-            {
-                successString = deleteQuestion();
-            }
-            if (typeOfRequest == "addQuestionnaire")
-            {
-                var qName = context.Request.Form["qName"];
-                successString = addQuestionnaire(qName);
-            }
-            if (typeOfRequest == "deleteQuestionnaire")
-            {
-                successString = deleteQuestionnaire();
-            }
-            if (typeOfRequest == "update")
-            {
-                var qName = context.Request.Form["qnaireId"];
-                var order = context.Request.Form["qnQns"];
-                successString = updateQuestionnaire(qName, order);
-            }
-            if (typeOfRequest == "active")
-            {
-                var qnaireId = context.Request.Form["qnaireId"];
-                successString = setActiveQuestionnaire(qnaireId);
-            }
-            context.Response.Write(successString);
-        }
-
         // Generate JSON String for Questionnaire & Questions - Initial Page Load
-        private String generateJSONFromData()
+        public String generateJSONFromData()
         {
             String successString = "";
             return successString;
         }
 
         // Add new questionnaire to DB
-        private String addQuestionnaire(String qName)
+        public String addQuestionnaire(String qName)
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
@@ -129,7 +49,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Update questionnaire with new question order
-        private String updateQuestionnaire(String qnaire, String order)
+        public String updateQuestionnaire(String qnaire, String order)
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
@@ -151,7 +71,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Sets the selected questionnaire as active & deactivates the rest
-        private String setActiveQuestionnaire(String qName)
+        public String setActiveQuestionnaire(String qName)
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
@@ -172,7 +92,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // removes questionnaire
-        private String deleteQuestionnaire()
+        public String deleteQuestionnaire()
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
@@ -193,7 +113,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Adds new question
-        private String addQuestion(String qn, String qnType, String qnValues)
+        public String addQuestion(String qn, String qnType, String qnValues)
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
@@ -216,7 +136,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Updates a question
-        private String updateQuestion(String qnId, String qn, String qnType, String qnValues)
+        public String updateQuestion(String qnId, String qn, String qnType, String qnValues)
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
@@ -240,7 +160,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Delete question
-        private String deleteQuestion()
+        public String deleteQuestion()
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
@@ -260,7 +180,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // retrieves all the questionnaires from the DB
-        private void retrieveQuestionnaires(dynamic toSend)
+        public void retrieveQuestionnaires(dynamic toSend)
         {
             ArrayList questionaires = new ArrayList();
             GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_ALL_QUESTIONNAIRE_LIST", false, true, true);
@@ -294,7 +214,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // retrieves all the questions in the SELECTED questionnaire
-        private void retrieveQuestionnaireQuestions(string idList, dynamic toSend)
+        public void retrieveQuestionnaireQuestions(string idList, dynamic toSend)
         {
             ArrayList qnsQns = new ArrayList();
             List<String> qids = new List<string>();
@@ -392,7 +312,7 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
         }
 
         // Retrieves all the questions from the DB
-        private void retrieveQuestions(dynamic toSend)
+        public void retrieveQuestions(dynamic toSend)
         {
             ArrayList qns = new ArrayList();
             GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_QUESTIONS", true, true, true);
@@ -423,10 +343,10 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
                 toSend.Msg = ex.Message;
 
             }
-           
+
         }
 
-        private String addQuestionToQuestionnaire(String qnaireId, String qns)
+        public String addQuestionToQuestionnaire(String qnaireId, String qns)
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
@@ -447,12 +367,5 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
     }
 }

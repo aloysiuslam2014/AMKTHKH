@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using GenCode128;
 using System.Drawing;
 using System.IO;
@@ -8,67 +7,22 @@ using System.Data;
 using THKH.Classes.DAO;
 using THKH.Classes.Entity;
 
-namespace THKH.Webpage.Staff.PassManagement
+namespace THKH.Classes.Controller
 {
-    /// <summary>
-    /// Summary description for passMgmt
-    /// </summary>
-    public class passMgmt : IHttpHandler
+    public class PassManagementController
     {
+        private GenericProcedureDAO procedureCall;
+        private ProcedureResponse result;
 
-        public void ProcessRequest(HttpContext context)
-        {
-            dynamic returnMe = new ExpandoObject();
-            dynamic result = new ExpandoObject();
-
-
-            string returnString = "";
-            var requestType = context.Request.Form["requestType"];
-            if (requestType.Equals("generateBar"))
-            {
-                var textToEnc = context.Request.Form["textEnc"];
-                result = generateBarcode(textToEnc);
-                returnMe.Result = result.Result;
-                returnMe.Msg = result.data;
-            }
-            if (requestType.Equals("savePassState"))
-            {
-                var passState = context.Request.Unvalidated.Form["passState"] ;
-                var elementsPosition = context.Request.Form["positioning"];
-                returnMe.Result = setPassState(passState,elementsPosition);
-
-          
-            }
-            if (requestType.Equals("getPassState"))
-            {
-                result = getPassState();
-                returnMe.Result = result.Result;
-                returnMe.Msg = result.Msg;//Json object contains: divState(div object holding pass contents) and positions(position offsets of elements within div)
-                //
-            }
-            context.Response.ContentType = "text/plain";
-           // String results = returnMe.Result;
-            if(returnMe.Result.Equals("Success"))
-            {
-               
-            }else
-            {
-                returnMe.Msg = returnMe.Result;
-            }
-            returnString = Newtonsoft.Json.JsonConvert.SerializeObject(returnMe);
-            context.Response.Write(returnString);
-        }
-
-        private dynamic getPassState()
+        public dynamic getPassState()
         {
             DataTable dataTable = new DataTable();
             dynamic stateOfPass = new ExpandoObject();
-
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_PASS_FORMAT", false, true, true);
+            procedureCall = new GenericProcedureDAO("GET_PASS_FORMAT", false, true, true);
             procedureCall.addParameter("@responseMessage", SqlDbType.Int);
             try
             {
-                ProcedureResponse result = procedureCall.runProcedure();
+                result = procedureCall.runProcedure();
                 dataTable = result.getDataTable();
                 stateOfPass.Result = "Success";
             }
@@ -78,7 +32,7 @@ namespace THKH.Webpage.Staff.PassManagement
                 stateOfPass.Msg = ex.Message;
                 return stateOfPass;
             }
-           
+
             String placeName = "";
             for (var i = 0; i < dataTable.Rows.Count; i++)
             {
@@ -94,7 +48,7 @@ namespace THKH.Webpage.Staff.PassManagement
             string successString = "";
             dynamic jsonResult = new ExpandoObject();
             dynamic jsonReturn = new ExpandoObject();
-            
+
             try
             {
                 Image myimg = Code128Rendering.MakeBarcodeImage(textToEncode,
@@ -103,33 +57,33 @@ namespace THKH.Webpage.Staff.PassManagement
                 myimg.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                 jsonReturn.Result = "Success";
                 byte[] imageData = ms.ToArray();
-              //  jsonReturn.Msg = HexStringFromBytes(imageData);
+                //  jsonReturn.Msg = HexStringFromBytes(imageData);
                 jsonReturn.Msg = imageData;
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 jsonReturn.Result = "Failed";
                 jsonReturn.Msg = "Failed To Generate the image. Library error.";
-                 
+
             }
-          
+
             successString = Newtonsoft.Json.JsonConvert.SerializeObject(jsonReturn);
             jsonResult.Result = jsonReturn.Result;
             jsonReturn.data = jsonReturn.Msg;
             return jsonReturn;
         }
-      
-        public string setPassState(string state,string statePositions)
+
+        public string setPassState(string state, string statePositions)
         {
             string successString = "";
-            
+
             dynamic stateOfPass = new ExpandoObject();
             stateOfPass.divState = state;
             stateOfPass.positions = statePositions;
             string jsonState = Newtonsoft.Json.JsonConvert.SerializeObject(stateOfPass);
 
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("SET_PASS_FORMAT", true, true, false);
+            procedureCall = new GenericProcedureDAO("SET_PASS_FORMAT", true, true, false);
             procedureCall.addParameter("@responseMessage", SqlDbType.Int);
             procedureCall.addParameterWithValue("@pPass_Format", jsonState);
             try
@@ -141,17 +95,10 @@ namespace THKH.Webpage.Staff.PassManagement
             catch (Exception ex)
             {
                 successString = "Error occured. Sql error";
-                
+
             }
             return successString;
         }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
     }
 }

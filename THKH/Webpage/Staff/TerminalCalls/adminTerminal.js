@@ -1,4 +1,4 @@
-﻿var pathToTerminal = './TerminalCalls/TerminalCheck.ashx';
+﻿var pathToTerminal = './TerminalCalls/TerminalCheckGateway.ashx';
 var ajaxServerError = "Server Error. Please contact the administrator. Please check the path or check if the file exist.";
 
 $(function () {

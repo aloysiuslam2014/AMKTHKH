@@ -8,7 +8,7 @@ var existUser = false;
 var validEmail = true;
 var patientValidated = false;
 var allowVisit = true;
-var regUrl = '../Staff/CheckInOut/checkIn.ashx';
+var regUrl = '../Staff/CheckInOut/CheckInGateway.ashx';
 
 // write to form information DB
 function NewSelfReg() {

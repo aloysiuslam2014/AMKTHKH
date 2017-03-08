@@ -642,14 +642,14 @@
       <DependentUpon>Web.config</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Webpage\Staff\CheckInOut\checkIn.ashx" />
-    <Content Include="Webpage\Staff\TerminalCalls\TerminalCheck.ashx" />
-    <Content Include="Webpage\Staff\QuestionaireManagement\questionaireManagement.ashx" />
-    <Content Include="Webpage\Staff\UserManagement\userManagement.ashx" />
-    <Content Include="Webpage\Staff\PassManagement\passMgmt.ashx" />
-    <Content Include="Webpage\Staff\ContactTracing\tracing.ashx" />
-    <Content Include="Webpage\Staff\MasterConfig\masterConfig.ashx" />
-    <Content Include="Webpage\Staff\SMS\SMSManagement.ashx" />
+    <Content Include="Webpage\Staff\CheckInOut\CheckInGateway.ashx" />
+    <Content Include="Webpage\Staff\TerminalCalls\TerminalCheckGateway.ashx" />
+    <Content Include="Webpage\Staff\QuestionaireManagement\QuestionaireManagementGateway.ashx" />
+    <Content Include="Webpage\Staff\UserManagement\UserManagementGateway.ashx" />
+    <Content Include="Webpage\Staff\PassManagement\PassMgmtGateway.ashx" />
+    <Content Include="Webpage\Staff\ContactTracing\TracingGateway.ashx" />
+    <Content Include="Webpage\Staff\MasterConfig\MasterConfigGateway.ashx" />
+    <Content Include="Webpage\Staff\SMS\SMSManagementGateway.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config">
@@ -658,6 +658,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Controller\CheckInController.cs" />
+    <Compile Include="Classes\Controller\MasterConfigController.cs" />
+    <Compile Include="Classes\Controller\PassManagementController.cs" />
+    <Compile Include="Classes\Controller\QuestionaireManagementController.cs" />
+    <Compile Include="Classes\Controller\SMSManagementController.cs" />
+    <Compile Include="Classes\Controller\TerminalManagementController.cs" />
+    <Compile Include="Classes\Controller\TracingController.cs" />
+    <Compile Include="Classes\Controller\UserManagementController.cs" />
     <Compile Include="Classes\Entity\Question.cs" />
     <Compile Include="Classes\Entity\Questionnaire.cs" />
     <Compile Include="Classes\Entity\QuestionnaireAnswer.cs" />
@@ -676,11 +684,11 @@
     <Compile Include="Webpage\SelfReg\SelfRegister.aspx.designer.cs">
       <DependentUpon>SelfRegister.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\Staff\CheckInOut\checkIn.ashx.cs">
-      <DependentUpon>checkIn.ashx</DependentUpon>
+    <Compile Include="Webpage\Staff\CheckInOut\CheckInGateway.ashx.cs">
+      <DependentUpon>CheckInGateway.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\Staff\ContactTracing\tracing.ashx.cs">
-      <DependentUpon>tracing.ashx</DependentUpon>
+    <Compile Include="Webpage\Staff\ContactTracing\TracingGateway.ashx.cs">
+      <DependentUpon>TracingGateway.ashx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Staff\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -696,17 +704,17 @@
     <Compile Include="Webpage\Staff\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\Staff\MasterConfig\masterConfig.ashx.cs">
-      <DependentUpon>masterConfig.ashx</DependentUpon>
+    <Compile Include="Webpage\Staff\MasterConfig\MasterConfigGateway.ashx.cs">
+      <DependentUpon>MasterConfigGateway.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\Staff\PassManagement\passMgmt.ashx.cs">
-      <DependentUpon>passMgmt.ashx</DependentUpon>
+    <Compile Include="Webpage\Staff\PassManagement\PassMgmtGateway.ashx.cs">
+      <DependentUpon>PassMgmtGateway.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\Staff\QuestionaireManagement\questionaireManagement.ashx.cs">
-      <DependentUpon>questionaireManagement.ashx</DependentUpon>
+    <Compile Include="Webpage\Staff\QuestionaireManagement\QuestionaireManagementGateway.ashx.cs">
+      <DependentUpon>QuestionaireManagementGateway.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\Staff\SMS\SMSManagement.ashx.cs">
-      <DependentUpon>SMSManagement.ashx</DependentUpon>
+    <Compile Include="Webpage\Staff\SMS\SMSManagementGateway.ashx.cs">
+      <DependentUpon>SMSManagementGateway.ashx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Staff\TerminalCheckIn.aspx.cs">
       <DependentUpon>TerminalCheckIn.aspx</DependentUpon>
@@ -715,16 +723,14 @@
     <Compile Include="Webpage\Staff\TerminalCheckIn.aspx.designer.cs">
       <DependentUpon>TerminalCheckIn.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\Staff\TerminalCalls\TerminalCheck.ashx.cs">
-      <DependentUpon>TerminalCheck.ashx</DependentUpon>
+    <Compile Include="Webpage\Staff\TerminalCalls\TerminalCheckGateway.ashx.cs">
+      <DependentUpon>TerminalCheckGateway.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\Staff\UserManagement\userManagement.ashx.cs">
-      <DependentUpon>userManagement.ashx</DependentUpon>
+    <Compile Include="Webpage\Staff\UserManagement\UserManagementGateway.ashx.cs">
+      <DependentUpon>UserManagementGateway.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Classes\Controller\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>

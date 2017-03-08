@@ -7,42 +7,15 @@ using System.Data;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using THKH.Classes.DAO;
 using THKH.Classes.Entity;
 
-namespace THKH.Webpage.Staff.ContactTracing
+namespace THKH.Classes.Controller
 {
-    /// <summary>
-    /// Summary description for tracing
-    /// </summary>
-    public class tracing : IHttpHandler
+    public class TracingController
     {
 
-        public void ProcessRequest(HttpContext context)
-        {
-            context.Response.ContentType = "text/plain";
-            var action = context.Request.Form["action"];
-            var returnoutput = "";
-            if (action.Equals("getValidTerminals"))
-            {
-                var query = context.Request.Form["queries"];
-                returnoutput = getValidTerminals(query);
-            }
-            if (action.Equals("traceByReg"))
-            {
-                var query = context.Request.Form["queries"];
-                returnoutput = traceByReg(query);
-            }
-            if (action.Equals("unifiedTrace"))
-            {
-                var query = context.Request.Form["queries"];
-                returnoutput = unifiedTrace(query);
-            }
-            context.Response.Write(returnoutput);
-        }
-
-        private String unifiedTrace(String query)
+        public String unifiedTrace(String query)
         {
             String result = "";
 
@@ -152,7 +125,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return result;
         }
 
-        private String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults)
+        public String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults)
         {
             List<dynamic> serializedResults1 = new List<dynamic>();
             List<List<String>> datatable_array = new List<List<String>>();
@@ -212,7 +185,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return Newtonsoft.Json.JsonConvert.SerializeObject(json); ;
         }
 
-        private String traceByScanBed(DateTime startdatetime, DateTime enddatetime, String bedno)
+        public String traceByScanBed(DateTime startdatetime, DateTime enddatetime, String bedno)
         {
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
@@ -227,7 +200,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             {
                 ProcedureResponse resultss = procedureCall.runProcedure();
                 dt = resultss.getDataTable();
-               
+
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
                     var location = dt.Rows[i]["location"];
@@ -271,7 +244,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        private String traceByRegBed(DateTime startdatetime, DateTime enddatetime, String bedno)
+        public String traceByRegBed(DateTime startdatetime, DateTime enddatetime, String bedno)
         {
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
@@ -327,7 +300,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        private String traceByScanLoc(DateTime startdatetime, DateTime enddatetime, String loc)
+        public String traceByScanLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
@@ -384,7 +357,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return Newtonsoft.Json.JsonConvert.SerializeObject(json); ;
         }
 
-        private String traceByRegLoc(DateTime startdatetime, DateTime enddatetime, String loc)
+        public String traceByRegLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
             DataTable dt = new DataTable();
             dynamic json = new ExpandoObject();
@@ -441,7 +414,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        private String[] processBedNos(String[] bedno_arr)
+        public String[] processBedNos(String[] bedno_arr)
         {
             ArrayList result = new ArrayList();
 
@@ -471,7 +444,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return (String[])result.ToArray(typeof(string));
         }
 
-        private String traceByReg(String query)
+        public String traceByReg(String query)
         {
             String[] queryParts = query.Split('~');
             DateTime ri_dateStart = DateTime.Parse(queryParts[0]);
@@ -509,7 +482,7 @@ namespace THKH.Webpage.Staff.ContactTracing
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        private String getValidTerminals(String query)
+        public String getValidTerminals(String query)
         {
             DataTable dataTable = new DataTable();
             string startString = query.Split('~').First();
@@ -552,12 +525,5 @@ namespace THKH.Webpage.Staff.ContactTracing
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
     }
 }

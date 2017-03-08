@@ -48,8 +48,8 @@ var lowTemp = "34";
 var highTemp = "40";
 var warnTemp = "37.6";
 var visLim = 3;
-var regUrl = '../Staff/CheckInOut/checkIn.ashx';
-var configUrl = '../Staff/MasterConfig/masterConfig.ashx';
+var regUrl = '../Staff/CheckInOut/CheckInGateway.ashx';
+var configUrl = '../Staff/MasterConfig/MasterConfigGateway.ashx';
 var links = [
 {
     "bgcolor":"#03A9F4",

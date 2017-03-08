@@ -1,4 +1,4 @@
-﻿var toPassMgmt = '../Staff/PassManagement/passMgmt.ashx';
+﻿var toPassMgmt = './PassManagement/PassMgmtGateway.ashx';
 var printerName = "POS";
 var passGenerationFailed = "An error has occured while retrieveing the pass. ";
 var ajaxPassconnectionFailure = "Ajax connection failed. Server filed not found or server offline. Please contact the administrator.";
