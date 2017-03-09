@@ -1394,7 +1394,7 @@
                     <h3 style="color:lightblue">Send SMS</h3>
                     <label>Send To</label>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="targetVisitor" placeholder="Please enter number(s) like 659712342,658128763" />
+                        <input type="text" class="form-control" id="targetVisitor" placeholder="Please enter number(s) like 9712342,8128763" />
                     </div>
                     <label>Message</label>
                     <div class="form-group">

@@ -174,16 +174,17 @@ function getUserDetails(listObj) {
                 $("#staffHomeNum").val(item.homeTel);
                 $("#staffAltNum").val(item.altTel);
                 $("#staffMobileNum").val(item.mobTel);
-                $("#staffSex").val(item.sex);
+                $("#staffSex").val(item.sex.trim());
                 $("#staffNationality").val(item.nationality);
                 $("#staffDOB").val(item.dateOfBirth);
-                var perm = item.permissions.toString();
-                for (i = 0; i < perm.length; i++) {
-                    var val = perm.charAt(i)
-                    $("#permiss [value='" + val + "']").prop("checked", true);
-                }
+                //var perm = item.permissions.toString();
+                //for (i = 0; i < perm.length; i++) {
+                //    var val = perm.charAt(i)
+                //    $("#permiss [value='" + val + "']").prop("checked", true);
+                //}
                 $("#staffTitle").val(item.position);
                 $("#permissionProfileDropdown").val(item.accessProfile);
+                getSelectedAccessProfileUser();
             } else {
                 alert(resultOfGeneration.Msg);
             }

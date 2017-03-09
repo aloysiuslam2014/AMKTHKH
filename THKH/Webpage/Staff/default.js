@@ -2,7 +2,7 @@
 var loadedTime = false;
 var validSetTemp = false;
 var validSetTime = false;
-var configUrl = '../Staff/MasterConfig/masterConfig.ashx';
+var configUrl = '../Staff/MasterConfig/MasterConfigGateway.ashx';
 
 // update configurations
 function updateConfig() {
@@ -259,7 +259,7 @@ function loadPermissionSettingsField() {
         requestType: "getPermissions"
     };
     $.ajax({
-        url: '../Staff/UserManagement/userManagement.ashx',
+        url: '../Staff/UserManagement/UserManagementGateway.ashx',
         method: 'post',
         data: headersToProcess,
 

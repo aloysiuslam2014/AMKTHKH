@@ -669,7 +669,6 @@
     <Compile Include="Classes\Entity\Question.cs" />
     <Compile Include="Classes\Entity\QuestionnaireAnswer.cs" />
     <Compile Include="Classes\Entity\StaffUser.cs" />
-    <Compile Include="Classes\Entity\Terminal.cs" />
     <Compile Include="Classes\Entity\Visit.cs" />
     <Compile Include="Classes\Entity\Visitor.cs" />
     <Compile Include="Classes\DAO\GenericProcedureDAO.cs" />
