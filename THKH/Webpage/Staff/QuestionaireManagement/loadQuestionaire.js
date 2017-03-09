@@ -193,9 +193,9 @@ function fillList(dataForQnList,target,editButton) {
         }
         
          
-        $(listElement).attr("id", dataForQnList[i].qId);
-        $(listElement).attr("value", dataForQnList[i].question);
-        $(listElement).html(dataForQnList[i].question);
+        $(listElement).attr("id", dataForQnList[i].qnid);
+        $(listElement).attr("value", dataForQnList[i].qn);
+        $(listElement).html(dataForQnList[i].qn);
       
 
         var inputType = document.createElement("input");
@@ -205,7 +205,7 @@ function fillList(dataForQnList,target,editButton) {
         $(listElement).append(inputType);
 
         var inputValues = document.createElement("input");
-        $(inputValues).attr("value", dataForQnList[i].values);
+        $(inputValues).attr("value", dataForQnList[i].qnValues);
         $(inputValues).attr("class", "qValues");
         $(inputValues).attr("type", "hidden");
         $(listElement).append(inputValues);

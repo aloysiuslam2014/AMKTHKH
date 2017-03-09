@@ -69,13 +69,17 @@ namespace THKH.Classes.Controller
 
                     while (reader.Read())
                     {
-                        dynamic questionO = new ExpandoObject();
-                        questionO.QuestionNumber = reader.GetInt32(1);
-                        questionO.QuestionList = reader.GetString(0);
-                        questionO.Question = reader.GetString(2);
-                        questionO.QuestionType = reader.GetString(3);
-                        questionO.QuestionAnswers = reader.GetString(4);
-                        questionItems.Add(questionO);
+                        //dynamic questionO = new ExpandoObject();
+                        //questionO.QuestionNumber = reader.GetInt32(1);
+                        //questionO.QuestionList = reader.GetString(0);
+                        //questionO.Question = reader.GetString(2);
+                        //questionO.QuestionType = reader.GetString(3);
+                        //questionO.QuestionAnswers = reader.GetString(4);
+                        Question qn = new Question(reader.GetInt32(1).ToString(),
+                            reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(0));
+                        questionItems.Add(qn);
+                        // New Solution Here
+                        
                     }
 
                 }
@@ -162,7 +166,9 @@ namespace THKH.Classes.Controller
                     //var qAID = arr[arr.Length - 3];
                     String qAID = result.Visit.qAid.Value;
 
-                    result.Questionnaire = JsonConvert.DeserializeObject(getSubmittedQuestionnaireResponse(qAID));
+                    QuestionnaireAnswer qA = new QuestionnaireAnswer(getSubmittedQuestionnaireResponse(qAID));
+                    //result.Questionnaire = JsonConvert.DeserializeObject(getSubmittedQuestionnaireResponse(qAID));
+                    result.Questionnaire = qA.toJsonObject();
                 }
                 else
                 {

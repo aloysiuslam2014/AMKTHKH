@@ -164,25 +164,26 @@ function getUserDetails(listObj) {
             var resultOfGeneration = JSON.parse(returner);
             if (resultOfGeneration.Msg == "Success") {
                 clearStaffFields(false);
-                $("#staffEmail").val(resultOfGeneration.Result.email);
-                $("#staffFirstName").val(resultOfGeneration.Result.firstName);
-                $("#staffLastName").val(resultOfGeneration.Result.lastName);
-                $("#staffNric").val(resultOfGeneration.Result.nric);
-                $("#staffAddress").val(resultOfGeneration.Result.address);
-                $("#staffPostal").val(resultOfGeneration.Result.postalCode);
-                $("#staffHomeNum").val(resultOfGeneration.Result.homeTel);
-                $("#staffAltNum").val(resultOfGeneration.Result.altTel);
-                $("#staffMobileNum").val(resultOfGeneration.Result.mobTel);
-                $("#staffSex").val(resultOfGeneration.Result.sex.trim());
-                $("#staffNationality").val(resultOfGeneration.Result.nationality);
-                $("#staffDOB").val(resultOfGeneration.Result.dateOfBirth);
-                var perm = resultOfGeneration.Result.permissions.toString();
+                var item = resultOfGeneration.Result[0];
+                $("#staffEmail").val(item.email);
+                $("#staffFirstName").val(item.firstName);
+                $("#staffLastName").val(item.lastName);
+                $("#staffNric").val(item.nric);
+                $("#staffAddress").val(item.address);
+                $("#staffPostal").val(item.postalCode);
+                $("#staffHomeNum").val(item.homeTel);
+                $("#staffAltNum").val(item.altTel);
+                $("#staffMobileNum").val(item.mobTel);
+                $("#staffSex").val(item.sex);
+                $("#staffNationality").val(item.nationality);
+                $("#staffDOB").val(item.dateOfBirth);
+                var perm = item.permissions.toString();
                 for (i = 0; i < perm.length; i++) {
                     var val = perm.charAt(i)
                     $("#permiss [value='" + val + "']").prop("checked", true);
                 }
-                $("#staffTitle").val(resultOfGeneration.Result.position);
-                $("#permissionProfileDropdown").val(resultOfGeneration.Result.accessProfile);
+                $("#staffTitle").val(item.position);
+                $("#permissionProfileDropdown").val(item.accessProfile);
             } else {
                 alert(resultOfGeneration.Msg);
             }

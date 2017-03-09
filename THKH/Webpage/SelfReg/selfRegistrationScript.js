@@ -668,11 +668,11 @@ function loadActiveForm() {
             var qListID = 0;
             for (i = 0; i < arr.length; i++) {
                 var object = arr[i];
-                qListID = object.QuestionList;
-                var question = object.Question;
-                var type = object.QuestionType;
-                var values = object.QuestionAnswers;
-                var questionNum = object.QuestionNumber;
+                qListID = object.qnListID;
+                var question = object.qn;
+                var type = object.qnType;
+                var values = object.qnValues;
+                var questionNum = object.qnid;
                 if (type === "ddList") {
                     htmlString += "<label for='" + questionNum + "' class='question'><span style='color:red'>*</span>" + question + "</label>"
                         + "<div class='form-group'>"
