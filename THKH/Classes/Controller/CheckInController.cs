@@ -430,6 +430,29 @@ namespace THKH.Classes.Controller
                 result.Visitor = ex.Message;
                 return JsonConvert.SerializeObject(result);
             }
+
+            procedureCall = new GenericProcedureDAO("UPDATE_VISIT", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
+            procedureCall.addParameterWithValue("@pVisitorNRIC", nric.ToUpper());
+            procedureCall.addParameterWithValue("@pPurpose", purpose);
+            procedureCall.addParameterWithValue("@pReason", otherPurpose);
+            procedureCall.addParameterWithValue("@pVisitLocation", visitLocation);
+            procedureCall.addParameterWithValue("@pBedNo", bedno);
+            procedureCall.addParameterWithValue("@pQaID", qAid);
+            procedureCall.addParameterWithValue("@pRemarks", remarks);
+            try
+            {
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                visit = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+            }
+            catch (Exception ex)
+            {
+                result.Result = "Failure";
+                result.Visit = ex.Message;
+                return JsonConvert.SerializeObject(result);
+            }
+
             //check number of visitors currently with patient
             if (purpose == "Visit Patient")
             {
@@ -479,27 +502,6 @@ namespace THKH.Classes.Controller
                 }
             }
 
-            procedureCall = new GenericProcedureDAO("UPDATE_VISIT", true, true, false);
-            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
-            procedureCall.addParameterWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
-            procedureCall.addParameterWithValue("@pVisitorNRIC", nric.ToUpper());
-            procedureCall.addParameterWithValue("@pPurpose", purpose);
-            procedureCall.addParameterWithValue("@pReason", otherPurpose);
-            procedureCall.addParameterWithValue("@pVisitLocation", visitLocation);
-            procedureCall.addParameterWithValue("@pBedNo", bedno);
-            procedureCall.addParameterWithValue("@pQaID", qAid);
-            procedureCall.addParameterWithValue("@pRemarks", remarks);
-            try
-            {
-                ProcedureResponse responseOutput = procedureCall.runProcedure();
-                visit = responseOutput.getSqlParameterValue("@responseMessage").ToString();
-            }
-            catch (Exception ex)
-            {
-                result.Result = "Failure";
-                result.Visit = ex.Message;
-                return JsonConvert.SerializeObject(result);
-            }
             result.Visitor = visitor;
             result.Visit = visit;
             result.Questionnaire = questionnaire;

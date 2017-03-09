@@ -377,12 +377,15 @@ $("#selfRegNric").on("input", function () {
 
 // Validate mobile phone number format
 $("#mobilesInput").on("input", function () {
-    var validNric = validatePhone($("#mobilesInput").val());
-    if (validNric !== false) {
+    var validPhone = validatePhone($("#mobilesInput").val());
+    if (validPhone) {
         $("#mobWarning").css("display", "none");
+        //validMob = true;
     } else {
         $("#mobWarning").css("display", "block");
+        //validMob = false;
     }
+    validMob = validPhone;
 });
 
 // Check date format
@@ -414,26 +417,6 @@ $("#postalsInput").on("input", function () {
     } else {
         $("#posWarning").css("display", "block");
         validPos = false;
-    }
-});
-
-// Validate home phone number format
-$("#homesInput").on("input", function () {
-    var validNric = validatePhone($("#homesInput").val());
-    if (validNric !== false) {
-        $("#homeWarning").css("display", "none");
-    } else {
-        $("#homeWarning").css("display", "block");
-    }
-});
-
-// Validate alt phone number format
-$("#altInput").on("input", function () {
-    var validNric = validatePhone($("#altInput").val());
-    if (validNric !== false) {
-        $("#altWarning").css("display", "none");
-    } else {
-        $("#altWarning").css("display", "block");
     }
 });
 

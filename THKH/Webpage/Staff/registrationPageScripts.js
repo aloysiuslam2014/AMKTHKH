@@ -651,20 +651,21 @@ $("#nric").on("input", function () {
 
 // Validate mobile phone number format
 $("#mobilesInput").on("input", function () {
-    var validNric = validatePhone($("#mobilesInput").val());
-    if (!validNric) {
+    var validPhone = validatePhone($("#mobilesInput").val());
+    if (validPhone) {
         $("#mobWarning").css("display", "none");
         //validMob = true;
     } else {
         $("#mobWarning").css("display", "block");
         //validMob = false;
     }
+    validMob = validPhone;
 });
 
 // Validate postal code number format
 $("#postalsInput").on("input", function () {
     var validPostal = validatePostal($("#postalsInput").val());
-    if (!validPostal) {
+    if (validPostal) {
         $("#posWarning").css("display", "none");
         //validPos = true;
     } else {
@@ -672,32 +673,6 @@ $("#postalsInput").on("input", function () {
         //validPos = false;
     }
     validPos = validPostal;
-});
-
-// Validate home phone number format
-$("#homesInput").on("input", function () {
-    var validNum = validatePhone($("#homesInput").val());
-    if (!validNum) {
-        $("#homeWarning").css("display", "none");
-        //validHom = true;
-    } else {
-        $("#homeWarning").css("display", "block");
-        //validHom = false;
-    }
-    validHom = validNum;
-});
-
-// Validate alt phone number format
-$("#altInput").on("input", function () {
-    var validNum = validatePhone($("#altInput").val());
-    if (!validNum) {
-        $("#altWarning").css("display", "none");
-        //validAlt = true;
-    } else {
-        $("#altWarning").css("display", "block");
-        //validAlt = false;
-    }
-    validAlt = validNum;
 });
 
 // Check if visitor record exists in database
