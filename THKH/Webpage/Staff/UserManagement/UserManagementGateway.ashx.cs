@@ -13,7 +13,7 @@ namespace THKH.Webpage.Staff.UserManagement
         public void ProcessRequest(HttpContext context)
         {     
             context.Response.ContentType = "text/plain";
-            String successString = "";
+            String successString = ""; 
 
             var requestType = context.Request.Form["requestType"];
 
