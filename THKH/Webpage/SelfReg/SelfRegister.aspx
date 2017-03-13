@@ -160,6 +160,18 @@ margin-bottom:10px;
                         </div>
                     </div>
                 </div>
+            <div class="modal fade" id="lockModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
+                                <h3 class="modal-title" style="color:lightblue">Warning</h3><br />
+                                <button type="button" class="btn btn-primary" onclick="reloadPage(); false;"><span class="glyphicon glyphicon-refresh"></span> New Registration</button>
+                                <h5 style="color: lightcoral">Please click "New Registration" to continue.</h5>
+                        </div>
+                    </div>
+                </div>
+                </div>
             <a data-controls-modal="successModal" data-backdrop="static" data-keyboard="false" href="#/"></a>
                 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
                     <div class="modal-dialog">

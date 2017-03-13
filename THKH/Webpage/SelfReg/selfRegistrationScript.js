@@ -9,6 +9,7 @@ var validEmail = true;
 var patientValidated = false;
 var allowVisit = true;
 var regUrl = '../Staff/CheckInOut/CheckInGateway.ashx';
+var invalidTries = 0;
 
 // write to form information DB
 function NewSelfReg() {
@@ -60,7 +61,7 @@ function NewSelfReg() {
                         alert("Error: Visit PK Issue");
                     }
                 } catch (err) {
-                    alert(err.message + ". User has most likely checked-in previously today (PK Issue)");
+                    alert(err.message + ". User has most likely checked-in previously today");
                 }
             },
             error: function (err) {
@@ -168,6 +169,7 @@ function validatePatient() {
                         $('#staticinfocontainer').css("display", "none");
                         $("#patientName").attr('readonly', false);
                         $("#bedno").attr('readonly', false);
+                        plusInvalid();
                     } else {
                         $("#patientStatusGreen").css("display", "block");
                         $("#patientStatusRed").css("display", "none");
@@ -183,6 +185,7 @@ function validatePatient() {
                     $("#patientStatusNone").css("display", "none");
                     $('#newusercontent').css("display", "none");
                     $('#staticinfocontainer').css("display", "none");
+                    plusInvalid();
                 }
             },
             error: function (err) {
@@ -196,8 +199,19 @@ function validatePatient() {
         $("#userDetails").css("display", "none");
         $('#newusercontent').css("display", "none");
         $('#staticinfocontainer').css("display", "none");
+        plusInvalid();
     }
 }
+
+// Increments invalid tries variable
+function plusInvalid() {
+    invalidTries += 1;
+    if (invalidTries > 10) {
+        $('#lockModal').modal({ backdrop: 'static', keyboard: false });
+        $('#lockModal').modal('show');
+    }
+}
+
 
 // Check for visitor details & any online self registration information
 function checkIfExistingVisitor() {
@@ -494,6 +508,7 @@ function amendVisitorDetails() {
 function hideTags() {
     $('#emptyNricWarning').css("display", "none");
     $('#nricWarning').css("display", "none");
+    //$('#lockModal').css("display", "none");
     //$('#noVisitWarning').css("display", "none");
     $('#visitDetailsDiv').css("display", "none");
     $("#emailWarning").css("display", "none");
@@ -753,7 +768,7 @@ function populateTime() {
         requestType: "getConfig"
     };
     $.ajax({
-        url: '../Staff/MasterConfig/masterConfig.ashx',
+        url: '../Staff/MasterConfig/MasterConfigGateway.ashx',
         method: 'post',
         data: headersToProcess,
 
