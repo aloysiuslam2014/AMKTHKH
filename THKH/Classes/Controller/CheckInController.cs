@@ -509,6 +509,153 @@ namespace THKH.Classes.Controller
             return JsonConvert.SerializeObject(result);
         }
 
+        // Write to Visitor, Visit & Confirmation Table for Ambulance Staff
+        public String AmbReg(String staffuser, String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
+            String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
+            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature, String qListID, String qAns, String qaid, String visLim)
+        {
+
+            dynamic result = new ExpandoObject();
+            result.Result = "Success";
+            String visitor = "";
+            String visit = "";
+            String questionnaire = "";
+            String checkin = "";
+            string qAid = qaid;
+            int pos = 0;
+            try
+            {
+                pos = Int32.Parse(postal);
+            }
+            catch (Exception ex)
+            {}
+            //update visitor profile
+            procedureCall = new GenericProcedureDAO("UPDATE_VISITOR_PROFILE", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pNRIC", nric.ToUpper());
+            procedureCall.addParameterWithValue("@pFullName", fname);
+            procedureCall.addParameterWithValue("@pGender", sex);
+            procedureCall.addParameterWithValue("@pNationality", nationality);
+            procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
+            procedureCall.addParameterWithValue("@pMobileTel", mobtel);
+            procedureCall.addParameterWithValue("@pHomeAddress", address);
+            procedureCall.addParameterWithValue("@pPostalCode", pos);
+            try
+            {
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                visitor = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+            }
+            catch (Exception ex)
+            {
+                result.Result = "Failure";
+                result.Visitor = ex.Message;
+                return JsonConvert.SerializeObject(result);
+            }
+
+            //update or add questionaire ans
+            try
+            {
+                if (qAid == "")
+                {
+                    long ticks = DateTime.Now.Ticks;
+                    byte[] bytes = BitConverter.GetBytes(ticks);
+                    qAid = Convert.ToBase64String(bytes) // Find a way to generate UNIQUE numbers!!!
+                                            .Replace('+', '_')
+                                            .Replace('/', '-')
+                                            .TrimEnd('=');
+                    questionnaire = writeQuestionnaireResponse(qAid, qListID, qAns);
+
+                }
+                else
+                {
+                    questionnaire = updateQuestionnaireResponse(qAid, qListID, qAns);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                result.Result = "Failure";
+                result.Visitor = ex.Message;
+                return JsonConvert.SerializeObject(result);
+            }
+
+            procedureCall = new GenericProcedureDAO("UPDATE_VISIT", true, true, false);
+            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
+            procedureCall.addParameterWithValue("@pVisitorNRIC", nric.ToUpper());
+            procedureCall.addParameterWithValue("@pPurpose", purpose);
+            procedureCall.addParameterWithValue("@pReason", otherPurpose);
+            procedureCall.addParameterWithValue("@pVisitLocation", visitLocation);
+            procedureCall.addParameterWithValue("@pBedNo", bedno);
+            procedureCall.addParameterWithValue("@pQaID", qAid);
+            procedureCall.addParameterWithValue("@pRemarks", remarks);
+            try
+            {
+                ProcedureResponse responseOutput = procedureCall.runProcedure();
+                visit = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+            }
+            catch (Exception ex)
+            {
+                result.Result = "Failure";
+                result.Visit = ex.Message;
+                return JsonConvert.SerializeObject(result);
+            }
+
+            //check number of visitors currently with patient
+            if (purpose == "Visit Patient")
+            {
+                try
+                {
+                    int limit = Int32.Parse(visLim);
+                    var bedArr = bedno.Split('|');
+                    Boolean valid = true;
+                    for (int i = 0; i < bedArr.Length; i++)
+                    {
+                        dynamic num = checkNumCheckedIn(bedArr[i], limit);
+                        if (num.visitors >= limit) // May need to change to DB side
+                        {
+                            valid = false;
+                        }
+                    }
+                    if (valid) // May need to change to DB side
+                    {
+                        //msg += CheckIn(staffuser, nric, temperature);
+                        checkin = CheckIn(staffuser, nric, temperature);
+                    }
+                    else
+                    {
+                        result.Result = "Failure";
+                        result.Visitor = "Limit of " + visLim + " per bed has been reached.";
+                        return JsonConvert.SerializeObject(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result.Result = "Failure";
+                    result.Visitor = ex.Message;
+                    return JsonConvert.SerializeObject(result);
+                }
+            }
+            else
+            {
+                try
+                {
+                    checkin = CheckIn(staffuser, nric, temperature);
+                }
+                catch (Exception ex)
+                {
+                    result.Result = "Failure";
+                    result.Visitor = ex.Message;
+                    return JsonConvert.SerializeObject(result);
+                }
+            }
+
+            result.Visitor = visitor;
+            result.Visit = visit;
+            result.Questionnaire = questionnaire;
+            result.CheckIn = checkin;
+            return JsonConvert.SerializeObject(result);
+        }
 
         public String writeQuestionnaireResponse(String qaid, String qListID, String qAns)
         {

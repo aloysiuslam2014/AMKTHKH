@@ -107,14 +107,15 @@ margin-bottom:10px;
   top:0;
   position:absolute;
 }
-    .close:hover {
-        color: #000000;
-        text-decoration: none;
-        opacity: 0.4;
-    }
+
+.close:hover {
+    color: #000000;
+    text-decoration: none;
+    opacity: 0.4;
+}
     </style>
 </head>
-<body onload="hideTags()">
+<body onload="hideTags()" >
     <form id="selfregistration">
         <div id="maincontainer" class="container-fluid">
             <nav class="navbar navbar-default navbar-fixed-top">

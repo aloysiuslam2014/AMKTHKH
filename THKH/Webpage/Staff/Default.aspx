@@ -152,7 +152,7 @@
                                     </div>
                                 </div>
                                         </div>
-                                    <div class="col-sm-6">
+                                   <%-- <div class="col-sm-6">
                                         <label>Self-Registration Settings</label>
                                     <div class="form-group">
                                     <div class="input-group">
@@ -160,7 +160,7 @@
                                             <input type="text" class="form-control setInput" id="visAdvInput" />
                                     </div>
                                 </div>
-                                    </div>
+                                    </div>--%>
                                 </div>
                                 <div class="row">
                                 <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-floppy-saved"></span> Save Settings</button>
@@ -381,11 +381,13 @@
                             <h4 id="tempLimitWarning" style="color: lightcoral">Invalid Temperature</h4>
                             <h4 id="lowtempWarning" style="color: lightcoral">Invalid Temperature</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
-                            <%--<h5>Please click the "Check NRIC" button once you have filled in the NRIC & the Temperature</h5>--%>
-                            <div class="center-block">
-                            <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span> Proceed</button>
-                            <%--<h5 id="noVisitWarning" style="color: lightcoral">You are not within Visiting Hours! Please approach the admin for assistance.</h5>--%>
+                            <div id="ambulanceDiv">
+                                <div class="checkbox">
+                                    <label for="ambulCheck"></label>
+                                    <input type="checkbox" id="ambulCheck" name="declare" value="true" class="regInput" />Ambulance Entry<br />
+                                </div>
                             </div>
+                            <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span> Proceed</button>
                         </div>
                     </div>
                 </div>

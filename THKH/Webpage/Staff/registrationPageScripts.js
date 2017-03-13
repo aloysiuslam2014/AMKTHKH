@@ -463,23 +463,15 @@ function NewAssistReg() {
         url: regUrl,
         method: 'post',
         data: headersToProcess,
-
-
         success: function (returner) {
             try {
                 var resultOfGeneration = JSON.parse(returner);
                 if (resultOfGeneration.Result === "Success") {
-                    
                         regCompleted = true;
                         showSuccessModal();
-                        //after showin then we load the pass go to the method show success modal to see
-                        
-                        hideTags(false); //clearfields moved to close button on success modal
-                    
-
+                        hideTags(false); 
             } else {
                     if (resultOfGeneration.Visitor.toString().includes("per bed has been reached")) {
-                        // Show Error Modal!
                         showMaxLimitModal();
                         hideTags(true);
                         regCompleted = true;
@@ -493,7 +485,7 @@ function NewAssistReg() {
                     }
                 }
             } catch (err) {
-                alert(err.message + ". User has most likely checked-in previously today");
+                alert("Error: " + err.message);
             }
         },
         error: function (err) {
@@ -504,6 +496,7 @@ function NewAssistReg() {
     var allowNric = false;
 }
 
+//
 function clearFields(overwrite) {
     if (allowVisit) {
         if (overwrite) {
@@ -532,7 +525,6 @@ function clearFields(overwrite) {
                 });
             }
             $('input[id="ignoreNric"]').prop('checked', false);
-
             var allowNric = false;
         }
         $("#bedsAdded").html("");
@@ -588,13 +580,6 @@ function purposePanels() {
 
 // Check visit location input field
 function checkLocation() {
-    //if ($("#visLoc").val() == '') {
-    //    $("#locWarning").css("display", "block");
-    //    return false;
-    //} else {
-    //    $("#locWarning").css("display", "none");
-    //}
-    //return true;
     var blank = checkBlankField($("#visLoc").val());
     if (blank) {
         $("#locWarning").css("display", "block");
@@ -654,10 +639,8 @@ $("#mobilesInput").on("input", function () {
     var validPhone = validatePhone($("#mobilesInput").val());
     if (validPhone) {
         $("#mobWarning").css("display", "none");
-        //validMob = true;
     } else {
         $("#mobWarning").css("display", "block");
-        //validMob = false;
     }
     validMob = validPhone;
 });
@@ -667,10 +650,8 @@ $("#postalsInput").on("input", function () {
     var validPostal = validatePostal($("#postalsInput").val());
     if (validPostal) {
         $("#posWarning").css("display", "none");
-        //validPos = true;
     } else {
         $("#posWarning").css("display", "block");
-        //validPos = false;
     }
     validPos = validPostal;
 });
@@ -690,7 +671,6 @@ function checkExistOrNew() {
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
     var answers = '';
-    //var jsonObject = "{\"Main\":[";
     var questions = [];
     var qIds = [];
     var allAnswers = [];
@@ -731,7 +711,6 @@ function getQuestionnaireAnswers() {
     // construct json answers
     for (var i = 0; i < qIds.length; i++) {
         var currentQid = qIds[i];
-        //var answerObject = "{\"qid\":\"" + currentQid + "\",\"question\":\"" + questions[i] + "\",\"answer\":\"";
         var answers = "";
         for (var j = 0; j < allAnswers.length; j++) {
             var row = allAnswers[j];
@@ -739,19 +718,13 @@ function getQuestionnaireAnswers() {
             var id = arr[0];
             if (id == currentQid) {
                 var ans = arr[1];
-                //answerObject += ans + ",";
                 answers += ans + ",";
             }
         }
-        //answerObject = answerObject.substring(0, answerObject.length - 1);
         answers = answers.substring(0, answers.length - 1);
         var obj = { qid: currentQid, question: questions[i], answer: answers };
         holder.push(obj);
-        //answerObject += "\"},";
-        //jsonObject += answerObject;
     }
-    //jsonObject = jsonObject.substring(0, jsonObject.length - 1);
-    //jsonObject += "]}";
     var jsonObject = {Main:holder};
     var jsonString = JSON.stringify(jsonObject);
     return jsonString;
@@ -760,7 +733,6 @@ function getQuestionnaireAnswers() {
 // Datetime Picker JQuery
 $(function () {
     $('#datetimepicker').datetimepicker({
-        // dateFormat: 'dd-mm-yy',
         defaultDate: new Date(),
         maxDate: 'now',
         format: 'DD-MM-YYYY',
@@ -768,7 +740,6 @@ $(function () {
     });
     $('#visitbookingdatediv').datetimepicker(
         {
-            // dateFormat: 'dd-mm-yy',
             defaultDate: new Date(),
             maxDate: 'now',
             format: 'DD-MM-YYYY'
@@ -786,14 +757,6 @@ function getFormattedDate(date) {
 // Check date format
 $("#daterange").on("input", function () {
     var dateStr = $('#daterange').val();
-    //var filter = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
-    //if (filter.test(dateStr) !== false) {
-    //    $("#dateWarning").css("display", "none");
-    //    validDate = true;
-    //} else {
-    //    $("#dateWarning").css("display", "block");
-    //    validDate = false;
-    //}
     var valid = validateDate(dateStr);
     if (valid) {
         $("#dateWarning").css("display", "none");
@@ -812,7 +775,6 @@ function hideTags(clear) {
     $("#emptyFields").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
     $("#emailWarning").css("display", "none");
-    //$('#noVisitWarning').css("display", "none");
     $('#lowtempWarning').css("display", "none");
     $('#tempWarning').css("display", "none");
     $('#tempLimitWarning').css("display", "none");
@@ -850,10 +812,15 @@ function enterToCheckNric(e) {
         checkNricWarningDeclaration(); false; }
 }
 
-//
+// Check nature of NRIC
 function checkNricWarningDeclaration() {
     if (checkBlankField($("#nric").val())) {
         $("#emptyNricWarning").css("display", "block");
+        allowNric = $('input[id="ignoreNric"]').is(':checked');
+    } else if ($('input[id="ambulCheck"]').is(':checked')) {
+        // Logic to allow immediate reg
+        //NewAssistReg();
+        alert("AmbulCheck is Checked!");
     } else {
         $("#emptyNricWarning").css("display", "none");
         var allowNric = false;
@@ -869,13 +836,6 @@ function checkNricWarningDeclaration() {
 
 // Change checkbox value upon click
 $('#ignoreNric').on('change', function () {
-    //var check = this.is(":checked");
-    //if (check) {
-    //    $(this).prop('checked', false);
-    //} else {
-    //    $(this).prop('checked', true);
-    //}
-    // Old Code
      this.check;
 });
 
@@ -974,7 +934,6 @@ function populateTime() {
     var lowTime = "";
     var adjustedTime = false;
     var highTime = "";
-    //var count = 0;
     var d = new Date();
     var localTime = d.getTime();
     var localOffset = d.getTimezoneOffset() * 60000;
@@ -1034,21 +993,9 @@ function populateTime() {
                         $(optin).attr("value", time[i]);
                         $(optin).html(time[i]);
                         $('#visitbookingtime').append(optin);
-                        //count++;
                     }
                 }
             }
-            //if (count == 0) {
-            //    allowVisit = false;
-            //    $('#noVisitWarning').css("display", "block");
-            //    $("#nric").prop('disabled', true);
-            //    $("#temp").prop('disabled', true);
-            //} else {
-            //    allowVisit = true;
-            //    $('#noVisitWarning').css("display", "none");
-            //    $("#nric").prop('disabled', false);
-            //    $("#temp").prop('disabled', false);
-            //}
         },
         error: function (err) {
             alert("Error: " + err.Msg);

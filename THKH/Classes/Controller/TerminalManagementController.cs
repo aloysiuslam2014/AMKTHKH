@@ -240,7 +240,10 @@ namespace THKH.Classes.Controller
                 ProcedureResponse responseOutput = procedureCall.runProcedure();
                 string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
                 success = respon.Equals("1") || respon.Equals("2") ? true : false;
-                if (respon.Equals("2"))
+                if (success) {
+                    toReturn = "success";
+                }
+                else if (respon.Equals("2"))
                 {
                     toReturn = "success,locationError";
                 }

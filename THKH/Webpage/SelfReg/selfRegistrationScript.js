@@ -203,7 +203,7 @@ function validatePatient() {
     }
 }
 
-// Increments invalid tries variable
+// Increments invalid tries variable & blocks out the form if necessary
 function plusInvalid() {
     invalidTries += 1;
     if (invalidTries > 10) {
