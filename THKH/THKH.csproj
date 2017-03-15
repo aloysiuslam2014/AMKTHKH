@@ -320,6 +320,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\jquery.canvasjs.min.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.dataTables.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -603,5 +603,4 @@ namespace THKH.Classes.Controller
             return loc;
         }
     }
-    }
 }

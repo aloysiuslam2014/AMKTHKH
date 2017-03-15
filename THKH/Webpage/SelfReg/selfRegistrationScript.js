@@ -11,6 +11,7 @@ var allowVisit = true;
 var regUrl = '../Staff/CheckInOut/CheckInGateway.ashx';
 var invalidTries = 0;
 var numTries = 5;
+var ipAdd = "";
 
 // write to form information DB
 function NewSelfReg() {
@@ -207,11 +208,15 @@ function validatePatient() {
 function plusInvalid() {
     invalidTries += 1;
     if (invalidTries > numTries) {
-        $('#lockModal').modal({ backdrop: 'static', keyboard: false });
-        $('#lockModal').modal('show');
+        createCookie();
     }
 }
 
+// Show lock modal
+function showLockModal() {
+    $('#lockModal').modal({ backdrop: 'static', keyboard: false });
+    $('#lockModal').modal('show');
+}
 
 // Check for visitor details & any online self registration information
 function checkIfExistingVisitor() {
@@ -538,6 +543,10 @@ function hideTags() {
     $("#timelabel").css("display", "none");
     $("#posWarning").css("display", "none");
     $("#natWarning").css("display", "none");
+    getUserIP(function (ip) {
+        ipAdd = ip;
+    });
+    checkSessionCookie();
     populateNationalities();
     populateTime();
     loadFacilities();
@@ -872,3 +881,20 @@ $("#emailsInput").on("input", function () {
     }
     validEmail = valid;
 });
+
+// Checks for existing cookies & locks the app if a cookie exists
+function checkSessionCookie() {
+    var existingCookie = $.cookie('ip');
+    if (existingCookie != undefined & existingCookie !== "") {
+        showLockModal();
+    }
+}
+
+// Set Cookie with 10 minute expiry
+function createCookie() {
+    var date = new Date();
+    var minutes = 10;
+    date.setTime(date.getTime() + (minutes * 60 * 1000));
+    $.cookie("ip", ipAdd, { expires: date });
+    checkSessionCookie();
+}

@@ -12,6 +12,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/moment.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap-datetimepicker.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.cookie.js") %>"></script>
     <style type="text/css">
     .buttonedge {
         border-top-left-radius: 4px; border-bottom-left-radius: 4px
@@ -166,9 +167,10 @@ margin-bottom:10px;
                         <div class="modal-content">
                             <div class="modal-header text-center">
                                 <img src="../../Assets/hospitalLogo.png" class="img img-responsive" /><br />
-                                <h3 class="modal-title" style="color:lightblue">Warning</h3><br />
-                                <button type="button" class="btn btn-primary" onclick="reloadPage(); false;"><span class="glyphicon glyphicon-refresh"></span> New Registration</button>
-                                <h5 style="color: lightcoral">Please click "New Registration" to continue.</h5>
+                                <h3 class="modal-title" style="color:lightblue">Session Locked</h3><br />
+                                <%--<button type="button" class="btn btn-primary" onclick="reloadPage(); false;"><span class="glyphicon glyphicon-refresh"></span> New Registration</button>--%>
+                                <%--<h5 style="color: lightcoral">Please click "New Registration" to continue.</h5>--%>
+                                <h5 style="color: lightcoral">You have exceeded the maximum number of patient validations. Please try again in 10 minutes.</h5>
                         </div>
                     </div>
                 </div>
