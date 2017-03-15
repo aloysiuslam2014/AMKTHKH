@@ -2708,3 +2708,23 @@ BEGIN
 	AND v.confirm = 1
   END
 END;
+
+---------------------------------------------------------------------------------------------------  Procedure for retrieving location for dashboard  
+GO
+CREATE PROCEDURE [dbo].[GET_LOC_BY_BEDNO]  
+@pBedno VarChar(100),
+@responseMessage INT OUT
+
+AS  
+BEGIN  
+  SET NOCOUNT ON
+  
+  BEGIN
+    SET @responseMessage = 1;
+
+	SELECT DISTINCT t.tName AS "location"
+	FROM TERMINAL t
+	LEFT JOIN TERMINAL_BED tb ON t.terminalID = tb.terminalID
+	WHERE tb.bedNoList LIKE '%'+ @pBedno +'%'
+  END
+END;

@@ -494,7 +494,46 @@ namespace THKH.Classes.Controller
 
             String visitors_jsonstr = getVisitors(dash_startdate, dash_enddate);
 
+            String processed_visitors_jsonstr = processVisitors(visitors_jsonstr);
+
             return "Great Success!";
+        }
+
+        public String processVisitors(String visitors_jsonstr)
+        {
+            List<Object> processed_visitor_json_list = new List<Object>();
+
+            JObject raw_visitors = JObject.Parse(visitors_jsonstr);
+            JArray arr = (JArray)raw_visitors["Msg"];
+            foreach (JToken item in arr.Children())
+            {
+                String visitor_str = item.Value<JObject>().ToString(Formatting.None);
+                JObject visitor = JObject.Parse(visitor_str);
+                dynamic innerItem = new ExpandoObject();
+
+                //location from location/bedno
+                string loc = "";
+                string bedno = (string)visitor["bedno"];
+                if (bedno.Length == 0)
+                {
+                    loc = (string)visitor["location"];
+                }else
+                {
+                    loc = getLocFromBedno(bedno); //need to fix this cause bedno won't be a single bedno, but a comma separated string
+                }
+                innerItem.location = loc;
+
+                //date/hour from checkin_time
+
+                innerItem.nric = visitor["nric"];
+                innerItem.gender = visitor["gender"];
+
+                //age from dob
+
+                processed_visitor_json_list.Add(innerItem);
+            }
+
+            return "blah";
         }
 
         public String getVisitors(DateTime startdatetime, DateTime enddatetime)
@@ -540,5 +579,29 @@ namespace THKH.Classes.Controller
             }
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
+
+        public String getLocFromBedno(String bedno)
+        {
+            String loc = "";
+            DataTable dt = new DataTable();
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_LOC_BY_BEDNO", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pBedno", bedno);
+            try
+            {
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dt = resultss.getDataTable();
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    loc = (string)dt.Rows[i]["location"];
+                }
+            }
+            catch (Exception ex)
+            {
+                loc = "error: " + ex;
+            }
+            return loc;
+        }
+    }
     }
 }
