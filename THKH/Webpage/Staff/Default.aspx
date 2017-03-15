@@ -152,15 +152,6 @@
                                     </div>
                                 </div>
                                         </div>
-                                   <%-- <div class="col-sm-6">
-                                        <label>Self-Registration Settings</label>
-                                    <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Days in Advance</span>
-                                            <input type="text" class="form-control setInput" id="visAdvInput" />
-                                    </div>
-                                </div>
-                                    </div>--%>
                                 </div>
                                 <div class="row">
                                 <button class="btn btn-success" id="saveSettingsButton" onclick="updateConfig(); false;"><span class="glyphicon glyphicon-floppy-saved"></span> Save Settings</button>
@@ -366,6 +357,12 @@
                                 <input id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />       
                             </div>
                             <h4 id="emptyNricWarning" style="color: lightcoral">Please enter an NRIC/Identification Number!</h4>
+                            <div id="ambulanceDiv">
+                                <div class="checkbox">
+                                    <label for="ambulCheck"></label>
+                                    <input type="checkbox" id="ambulCheck" name="declare" value="true" class="regInput" />Express Entry<br />
+                                </div>
+                            </div>
                             <div id="nricWarnDiv">
                                 <h4 id="nricWarning" style="color: lightcoral">Non-Singapore Based NRIC/ID!</h4>
                                 <div class="checkbox">
@@ -375,17 +372,18 @@
                                 </div>
                             </div>
                             <br />
-                            <label class="control-label" for="temp"><span style="color:lightcoral">*</span>Temperature</label>
+                            <label class="control-label" id="tempLbl" for="temp"><span style="color:lightcoral">*</span>Temperature</label>
                             <input id="temp" onkeypress=" return enterToCheckNric(event)" class="form-control required regInput" type="text" />
                             <h4 id="tempWarning" style="color: lightcoral">Warning! Fever!</h4>
                             <h4 id="tempLimitWarning" style="color: lightcoral">Invalid Temperature</h4>
                             <h4 id="lowtempWarning" style="color: lightcoral">Invalid Temperature</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
-                            <div id="ambulanceDiv">
-                                <div class="checkbox">
-                                    <label for="ambulCheck"></label>
-                                    <input type="checkbox" id="ambulCheck" name="declare" value="true" class="regInput" />Ambulance Entry<br />
-                                </div>
+                            <div id="remarksExpressDiv">
+                                <h3 style="color:lightblue">Additional Information</h3>
+                                <label for="remarksExpressInput">Remarks</label>
+                                <div class="form-group">
+                                <input type="text" class="form-control regInput" id="remarksExpressInput" />
+                            </div>
                             </div>
                             <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span> Proceed</button>
                         </div>

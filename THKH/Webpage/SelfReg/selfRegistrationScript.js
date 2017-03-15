@@ -10,6 +10,7 @@ var patientValidated = false;
 var allowVisit = true;
 var regUrl = '../Staff/CheckInOut/CheckInGateway.ashx';
 var invalidTries = 0;
+var numTries = 5;
 
 // write to form information DB
 function NewSelfReg() {
@@ -23,7 +24,6 @@ function NewSelfReg() {
         var nationality = $("#nationalsInput").val();
         var dob = $("#daterange").val();
         var purpose = $("#pInput").val();
-
         var otherPurpose = $("#purposeInput").val();
         var bedno = "";
         var bedsLength = $("#bedsAdded").children().length;
@@ -206,7 +206,7 @@ function validatePatient() {
 // Increments invalid tries variable & blocks out the form if necessary
 function plusInvalid() {
     invalidTries += 1;
-    if (invalidTries > 10) {
+    if (invalidTries > numTries) {
         $('#lockModal').modal({ backdrop: 'static', keyboard: false });
         $('#lockModal').modal('show');
     }
