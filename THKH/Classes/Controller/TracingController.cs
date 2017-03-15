@@ -481,5 +481,10 @@ namespace THKH.Classes.Controller
 
             return sc_delim_ans;
         }
+
+        public String fillDashboard(String query)
+        {
+            return "Great Success!";
+        }
     }
 }

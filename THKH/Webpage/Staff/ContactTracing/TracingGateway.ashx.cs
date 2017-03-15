@@ -20,6 +20,11 @@ namespace THKH.Webpage.Staff.ContactTracing
                 var query = context.Request.Form["queries"];
                 returnoutput = traceController.unifiedTrace(query);
             }
+            if (action.Equals("fillDashboard"))
+            {
+                var query = context.Request.Form["queries"];
+                returnoutput = traceController.fillDashboard(query);
+            }
             context.Response.Write(returnoutput);
         }
 

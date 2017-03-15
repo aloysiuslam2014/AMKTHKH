@@ -87,109 +87,38 @@ function writeUQResultsTable(uqResultJSON) {
             $("#uq_resultstable_body").append(row);
 }
 
-function traceByReg() {
-    $("traceByRegResultTable").remove();
-    var ri_dateStart = $("#ri_qstartdatetime").val();
-    var ri_dateEnd = $("#ri_qenddatetime").val();
-    var ri_querybeds = $("#ri_querybeds").val();
+function fillDashboard() {
 
-    byRegQueryParams = ri_dateStart + '~' + ri_dateEnd + '~' + ri_querybeds;
+    var dash_dateStart = $("#dash_startdatetime").val();
+    var dash_dateEnd = $("#dash_enddatetime").val();
 
-    var headersToProcess = { action: "traceByReg", queries: byRegQueryParams };
+    var _dateStart = new Date(dash_dateStart);
+    var _dateEnd = new Date(dash_dateEnd);
+
+    if (_dateStart > _dateEnd) {
+        alert("End date of query period must be before start date!");
+        return;
+    }
+
+    dash_params = dash_dateStart + '~' + dash_dateEnd;
+
+    var headersToProcess = { action: "fillDashboard", queries: dash_params };
     $.ajax({
         url: toTracing,
         method: 'post',
         data: headersToProcess,
 
         success: function (returner) {
-            var byRegResults = JSON.parse(returner);
-            var byRegResultsJson = byRegResults.Msg[0];
-            if (byRegResultsJson.visitors != "") {
-                var visitorsk = byRegResultsJson.visitors;
-                var visitDetailsk = byRegResultsJson.visitorDetails;
-                writeByRegResultsTable(visitorsk, visitDetailsk);
-            } else {
-                alert(selfRegNoDataError);
+            try {
+                var dashResult = JSON.parse(returner);
+                alert("Woo! temporary success message. ");
+            } catch (err) {
+                alert("Something went wrong when retrieving dashboard data. " + err);
             }
-           
+
         },
         error: function (err) {
-            alert(serverAjaxFailureError);
+            alert("Something Ajaxsploded, please contact the admin.");
         },
     });
-}
-
-function writeByRegResultsTable(visitorsx, visitorDetails) {
-     
-    $("#ri_resultTable_body").html('');//clear existing elements
-    $("#generateCSV").removeClass('disabled');//Enable csv download button
-    visitors = JSON.parse(visitorsx);
-    visitDetails = JSON.parse(visitorDetails);
-    visitors = visitors.Visitors;
-    visitDetails = visitDetails.Visitor_Details;
-    for (index = 0; index < visitors.length; ++index) {
-        var v = visitors[index];
-        var vparams = ["nric", "fullName", "gender", "nationality", "dateOfBirth", "race", "mobileTel", "homeTel", "altTel", "email", "homeAddress", "postalCode", "time_stamp", "confirm", "amend"];
-        //visitor
-        var row = document.createElement("tr");
-
-        for (rowindex = 0; rowindex < vparams.length; ++rowindex) {
-            var cell = document.createElement("td");
-            $(cell).html(v[vparams[rowindex]]);
-            $(row).append(cell);
-        }
-
-        $("#ri_resultTable_body").append(row);
-    }
-}
-
-
-function writeTerminalResult(terminal, startdate, enddate) {
-    var queryStartDate = Date.parse(startdate);
-    var queryEndDate = Date.parse(enddate);
-    var tname = terminal.tname;
-    var tstartdate = terminal.startd;
-    var tenddate = terminal.endd;
-    var qstartdate = tstartdate;
-    var qenddate = tenddate;
-    if (Date.parse(tstartdate) > queryStartDate) {
-        qstartdate = queryStartDate;
-    }
-    if (tenddate === "" || Date.parse(tenddate) < queryEndDate) {
-        qenddate = queryEndDate;
-    }
-    var listObj = document.createElement("LI");
-    $(listObj).prop("style","cursor: pointer;display: inline-flex;width: 100%;")
-    var listDiv = document.createElement("DIV");
-    $(listDiv).prop("style", "width: 100%;display: inherit;height: 100%;");
-    $(listObj).prop("class", "list-group-item row")
-    //tName
-    var t_div = document.createElement("div");
-    $(t_div).prop("class", "col-sm-4");
-    var t_label = document.createElement("label");
-    $(t_label).prop("class", "terminalLabel ");
-    $(t_label).html(tname);
-    $(t_div).html(t_label);
-
-    //qstartdate
-    var startd_div = document.createElement("div");
-    $(startd_div).prop("class", "col-sm-4");
-    var startd_label = document.createElement("label");
-    $(startd_label).prop("class", "startdLabel");
-    $(startd_label).html(qstartdate);
-    $(startd_div).html(startd_label);
-
-    //qenddate
-    var endd_div = document.createElement("div");
-    $(endd_div).prop("class", "col-sm-4");
-    var endd_label = document.createElement("label");
-    $(endd_label).prop("class", "enddLabel");
-    $(endd_label).html(qenddate);
-    $(endd_div).html(endd_label);
-
-    $(listDiv).append(t_div);
-    $(listDiv).append(startd_div);
-    $(listDiv).append(endd_div);
-    $(listObj).append(listDiv);
-    $("#validTerminalList").append(listObj);
 }
