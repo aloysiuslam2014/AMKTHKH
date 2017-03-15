@@ -31,6 +31,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/sha-256.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/qz-tray.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/kc.fab.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.canvasjs.min.js") %>"></script>
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
@@ -283,6 +284,13 @@
                     {%>
                     <li>
                         <a href="#ContactTracing" data-toggle="tab">Contact Tracing
+                        </a>
+                    </li>
+                    <%  }
+                    if (accessRightsStr.Contains('6'))
+                    {%>
+                    <li>
+                        <a href="#Dashboard" data-toggle="tab">Dashboard
                         </a>
                     </li>
                     <%  }
@@ -1149,9 +1157,6 @@
                     <span class="input-group-btn">
                     <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace(); false;"><span class="glyphicon glyphicon-search"></span> Trace</button>
                     </span>
-                    <%--<span class="input-group-btn">
-                        <button class="btn btn-warning disabled" id="generateCSV" onclick="generateCSV(); false;"><span class="glyphicon glyphicon-list"></span> Generate CSV</button>
-                    </span>--%>
                 </div>
 
                 <script>
@@ -1244,154 +1249,57 @@
                 </script>
             </div>
         </div>
-
-
-        <div style="display:none;margin:5px,">
-            <button type="button" onclick="toggleToByReg(); false;" class="btn btn-warning">By Registered Intent</button>
-            <button type="button" onclick="toggleToByMove(); false;" class="btn btn-warning">By Terminal Scan</button>
-        </div>
-        <div class="row" id="byRegistration" style="display:none;">
-            <h3 style="">Query by Registered Intent</h3>
-           
-            <div class="form-group col-sm-offset-2 col-sm-8">
-                <div class="col-sm-3">
-                    <div class="input-group date" id="ri_querystartdatetime">
-                        <input type='text' id="ri_qstartdatetime" class="form-control required" placeholder="Start DateTime" />
+    </div>
+    <!-- End of ContactTracing -->
+    <!-- Dashboard -->
+    <div class="tab-pane maxHeight" id="Dashboard">
+        <div class="row" id="dashboard_frame">
+            <h3 style="">Select time period to view visitor statistics.</h3>
+            <div class="form-group col-sm-offset-1 col-sm-10" id="dashboard_params">
+                <div class="col-sm-2 col-sm-offset-4">
+                    <div class="input-group date" id="dashboard_startdatetime">
+                        <input type='text' id="dash_startdatetime" class="form-control required" placeholder="Start DateTime" />
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                 </div>
 
-                <div class="col-sm-3">
-                    <div class="input-group date" id="ri_queryenddatetime">
-                        <input type='text' id="ri_qenddatetime" class="form-control required" placeholder="End DateTime" />
+                <div class="col-sm-2">
+                    <div class="input-group date" id="dashboard_enddatetime">
+                        <input type='text' id="dash_enddatetime" class="form-control required" placeholder="End DateTime" />
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                 </div>
+
+                <span class="input-group-btn">
+                <button class="btn btn-warning" id="fill_dashboard" onclick="fillDashboard(); false;"><span class="glyphicon glyphicon-search"></span> View</button>
+                </span>
 
                 <script type="text/javascript"> //Shift to separate Script
                     $(function () {
-                        $('#ri_querystartdatetime').datetimepicker();
+                        $('#dashboard_startdatetime').datetimepicker(
+                            {
+                                defaultDate: new Date(),
+                                maxDate: 'now',
+                                format: 'YYYY-MM-DD'
+                            }
+                            );
                     });
                     $(function () {
-                        $('#ri_queryenddatetime').datetimepicker();
+                        $('#dashboard_enddatetime').datetimepicker({
+                            defaultDate: new Date(),
+                            maxDate: 'now',
+                            format: 'YYYY-MM-DD'
+                        });
                     });
-                </script>
-
-                <div id="ri_querybedrange" class="input-group col-sm-6">
-                    <input class="form-control" id="ri_querybeds" placeholder="Beds: 1-4,7,10 " style=" " type="text" />
-                    <span class="input-group-btn">
-                        <button class="btn btn-warning" id="traceByReg" onclick="traceByReg();"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
-                    </span><span class="input-group-btn">
-                        <button class="btn btn-warning disabled" id="old_generateCSV" onclick="generateCSV()"><span class="glyphicon glyphicon-save "></span>Generate CSV</button>
-                    </span>
-                </div>
-                
+                </script>                
             </div>
-            <div class="form-group col-sm-12" id="ri_results" style="overflow-x">
-                    <table id ="ri_resultTable" class="table table-bordered" style:"padding-left:10px padding-right:10px">
-                        <thead>
-                            <tr>
-                                <th>nric</th>
-                                <th>fullName</th>
-                                <th>gender</th>
-                                <th>nationality</th>
-                                <th>dateOfBirth</th>
-                                <th>race</th>
-                                <th>mobileTel</th>
-                                <th>homeTel</th>
-                                <th>altTel</th>
-                                <th>email</th>
-                                <th>homeAddress</th>
-                                <th>postalCode</th>
-                                <th>time_stamp</th>
-                                <th>confirm</th>
-                                <th>amend</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ri_resultTable_body">
-                        </tbody>
-                    </table>
-           </div>
         </div>
-         <div class="row" id="byMovement" style="display:none">
-             <!-- query input portion -->
-             <div class="col-sm-6 panel" style="height: 95%;">
-                 <h3 style="">Query by Terminal Scan</h3>
-                 <div class="form-group">
-
-                     <div class="col-sm-4">
-                         <div class="input-group date" id="querystartdatetime">
-                             <input type='text' id="qstartdatetime" class="form-control required" placeholder="Start DateTime"/>
-                             <span class="input-group-addon">
-                                 <span class="glyphicon glyphicon-calendar"></span>
-                             </span>
-                         </div>
-                     </div>
-
-                     <div class="col-sm-4">
-                         <div class="input-group date" id="queryenddatetime">
-                             <input type='text' id="qenddatetime" class="form-control required" placeholder="End DateTime" />
-                             <span class="input-group-addon">
-                                 <span class="glyphicon glyphicon-calendar"></span>
-                             </span>
-                         </div>
-                    </div>
-                         
-                     <script type="text/javascript">
-                         $(function () {
-                             $('#querystartdatetime').datetimepicker();
-                         });
-                         $(function () {
-                             $('#queryenddatetime').datetimepicker();
-                         });
-                     </script>
-                
-                     <div class="input-group col-sm-4" id="querybedrange">
-                         <span class="input-group-btn">
-                                <button class="btn btn-primary" id="addDateTimeRange" onclick="getValidTerminals();">Find Valid Terminals</button>
-                         </span>
-                     </div>
-                 </div>
-
-                 <div class="list-group" style="overflow: auto; height: 70%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="terminalsToDisplay">
-                     <ul class="list-group checked-list-box queries" id="validTerminalList" style="overflow-x: hidden">
-                     </ul>
-                 </div>
-
-                 <div class="btn-group">
-                     <button type="button" onclick="selectAll('queries'); false;" class="btn btn-deafult"><span class="glyphicon glyphicon-check"></span> Select All</button>
-                     <button type="button" onclick="deSelectAll('queries');false;" class="btn btn-default"><span class="glyphicon glyphicon-unchecked"></span> Deselect All</button>
-                 </div>
-                 <br />
-                 <div class="btn-group">
-                     <button type="button" id="delQueriesFromList" onclick="removeQueriesFromList(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>&nbsp;Remove Queries</button>
-                 </div>
-             </div>
-
-             <div class="col-sm-2 panel" style="height: 50%; margin-top: 55px">
-                 <div class="form-group">
-                     <span class="input-group-btn">
-                         <button class="btn btn-warning" onclick="submitQueries(); false;"><span class="glyphicon glyphicon-search"></span>Generate Report</button>
-                     </span>
-                 </div>
-             </div>
-
-             <div class="col-sm-4 panel" style="height: 95%;">
-                 <h3>Query Results</h3>
-                 <div class="list-group" style="overflow: auto; height: 85%; border: solid 1pt; border-radius: 2px; margin-top: 3px;" id="queryResult">
-                     <ul class="list-group checked-list-box results" id="resultList">
-                     </ul>
-                 </div>
-             </div>
-         </div>
-
-
     </div>
-    <!-- End of ContactTracing -->
+    <!-- End Dashboard -->
             <!-- SMS -->
             <div class="tab-pane maxHeight" id="SMS">
                 <div id="SMSDiv" class="jumbotron center-block" style="text-align:left; width:50%">
