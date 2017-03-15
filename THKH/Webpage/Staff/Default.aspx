@@ -1180,6 +1180,7 @@
                             <th>Registration Bed No.</th>
                             <th>Check-in Time</th>
                             <th>Exit Time</th>
+                            <th>Temperature</th>>
                             <th>Name</th>
                             <th>NRIC</th>
                             <th>Gender</th>
@@ -1188,6 +1189,7 @@
                             <th>Home Address</th>
                             <th>Postal Code</th>
                             <th>Country (Nationality)</th>
+                            <th>Form Answers</th>
                             <th>Registered</th>
                             <th>Scanned</th>
                         </tr>
@@ -1233,7 +1235,7 @@
                             }
                         });
                         //table.columns('export_only').visible(false);
-                        table.columns([6, 7, 9, 10]).visible(false, false);
+                        table.columns([4, 7, 8, 10, 11, 13]).visible(false, false);
                         $('#uq_resultstable').prop("style", "width:100%");
                         $('#uq_resultstable').removeClass("dataTable");
                         $('#uq_resultstable_info').removeClass("dataTables_info");
