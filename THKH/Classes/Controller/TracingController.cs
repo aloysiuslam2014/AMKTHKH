@@ -484,7 +484,61 @@ namespace THKH.Classes.Controller
 
         public String fillDashboard(String query)
         {
+            String[] queryParts = query.Split('~');
+
+            String dash_startdate_str = queryParts[0];
+            String dash_enddate_str = queryParts[1];
+
+            DateTime dash_startdate = DateTime.ParseExact(dash_startdate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime dash_enddate = DateTime.ParseExact(dash_enddate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            String visitors_jsonstr = getVisitors(dash_startdate, dash_enddate);
+
             return "Great Success!";
+        }
+
+        public String getVisitors(DateTime startdatetime, DateTime enddatetime)
+        {
+            DataTable dt = new DataTable();
+            dynamic json = new ExpandoObject();
+            dynamic innerItem = new ExpandoObject();
+            List<Object> jsonArray = new List<Object>();
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_VISITORS_BY_DATES", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pStart_Date", startdatetime);
+            procedureCall.addParameterWithValue("@pEnd_Date", enddatetime);
+            try
+            {
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dt = resultss.getDataTable();
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    var location = dt.Rows[i]["location"];
+                    var regbedno = dt.Rows[i]["bedno"];
+                    var visitActualTime = dt.Rows[i]["checkin_time"];
+                    var visitorNric = dt.Rows[i]["nric"];
+                    var gender = dt.Rows[i]["gender"];
+                    var dob = dt.Rows[i]["dob"];
+
+                    innerItem = new ExpandoObject();
+                    innerItem.location = location.ToString();
+                    innerItem.bedno = regbedno.ToString();
+                    innerItem.checkin_time = visitActualTime.ToString();
+                    innerItem.nric = visitorNric.ToString();
+                    innerItem.gender = gender.ToString();
+                    innerItem.dob = dob.ToString();
+                    jsonArray.Add(innerItem);
+                }
+                json.Result = "Success";
+                json.Msg = jsonArray;
+
+            }
+            catch (Exception ex)
+            {
+                json.Result = "Failed";
+                json.Msg = ex.Message;
+            }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
     }
 }

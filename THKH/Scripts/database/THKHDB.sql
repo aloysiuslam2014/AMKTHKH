@@ -2219,6 +2219,7 @@ BEGIN
 		LEFT JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
 		WHERE v.bedNo LIKE '%'+ @pBed_No_Var +'%'
 		AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+		AND v.confirm = 1
 	),
 	DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
 		AS
@@ -2269,6 +2270,7 @@ BEGIN 
 			LEFT JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
 			WHERE tb.bedNoList LIKE '%'+ @pBed_No_Var +'%'
 			AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+			AND v.confirm = 1
 		),		
 		------------------------------------------------ Find the corresponding exit terminals and exit times
 		DAY_BED_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
@@ -2317,6 +2319,7 @@ BEGIN
 		LEFT JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
 		WHERE v.visitLocation LIKE '%' + @pLocation + '%'
 		AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+		AND v.confirm = 1
 	),
 	DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
 		AS
@@ -2363,6 +2366,7 @@ BEGIN 
 			LEFT JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
 			WHERE t.tName LIKE '%' + @pLocation + '%'
 			AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+			AND v.confirm = 1
 		),		
 		------------------------------------------------ Find the corresponding exit terminals and exit times
 		DAY_BED_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
@@ -2682,3 +2686,25 @@ END;
 
 --===========================================================================================================================================================================================
 
+---------------------------------------------------------------------------------------------------  Procedure for retrieving all visitors for dashboard  
+GO
+CREATE PROCEDURE [dbo].[GET_VISITORS_BY_DATES]  
+@pStart_Date DATE,
+@pEnd_Date DATE,
+@responseMessage INT OUT
+
+AS  
+BEGIN  
+  SET NOCOUNT ON
+  
+  BEGIN
+    SET @responseMessage = 1;
+
+	SELECT DISTINCT v.visitLocation, v.bedNo, ci.visitActualTime, ci.nric, vp.gender, vp.dateOfBirth
+	FROM CHECK_IN ci
+	LEFT JOIN VISITOR_PROFILE vp ON vp.nric = ci.nric
+	LEFT JOIN VISIT v on v.visitorNric = ci.nric
+	WHERE vp.confirm = 1
+	AND v.confirm = 1
+  END
+END;
