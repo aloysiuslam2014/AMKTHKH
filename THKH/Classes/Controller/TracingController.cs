@@ -494,12 +494,12 @@ namespace THKH.Classes.Controller
 
             String visitors_jsonstr = getVisitors(dash_startdate, dash_enddate);
 
-            String processed_visitors_jsonstr = processVisitors(visitors_jsonstr);
+            List<Object> processed_visitors_json_list = processVisitors(visitors_jsonstr);
 
-            return "Great Success!";
+            return Newtonsoft.Json.JsonConvert.SerializeObject(processed_visitors_json_list);
         }
 
-        public String processVisitors(String visitors_jsonstr)
+        public List<Object> processVisitors(String visitors_jsonstr)
         {
             List<Object> processed_visitor_json_list = new List<Object>();
 
@@ -530,17 +530,32 @@ namespace THKH.Classes.Controller
                 }
                 innerItem.location = loc;
 
-                //date/hour from checkin_time
+                //day of week, and hour of day from checkin_time
+                string checkin_time_str = (string)visitor["checkin_time"];
+                DateTime checkin_time = DateTime.ParseExact(checkin_time_str, "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+                innerItem.dayOfWeek = checkin_time.ToString("ddd");
+                innerItem.hourOfday = checkin_time.ToString("h tt");
+
                 //dwelltime from checkin_time and exit_time
+                string exit_time_str = (string)visitor["exit_time"];
+                DateTime exit_time = DateTime.ParseExact(exit_time_str, "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+                TimeSpan dwelltime_span = exit_time.Subtract(checkin_time);
+                innerItem.dwelltime_min = Convert.ToInt32(dwelltime_span.TotalMinutes).ToString();
+
                 innerItem.nric = visitor["nric"];
                 innerItem.gender = visitor["gender"];
 
                 //age from dob
+                string birthday_str = (string)visitor["dob"];
+                DateTime birthday = DateTime.ParseExact(birthday_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                TimeSpan visitor_agespan = checkin_time.Subtract(birthday);
+                double age_in_days = visitor_agespan.TotalDays;
+                innerItem.age = Convert.ToInt32(age_in_days / 365.25);
 
                 processed_visitor_json_list.Add(innerItem);
             }
 
-            return "blah";
+            return processed_visitor_json_list;
         }
 
         public String getVisitors(DateTime startdatetime, DateTime enddatetime)

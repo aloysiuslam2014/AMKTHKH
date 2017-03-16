@@ -110,7 +110,7 @@ function fillDashboard() {
 
         success: function (returner) {
             try {
-                var dashResult = JSON.parse(returner);
+                var dashResult = JSON.parse(returner); //list of json objects
                 alert("Woo! temporary success message. ");
             } catch (err) {
                 alert("Something went wrong when retrieving dashboard data. " + err);
