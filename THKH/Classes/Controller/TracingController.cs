@@ -519,12 +519,19 @@ namespace THKH.Classes.Controller
                     loc = (string)visitor["location"];
                 }else
                 {
-                    loc = getLocFromBedno(bedno); //need to fix this cause bedno won't be a single bedno, but a comma separated string
+                    if (bedno.Contains(','))
+                    {
+                        String[] bednos = bedno.Split(',');
+                        loc = getLocFromBedno(bednos[0]); //if more than one registered bedno, use only the first one
+                    }else
+                    {
+                        loc = getLocFromBedno(bedno);
+                    }
                 }
                 innerItem.location = loc;
 
                 //date/hour from checkin_time
-
+                //dwelltime from checkin_time and exit_time
                 innerItem.nric = visitor["nric"];
                 innerItem.gender = visitor["gender"];
 
@@ -555,6 +562,7 @@ namespace THKH.Classes.Controller
                     var location = dt.Rows[i]["location"];
                     var regbedno = dt.Rows[i]["bedno"];
                     var visitActualTime = dt.Rows[i]["checkin_time"];
+                    var exit_time = dt.Rows[i]["exit_time"];
                     var visitorNric = dt.Rows[i]["nric"];
                     var gender = dt.Rows[i]["gender"];
                     var dob = dt.Rows[i]["dob"];
@@ -563,6 +571,7 @@ namespace THKH.Classes.Controller
                     innerItem.location = location.ToString();
                     innerItem.bedno = regbedno.ToString();
                     innerItem.checkin_time = visitActualTime.ToString();
+                    innerItem.exit_time = exit_time.ToString();
                     innerItem.nric = visitorNric.ToString();
                     innerItem.gender = gender.ToString();
                     innerItem.dob = dob.ToString();
