@@ -532,13 +532,13 @@ namespace THKH.Classes.Controller
 
                 //day of week, and hour of day from checkin_time
                 string checkin_time_str = (string)visitor["checkin_time"];
-                DateTime checkin_time = DateTime.ParseExact(checkin_time_str, "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+                DateTime checkin_time = DateTime.ParseExact(checkin_time_str, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 innerItem.dayOfWeek = checkin_time.ToString("ddd");
                 innerItem.hourOfday = checkin_time.ToString("h tt");
 
                 //dwelltime from checkin_time and exit_time
                 string exit_time_str = (string)visitor["exit_time"];
-                DateTime exit_time = DateTime.ParseExact(exit_time_str, "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+                DateTime exit_time = DateTime.ParseExact(exit_time_str, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 TimeSpan dwelltime_span = exit_time.Subtract(checkin_time);
                 innerItem.dwelltime_min = Convert.ToInt32(dwelltime_span.TotalMinutes).ToString();
 
@@ -547,7 +547,7 @@ namespace THKH.Classes.Controller
 
                 //age from dob
                 string birthday_str = (string)visitor["dob"];
-                DateTime birthday = DateTime.ParseExact(birthday_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                DateTime birthday = DateTime.ParseExact(birthday_str, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 TimeSpan visitor_agespan = checkin_time.Subtract(birthday);
                 double age_in_days = visitor_agespan.TotalDays;
                 innerItem.age = Convert.ToInt32(age_in_days / 365.25);

@@ -508,7 +508,8 @@
                                 </span>
                             </div>
                             <%--Visit Time--%>
-                            <label for="visitbookingtime"><span style="color:lightcoral">*</span>Intended Visit Time (HH:mm)</label>
+                            <label for="visitbookingtime"><span style="color:lightcoral">*</span>Intended Visit Time (
+                                :mm)</label>
                             <div class="form-group">
                                 <select class="form-control required regInput" onchange="checkTime(); false;" id="visitbookingtime">
                                         <option value="">-- Select One --</option>
@@ -1272,9 +1273,11 @@
                     </div>
                 </div>
 
-                <span class="input-group-btn">
-                <button class="btn btn-warning" id="fill_dashboard" onclick="fillDashboard(); false;"><span class="glyphicon glyphicon-search"></span> View</button>
-                </span>
+                <div class ="col-sm-2">
+                    <span class="input-group-btn">
+                    <button class="btn btn-warning" id="fill_dashboard" onclick="fillDashboard(); false;"><span class="glyphicon glyphicon-search"></span> View</button>
+                    </span>
+                </div>
 
                 <script type="text/javascript"> //Shift to separate Script
                     $(function () {
