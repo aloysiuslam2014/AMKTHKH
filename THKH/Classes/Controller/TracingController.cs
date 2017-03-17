@@ -318,7 +318,7 @@ namespace THKH.Classes.Controller
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
             List<Object> jsonArray = new List<Object>();
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("TRACE_BY_REG_BED", true, true, true);
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("TRACE_BY_SCAN_LOC", true, true, true);
             procedureCall.addParameter("@responseMessage", SqlDbType.Int);
             procedureCall.addParameterWithValue("@pStart_Date", startdatetime);
             procedureCall.addParameterWithValue("@pEnd_Date", enddatetime);
