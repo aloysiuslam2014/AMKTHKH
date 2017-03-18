@@ -1172,7 +1172,7 @@ END;
 GO
 CREATE PROCEDURE [dbo].[CONFIRM_CHECK_IN]  
 @pNric VARCHAR(100),
-@pActualTimeVisit DATETIME,
+@pActualTimeVisit DATETIME = NULL,
 @pTemperature VARCHAR(10),
 @pStaffEmail VARCHAR(200),
 @responseMessage INT OUTPUT  
