@@ -1182,30 +1182,39 @@ BEGIN
   SET NOCOUNT ON
   SET @pActualTimeVisit = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
   DECLARE @pOriginal_Staff_Email VARCHAR(200)
-  DECLARE @pCheckedOut INT
-  DECLARE @pCheckedIn INT
+  DECLARE @pLast_CheckIn_Time DATETIME
+  DECLARE @pLocation_Id INT
+
+  --DECLARE @pCheckedOut INT
+  --DECLARE @pCheckedIn INT
   
-  SET @pCheckedOut = (SELECT COUNT(*)
-              FROM MOVEMENT WHERE nric = @pNric
-              AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
-              AND locationID = 2)
-  SET @PCheckedIn = (SELECT COUNT(*)
-              FROM MOVEMENT WHERE nric = @pNric
-              AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
-              AND locationID <> 2)
+  --SET @pCheckedOut = (SELECT COUNT(*)
+  --           FROM MOVEMENT WHERE nric = @pNric
+  --           AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
+  --            AND locationID = 2)
+  --SET @PCheckedIn = (SELECT COUNT(*)
+  --            FROM MOVEMENT WHERE nric = @pNric
+  --           AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
+  --            AND locationID <> 2)
+  
+  SET @pLast_CheckIn_Time = (SELECT MAX(locationTime) FROM MOVEMENT WHERE nric = @pNric)
+  
+  SET @pLocation_Id = (SELECT TOP 1 locationID FROM MOVEMENT 
+						WHERE nric = @pNric AND locationTime = @pLast_CheckIn_Time)
+
   SET @pOriginal_Staff_Email = (SELECT email FROM STAFF WHERE 
                   SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pStaffEmail)
 
-  IF(@pCheckedIn > 0)
-  BEGIN
-	IF(@pCheckedOut = 0)
+  --IF(@pCheckedIn > 0)
+  --BEGIN
+	IF(@pLocation_Id <> 2) -- Visitor has not check out during their last visit
 	BEGIN
       INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-      VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric AND 
-						CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)), 
+      VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric 
+						AND locationTime = @pLast_CheckIn_Time), 
 			  2, @pActualTimeVisit)
     END
-  END
+  --END
 
   BEGIN TRY  
     INSERT INTO CHECK_IN(nric, visitActualTime, temperature, staffEmail)
@@ -1221,7 +1230,6 @@ BEGIN
        SET @responseMessage = 0  
   END CATCH
 END;
-
 
 
 ----------------------------------------------------------------------------------------------------------- Procedure for creating movement 
