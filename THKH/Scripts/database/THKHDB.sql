@@ -1183,7 +1183,8 @@ BEGIN
   SET @pActualTimeVisit = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
   DECLARE @pOriginal_Staff_Email VARCHAR(200)
   DECLARE @pLast_CheckIn_Time DATETIME
-  DECLARE @pLocation_Id INT
+  DECLARE @pLast_Location_Id INT
+  DECLARE @pLast_Location VARCHAR(150)
 
   --DECLARE @pCheckedOut INT
   --DECLARE @pCheckedIn INT
@@ -1199,15 +1200,18 @@ BEGIN
   
   SET @pLast_CheckIn_Time = (SELECT MAX(locationTime) FROM MOVEMENT WHERE nric = @pNric)
   
-  SET @pLocation_Id = (SELECT TOP 1 locationID FROM MOVEMENT 
+  SET @pLast_Location_Id = (SELECT TOP 1 locationID FROM MOVEMENT 
 						WHERE nric = @pNric AND locationTime = @pLast_CheckIn_Time)
+  
+  SET @pLast_Location = (SELECT tName FROM TERMINAL
+						WHERE terminalID = @pLast_Location_Id)
 
   SET @pOriginal_Staff_Email = (SELECT email FROM STAFF WHERE 
                   SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pStaffEmail)
 
   --IF(@pCheckedIn > 0)
   --BEGIN
-	IF(@pLocation_Id <> 2) -- Visitor has not check out during their last visit
+	IF(@pLast_Location NOT LIKE '%EXIT%') -- Visitor has not check out during their last visit
 	BEGIN
       INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
       VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric 
