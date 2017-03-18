@@ -775,6 +775,7 @@ function hideTags(clear) {
     $("#emptyFields").css("display", "none");
     $("#emptyNricWarning").css("display", "none");
     $("#emailWarning").css("display", "none");
+    $("#remarksExpressDiv").css("display", "none");
     $('#lowtempWarning').css("display", "none");
     $('#tempWarning').css("display", "none");
     $('#tempLimitWarning').css("display", "none");
@@ -834,9 +835,37 @@ function checkNricWarningDeclaration() {
     }
 }
 
+// Check nature of Express Entry Checkbox
+function checkExpressDeclaration() {
+    if (checkBlankField($("#nric").val())) {
+        $("#emptyNricWarning").css("display", "block"); 
+    } else {
+        var isChecked = $('input[id="ambulCheck"]').is(':checked');
+        if (isChecked) {
+            $("#tempLbl").prop("disabled", true);
+            $("#temp").prop("disabled", true);
+            $('#temp input').removeClass('required');
+            $("#remarksExpressDiv").css("display", "block");
+            $("#emptyNricWarning").css("display", "none");
+        } else {
+            $("#tempLbl").prop("disabled", false);
+            $("#temp").prop("disabled", false);
+            $('#temp input').addClass('required');
+            $("#remarksExpressDiv").css("display", "none");
+            $("#emptyNricWarning").css("display", "none");
+        }
+    }
+}
+
 // Change checkbox value upon click
 $('#ignoreNric').on('change', function () {
      this.check;
+});
+
+// Change checkbox value upon click
+$('#ambulCheck').on('change', function () {
+    this.check;
+    checkExpressDeclaration();
 });
 
 // Loads & displays the active questionnaire from the DB for Assisted Reg

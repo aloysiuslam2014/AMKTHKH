@@ -318,7 +318,7 @@ namespace THKH.Classes.Controller
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
             List<Object> jsonArray = new List<Object>();
-            GenericProcedureDAO procedureCall = new GenericProcedureDAO("TRACE_BY_REG_BED", true, true, true);
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("TRACE_BY_SCAN_LOC", true, true, true);
             procedureCall.addParameter("@responseMessage", SqlDbType.Int);
             procedureCall.addParameterWithValue("@pStart_Date", startdatetime);
             procedureCall.addParameterWithValue("@pEnd_Date", enddatetime);
@@ -480,6 +480,151 @@ namespace THKH.Classes.Controller
             }
 
             return sc_delim_ans;
+        }
+
+        public String fillDashboard(String query)
+        {
+            String[] queryParts = query.Split('~');
+
+            String dash_startdate_str = queryParts[0];
+            String dash_enddate_str = queryParts[1];
+
+            DateTime dash_startdate = DateTime.ParseExact(dash_startdate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime dash_enddate = DateTime.ParseExact(dash_enddate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            String visitors_jsonstr = getVisitors(dash_startdate, dash_enddate);
+
+            List<Object> processed_visitors_json_list = processVisitors(visitors_jsonstr);
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(processed_visitors_json_list);
+        }
+
+        public List<Object> processVisitors(String visitors_jsonstr)
+        {
+            List<Object> processed_visitor_json_list = new List<Object>();
+
+            JObject raw_visitors = JObject.Parse(visitors_jsonstr);
+            JArray arr = (JArray)raw_visitors["Msg"];
+            foreach (JToken item in arr.Children())
+            {
+                String visitor_str = item.Value<JObject>().ToString(Formatting.None);
+                JObject visitor = JObject.Parse(visitor_str);
+                dynamic innerItem = new ExpandoObject();
+
+                //location from location/bedno
+                string loc = "";
+                string bedno = (string)visitor["bedno"];
+                if (bedno.Length == 0)
+                {
+                    loc = (string)visitor["location"];
+                }else
+                {
+                    if (bedno.Contains(','))
+                    {
+                        String[] bednos = bedno.Split(',');
+                        loc = getLocFromBedno(bednos[0]); //if more than one registered bedno, use only the first one
+                    }else
+                    {
+                        loc = getLocFromBedno(bedno);
+                    }
+                }
+                innerItem.location = loc;
+
+                //day of week, and hour of day from checkin_time
+                string checkin_time_str = (string)visitor["checkin_time"];
+                DateTime checkin_time = DateTime.ParseExact(checkin_time_str, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                innerItem.dayOfWeek = checkin_time.ToString("ddd");
+                innerItem.hourOfday = checkin_time.ToString("h tt");
+
+                //dwelltime from checkin_time and exit_time
+                string exit_time_str = (string)visitor["exit_time"];
+                DateTime exit_time = DateTime.ParseExact(exit_time_str, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                TimeSpan dwelltime_span = exit_time.Subtract(checkin_time);
+                innerItem.dwelltime_min = Convert.ToInt32(dwelltime_span.TotalMinutes).ToString();
+
+                innerItem.nric = visitor["nric"];
+                innerItem.gender = visitor["gender"];
+
+                //age from dob
+                string birthday_str = (string)visitor["dob"];
+                DateTime birthday = DateTime.ParseExact(birthday_str, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                TimeSpan visitor_agespan = checkin_time.Subtract(birthday);
+                double age_in_days = visitor_agespan.TotalDays;
+                innerItem.age = Convert.ToInt32(age_in_days / 365.25);
+
+                processed_visitor_json_list.Add(innerItem);
+            }
+
+            return processed_visitor_json_list;
+        }
+
+        public String getVisitors(DateTime startdatetime, DateTime enddatetime)
+        {
+            DataTable dt = new DataTable();
+            dynamic json = new ExpandoObject();
+            dynamic innerItem = new ExpandoObject();
+            List<Object> jsonArray = new List<Object>();
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_VISITORS_BY_DATES", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pStart_Date", startdatetime);
+            procedureCall.addParameterWithValue("@pEnd_Date", enddatetime);
+            try
+            {
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dt = resultss.getDataTable();
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    var location = dt.Rows[i]["location"];
+                    var regbedno = dt.Rows[i]["bedno"];
+                    var visitActualTime = dt.Rows[i]["checkin_time"];
+                    var exit_time = dt.Rows[i]["exit_time"];
+                    var visitorNric = dt.Rows[i]["nric"];
+                    var gender = dt.Rows[i]["gender"];
+                    var dob = dt.Rows[i]["dob"];
+
+                    innerItem = new ExpandoObject();
+                    innerItem.location = location.ToString();
+                    innerItem.bedno = regbedno.ToString();
+                    innerItem.checkin_time = visitActualTime.ToString();
+                    innerItem.exit_time = exit_time.ToString();
+                    innerItem.nric = visitorNric.ToString();
+                    innerItem.gender = gender.ToString();
+                    innerItem.dob = dob.ToString();
+                    jsonArray.Add(innerItem);
+                }
+                json.Result = "Success";
+                json.Msg = jsonArray;
+
+            }
+            catch (Exception ex)
+            {
+                json.Result = "Failed";
+                json.Msg = ex.Message;
+            }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
+        }
+
+        public String getLocFromBedno(String bedno)
+        {
+            String loc = "";
+            DataTable dt = new DataTable();
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_LOC_BY_BEDNO", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pBedno", bedno);
+            try
+            {
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dt = resultss.getDataTable();
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    loc = (string)dt.Rows[i]["location"];
+                }
+            }
+            catch (Exception ex)
+            {
+                loc = "error: " + ex;
+            }
+            return loc;
         }
     }
 }
