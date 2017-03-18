@@ -493,6 +493,65 @@ function NewAssistReg() {
         },
     });
     $('input[id="ignoreNric"]').prop('checked', false);
+    $('input[id="ambulCheck"]').prop('checked', false);
+    var allowNric = false;
+}
+
+// ASHX page call to write info to DB for express entry
+function NewExpressReg() {
+    var username = user;
+    var fname = $("#namesInput").val();
+    var snric = $("#nric").val();
+    var address = $("#addresssInput").val();
+    var postal = $("#postalsInput").val();
+    var mobtel = $("#mobilesInput").val();
+    var sex = $("#sexinput").val();
+    var nationality = $("#nationalsInput").val();
+    var dob = $("#daterange").val();
+    var qListID = $("#qnlistid").val();
+    var remarks = $("#remarksExpressInput").val();
+    var qAnswers = getQuestionnaireAnswers();
+    var qaid = $("#qaid").val();
+
+    var headersToProcess = {
+        staffUser: username, fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel,
+        SEX: sex, Natl: nationality, DOB: dob, remarks: remarks, requestType: "express", qListID: qListID, qAnswers: qAnswers, qaid: qaid, visLim: visLim
+    };
+    $.ajax({
+        url: regUrl,
+        method: 'post',
+        data: headersToProcess,
+        success: function (returner) {
+            try {
+                var resultOfGeneration = JSON.parse(returner);
+                if (resultOfGeneration.Result === "Success") {
+                    regCompleted = true;
+                    showSuccessModal();
+                    hideTags(false);
+                } else {
+                    //if (resultOfGeneration.Visitor.toString().includes("per bed has been reached")) { // Handle
+                    //    showMaxLimitModal();
+                    //    hideTags(true);
+                    //    regCompleted = true;
+                    //}
+                    //else if (resultOfGeneration.Visitor !== "1") {
+                    //    alert("Error: " + resultOfGeneration.Visitor);
+                    //} else if (resultOfGeneration.Questionnaire !== "1") {
+                    //    alert("Error: " + resultOfGeneration.Visit);
+                    //} else if (resultOfGeneration.Visit !== "1") {
+                    //    alert("Error: " + resultOfGeneration.Visit);
+                    //}
+                }
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
+    $('input[id="ignoreNric"]').prop('checked', false);
+    $('input[id="ambulCheck"]').prop('checked', false);
     var allowNric = false;
 }
 
@@ -819,9 +878,7 @@ function checkNricWarningDeclaration() {
         $("#emptyNricWarning").css("display", "block");
         allowNric = $('input[id="ignoreNric"]').is(':checked');
     } else if ($('input[id="ambulCheck"]').is(':checked')) {
-        // Logic to allow immediate reg
-        //NewAssistReg();
-        alert("AmbulCheck is Checked!");
+        NewExpressReg();
     } else {
         $("#emptyNricWarning").css("display", "none");
         var allowNric = false;
