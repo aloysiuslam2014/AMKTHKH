@@ -1261,7 +1261,7 @@ SET @pLast_Location = (SELECT tName FROM TERMINAL WHERE terminalID = @pLast_Loca
   
 IF (@pVisit_Date != '')
 BEGIN TRY
-	IF (@pLast_Location NOT LIKE '%EXIT%')
+	IF (@pLast_Location NOT LIKE '%EXIT%' OR @pLast_Location = '')
 	BEGIN
 		IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
 		BEGIN
