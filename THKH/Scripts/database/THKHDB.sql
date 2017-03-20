@@ -2751,3 +2751,34 @@ BEGIN
 	WHERE tb.bedNoList LIKE '%'+ @pBedno +'%'
   END
 END;
+
+
+------------------------------------------------------------------------------------------- Procedures for Getting partial Patient's name
+GO
+CREATE PROCEDURE [dbo].[AUTOCOMPLETE_PATIENT_NAME]  
+@pPatient_Name VARCHAR(100),   
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	DECLARE @pCount INT
+	SET @pCount = (SELECT COUNT(patientFullName) FROM PATIENT WHERE patientFullName LIKE '%'+@pPatient_Name+'%')
+
+	IF (@pCount > 0)
+	BEGIN    
+		SELECT patientFullName 
+		FROM PATIENT
+		WHERE patientFullName LIKE '%'+@pPatient_Name+'%'
+
+		SET @responseMessage = 1
+	END  
+	 
+    ELSE  
+       SET @responseMessage = 0  
+END; 
+
+
+
+
