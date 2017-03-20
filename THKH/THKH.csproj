@@ -278,6 +278,7 @@
     <Content Include="Content\bootstrap-theme.css.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\Autosuggest.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -307,6 +308,7 @@
     <Content Include="Scripts\html2canvas.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-ui.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -331,6 +333,11 @@
     <Content Include="Scripts\kc.fab.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\react-dom.js" />
+    <Content Include="Scripts\react-dom.min.js" />
+    <Content Include="Scripts\react.js" />
+    <Content Include="Scripts\react.min.js" />
+    <Content Include="Webpage\Staff\patientAutocomplete.js" />
     <Content Include="Scripts\pdfmake.min.js" />
     <Content Include="Scripts\qz-tray.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
