@@ -365,18 +365,18 @@
                                 <input id="nric" class="form-control required regInput" type="text" autofocus="autofocus" />       
                             </div>
                             <h4 id="emptyNricWarning" style="color: lightcoral">Please enter an NRIC/Identification Number!</h4>
-                            <div id="ambulanceDiv">
-                                <div class="checkbox">
-                                    <label for="ambulCheck"></label>
-                                    <input type="checkbox" id="ambulCheck" name="declare" value="true" class="regInput" />Express Entry<br />
-                                </div>
-                            </div>
                             <div id="nricWarnDiv">
                                 <h4 id="nricWarning" style="color: lightcoral">Non-Singapore Based NRIC/ID!</h4>
                                 <div class="checkbox">
                                     <label for="ignoreNric"></label>
                                     <input type="checkbox" id="ignoreNric" name="declare" value="true" class="regInput" />Allow Anyway<br />
                                     <label for="ignoreNric" id="ignoreNricLbl" style="color: lightcoral">Please check this option to continue</label>
+                                </div>
+                            </div>
+                            <div id="ambulanceDiv">
+                                <div class="checkbox">
+                                    <label for="ambulCheck"></label>
+                                    <input type="checkbox" id="ambulCheck" name="declare" value="true" class="regInput" />Express Entry<br />
                                 </div>
                             </div>
                             <br />

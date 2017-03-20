@@ -72,28 +72,19 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var staffUser = context.Request.Form["staffUser"].ToString();
                 var nric = context.Request.Form["nric"].ToString();
                 var temperature = context.Request.Form["temperature"];
-                var age = context.Request.Form["AGE"];
                 var fname = context.Request.Form["fullName"];
                 var address = context.Request.Form["ADDRESS"];
                 var postal = context.Request.Form["POSTAL"];
                 var mobtel = context.Request.Form["MobTel"];
-                var alttel = context.Request.Form["AltTel"];
-                var hometel = context.Request.Form["HomeTel"];
                 var sex = context.Request.Form["SEX"];
                 var nationality = context.Request.Form["Natl"];
                 var dob = context.Request.Form["DOB"];
-                var race = context.Request.Form["RACE"];
-                var email = context.Request.Form["email"];
                 var purpose = context.Request.Form["PURPOSE"];
                 var pName = context.Request.Form["pName"];
                 var pNric = context.Request.Form["pNric"];
                 var otherPurpose = context.Request.Form["otherPurpose"];
                 var bedno = context.Request.Form["bedno"];
                 var appTime = context.Request.Form["appTime"];
-                var fever = context.Request.Form["fever"];
-                var symptoms = context.Request.Form["symptoms"];
-                var influenza = context.Request.Form["influenza"];
-                var countriesTravelled = context.Request.Form["countriesTravelled"];
                 var remarks = context.Request.Form["remarks"];
                 var visitLocation = context.Request.Form["visitLocation"];
                 var qListID = context.Request.Form["qListID"];
@@ -101,9 +92,37 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var qAnsId = context.Request.Form["qaid"];
                 var visLim = context.Request.Form["visLim"];
 
-                successString = checkInController.AssistReg(staffUser,nric, age, fname, address, postal, mobtel, alttel, hometel,
-            sex, nationality, dob, race, email, purpose, pName, pNric, otherPurpose, bedno, appTime,
-            fever, symptoms, influenza, countriesTravelled, remarks, visitLocation, temperature, qListID, qAns, qAnsId, visLim);
+                successString = checkInController.AssistReg(staffUser, nric, fname, address, postal, mobtel,
+            sex, nationality, dob, purpose, pName, pNric, otherPurpose, bedno, appTime,
+            remarks, visitLocation, temperature, qListID, qAns, qAnsId, visLim);
+            }
+            if (typeOfRequest == "express")
+            {
+                // Write to Visitor_Profile, Visit, Confirmed & CheckInCheckOut Tables
+                var staffUser = context.Request.Form["staffUser"].ToString();
+                var nric = context.Request.Form["nric"].ToString();
+                var fname = context.Request.Form["fullName"];
+                var address = context.Request.Form["ADDRESS"];
+                var postal = context.Request.Form["POSTAL"];
+                var mobtel = context.Request.Form["MobTel"];
+                var sex = context.Request.Form["SEX"];
+                var nationality = context.Request.Form["Natl"];
+                var dob = context.Request.Form["DOB"];
+                var purpose = "";
+                var pName = "";
+                var pNric = "";
+                var otherPurpose = "";
+                var bedno = "";
+                var appTime = "";
+                var remarks = context.Request.Form["remarks"];
+                var visitLocation = "";
+                var qListID = context.Request.Form["qListID"];
+                var qAns = context.Request.Form["qAnswers"];
+                var qAnsId = context.Request.Form["qaid"];
+
+                successString = checkInController.ExpReg(staffUser, nric, fname, address, postal, mobtel,
+            sex, nationality, dob, purpose, pName, pNric, otherPurpose, bedno, appTime,
+            remarks, visitLocation, qListID, qAns, qAnsId);
             }
             if (typeOfRequest == "facilities") {
                 successString = checkInController.getFacilities();

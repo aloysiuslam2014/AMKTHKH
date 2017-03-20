@@ -1172,7 +1172,7 @@ END;
 GO
 CREATE PROCEDURE [dbo].[CONFIRM_CHECK_IN]  
 @pNric VARCHAR(100),
-@pActualTimeVisit DATETIME,
+@pActualTimeVisit DATETIME = NULL,
 @pTemperature VARCHAR(10),
 @pStaffEmail VARCHAR(200),
 @responseMessage INT OUTPUT  
@@ -1182,30 +1182,43 @@ BEGIN
   SET NOCOUNT ON
   SET @pActualTimeVisit = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00')
   DECLARE @pOriginal_Staff_Email VARCHAR(200)
-  DECLARE @pCheckedOut INT
-  DECLARE @pCheckedIn INT
+  DECLARE @pLast_CheckIn_Time DATETIME
+  DECLARE @pLast_Location_Id INT
+  DECLARE @pLast_Location VARCHAR(150)
+
+  --DECLARE @pCheckedOut INT
+  --DECLARE @pCheckedIn INT
   
-  SET @pCheckedOut = (SELECT COUNT(*)
-              FROM MOVEMENT WHERE nric = @pNric
-              AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
-              AND locationID = 2)
-  SET @PCheckedIn = (SELECT COUNT(*)
-              FROM MOVEMENT WHERE nric = @pNric
-              AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
-              AND locationID <> 2)
+  --SET @pCheckedOut = (SELECT COUNT(*)
+  --           FROM MOVEMENT WHERE nric = @pNric
+  --           AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
+  --            AND locationID = 2)
+  --SET @PCheckedIn = (SELECT COUNT(*)
+  --            FROM MOVEMENT WHERE nric = @pNric
+  --           AND visitActualTime = (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric)
+  --            AND locationID <> 2)
+  
+  SET @pLast_CheckIn_Time = (SELECT MAX(locationTime) FROM MOVEMENT WHERE nric = @pNric)
+  
+  SET @pLast_Location_Id = (SELECT TOP 1 locationID FROM MOVEMENT 
+						WHERE nric = @pNric AND locationTime = @pLast_CheckIn_Time)
+  
+  SET @pLast_Location = (SELECT tName FROM TERMINAL
+						WHERE terminalID = @pLast_Location_Id)
+
   SET @pOriginal_Staff_Email = (SELECT email FROM STAFF WHERE 
                   SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pStaffEmail)
 
-  IF(@pCheckedIn > 0)
-  BEGIN
-	IF(@pCheckedOut = 0)
+  --IF(@pCheckedIn > 0)
+  --BEGIN
+	IF(@pLast_Location NOT LIKE '%EXIT%') -- Visitor has not check out during their last visit
 	BEGIN
       INSERT INTO MOVEMENT(nric, visitActualTime, locationID, locationTime)
-      VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric AND 
-						CONVERT(VARCHAR(10), visitActualTime, 103) = CONVERT(VARCHAR(10), SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), 103)), 
+      VALUES (@pNRIC, (SELECT MAX(visitActualTime) FROM MOVEMENT WHERE nric = @pNric 
+						AND locationTime = @pLast_CheckIn_Time), 
 			  2, @pActualTimeVisit)
     END
-  END
+  --END
 
   BEGIN TRY  
     INSERT INTO CHECK_IN(nric, visitActualTime, temperature, staffEmail)
@@ -1221,7 +1234,6 @@ BEGIN
        SET @responseMessage = 0  
   END CATCH
 END;
-
 
 
 ----------------------------------------------------------------------------------------------------------- Procedure for creating movement 
@@ -1249,7 +1261,7 @@ SET @pLast_Location = (SELECT tName FROM TERMINAL WHERE terminalID = @pLast_Loca
   
 IF (@pVisit_Date != '')
 BEGIN TRY
-	IF (@pLast_Location NOT LIKE '%EXIT%')
+	IF (@pLast_Location NOT LIKE '%EXIT%' OR @pLast_Location = '')
 	BEGIN
 		IF EXISTS (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
 		BEGIN
@@ -2739,3 +2751,34 @@ BEGIN
 	WHERE tb.bedNoList LIKE '%'+ @pBedno +'%'
   END
 END;
+
+
+------------------------------------------------------------------------------------------- Procedures for Getting partial Patient's name
+GO
+CREATE PROCEDURE [dbo].[AUTOCOMPLETE_PATIENT_NAME]  
+@pPatient_Name VARCHAR(100),   
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	DECLARE @pCount INT
+	SET @pCount = (SELECT COUNT(patientFullName) FROM PATIENT WHERE patientFullName LIKE '%'+@pPatient_Name+'%')
+
+	IF (@pCount > 0)
+	BEGIN    
+		SELECT patientFullName 
+		FROM PATIENT
+		WHERE patientFullName LIKE '%'+@pPatient_Name+'%'
+
+		SET @responseMessage = 1
+	END  
+	 
+    ELSE  
+       SET @responseMessage = 0  
+END; 
+
+
+
+

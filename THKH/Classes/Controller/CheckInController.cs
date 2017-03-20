@@ -361,9 +361,9 @@ namespace THKH.Classes.Controller
 
 
         // Write to Visitor, Visit & Confirmation Table
-        public String AssistReg(String staffuser, String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
-            String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature, String qListID, String qAns, String qaid, String visLim)
+        public String AssistReg(String staffuser, String nric, String fname, String address, String postal, String mobtel,
+            String sex, String nationality, String dob, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
+            String remarks, String visitLocation, String temperature, String qListID, String qAns, String qaid, String visLim)
         {
 
             dynamic result = new ExpandoObject();
@@ -509,10 +509,10 @@ namespace THKH.Classes.Controller
             return JsonConvert.SerializeObject(result);
         }
 
-        // Write to Visitor, Visit & Confirmation Table for Ambulance Staff
-        public String AmbReg(String staffuser, String nric, String age, String fname, String address, String postal, String mobtel, String alttel, String hometel,
-            String sex, String nationality, String dob, String race, String email, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String fever, String symptoms, String influenza, String countriesTravelled, String remarks, String visitLocation, String temperature, String qListID, String qAns, String qaid, String visLim)
+        // Write to Visitor, Visit & Confirmation Table for Express Reg
+        public String ExpReg(String staffuser, String nric, String fname, String address, String postal, String mobtel,
+            String sex, String nationality, String dob, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
+            String remarks, String visitLocation, String qListID, String qAns, String qaid)
         {
 
             dynamic result = new ExpandoObject();
@@ -579,9 +579,10 @@ namespace THKH.Classes.Controller
                 return JsonConvert.SerializeObject(result);
             }
 
+            // Update visit details with blank fields
             procedureCall = new GenericProcedureDAO("UPDATE_VISIT", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
-            procedureCall.addParameterWithValue("@pVisitRequestTime", DateTime.Parse(appTime));
+            procedureCall.addParameterWithValue("@pVisitRequestTime", DateTime.UtcNow.AddHours(8));
             procedureCall.addParameterWithValue("@pVisitorNRIC", nric.ToUpper());
             procedureCall.addParameterWithValue("@pPurpose", purpose);
             procedureCall.addParameterWithValue("@pReason", otherPurpose);
@@ -601,53 +602,16 @@ namespace THKH.Classes.Controller
                 return JsonConvert.SerializeObject(result);
             }
 
-            //check number of visitors currently with patient
-            if (purpose == "Visit Patient")
+            // Check in visitor with no check on visitor limit
+            try
             {
-                try
-                {
-                    int limit = Int32.Parse(visLim);
-                    var bedArr = bedno.Split('|');
-                    Boolean valid = true;
-                    for (int i = 0; i < bedArr.Length; i++)
-                    {
-                        dynamic num = checkNumCheckedIn(bedArr[i], limit);
-                        if (num.visitors >= limit) // May need to change to DB side
-                        {
-                            valid = false;
-                        }
-                    }
-                    if (valid) // May need to change to DB side
-                    {
-                        //msg += CheckIn(staffuser, nric, temperature);
-                        checkin = CheckIn(staffuser, nric, temperature);
-                    }
-                    else
-                    {
-                        result.Result = "Failure";
-                        result.Visitor = "Limit of " + visLim + " per bed has been reached.";
-                        return JsonConvert.SerializeObject(result);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    result.Result = "Failure";
-                    result.Visitor = ex.Message;
-                    return JsonConvert.SerializeObject(result);
-                }
+                checkin = CheckIn(staffuser, nric, "0");
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    checkin = CheckIn(staffuser, nric, temperature);
-                }
-                catch (Exception ex)
-                {
-                    result.Result = "Failure";
-                    result.Visitor = ex.Message;
-                    return JsonConvert.SerializeObject(result);
-                }
+                result.Result = "Failure";
+                result.Visitor = ex.Message;
+                return JsonConvert.SerializeObject(result);
             }
 
             result.Visitor = visitor;
@@ -657,6 +621,7 @@ namespace THKH.Classes.Controller
             return JsonConvert.SerializeObject(result);
         }
 
+        // Write the form responses to db
         public String writeQuestionnaireResponse(String qaid, String qListID, String qAns)
         {
             String result = "";
@@ -741,6 +706,7 @@ namespace THKH.Classes.Controller
             procedureCall.addParameterWithValue("@pTemperature", temp);
             try
             {
+
                 ProcedureResponse dataResponse = procedureCall.runProcedure();
                 result = dataResponse.getSqlParameterValue("@responseMessage").ToString();
             }
