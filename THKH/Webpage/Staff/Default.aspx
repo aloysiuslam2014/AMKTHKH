@@ -465,12 +465,13 @@
                                 <%--Show this only when Visit Purpose is "Visit Patient"--%>
                                 <label for="patientName"><span style="color:lightcoral">*</span>Patient Name</label>
                                 <div class="form-group">
-                                    <input type="text" class="form-control regInput" id="patientName" />
+                                    <input autocomplete="off" type="text" class="form-control regInput" onkeyup="nameSearch(this);" id="patientName" />
                                 </div>
+                                <div id="searchResultsDiv" class="searchbox"></div>
                                 <label for="bedno"><span style="color:lightcoral">*</span>Bed Number</label>
                                 <%--Bed Number--%>
                                 <div class="form-group">
-                                    <input type="text" class="form-control regInput" id="bedno" />
+                                    <input type="text" class="form-control regInput"  onkeyup="bedSearch(this);" id="bedno" />
                                 </div>
                                 <input type="hidden" class="form-control regInput" id="patientNric" />
                                 <label></label>

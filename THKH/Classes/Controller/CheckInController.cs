@@ -52,6 +52,42 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
+        public string searchAutoComplete(string isNameSearch, string searchData)
+        {
+            dynamic result = new ExpandoObject();
+            result.Msg = "Success";
+            ArrayList output = new ArrayList();
+            procedureCall = new GenericProcedureDAO("AUTOCOMPLETE_PATIENT_NAME", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@isNameSearch", Int32.Parse(isNameSearch));
+            procedureCall.addParameterWithValue("@pSearchTerm", searchData);
+            try
+            {
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                DataTable response = resultss.getDataTable();
+                DataTableReader reader = response.CreateDataReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        output.Add(reader.GetString(0)+","+ reader.GetInt32(1));
+                    }
+                    
+                }
+                result.Result = output;
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                result.Msg = "Failure";
+                result.Facilities = ex.Message;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            }
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(result);
+             
+        }
+
         public String loadForm()
         {
             dynamic result = new ExpandoObject();

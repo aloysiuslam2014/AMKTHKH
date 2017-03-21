@@ -11,6 +11,29 @@ table.dataTable thead th:first-child {
   cursor: pointer;
 }
 
+.searchbox{
+    width: 580px;
+   /* height: 100px;*/
+   max-height:200px; 
+    border: solid 1px #e9091a;
+    position: absolute;
+    z-index: 99;
+    top: 248px;
+    background-color:white;
+    display:none;
+    overflow-y:auto;
+    color:black;
+}
+
+.autocompleteItem{
+    color:black;
+    width:579px;
+}
+
+.autocompleteItem:hover {
+    background-color: yellow;
+}
+
 .bedNoDisplay{
     overflow-y: auto;
 height: 35px;

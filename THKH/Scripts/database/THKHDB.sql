@@ -2756,7 +2756,8 @@ END;
 ------------------------------------------------------------------------------------------- Procedures for Getting partial Patient's name
 GO
 CREATE PROCEDURE [dbo].[AUTOCOMPLETE_PATIENT_NAME]  
-@pPatient_Name VARCHAR(100),   
+@pSearchTerm VARCHAR(100),   
+@isNameSearch VARCHAR(100),   
 @responseMessage INT OUTPUT  
   
 AS  
@@ -2764,13 +2765,32 @@ BEGIN 
 	SET NOCOUNT ON  
 
 	DECLARE @pCount INT
-	SET @pCount = (SELECT COUNT(patientFullName) FROM PATIENT WHERE patientFullName LIKE '%'+@pPatient_Name+'%')
+	IF (@isNameSearch = 1)
+		BEGIN
+			SET @pCount = (SELECT COUNT(patientFullName) FROM PATIENT WHERE patientFullName LIKE '%'+@pSearchTerm+'%')
+		END
+	ELSE
+		BEGIN
+			SET @pCount = (SELECT COUNT(patientFullName) FROM PATIENT WHERE  bedNo = @pSearchTerm
+		END
+
 
 	IF (@pCount > 0)
-	BEGIN    
-		SELECT patientFullName 
-		FROM PATIENT
-		WHERE patientFullName LIKE '%'+@pPatient_Name+'%'
+	BEGIN   
+		IF (@isNameSearch = 1)
+			BEGIN
+				SELECT patientFullName 
+				FROM PATIENT
+				WHERE patientFullName LIKE '%'+@pSearchTerm+'%'
+			END
+		ELSE
+			BEGIN
+				SELECT patientFullName 
+				FROM PATIENT
+				WHERE bedNo = @pSearchTerm
+			END
+
+		
 
 		SET @responseMessage = 1
 	END  

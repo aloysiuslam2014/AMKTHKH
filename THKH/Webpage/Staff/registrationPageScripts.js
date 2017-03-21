@@ -173,7 +173,7 @@ function callCheck (){
                     }
                     $('#main').animate({
                         scrollTop: $("#userData").offset().top
-                    }, 1000);
+                    }, 200);
                 } else {
                     alert("Error: " + resultOfGeneration.Msg);
                 }

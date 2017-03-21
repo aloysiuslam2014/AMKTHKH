@@ -29,6 +29,12 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var bedNo = context.Request.Form["bedNo"];
                 successString = checkInController.getPatientNames(bedNo);
             }
+            if (typeOfRequest == "searchName")
+            {
+                var searchData = context.Request.Form["searchData"];
+                var isNameSearch = context.Request.Form["isNameSearch"];
+                successString = checkInController.searchAutoComplete(isNameSearch,searchData);
+            }
             if (typeOfRequest == "self")
             {
                 var nric = context.Request.Form["nric"].ToString();
