@@ -2766,28 +2766,24 @@ BEGIN 
 
 	DECLARE @pCount INT
 	IF (@isNameSearch = 1)
-		BEGIN
 			SET @pCount = (SELECT COUNT(patientFullName) FROM PATIENT WHERE patientFullName LIKE '%'+@pSearchTerm+'%')
-		END
 	ELSE
-		BEGIN
-			SET @pCount = (SELECT COUNT(patientFullName) FROM PATIENT WHERE  bedNo = @pSearchTerm
-		END
-
-
+			SET @pCount = (SELECT COUNT(patientFullName) FROM PATIENT WHERE bedNo like CONVERT(int,@pSearchTerm))
+			
+			
 	IF (@pCount > 0)
 	BEGIN   
 		IF (@isNameSearch = 1)
 			BEGIN
-				SELECT patientFullName 
+				SELECT patientFullName,bedNo 
 				FROM PATIENT
 				WHERE patientFullName LIKE '%'+@pSearchTerm+'%'
 			END
 		ELSE
 			BEGIN
-				SELECT patientFullName 
+				SELECT patientFullName,bedNo  
 				FROM PATIENT
-				WHERE bedNo = @pSearchTerm
+				WHERE bedNo = CONVERT(int,@pSearchTerm)
 			END
 
 		
