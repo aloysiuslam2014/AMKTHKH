@@ -388,7 +388,7 @@
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
                             <div id="remarksExpressDiv">
                                 <h3 style="color:lightblue">Additional Information</h3>
-                                <label for="remarksExpressInput">Remarks</label>
+                                <label for="remarksExpressInput"><span style="color:lightcoral">*</span>Remarks</label>
                                 <div class="form-group">
                                 <input type="text" class="form-control regInput" id="remarksExpressInput" />
                             </div>
