@@ -13,7 +13,6 @@ function checkSMSNumber() {
     if (numArr.length < 1) {
         numArr = numbers.trim().split(',');
     }
-    // Some format check here
     checkMessage(numArr);
 }
 
@@ -29,7 +28,6 @@ function checkMessage(numArr) {
 
 // Send SMS
 function sendSMS(numArr) {
-    //var numbers = $("#targetVisitor").val();
     var numbers = numArr.toString();
     var message = $("#smsMessage").val();
     var headersToProcess = {
@@ -41,7 +39,6 @@ function sendSMS(numArr) {
         data: headersToProcess,
 
         success: function (returner) {
-            //var resultOfGeneration = JSON.parse(returner);
             var responseArr = returner.split(',');
             if (responseArr.length > 1) {
                 alert(smsSendError);

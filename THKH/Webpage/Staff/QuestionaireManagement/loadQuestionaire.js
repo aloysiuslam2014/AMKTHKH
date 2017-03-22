@@ -158,7 +158,6 @@ function fillQuestinaireList(dataForQList) {
         if (dataForQList[i].Active.toString() == "1") {
             $(optin).html(dataForQList[i].ListName + " (Active)");
             $(optin).attr("value", "1");
-            //$(optin).attr("style", "color:green;background:#dff0d8");
             $(optin).attr("selected", "");
         } else {
             $(optin).html(dataForQList[i].ListName);
@@ -180,8 +179,6 @@ function setSelectBackground() {
 
 //creates lists and appends to qn list
 function fillList(dataForQnList,target,editButton) {
-    //clear existing list objects
-   //for qns   --->   qId,question,qnType,values
     for (var i = 0; i < dataForQnList.length; i++) {
         var listElement = document.createElement("LI");
         $(listElement).attr("class", "list-group-item");

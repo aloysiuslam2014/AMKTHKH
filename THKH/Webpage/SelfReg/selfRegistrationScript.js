@@ -146,7 +146,6 @@ function addBedToVisit(patientName, patientBedNo) {
 }
 // ensure patient info is valid
 function validatePatient() {
-    // Logic to validate patient with THK Patient DB. If patient is valid, set a global variable to enable the submit button of the form
     var pName = $("#patientName").val();
     var bedno = $("#bedno").val();
     if (pName !== "" && bedno !== "") {
@@ -157,8 +156,6 @@ function validatePatient() {
             url: regUrl,
             method: 'post',
             data: headersToProcess,
-
-
             success: function (returner) {
                 var resultOfGeneration = JSON.parse(returner);
                 if (resultOfGeneration.Result === "Success") {
@@ -410,14 +407,6 @@ $("#mobilesInput").on("input", function () {
 // Check date format
 $("#daterange").on("input", function () {
     var dateStr = $('#daterange').val();
-    //var filter = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
-    //if (filter.test(dateStr) !== false) {
-    //    $("#dateWarning").css("display", "none");
-    //    validDate = true;
-    //} else {
-    //    $("#dateWarning").css("display", "block");
-    //    validDate = false;
-    //}
     if (validateDate(dateStr)) {
         $("#dateWarning").css("display", "none");
         validDate = true;
@@ -513,8 +502,6 @@ function amendVisitorDetails() {
 function hideTags() {
     $('#emptyNricWarning').css("display", "none");
     $('#nricWarning').css("display", "none");
-    //$('#lockModal').css("display", "none");
-    //$('#noVisitWarning').css("display", "none");
     $('#visitDetailsDiv').css("display", "none");
     $("#emailWarning").css("display", "none");
     $('#staticinfocontainer').css("display", "none");
@@ -556,7 +543,6 @@ function hideTags() {
 // Get Questionnaire Answers by .answer class
 function getQuestionnaireAnswers() {
     var answers = '';
-    //var jsonObject = "{\"Main\":[";
     var questions = [];
     var qIds = [];
     var allAnswers = [];
@@ -568,7 +554,6 @@ function getQuestionnaireAnswers() {
         qIds.push(id);
         questions.push(question);
     });
-    
     // get question answers
     $("#selfregistration .answer").each(function (index, value) {
         var element = $(this);
@@ -597,7 +582,6 @@ function getQuestionnaireAnswers() {
     // construct json answers
     for (var i = 0; i < qIds.length; i++) {
         var currentQid = qIds[i];
-        //var answerObject = "{\"qid\":\"" + currentQid + "\",\"question\":\"" + questions[i] + "\",\"answer\":\"";
         for (var j = 0; j < allAnswers.length; j++) {
             var row = allAnswers[j];
             var arr = row.split(':');
@@ -608,15 +592,10 @@ function getQuestionnaireAnswers() {
                 answers += ans + ",";
             }
         }
-        //answerObject = answerObject.substring(0, answerObject.length - 1);
-        //answerObject += "\"},";
-        //jsonObject += answerObject;
         answers = answers.substring(0, answers.length - 1);
         var obj = { qid: currentQid, question: questions[i], answer: answers };
         holder.push(obj);
     }
-    //jsonObject = jsonObject.substring(0, jsonObject.length - 1);
-    //jsonObject += "]}";
     var jsonObject = { Main: holder };
     var jsonString = JSON.stringify(jsonObject);
     return jsonString;
@@ -669,7 +648,6 @@ function loadActiveForm() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-            // Display Form CSS
             var arr = resultOfGeneration.Msg;
             var htmlString = "";
             var qListID = 0;
@@ -784,18 +762,11 @@ function populateTime() {
 
         success: function (returner) {
             var resultOfGeneration = JSON.parse(returner);
-            //var count = 0;
             var mes = resultOfGeneration.Msg;
             var arr = mes.toString().split(",");
             lowTime = arr[3].toString();
             highTime = arr[4].toString();
-            //var upperLimitHit = Date.parse("01/01/2011 " + highTime) >= Date.parse("01/01/2011 " + timeStr);
-            //var lowLimitHit = Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr);
-            //if (upperLimitHit && lowLimitHit) {
                 if (!adjustedTime) {
-                    //if (Date.parse("01/01/2011 " + lowTime) <= Date.parse("01/01/2011 " + timeStr)) {
-                    //    lowTime = timeStr;
-                    //}
                     var time = getTimeArray();
                     var start = time.indexOf(lowTime);
                     var end = time.indexOf(highTime);
@@ -809,19 +780,8 @@ function populateTime() {
                             $(optin).prop("selected", true);
                         }
                         $('#visitbookingtime').append(optin);
-                        //count++;
                     }
-                //}
             }
-            //if (count == 0) {
-            //    allowVisit = false;
-            //    $('#noVisitWarning').css("display", "block");
-            //    $("#selfRegNric").prop('disabled', true);
-            //} else {
-            //    allowVisit = true;
-            //    $('#noVisitWarning').css("display", "none");
-            //    $("#selfRegNric").prop('disabled', false);
-            //}
         },
         error: function (err) {
             alert("Error: " + err.Msg);
@@ -831,12 +791,6 @@ function populateTime() {
 
 // Check visit time input field
 function checkTime() {
-    //if ($("#visitbookingtime").val() == '') {
-    //    $("#timelabel").css("display", "block");
-    //    return false;
-    //} else {
-    //    $("#timelabel").css("display", "none");
-    //}
     var blank = checkBlankField($("#visitbookingtime").val());
     if (blank) {
         $("#timelabel").css("display", "block");
@@ -848,12 +802,6 @@ function checkTime() {
 
 // Check visit location input field
 function checkLocation() {
-    //if ($("#visLoc").val() == '') {
-    //    $("#locWarning").css("display", "block");
-    //    return false;
-    //} else {
-    //    $("#locWarning").css("display", "none");
-    //}
     var blank = checkBlankField($("#visLoc").val());
     if (blank) {
         $("#locWarning").css("display", "block");
@@ -866,13 +814,6 @@ function checkLocation() {
 // Email Format Validation
 $("#emailsInput").on("input", function () {
     var email = $("#emailsInput").val();
-    //if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-    //    $("#emailWarning").css("display", "none");
-    //    validEmail = true;
-    //} else {
-    //    $("#emailWarning").css("display", "block");
-    //    validEmail = false;
-    //}
     var valid = validateEmail(email);
     if (valid) {
         $("#emailWarning").css("display", "none");

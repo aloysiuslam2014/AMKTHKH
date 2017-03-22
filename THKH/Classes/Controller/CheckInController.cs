@@ -546,47 +546,45 @@ namespace THKH.Classes.Controller
         }
 
         // Write to Visitor, Visit & Confirmation Table for Express Reg
-        public String ExpReg(String staffuser, String nric, String fname, String address, String postal, String mobtel,
-            String sex, String nationality, String dob, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
+        public String ExpReg(String staffuser, String nric, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
             String remarks, String visitLocation, String qListID, String qAns, String qaid)
         {
 
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            String visitor = "";
+            //String visitor = "";
             String visit = "";
             String questionnaire = "";
             String checkin = "";
             string qAid = qaid;
             int pos = 0;
-            try
-            {
-                pos = Int32.Parse(postal);
-            }
-            catch (Exception ex)
-            {}
-            //update visitor profile
-            procedureCall = new GenericProcedureDAO("UPDATE_VISITOR_PROFILE", true, true, false);
-            procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
-            procedureCall.addParameterWithValue("@pNRIC", nric.ToUpper());
-            procedureCall.addParameterWithValue("@pFullName", fname);
-            procedureCall.addParameterWithValue("@pGender", sex);
-            procedureCall.addParameterWithValue("@pNationality", nationality);
-            procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-            procedureCall.addParameterWithValue("@pMobileTel", mobtel);
-            procedureCall.addParameterWithValue("@pHomeAddress", address);
-            procedureCall.addParameterWithValue("@pPostalCode", pos);
-            try
-            {
-                ProcedureResponse responseOutput = procedureCall.runProcedure();
-                visitor = responseOutput.getSqlParameterValue("@responseMessage").ToString();
-            }
-            catch (Exception ex)
-            {
-                result.Result = "Failure";
-                result.Visitor = ex.Message;
-                return JsonConvert.SerializeObject(result);
-            }
+            //try
+            //{
+            //    pos = Int32.Parse(postal);
+            //}
+            //catch (Exception ex)
+            //{}
+            //procedureCall = new GenericProcedureDAO("UPDATE_VISITOR_PROFILE", true, true, false);
+            //procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+            //procedureCall.addParameterWithValue("@pNRIC", nric.ToUpper());
+            //procedureCall.addParameterWithValue("@pFullName", fname);
+            //procedureCall.addParameterWithValue("@pGender", sex);
+            //procedureCall.addParameterWithValue("@pNationality", nationality);
+            //procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
+            //procedureCall.addParameterWithValue("@pMobileTel", mobtel);
+            //procedureCall.addParameterWithValue("@pHomeAddress", address);
+            //procedureCall.addParameterWithValue("@pPostalCode", pos);
+            //try
+            //{
+            //    ProcedureResponse responseOutput = procedureCall.runProcedure();
+            //    visitor = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+            //}
+            //catch (Exception ex)
+            //{
+            //    result.Result = "Failure";
+            //    result.Visitor = ex.Message;
+            //    return JsonConvert.SerializeObject(result);
+            //}
 
             //update or add questionaire ans
             try
@@ -650,7 +648,7 @@ namespace THKH.Classes.Controller
                 return JsonConvert.SerializeObject(result);
             }
 
-            result.Visitor = visitor;
+            //result.Visitor = visitor;
             result.Visit = visit;
             result.Questionnaire = questionnaire;
             result.CheckIn = checkin;

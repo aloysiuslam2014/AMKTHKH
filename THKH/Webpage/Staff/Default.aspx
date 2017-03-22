@@ -14,23 +14,11 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/moment.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-ui.min.js") %>"></script>
 <%--    <script type="text/javascript" src="<%= Page.ResolveClientUrl("/Scripts/jquery-1.12.4.js") %>"></script>--%>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.dataTables.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.buttons.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.colVis.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.flash.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jszip.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/pdfmake.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/vfs_fonts.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.html5.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.print.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/w3data.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap-datetimepicker.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/rsvp-3.1.0.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/sha-256.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/qz-tray.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/kc.fab.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.canvasjs.min.js") %>"></script>
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
@@ -1350,6 +1338,8 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/fieldValidations.js") %>"></script>
      <%if (accessRightsStr.Contains('1'))
          { %>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/qz-tray.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/kc.fab.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/registrationPageScripts.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/patientAutocomplete.js") %>"></script>
      <%} if (accessRightsStr.Contains('4'))
@@ -1357,6 +1347,16 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/UserManagement/loadUsers.js") %>"></script>
     <%}if (accessRightsStr.Contains('6'))
         { %>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.dataTables.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.buttons.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.colVis.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.flash.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jszip.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/pdfmake.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/vfs_fonts.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.html5.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.print.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/SMS/sms.js") %>"></script>
     <%} if (accessRightsStr.Contains('5') || accessRightsStr.Contains('1')) {%>

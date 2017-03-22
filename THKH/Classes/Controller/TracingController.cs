@@ -40,10 +40,8 @@ namespace THKH.Classes.Controller
                     resultList.Add(entry);
                 }
             }
-
             List<Tuple<List<String>, bool, bool>> categorizedResults = new List<Tuple<List<String>, bool, bool>>();
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(resultList, true, true));
-
             result = buildDisplayResults(categorizedResults);
 
             return result;
@@ -69,8 +67,6 @@ namespace THKH.Classes.Controller
             {
                 processed_uq_place_arr = processBedNos(uq_place_arr);
             }
-
-
             List<String> byReg_response_visitors = new List<String>();
             List<String> byScan_response_visitors = new List<String>();
 

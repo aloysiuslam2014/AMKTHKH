@@ -66,37 +66,6 @@ function validatePostal(code) {
     return false;
 }
 
-// Check for required fields in Assisted Registration page
-//function checkRequiredFields() {
-//    var valid = true;
-//    $.each($("#main input.required"), function (index, value) {
-//        if (!$(value).val()) {
-//            valid = false;
-//        }
-//    });
-//    if (valid) {
-//        $('#emptyFields').css("display", "none");
-//        NewAssistReg();
-//    }
-//    else {
-//        $('#emptyFields').css("display", "block");
-//    }
-//}
-
-//// formats date
-//function formatDate(date) {
-//    return date.getDay() + "-" + date.getMonth() + "-" + date.getYear();
-//}
-
-//// formats date
-//function formatTime(date) {
-//    var hours = date.getHours();
-//    var minutes = date.getMinutes();
-//    minutes = minutes < 10 ? '0' + minutes : minutes;
-//    var strTime = hours + ':' + minutes;
-//    return strTime;
-//}
-
 // Validates email address format
 function validateEmail(email) {
     if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {

@@ -107,13 +107,13 @@ namespace THKH.Webpage.Staff.CheckInOut
                 // Write to Visitor_Profile, Visit, Confirmed & CheckInCheckOut Tables
                 var staffUser = context.Request.Form["staffUser"].ToString();
                 var nric = context.Request.Form["nric"].ToString();
-                var fname = context.Request.Form["fullName"];
-                var address = context.Request.Form["ADDRESS"];
-                var postal = context.Request.Form["POSTAL"];
-                var mobtel = context.Request.Form["MobTel"];
-                var sex = context.Request.Form["SEX"];
-                var nationality = context.Request.Form["Natl"];
-                var dob = context.Request.Form["DOB"];
+                //var fname = context.Request.Form["fullName"];
+                //var address = context.Request.Form["ADDRESS"];
+                //var postal = context.Request.Form["POSTAL"];
+                //var mobtel = context.Request.Form["MobTel"];
+                //var sex = context.Request.Form["SEX"];
+                //var nationality = context.Request.Form["Natl"];
+                //var dob = context.Request.Form["DOB"];
                 var purpose = "";
                 var pName = "";
                 var pNric = "";
@@ -126,8 +126,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var qAns = context.Request.Form["qAnswers"];
                 var qAnsId = context.Request.Form["qaid"];
 
-                successString = checkInController.ExpReg(staffUser, nric, fname, address, postal, mobtel,
-            sex, nationality, dob, purpose, pName, pNric, otherPurpose, bedno, appTime,
+                successString = checkInController.ExpReg(staffUser, nric, purpose, pName, pNric, otherPurpose, bedno, appTime,
             remarks, visitLocation, qListID, qAns, qAnsId);
             }
             if (typeOfRequest == "facilities") {

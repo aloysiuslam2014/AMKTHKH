@@ -7,12 +7,14 @@ var visitors, visitDetails;
 var uq_bednos = document.getElementById("uq_bednos");
 var uq_loc = document.getElementById("uq_loc");
 
+//
 function enableToggle(current, other) {
 
     other.disabled = current.value.replace(/\s+/, '').length > 0;
 
 }
 
+//
 function expressTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
     while (resultTable.firstChild) {
@@ -60,6 +62,7 @@ function expressTrace() {
     });
 }
 
+//
 function unifiedTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
     while (resultTable.firstChild) {
@@ -115,9 +118,8 @@ function unifiedTrace() {
     });
 }
 
+//
 function writeUQResultsTable(uqResultJSON) {
-
-    //$("#generateCSV").removeClass('disabled');//Enable csv download button
             var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "reg", "scan"];
 
             //visitor
@@ -134,6 +136,7 @@ function writeUQResultsTable(uqResultJSON) {
             $("#uq_resultstable_body").append(row);
 }
 
+//
 function fillDashboard() {
 
     var dash_dateStart = $("#dash_startdatetime").val();
