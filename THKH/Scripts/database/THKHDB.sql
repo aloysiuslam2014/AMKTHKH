@@ -2796,5 +2796,56 @@ BEGIN 
 END; 
 
 
+----------------------------------------------------------------------------------------------------- Procedure for retrieving every visitor so long as they scanned in the given Bedno
+GO
+CREATE PROCEDURE [dbo].[TRACE_BY_EXPRESS_ENTRY]
+@pStart_Date DATE,
+@pEnd_Date DATE,
+@responseMessage INT OUT
+
+AS  
+BEGIN  
+  SET NOCOUNT ON
+
+  BEGIN
+    SET @responseMessage = 1;
+    ----------------------------------------------- First retrieve all visits to the location in question
+    ----------------------------------------------- which were scanned within the query period
+    WITH EXPRESS_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json)
+    AS
+    (
+      SELECT DISTINCT m.nric, m.visitActualTime, ci.temperature, m.locationID, m.locationTime, t.tName, qa.QA_JSON
+      FROM MOVEMENT m
+      LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
+      LEFT JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
+      LEFT JOIN VISIT v ON v.visitorNric = m.nric
+      LEFT JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
+      WHERE v.purpose = ''
+      AND v.visitLocation = ''
+      AND v.bedNo = ''
+      AND t.tName LIKE 'ENTRANCE%'
+      AND v.confirm = 1
+      AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+    ),    
+
+    ----------------------------------------------- Find the corresponding exit terminals and exit times
+    EXPRESS_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
+    AS
+    (
+      SELECT dbs.nric, dbs.visitActualTime, dbs.locationTime, t.tName, m.locationTime
+      FROM EXPRESS_SCANS dbs  
+      LEFT JOIN MOVEMENT M ON m.NRIC = dbs.nric
+        AND m.visitActualTime = dbs.visitActualTime
+      LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
+      WHERE t.tName LIKE 'EXIT%'
+    )
+    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
+    FROM EXPRESS_SCANS dbs 
+    LEFT JOIN EXPRESS_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
+    LEFT JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
+    LEFT JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
+    WHERE vp.confirm = 1
+  END
+END;
 
 
