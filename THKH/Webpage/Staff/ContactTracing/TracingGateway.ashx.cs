@@ -25,6 +25,10 @@ namespace THKH.Webpage.Staff.ContactTracing
                 var query = context.Request.Form["queries"];
                 returnoutput = traceController.fillDashboard(query);
             }
+            if (action.Equals("expressTrace")) {
+                var query = context.Request.Form["queries"];
+                returnoutput = traceController.expressTrace(query);
+            }
             context.Response.Write(returnoutput);
         }
 

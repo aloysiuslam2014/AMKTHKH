@@ -15,6 +15,41 @@ namespace THKH.Classes.Controller
     public class TracingController
     {
 
+        public String expressTrace(String query)
+        {
+            String result = "";
+
+            String[] queryParts = query.Split('~');
+            String uq_startdate_str = queryParts[0];
+            String uq_enddate_str = queryParts[1];
+            DateTime uq_startdate = DateTime.ParseExact(uq_startdate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            dynamic json = new ExpandoObject();
+            dynamic innerItem = new ExpandoObject();
+            List<String> resultList = new List<String>();
+
+            String expressResult = traceByExpress(uq_startdate, uq_enddate);
+            if (expressResult != "")
+            {
+                JObject obj = JObject.Parse(expressResult);
+                JArray arr = (JArray)obj["Msg"];
+                foreach (JToken item in arr.Children())
+                {
+                    String entry = item.Value<JObject>().ToString(Formatting.None);
+                    resultList.Add(entry);
+                }
+            }
+
+            List<Tuple<List<String>, bool, bool>> categorizedResults = new List<Tuple<List<String>, bool, bool>>();
+            categorizedResults.Add(new Tuple<List<String>, bool, bool>(resultList, true, true));
+
+            result = buildDisplayResults(categorizedResults);
+
+            return result;
+        }
+
+        //
         public String unifiedTrace(String query)
         {
             String result = "";
@@ -125,6 +160,7 @@ namespace THKH.Classes.Controller
             return result;
         }
 
+        //
         public String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults)
         {
             List<dynamic> serializedResults1 = new List<dynamic>();
@@ -190,6 +226,7 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json); ;
         }
 
+        //
         public String traceByScanBed(DateTime startdatetime, DateTime enddatetime, String bedno)
         {
             DataTable dt = new DataTable();
@@ -251,6 +288,7 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
+        //
         public String traceByRegBed(DateTime startdatetime, DateTime enddatetime, String bedno)
         {
             DataTable dt = new DataTable();
@@ -312,6 +350,68 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
+        //
+        public String traceByExpress(DateTime startdatetime, DateTime enddatetime)
+        {
+            DataTable dt = new DataTable();
+            dynamic json = new ExpandoObject();
+            dynamic innerItem = new ExpandoObject();
+            List<Object> jsonArray = new List<Object>();
+            GenericProcedureDAO procedureCall = new GenericProcedureDAO("TRACE_BY_EXPRESS_ENTRY", true, true, true);
+            procedureCall.addParameter("@responseMessage", SqlDbType.Int);
+            procedureCall.addParameterWithValue("@pStart_Date", startdatetime);
+            procedureCall.addParameterWithValue("@pEnd_Date", enddatetime);
+            try
+            {
+                ProcedureResponse resultss = procedureCall.runProcedure();
+                dt = resultss.getDataTable();
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    var location = dt.Rows[i]["location"];
+                    var regbedno = dt.Rows[i]["bedno"];
+                    var visitActualTime = dt.Rows[i]["checkin_time"];
+                    var exitTime = dt.Rows[i]["exit_time"];
+                    var temperature = dt.Rows[i]["temperature"];
+                    var visitorNric = dt.Rows[i]["nric"];
+                    var fullName = dt.Rows[i]["fullName"];
+                    var gender = dt.Rows[i]["gender"];
+                    var dob = dt.Rows[i]["dob"];
+                    var nationality = dt.Rows[i]["nationality"];
+                    var mobileTel = dt.Rows[i]["mobileTel"];
+                    var homeadd = dt.Rows[i]["homeadd"];
+                    var postalcode = dt.Rows[i]["postalcode"];
+                    var formAnswers = dt.Rows[i]["formAnswers"];
+
+                    innerItem = new ExpandoObject();
+                    innerItem.location = location.ToString();
+                    innerItem.bedno = regbedno.ToString();
+                    innerItem.checkin_time = visitActualTime.ToString();
+                    innerItem.exit_time = exitTime.ToString();
+                    innerItem.temperature = temperature.ToString();
+                    innerItem.nric = visitorNric.ToString();
+                    innerItem.fullName = fullName.ToString();
+                    innerItem.nationality = nationality.ToString();
+                    innerItem.mobileTel = mobileTel.ToString();
+                    innerItem.gender = gender.ToString();
+                    innerItem.dob = dob.ToString();
+                    innerItem.homeadd = homeadd.ToString();
+                    innerItem.postalcode = postalcode.ToString();
+                    innerItem.formAnswers = formAnswers.ToString();
+                    jsonArray.Add(innerItem);
+                }
+                json.Result = "Success";
+                json.Msg = jsonArray;
+
+            }
+            catch (Exception ex)
+            {
+                json.Result = "Failed";
+                json.Msg = ex.Message;
+            }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
+        }
+
+        //
         public String traceByScanLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
             DataTable dt = new DataTable();

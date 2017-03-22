@@ -13,6 +13,53 @@ function enableToggle(current, other) {
 
 }
 
+function expressTrace() {
+    var resultTable = document.getElementById("uq_resultstable_body");
+    while (resultTable.firstChild) {
+        resultTable.removeChild(resultTable.childNodes[0]);
+    }
+    var uq_dateStart = $("#uq_startdatetime").val();
+    var uq_dateEnd = $("#uq_enddatetime").val();
+
+    var _dateStart = new Date(uq_dateStart);
+    var _dateEnd = new Date(uq_dateEnd);
+
+    if (_dateStart > _dateEnd) {
+        alert("End date of query period must be before start date!");
+        return;
+    }
+    uq_params = uq_dateStart + '~' + uq_dateEnd;
+
+    var headersToProcess = { action: "expressTrace", queries: uq_params };
+    $.ajax({
+        url: toTracing,
+        method: 'post',
+        data: headersToProcess,
+
+        success: function (returner) {
+            try {
+                var uqResult = JSON.parse(returner);
+                var arrLen = uqResult.Msg.length;
+
+                var result_table = $('#uq_resultstable').dataTable();
+
+                result_table.fnClearTable();
+
+                for (i = 0; i < arrLen; i++) {
+                    var uqResultJSON = uqResult.Msg[i];
+                    result_table.fnAddData(uqResultJSON);
+                }
+            } catch (err) {
+                alert("Selected period returns no data. Please try again. " + err);
+            }
+
+        },
+        error: function (err) {
+            alert("There was a problem executing the trace, please contact the admin.");
+        },
+    });
+}
+
 function unifiedTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
     while (resultTable.firstChild) {

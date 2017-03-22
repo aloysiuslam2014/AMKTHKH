@@ -904,13 +904,13 @@ function checkExpressDeclaration() {
             $("#temp").prop("disabled", true);
             $('#temp input').removeClass('required');
             $("#remarksExpressDiv").css("display", "block");
-            $('#remarksExpressDiv input').addClass('required');
+            $('#remarksExpressDiv textarea').addClass('required');
             $("#emptyNricWarning").css("display", "none");
         } else {
             $("#tempLbl").prop("disabled", false);
             $("#temp").prop("disabled", false);
             $('#temp input').addClass('required');
-            $('#remarksExpressDiv input').removeClass('required');
+            $('#remarksExpressDiv textarea').removeClass('required');
             $("#remarksExpressDiv").css("display", "none");
             $("#emptyNricWarning").css("display", "none");
         }

@@ -390,7 +390,8 @@
                                 <h3 style="color:lightblue">Additional Information</h3>
                                 <label for="remarksExpressInput"><span style="color:lightcoral">*</span>Remarks</label>
                                 <div class="form-group">
-                                <input type="text" class="form-control regInput" id="remarksExpressInput" />
+                                    <textarea id="remarksExpressInput" class="form-control regInput" rows="2" placeholder="Please enter the reason for express entry, contact & vehicle number" cols="60"></textarea>
+                                <%--<input type="text" class="form-control regInput" id="remarksExpressInput" placeholder="Please enter the reason for express entry, contact & vehicle number"/>--%>
                             </div>
                             </div>
                             <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span> Proceed</button>
@@ -1156,6 +1157,7 @@
                     </div>
                     <span class="input-group-btn">
                     <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace(); false;"><span class="glyphicon glyphicon-search"></span> Trace</button>
+                        <button class="btn btn-warning" id="execute_expressTrace" onclick="expressTrace(); false;"><span class="glyphicon glyphicon-search"></span> Trace Express Entries</button>
                     </span>
                 </div>
 
