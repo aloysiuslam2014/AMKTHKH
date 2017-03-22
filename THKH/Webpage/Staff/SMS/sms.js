@@ -9,24 +9,28 @@ $(document).ready(function () {
 // Validate contact numbers
 function checkSMSNumber() {
     var numbers = $("#targetVisitor").val();
-    var numArr = numbers.split(',');
+    var numArr = numbers.split(' ');
+    if (numArr.length < 1) {
+        numArr = numbers.trim().split(',');
+    }
     // Some format check here
-    checkMessage();
+    checkMessage(numArr);
 }
 
-function checkMessage() {
+function checkMessage(numArr) {
     var message = $("#smsMessage").val();
     if (message === "") {
         $('#emptyMessage').css("display", "block");
     } else {
         $('#emptyMessage').css("display", "none");
-        sendSMS();
+        sendSMS(numArr);
     }
 }
 
 // Send SMS
-function sendSMS() {
-    var numbers = $("#targetVisitor").val();
+function sendSMS(numArr) {
+    //var numbers = $("#targetVisitor").val();
+    var numbers = numArr.toString();
     var message = $("#smsMessage").val();
     var headersToProcess = {
         requestType: "sendSMS", message: message, numbers: numbers

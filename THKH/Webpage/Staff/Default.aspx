@@ -1212,6 +1212,7 @@
                         if (bednos.length === 0) {
                             traceby = location
                         }
+
                         var table = $('#uq_resultstable').DataTable({
                             "columnDefs": [
                                 { className: "export_only", "targets": [0] },
@@ -1231,11 +1232,20 @@
                             {
                                 extend: 'excelHtml5',
                                 title: 'Trace done on ' + datetime_str
+                            },
+                            {
+                                extend: 'copyHtml5',
+                                text: 'Copy to Clipboard',
+                                header: false,
+                                footer: false,
+                                exportOptions: {
+                                    columns: [9]
+                                }
                             }
                             ],
                             language: {
                                 buttons: {
-                                    colvis: 'Toggle columns'
+                                    colvis: 'Toggle columns',
                                 }
                             }
                         });

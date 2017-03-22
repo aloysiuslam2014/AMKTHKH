@@ -70,7 +70,7 @@ function unifiedTrace() {
 
 function writeUQResultsTable(uqResultJSON) {
 
-    $("#generateCSV").removeClass('disabled');//Enable csv download button
+    //$("#generateCSV").removeClass('disabled');//Enable csv download button
             var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "reg", "scan"];
 
             //visitor
