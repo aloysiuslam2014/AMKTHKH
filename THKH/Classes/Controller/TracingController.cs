@@ -595,6 +595,15 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(processed_visitors_json_list);
         }
 
+        public String compileVisitorData(List<Object> visitors_json_list)
+        {
+            String chartjson_str = "{}";
+
+
+
+            return chartjson_str;
+        }
+
         public List<Object> processVisitors(String visitors_jsonstr)
         {
             List<Object> processed_visitor_json_list = new List<Object>();
@@ -634,6 +643,10 @@ namespace THKH.Classes.Controller
 
                 //dwelltime from checkin_time and exit_time
                 string exit_time_str = (string)visitor["exit_time"];
+                if(exit_time_str.Length == 0)
+                {
+                    exit_time_str = checkin_time_str;
+                }
                 DateTime exit_time = DateTime.ParseExact(exit_time_str, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 TimeSpan dwelltime_span = exit_time.Subtract(checkin_time);
                 innerItem.dwelltime_min = Convert.ToInt32(dwelltime_span.TotalMinutes).ToString();

@@ -288,6 +288,7 @@
     <Content Include="Scripts\buttons.flash.min.js" />
     <Content Include="Scripts\buttons.html5.min.js" />
     <Content Include="Scripts\buttons.print.min.js" />
+    <Content Include="Scripts\canvasjs.min.js" />
     <Content Include="Scripts\dataTables.bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -319,7 +320,6 @@
     <Content Include="Scripts\jquery-ui.theme.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\jquery.canvasjs.min.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.dataTables.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
