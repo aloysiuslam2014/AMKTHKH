@@ -592,13 +592,106 @@ namespace THKH.Classes.Controller
 
             List<Object> processed_visitors_json_list = processVisitors(visitors_jsonstr);
 
-            List<String> compiled_visitor_data_list = compileVisitorData(processed_visitors_json_list);
+            List<String> compiled_visitor_data_list = compileVisitorData(processed_visitors_json_list); //conver transactional data to grouped data
 
-            String result = Newtonsoft.Json.JsonConvert.SerializeObject(compiled_visitor_data_list);
+            List<List<Object>> canvasjs_converted_data_list = canvasjs_convert(compiled_visitor_data_list);
+
+            String result = Newtonsoft.Json.JsonConvert.SerializeObject(canvasjs_converted_data_list);
 
             //result = result.Replace(@"\", "");
 
             return result;
+        }
+
+        public List<List<Object>> canvasjs_convert(List<String> compiled_visitor_json_data_list)
+        {
+            List<List<Object>> canvasjs_json_data_list = new List<List<Object>>();
+
+            string dayOfWeek_json_str = compiled_visitor_json_data_list[0];
+            dynamic dayOfWeek_json = JsonConvert.DeserializeObject(dayOfWeek_json_str);
+            List<Object> canvasjs_dayOfWeek_list = new List<Object>();
+            List<string> daysOfWeek = new List<string>(new string[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" });
+            foreach (String day in daysOfWeek)
+            {
+                dynamic canvas_dataItem = new ExpandoObject();
+                canvas_dataItem.label = day;
+                canvas_dataItem.y = (string)((IDictionary<string, object>)dayOfWeek_json)[day];
+                canvasjs_dayOfWeek_list.Add(canvas_dataItem);
+            }
+
+            string hourOfDay_json_str = compiled_visitor_json_data_list[1];
+            dynamic hourOfDay_json = JsonConvert.DeserializeObject(hourOfDay_json_str);
+            List<Object> canvasjs_hourOfday_list = new List<Object>();
+            List<string> hoursOfDay = new List<string>(new string[] { "0 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM" });
+            foreach (String hour in hoursOfDay)
+            {
+                dynamic canvas_dataItem = new ExpandoObject();
+                canvas_dataItem.label = hour;
+                canvas_dataItem.y = (string)((IDictionary<string, object>)dayOfWeek_json)[hour];
+                canvasjs_dayOfWeek_list.Add(canvas_dataItem);
+            }
+
+            string dwelltime_json_str = compiled_visitor_json_data_list[2];
+            dynamic dwelltime_json = JsonConvert.DeserializeObject(dwelltime_json_str);
+            List<Object> canvasjs_dwelltime_list = new List<Object>();
+            List<string> dwelltimes = new List<string>(new string[] { "<30m", "31-60m", "61-90m", "91-120m", "121-150m", "151-180m", "181-210m", "211-240m", "241-270m", "271-300m", "301-330m", "331-360m", ">360m" });
+            for (int i = 1; i<dwelltimes.Count; i++)
+            {
+                dynamic canvas_dataItem = new ExpandoObject();
+                string label = dwelltimes[i - 1];
+                canvas_dataItem.x = (int)(i * 10);
+                canvas_dataItem.y = (string)((IDictionary<string, object>)dwelltime_json)[label];
+                canvas_dataItem.label = label;
+                canvasjs_dwelltime_list.Add(canvas_dataItem);
+            }
+
+            string gender_json_str = compiled_visitor_json_data_list[3];
+            dynamic gender_json = JsonConvert.DeserializeObject(gender_json_str);
+            List<Object> canvasjs_gender_list = new List<Object>();
+            List<string> genders = new List<string>(new string[] { "M", "F" });
+            for (int i = 1; i < genders.Count; i++)
+            {
+                dynamic canvas_dataItem = new ExpandoObject();
+                string label = genders[i - 1];
+                canvas_dataItem.x = (int)(i * 10);
+                canvas_dataItem.y = (string)((IDictionary<string, object>)gender_json)[label];
+                canvas_dataItem.label = label;
+                canvasjs_gender_list.Add(canvas_dataItem);
+            }
+
+            string age_json_str = compiled_visitor_json_data_list[4];
+            dynamic age_json = JsonConvert.DeserializeObject(age_json_str);
+            List<Object> canvasjs_age_list = new List<Object>();
+            List<string> ages = new List<string>(new string[] { "<10y", "11-20y", "21-30y", "31-40y", "31-40y", "41-50y", "51-60y", "61-70y", "71-80y", "81-90y", ">90y" });
+            for (int i = 1; i < ages.Count; i++)
+            {
+                dynamic canvas_dataItem = new ExpandoObject();
+                string label = ages[i - 1];
+                canvas_dataItem.x = (int)(i * 10);
+                canvas_dataItem.y = (string)((IDictionary<string, object>)age_json)[label];
+                canvas_dataItem.label = label;
+                canvasjs_age_list.Add(canvas_dataItem);
+            }
+
+            string location_json_str = compiled_visitor_json_data_list[5];
+            dynamic location_json = JsonConvert.DeserializeObject(age_json_str);
+            List<Object> canvasjs_location_list = new List<Object>();
+            foreach(KeyValuePair<string, object> kvp in location_json)
+            {
+                dynamic canvas_dataItem = new ExpandoObject();
+                canvas_dataItem.label = kvp.Key;
+                canvas_dataItem.y = (int)kvp.Value;
+                canvasjs_location_list.Add(canvas_dataItem);
+            }
+
+            canvasjs_json_data_list.Add(canvasjs_dayOfWeek_list);
+            canvasjs_json_data_list.Add(canvasjs_hourOfday_list);
+            canvasjs_json_data_list.Add(canvasjs_dayOfWeek_list);
+            canvasjs_json_data_list.Add(canvasjs_gender_list);
+            canvasjs_json_data_list.Add(canvasjs_age_list);
+            canvasjs_json_data_list.Add(canvasjs_location_list);
+
+            return canvasjs_json_data_list;
         }
 
         public List<String> compileVisitorData(List<Object> visitors_json_list)
@@ -610,6 +703,7 @@ namespace THKH.Classes.Controller
             String dwelltime_json_str = "{}";
             String gender_json_str = "{}";
             String age_json_str = "{}";
+            String location_json_str = "{}";
 
             dynamic dayOfWeek_json = new ExpandoObject();
             List<string> daysOfWeek = new List<string>(new string[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" });
@@ -641,6 +735,8 @@ namespace THKH.Classes.Controller
             {
                 ((IDictionary<string, object>)age_json)[age_bucket] = 0;
             }
+
+            dynamic location_json = new ExpandoObject();
 
             //update counts
             foreach (dynamic visitor in visitors_json_list)
@@ -676,6 +772,16 @@ namespace THKH.Classes.Controller
                     visitor_age_bucket = visitor_age_floor.ToString() + "-" + visitor_age_ceiling.ToString() + "y";
                 }
                 ((IDictionary<string, object>)age_json)[visitor_age_bucket] = (int)((IDictionary<string, object>)age_json)[visitor_age_bucket] + 1;
+
+                string visitor_location = ((string)visitor.location).Trim();
+                if (((IDictionary<string, object>)location_json).ContainsKey(visitor_location))
+                {
+                    ((IDictionary<string, object>)location_json)[visitor_location] = (int)((IDictionary<string, object>)location_json)[visitor_location] + 1;
+                }
+                else
+                {
+                    ((IDictionary<string, object>)location_json)[visitor_location] = 1;
+                }
             }
 
             dayOfWeek_json_str = Newtonsoft.Json.JsonConvert.SerializeObject(dayOfWeek_json);
@@ -683,6 +789,7 @@ namespace THKH.Classes.Controller
             dwelltime_json_str = Newtonsoft.Json.JsonConvert.SerializeObject(dwelltime_json);
             gender_json_str = Newtonsoft.Json.JsonConvert.SerializeObject(gender_json);
             age_json_str = Newtonsoft.Json.JsonConvert.SerializeObject(age_json);
+            location_json_str = Newtonsoft.Json.JsonConvert.SerializeObject(location_json);
 
 
             datajson_list.Add(dayOfWeek_json_str);
@@ -690,6 +797,7 @@ namespace THKH.Classes.Controller
             datajson_list.Add(dwelltime_json_str);
             datajson_list.Add(gender_json_str);
             datajson_list.Add(age_json_str);
+            datajson_list.Add(location_json_str);
             return datajson_list;
         }
 
