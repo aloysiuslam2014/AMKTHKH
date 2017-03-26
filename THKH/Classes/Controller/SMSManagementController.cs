@@ -23,29 +23,38 @@ namespace THKH.Classes.Controller
             for (int i = 0; i < distinctNumbersArrary.Length; i++)
             {
                 String number = distinctNumbersArrary[i];
-                var to = new PhoneNumber("+65" + number);
-                try
-                {
-                    var msg = MessageResource.Create(
-                        to,
-                        from: new PhoneNumber("+18324632876"),
-                        body: message);
-
-                    procedureCall = new GenericProcedureDAO("RECORD_SMS", true, true, false);
-                    procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
-                    procedureCall.addParameterWithValue("@pSID", msg.Sid);
-                    procedureCall.addParameterWithValue("@pContact", number);
-                    procedureCall.addParameterWithValue("@pMessage", message);
-                    ProcedureResponse responseOutput = procedureCall.runProcedure();
-
-                    if (responseOutput.getSqlParameterValue("@responseMessage").ToString() == "0")
-                    {
-                        responses.Add(msg.Sid);
-                    }
+                PhoneNumber to = null;
+                if (number.Contains("+")) {
+                    to = new PhoneNumber(number);
+                } else if (number.Length == 8) {
+                    to = new PhoneNumber("+65" + number);
                 }
-                catch (Exception ex)
+
+                if (to != null)
                 {
-                    responses.Add(ex.Message);
+                    try
+                    {
+                        var msg = MessageResource.Create(
+                            to,
+                            from: new PhoneNumber("+18324632876"),
+                            body: message);
+
+                        procedureCall = new GenericProcedureDAO("RECORD_SMS", true, true, false);
+                        procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+                        procedureCall.addParameterWithValue("@pSID", msg.Sid);
+                        procedureCall.addParameterWithValue("@pContact", number);
+                        procedureCall.addParameterWithValue("@pMessage", message);
+                        ProcedureResponse responseOutput = procedureCall.runProcedure();
+
+                        if (responseOutput.getSqlParameterValue("@responseMessage").ToString() == "0")
+                        {
+                            responses.Add(msg.Sid);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        responses.Add(ex.Message);
+                    }
                 }
             }
             if (responses.Count() > 1)

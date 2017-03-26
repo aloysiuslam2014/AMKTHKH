@@ -10,10 +10,26 @@ $(document).ready(function () {
 function checkSMSNumber() {
     var numbers = $("#targetVisitor").val();
     var numArr = numbers.split(' ');
+    var valid = true;
     if (numArr.length < 1) {
         numArr = numbers.trim().split(',');
     }
-    checkMessage(numArr);
+    var uniqueNums = [];
+    for (var i = 0; i < numArr.length; i++) {
+        if (numArr[i] != "") {
+            if (uniqueNums.indexOf(numArr[i]) == -1) uniqueNums.push(numArr[i]);
+        }
+    }
+    for (i = 0; i < uniqueNums.length; i++) {
+        if (!validatePhone(uniqueNums[i])) {
+            valid = false;
+        }
+    }
+    if (valid) {
+        checkMessage(uniqueNums);
+    } else {
+        // Invalid number warning
+    }
 }
 
 function checkMessage(numArr) {
