@@ -158,7 +158,105 @@ function fillDashboard() {
 
         success: function (returner) {
             try {
-                var dashResult = JSON.parse(returner);
+                var dashResult = returner
+                var result_json = JSON.parse(dashResult); //list of json objects, one for each chart
+                var dayOfWeek_json = JSON.parse(result_json[0]);
+                var hourOfDay_json = JSON.parse(result_json[1]);
+                var dwelltime_json = JSON.parse(result_json[2]);
+                var gender_json = JSON.parse(result_json[3]);
+                var age_json = JSON.parse(result_json[4]);
+                var location_json = JSON.parse(result_json[5]);
+
+                var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
+                {
+                    title: {
+                        text: "Check-ins by hour of day"
+                    },
+                    data: [
+                    {
+                        type: "bar",
+                        dataPoints: hourOfDay_json
+                    }
+                    ]
+                });
+
+                hourOfDay_chart.render();
+
+                var dayOfweek_chart = new CanvasJS.Chart("dayOfWeek_chart",
+                {
+                    title: {
+                        text: "Check-ins by day of week"
+                    },
+                    data: [
+                    {
+                        type: "bar",
+                        dataPoints: dayOfWeek_json
+                    }
+                    ]
+                });
+
+                dayOfweek_chart.render();
+
+                var age_chart = new CanvasJS.Chart("age_chart",
+                {
+                    title: {
+                        text: "Check-ins by age of visitor"
+                    },
+                    data: [
+
+                    {
+                        dataPoints: age_json
+                    }
+                    ]
+                });
+
+                age_chart.render();
+
+                var gender_chart = new CanvasJS.Chart("gender_chart",
+                {
+                    title: {
+                        text: "Check-ins by gender"
+                    },
+                    data: [
+
+                    {
+                        dataPoints: gender_json
+                    }
+                    ]
+                });
+
+                gender_chart.render();
+
+                var dwelltime_chart = new CanvasJS.Chart("dwelltime_chart",
+                {
+                    title: {
+                        text: "Check-ins by total time spent in hospital"
+                    },
+                    data: [
+
+                    {
+                        dataPoints: dwelltime_json
+                    }
+                    ]
+                });
+
+                dwelltime_chart.render();
+
+                var location_chart = new CanvasJS.Chart("location_chart",
+                {
+                    title: {
+                        text: "Check-ins by location registered to visit"
+                    },
+                    data: [
+                    {
+                        type: "bar",
+                        dataPoints: location_json
+                    }
+                    ]
+                });
+
+                location_chart.render();
+
                 alert("Woo! temporary success message. ");
             } catch (err) {
                 alert("Something went wrong when retrieving dashboard data. " + err);

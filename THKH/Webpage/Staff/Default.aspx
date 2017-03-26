@@ -19,7 +19,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap-datetimepicker.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/rsvp-3.1.0.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/sha-256.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.canvasjs.min.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/canvasjs.min.js") %>"></script>
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
@@ -1284,20 +1284,32 @@
                     $(function () {
                         $('#dashboard_startdatetime').datetimepicker(
                             {
-                                defaultDate: new Date(),
-                                maxDate: 'now',
+                                defaultDate: new Date(new Date().setDate(new Date().getDate() - 1)), //1 day ago
+                                maxDate: new Date(new Date().setDate(new Date().getDate() - 1)),
                                 format: 'YYYY-MM-DD'
                             }
                             );
                     });
                     $(function () {
                         $('#dashboard_enddatetime').datetimepicker({
-                            defaultDate: new Date(),
-                            maxDate: 'now',
+                            defaultDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+                            maxDate: new Date(new Date().setDate(new Date().getDate() - 1)),
                             format: 'YYYY-MM-DD'
                         });
                     });
                 </script>                
+            </div>
+            <div class="col-sm-offset-1 col-sm-10" id="chart_container">
+                <div class="col-sm-6" id="time_chart_container">
+                    <div id="hourOfDay_chart" style="height: 300px; width: 100%;"></div>
+                    <div id="dayOfWeek_chart" style="height: 300px; width: 100%;"></div>
+                </div>
+                <div class ="col-sm-6" id="demographic_chart_container">
+                    <div id="age_chart" style="height: 300px; width: 100%;"></div>
+                    <div id="gender_chart" style="height: 300px; width: 100%;"></div>
+                    <div id="dwelltime_chart" style="height: 300px; width: 100%;"></div>
+                    <div id="location_chart" style="height: 300px; width: 100%;"></div>
+                </div>
             </div>
         </div>
     </div>
