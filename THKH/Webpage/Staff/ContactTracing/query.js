@@ -169,7 +169,7 @@ function fillDashboard() {
                 var age_json = JSON.parse(result_json[4]);
                 var location_json = JSON.parse(result_json[5]);
 
-                var chart = new CanvasJS.Chart("hourOfDay_chart",
+                var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
                     title: {
                         text: "Check-ins by hour of day"
@@ -182,7 +182,9 @@ function fillDashboard() {
                     ]
                 });
 
-                var chart = new CanvasJS.Chart("dayOfWeek_chart",
+                hourOfDay_chart.render();
+
+                var dayOfweek_chart = new CanvasJS.Chart("dayOfWeek_chart",
                 {
                     title: {
                         text: "Check-ins by day of week"
@@ -194,6 +196,38 @@ function fillDashboard() {
                     }
                     ]
                 });
+
+                dayOfweek_chart.render();
+
+                var age_chart = new CanvasJS.Chart("age_chart",
+                {
+                    title: {
+                        text: "Check-ins by age of visitor"
+                    },
+                    data: [
+
+                    {
+                        dataPoints: age_json
+                    }
+                    ]
+                });
+
+                age_chart.render();
+
+                var location_chart = new CanvasJS.Chart("location_chart",
+                {
+                    title: {
+                        text: "Check-ins by location registered to visit"
+                    },
+                    data: [
+                    {
+                        type: "bar",
+                        dataPoints: location_json
+                    }
+                    ]
+                });
+
+                location_chart.render();
 
                 alert("Woo! temporary success message. ");
             } catch (err) {
