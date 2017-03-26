@@ -686,7 +686,7 @@ namespace THKH.Classes.Controller
 
             canvasjs_json_data_list.Add(canvasjs_dayOfWeek_list);
             canvasjs_json_data_list.Add(canvasjs_hourOfday_list);
-            canvasjs_json_data_list.Add(canvasjs_dayOfWeek_list);
+            canvasjs_json_data_list.Add(canvasjs_dwelltime_list);
             canvasjs_json_data_list.Add(canvasjs_gender_list);
             canvasjs_json_data_list.Add(canvasjs_age_list);
             canvasjs_json_data_list.Add(canvasjs_location_list);

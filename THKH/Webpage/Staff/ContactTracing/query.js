@@ -214,6 +214,36 @@ function fillDashboard() {
 
                 age_chart.render();
 
+                var gender_chart = new CanvasJS.Chart("gender_chart",
+                {
+                    title: {
+                        text: "Check-ins by gender"
+                    },
+                    data: [
+
+                    {
+                        dataPoints: gender_json
+                    }
+                    ]
+                });
+
+                gender_chart.render();
+
+                var dwelltime_chart = new CanvasJS.Chart("dwelltime_chart",
+                {
+                    title: {
+                        text: "Check-ins by total time spent in hospital"
+                    },
+                    data: [
+
+                    {
+                        dataPoints: dwelltime_json
+                    }
+                    ]
+                });
+
+                dwelltime_chart.render();
+
                 var location_chart = new CanvasJS.Chart("location_chart",
                 {
                     title: {
