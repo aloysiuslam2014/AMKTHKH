@@ -121,8 +121,6 @@ function unifiedTrace() {
 //
 function writeUQResultsTable(uqResultJSON) {
             var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "reg", "scan"];
-
-            //visitor
             var row = document.createElement("tr");
             $(row).attr("class", "info");
 
@@ -160,12 +158,11 @@ function fillDashboard() {
 
         success: function (returner) {
             try {
-                var dashResult = JSON.parse(returner); //list of json objects
+                var dashResult = JSON.parse(returner);
                 alert("Woo! temporary success message. ");
             } catch (err) {
                 alert("Something went wrong when retrieving dashboard data. " + err);
             }
-
         },
         error: function (err) {
             alert("Something Ajaxsploded, please contact the admin.");

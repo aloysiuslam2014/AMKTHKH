@@ -447,7 +447,7 @@ namespace THKH.Classes.Controller
                 {
                     long ticks = DateTime.Now.Ticks;
                     byte[] bytes = BitConverter.GetBytes(ticks);
-                    qAid = Convert.ToBase64String(bytes) // Find a way to generate UNIQUE numbers!!!
+                    qAid = Convert.ToBase64String(bytes)
                                             .Replace('+', '_')
                                             .Replace('/', '-')
                                             .TrimEnd('=');
@@ -500,14 +500,13 @@ namespace THKH.Classes.Controller
                     for (int i = 0; i < bedArr.Length; i++)
                     {
                         dynamic num = checkNumCheckedIn(bedArr[i], limit);
-                        if (num.visitors >= limit) // May need to change to DB side
+                        if (num.visitors >= limit) 
                         {
                             valid = false;
                         }
                     }
-                    if (valid) // May need to change to DB side
+                    if (valid) 
                     {
-                        //msg += CheckIn(staffuser, nric, temperature);
                         checkin = CheckIn(staffuser, nric, temperature);
                     }
                     else
@@ -552,39 +551,11 @@ namespace THKH.Classes.Controller
 
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            //String visitor = "";
             String visit = "";
             String questionnaire = "";
             String checkin = "";
             string qAid = qaid;
             int pos = 0;
-            //try
-            //{
-            //    pos = Int32.Parse(postal);
-            //}
-            //catch (Exception ex)
-            //{}
-            //procedureCall = new GenericProcedureDAO("UPDATE_VISITOR_PROFILE", true, true, false);
-            //procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
-            //procedureCall.addParameterWithValue("@pNRIC", nric.ToUpper());
-            //procedureCall.addParameterWithValue("@pFullName", fname);
-            //procedureCall.addParameterWithValue("@pGender", sex);
-            //procedureCall.addParameterWithValue("@pNationality", nationality);
-            //procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-            //procedureCall.addParameterWithValue("@pMobileTel", mobtel);
-            //procedureCall.addParameterWithValue("@pHomeAddress", address);
-            //procedureCall.addParameterWithValue("@pPostalCode", pos);
-            //try
-            //{
-            //    ProcedureResponse responseOutput = procedureCall.runProcedure();
-            //    visitor = responseOutput.getSqlParameterValue("@responseMessage").ToString();
-            //}
-            //catch (Exception ex)
-            //{
-            //    result.Result = "Failure";
-            //    result.Visitor = ex.Message;
-            //    return JsonConvert.SerializeObject(result);
-            //}
 
             //update or add questionaire ans
             try
@@ -648,7 +619,6 @@ namespace THKH.Classes.Controller
                 return JsonConvert.SerializeObject(result);
             }
 
-            //result.Visitor = visitor;
             result.Visit = visit;
             result.Questionnaire = questionnaire;
             result.CheckIn = checkin;
