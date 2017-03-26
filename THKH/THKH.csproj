@@ -17,7 +17,7 @@
     <AssemblyName>THKH</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44343</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -654,6 +654,8 @@
     <Content Include="Webpage\Staff\ContactTracing\TracingGateway.ashx" />
     <Content Include="Webpage\Staff\MasterConfig\MasterConfigGateway.ashx" />
     <Content Include="Webpage\Staff\SMS\SMSManagementGateway.ashx" />
+    <Content Include="Webpage\Staff\PassManagement\signing\private-key.pem" />
+    <Content Include="Webpage\Staff\PassManagement\signing\sign-message.php" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config">
