@@ -161,13 +161,39 @@ function fillDashboard() {
         success: function (returner) {
             try {
                 var dashResult = returner
-                    //.substring(1, returner.length);
                 var result_json = JSON.parse(dashResult); //list of json objects, one for each chart
                 var dayOfWeek_json = JSON.parse(result_json[0]);
                 var hourOfDay_json = JSON.parse(result_json[1]);
-                //var dwelltime_json = JSON.parse(result_json[2]);
-                //var gender_json = JSON.parse(result_json[3]);
-                //var age_json = JSON.parse(result_json[4]);
+                var dwelltime_json = JSON.parse(result_json[2]);
+                var gender_json = JSON.parse(result_json[3]);
+                var age_json = JSON.parse(result_json[4]);
+                var location_json = JSON.parse(result_json[5]);
+
+                var chart = new CanvasJS.Chart("hourOfDay_chart",
+                {
+                    title: {
+                        text: "Check-ins by hour of day"
+                    },
+                    data: [
+                    {
+                        type: "bar",
+                        dataPoints: hourOfDay_json
+                    }
+                    ]
+                });
+
+                var chart = new CanvasJS.Chart("dayOfWeek_chart",
+                {
+                    title: {
+                        text: "Check-ins by day of week"
+                    },
+                    data: [
+                    {
+                        type: "bar",
+                        dataPoints: dayOfWeek_json
+                    }
+                    ]
+                });
 
                 alert("Woo! temporary success message. ");
             } catch (err) {

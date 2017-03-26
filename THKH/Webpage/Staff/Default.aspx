@@ -1302,9 +1302,13 @@
             <div class="col-sm-offset-1 col-sm-10" id="chart_container">
                 <div class="col-sm-6" id="time_chart_container">
                     <div id="hourOfDay_chart" style="height: 300px; width: 100%;"></div>
+                    <div id="dayOfWeek_chart" style="height: 300px; width: 100%;"></div>
                 </div>
                 <div class ="col-sm-6" id="demographic_chart_container">
-
+                    <div id="age_chart" style="height: 300px; width: 100%;"></div>
+                    <div id="gender_chart" style="height: 300px; width: 100%;"></div>
+                    <div id="dwelltime_chart" style="height: 300px; width: 100%;"></div>
+                    <div id="location_chart" style="height: 300px; width: 100%;"></div>
                 </div>
             </div>
         </div>
