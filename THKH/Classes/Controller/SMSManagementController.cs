@@ -19,10 +19,10 @@ namespace THKH.Classes.Controller
             string AuthToken = "a750950b96a75c3ab36d4508bfd1db31";
             TwilioClient.Init(AccountSid, AuthToken);
             String[] numArr = numbers.Split(',');
-
-            for (int i = 0; i < numArr.Length; i++)
+            var distinctNumbersArrary = numArr.Distinct().ToArray();
+            for (int i = 0; i < distinctNumbersArrary.Length; i++)
             {
-                String number = numArr[i];
+                String number = distinctNumbersArrary[i];
                 var to = new PhoneNumber("+65" + number);
                 try
                 {
