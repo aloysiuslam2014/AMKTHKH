@@ -9,9 +9,7 @@ var uq_loc = document.getElementById("uq_loc");
 
 //
 function enableToggle(current, other) {
-
     other.disabled = current.value.replace(/\s+/, '').length > 0;
-
 }
 
 //
@@ -62,9 +60,26 @@ function expressTrace() {
     });
 }
 
+// Change checkbox value upon click
+$('#expressTraceCheck').on('change', function () {
+    this.check;
+    var isChecked = $('input[id="expressTraceCheck"]').is(':checked');
+    if (isChecked) {
+        $("#uq_bednos").prop("disabled", true);
+        $("#uq_loc").prop("disabled", true);
+    } else {
+        $("#uq_bednos").prop("disabled", false);
+        $("#uq_loc").prop("disabled", false);
+    }
+});
+
 //
 function unifiedTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
+    var expTrc = $('input[id="expressTraceCheck"]').is(':checked');
+    if (expTrc) {
+        expressTrace();
+    }
     while (resultTable.firstChild) {
         resultTable.removeChild(resultTable.childNodes[0]);
     }
@@ -266,3 +281,19 @@ function fillDashboard() {
         },
     });
 }
+
+// Date time picker
+$(function () {
+    $('#unifiedquery_startdatetime').datetimepicker(
+        {
+            defaultDate: new Date(),
+            maxDate: 'now',
+            format: 'YYYY-MM-DD'
+        }
+        );
+    $('#unifiedquery_enddatetime').datetimepicker({
+        defaultDate: new Date(),
+        maxDate: 'now',
+        format: 'YYYY-MM-DD'
+    });
+});

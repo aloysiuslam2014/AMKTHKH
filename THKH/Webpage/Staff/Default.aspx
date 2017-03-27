@@ -498,8 +498,7 @@
                                 </span>
                             </div>
                             <%--Visit Time--%>
-                            <label for="visitbookingtime"><span style="color:lightcoral">*</span>Intended Visit Time (
-                                :mm)</label>
+                            <label for="visitbookingtime"><span style="color:lightcoral">*</span>Intended Visit Time (HH:mm)</label>
                             <div class="form-group">
                                 <select class="form-control required regInput" onchange="checkTime(); false;" id="visitbookingtime">
                                         <option value="">-- Select One --</option>
@@ -1116,26 +1115,6 @@
                         </span>
                     </div>
                 </div>
-
-                <script type="text/javascript"> //Shift to separate Script
-                    $(function () {
-                        $('#unifiedquery_startdatetime').datetimepicker(
-                            {
-                                defaultDate: new Date(),
-                                maxDate: 'now',
-                                format: 'YYYY-MM-DD'
-                            }
-                            );
-                    });
-                    $(function () {
-                        $('#unifiedquery_enddatetime').datetimepicker({
-                            defaultDate: new Date(),
-                            maxDate: 'now',
-                            format: 'YYYY-MM-DD'
-                        });
-                    });
-                </script>
-
                 <div id="unifiedquery_bednos" class="input-group col-sm-8">
                     <div class="col-sm-6">
                         <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 2101-2105 " type="text" />
@@ -1145,10 +1124,15 @@
                     </div>
                     <span class="input-group-btn">
                     <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace(); false;"><span class="glyphicon glyphicon-search"></span> Trace</button>
-                        <button class="btn btn-warning" id="execute_expressTrace" onclick="expressTrace(); false;"><span class="glyphicon glyphicon-search"></span> Trace Express Entries</button>
+                        <%--<button class="btn btn-warning" id="execute_expressTrace" onclick="expressTrace(); false;"><span class="glyphicon glyphicon-search"></span> Trace Express Entries</button>--%>
                     </span>
                 </div>
-
+                <div class="input-group col-sm-2">
+                    <div class="checkbox">
+                        <label for="expressTraceCheck"></label>
+                        <input type="checkbox" id="expressTraceCheck" name="declare" value="true" class="regInput" />Trace Express Entries<br />
+                    </div>
+                </div>
                 <script>
                     var uq_bednos = document.getElementById('uq_bednos'),
                         uq_loc = document.getElementById('uq_loc');
@@ -1166,7 +1150,6 @@
                 </script>
                 
             </div>
-
             <div class="form-group" id="uq_results">
                 <table id ="uq_resultstable" class="table table-responsive table-hover" style:"padding-left:10px padding-right:10px">
                     <thead id="uq_resultstable_head">
@@ -1225,7 +1208,7 @@
                             },
                             {
                                 extend: 'copyHtml5',
-                                text: 'Copy to Clipboard',
+                                text: 'Copy Numbers',
                                 header: false,
                                 footer: false,
                                 exportOptions: {
