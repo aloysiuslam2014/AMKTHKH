@@ -739,13 +739,8 @@
                                                     </select>
                                                     <label>Bed's attached to Terminal</label>
                                                     <input type="text" class="form-control text-center" id="beds" disabled="" placeholder="Enter Bed Numbers seperated by comma" />
-                                                    <label>Terminal in an infectious location?</label>
                                                     <%--<div class="form-group">--%>
-                                                    <select class="form-control" id="terminalInfectious">
-                                                        <option value="Yes">Yes</option>
-                                                        <option value="No">No</option>
-                                                    </select>
-
+                                                    
                                                     <%--</div>--%>
                                                 </div>
 
