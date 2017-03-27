@@ -2828,7 +2828,7 @@ BEGIN
   DECLARE @pBed_No_Int INT
   DECLARE @pActiveQns TABLE (Pat_Name VARCHAR(200), Bed VARCHAR(50))
   SET @pBed_No_Int = CONVERT(INT, @pBed_No)
-  —SET @pBed_No_Int = CAST(@pBed_No AS INT)
+  SET @pBed_No_Int = CAST(@pBed_No AS INT)
   
   INSERT INTO @pActiveQns
   SELECT * FROM OPENQUERY(APPSVR,'SELECT Pat_Name, Bed FROM [AMKH_InhouseDB_Production].[dbo].[Current_Patient_list]')
