@@ -639,7 +639,7 @@ namespace THKH.Classes.Controller
             {
                 dynamic canvas_dataItem = new ExpandoObject();
                 string label = dwelltimes[i - 1];
-                canvas_dataItem.x = (int)(i * 10);
+                //canvas_dataItem.x = (int)(i * 10);
                 canvas_dataItem.y = (int)(dwelltime_json)[label];
                 canvas_dataItem.label = label;
                 canvasjs_dwelltime_list.Add(canvas_dataItem);
@@ -649,11 +649,11 @@ namespace THKH.Classes.Controller
             dynamic gender_json = JsonConvert.DeserializeObject(gender_json_str);
             List<Object> canvasjs_gender_list = new List<Object>();
             List<string> genders = new List<string>(new string[] { "M", "F" });
-            for (int i = 1; i < genders.Count; i++)
+            for (int i = 1; i <= genders.Count; i++)
             {
                 dynamic canvas_dataItem = new ExpandoObject();
                 string label = genders[i - 1];
-                canvas_dataItem.x = (int)(i * 10);
+                //canvas_dataItem.x = (int)(i * 10);
                 canvas_dataItem.y = (int)(gender_json)[label];
                 canvas_dataItem.label = label;
                 canvasjs_gender_list.Add(canvas_dataItem);
@@ -667,7 +667,7 @@ namespace THKH.Classes.Controller
             {
                 dynamic canvas_dataItem = new ExpandoObject();
                 string label = ages[i - 1];
-                canvas_dataItem.x = (int)(i * 10);
+                //canvas_dataItem.x = (int)(i * 10);
                 canvas_dataItem.y = (int)(age_json)[label];
                 canvas_dataItem.label = label;
                 canvasjs_age_list.Add(canvas_dataItem);

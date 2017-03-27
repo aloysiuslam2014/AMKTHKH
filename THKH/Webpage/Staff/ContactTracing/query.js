@@ -177,7 +177,10 @@ function fillDashboard() {
                         type: "bar",
                         dataPoints: hourOfDay_json
                     }
-                    ]
+                    ],
+                    axisY: {
+                        interval: 1
+                    }
                 });
 
                 hourOfDay_chart.render();
@@ -205,6 +208,7 @@ function fillDashboard() {
                     data: [
 
                     {
+                        type: "column",
                         dataPoints: age_json
                     }
                     ]
@@ -220,6 +224,7 @@ function fillDashboard() {
                     data: [
 
                     {
+                        type: "column",
                         dataPoints: gender_json
                     }
                     ]
@@ -232,9 +237,13 @@ function fillDashboard() {
                     title: {
                         text: "Check-ins by total time spent in hospital"
                     },
+                        axisX: {
+                    labelAngle: -30
+                    },
                     data: [
 
                     {
+                        type: "column",
                         dataPoints: dwelltime_json
                     }
                     ]
