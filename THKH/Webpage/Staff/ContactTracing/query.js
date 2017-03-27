@@ -170,17 +170,17 @@ function fillDashboard() {
                 var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
                     title: {
-                        text: "Check-ins by hour of day"
+                        text: "Check-ins per hour"
+                    },
+                    axisX: {
+                        interval: 1
                     },
                     data: [
                     {
                         type: "bar",
                         dataPoints: hourOfDay_json
                     }
-                    ],
-                    axisY: {
-                        interval: 1
-                    }
+                    ]
                 });
 
                 hourOfDay_chart.render();
@@ -188,7 +188,7 @@ function fillDashboard() {
                 var dayOfweek_chart = new CanvasJS.Chart("dayOfWeek_chart",
                 {
                     title: {
-                        text: "Check-ins by day of week"
+                        text: "Check-ins per day"
                     },
                     data: [
                     {
@@ -203,7 +203,7 @@ function fillDashboard() {
                 var age_chart = new CanvasJS.Chart("age_chart",
                 {
                     title: {
-                        text: "Check-ins by age of visitor"
+                        text: "Visitor age range"
                     },
                     data: [
 
@@ -219,7 +219,7 @@ function fillDashboard() {
                 var gender_chart = new CanvasJS.Chart("gender_chart",
                 {
                     title: {
-                        text: "Check-ins by gender"
+                        text: "Visitor gender"
                     },
                     data: [
 
@@ -235,9 +235,9 @@ function fillDashboard() {
                 var dwelltime_chart = new CanvasJS.Chart("dwelltime_chart",
                 {
                     title: {
-                        text: "Check-ins by total time spent in hospital"
+                        text: "Visit Duration"
                     },
-                        axisX: {
+                        axisY: {
                     labelAngle: -30
                     },
                     data: [
@@ -254,7 +254,10 @@ function fillDashboard() {
                 var location_chart = new CanvasJS.Chart("location_chart",
                 {
                     title: {
-                        text: "Check-ins by location registered to visit"
+                        text: "Visitors per location"
+                    },
+                    axisX: {
+                        interval: 1
                     },
                     data: [
                     {
