@@ -173,11 +173,12 @@ function fillDashboard() {
                         text: "Check-ins per hour"
                     },
                     axisX: {
-                        interval: 1
+                        interval: 1,
+                        labelFontSize: 12
                     },
                     data: [
                     {
-                        type: "bar",
+                        type: "column",
                         dataPoints: hourOfDay_json
                     }
                     ]
@@ -192,7 +193,7 @@ function fillDashboard() {
                     },
                     data: [
                     {
-                        type: "bar",
+                        type: "column",
                         dataPoints: dayOfWeek_json
                     }
                     ]
@@ -237,8 +238,9 @@ function fillDashboard() {
                     title: {
                         text: "Visit Duration"
                     },
-                        axisY: {
-                    labelAngle: -30
+                        axisX: {
+                            labelAngle: -30,
+                            interval: 1
                     },
                     data: [
 
@@ -261,7 +263,7 @@ function fillDashboard() {
                     },
                     data: [
                     {
-                        type: "bar",
+                        type: "column",
                         dataPoints: location_json
                     }
                     ]
