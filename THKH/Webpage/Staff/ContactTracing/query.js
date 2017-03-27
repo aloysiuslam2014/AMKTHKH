@@ -184,6 +184,8 @@ function fillDashboard() {
 
                 var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
+                    width: 675,
+                    height: 300,
                     title: {
                         text: "Check-ins per hour"
                     },
@@ -203,6 +205,8 @@ function fillDashboard() {
 
                 var dayOfweek_chart = new CanvasJS.Chart("dayOfWeek_chart",
                 {
+                    width: 425,
+                    height: 300,
                     title: {
                         text: "Check-ins per day"
                     },
@@ -218,6 +222,8 @@ function fillDashboard() {
 
                 var age_chart = new CanvasJS.Chart("age_chart",
                 {
+                    width: 675,
+                    height: 300,
                     title: {
                         text: "Visitor age range"
                     },
@@ -234,6 +240,8 @@ function fillDashboard() {
 
                 var gender_chart = new CanvasJS.Chart("gender_chart",
                 {
+                    width: 425,
+                    height: 300,
                     title: {
                         text: "Visitor gender"
                     },
