@@ -50,7 +50,7 @@ $(function () {
             action: "addTerminal",
             id: terminalNameInput.value,
             bedList: beds.value,
-            isInfectious: terminalInfectious.value == "Yes" ? 1 : 0
+            isInfectious: terminalBedLink.value == "Yes" ? 1 : 0
         };
             $.ajax({
                 url: pathToTerminal,
