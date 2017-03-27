@@ -137,7 +137,8 @@ namespace THKH.Classes.Controller
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-           procedureCall = new GenericProcedureDAO("CONFIRM_PATIENT", true, true, false);
+            procedureCall = new GenericProcedureDAO("CONFIRM_PATIENT", true, true, false);
+            //procedureCall = new GenericProcedureDAO("CONFIRM_HOSPITAL_PATIENT", true, true, false);
             procedureCall.addParameter("@responseMessage", SqlDbType.VarChar, 500);
             procedureCall.addParameterWithValue("@pBedNo", bedno);
             procedureCall.addParameterWithValue("@pPatientFullName", pName);
