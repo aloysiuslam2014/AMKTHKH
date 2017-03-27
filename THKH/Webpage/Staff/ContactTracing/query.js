@@ -160,12 +160,12 @@ function fillDashboard() {
             try {
                 var dashResult = returner
                 var result_json = JSON.parse(dashResult); //list of json objects, one for each chart
-                var dayOfWeek_json = JSON.parse(result_json[0]);
-                var hourOfDay_json = JSON.parse(result_json[1]);
-                var dwelltime_json = JSON.parse(result_json[2]);
-                var gender_json = JSON.parse(result_json[3]);
-                var age_json = JSON.parse(result_json[4]);
-                var location_json = JSON.parse(result_json[5]);
+                var dayOfWeek_json = result_json[0];
+                var hourOfDay_json = result_json[1];
+                var dwelltime_json = result_json[2];
+                var gender_json = result_json[3];
+                var age_json = result_json[4];
+                var location_json = result_json[5];
 
                 var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
@@ -257,7 +257,6 @@ function fillDashboard() {
 
                 location_chart.render();
 
-                alert("Woo! temporary success message. ");
             } catch (err) {
                 alert("Something went wrong when retrieving dashboard data. " + err);
             }
