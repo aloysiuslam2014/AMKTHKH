@@ -2619,85 +2619,6 @@ BEGIN
 END;
 
 
-
-
-
---============= This is for Live DB to call the linked server & query the PATIENT DB ================================================================================================================
--------------------------------------------------------------------------------------------------------------
---GO
---CREATE PROCEDURE [dbo].[CONFIRM_HOSPITAL_PATIENT] 
---@pPatientFullName NVARCHAR(150),
---@pBedNo INT,
---@responseMessage VARCHAR(500) OUTPUT
-
---AS  
---BEGIN  
---  SET NOCOUNT ON  
---  DECLARE @pPatient_Detail VARCHAR(500)
---  DECLARE @pActiveQns TABLE (ADM_ID INT, Pat_NRIC VARCHAR(50), Pat_Name VARCHAR(200), ADM_Dt DATETIME, Bed VARCHAR(50))  
-
---  INSERT INTO @pActiveQns
---  SELECT * FROM OPENQUERY(APPSVR,'SELECT ADM_ID, Pat_NRIC, Pat_Name, ADM_Dt, Bed FROM [AMKH_InhouseDB].[dbo].[Current_Patient_list]')
-
---  IF(LEN(@pPatientFullName) > 5)
---  BEGIN
---    IF EXISTS (SELECT ADM_ID FROM @pActiveQns WHERE Pat_Name LIKE '%' + @pPatientFullName + '%' AND Bed = @pBedNo)
---    BEGIN
---      SET @pPatient_Detail = (SELECT (Pat_NRIC + ',' + Pat_Name + ',' + CAST(Bed AS VARCHAR(100))) FROM @pActiveQns WHERE Pat_Name LIKE '%' + @pPatientFullName + '%' AND Bed = @pBedNo)
---      SET @responseMessage = @pPatient_Detail
---    END
---    ELSE
---    BEGIN
---      SET @responseMessage = '0'
---    END
---    END
---    ELSE
---    BEGIN
---    IF EXISTS (SELECT ADM_ID FROM @pActiveQns WHERE Pat_Name = @pPatientFullName AND Bed = @pBedNo)
---    BEGIN
---      SET @pPatient_Detail = (SELECT (Pat_NRIC + ',' + Pat_Name + ',' + CAST(Bed AS VARCHAR(100))) FROM @pActiveQns WHERE Pat_Name = @pPatientFullName AND Bed = @pBedNo)
---    SET @responseMessage = @pPatient_Detail
---    END
---    ELSE
---    BEGIN
---      SET @responseMessage = '0'
---    END
---  END
---END;
-
-
------------------------------------------------------------------------------- Get Patient's name
---GO
---CREATE PROCEDURE [dbo].[GET_PATIENT_NAME]  
---@pBed_No VARCHAR(15),
---@pPatient_Name VARCHAR(100) OUTPUT,   
---@responseMessage INT OUTPUT  
-  
---AS  
---BEGIN  
---  SET NOCOUNT ON  
-
---  DECLARE @pBed_No_Int INT
---  DECLARE @pActiveQns TABLE (Pat_Name VARCHAR(200), Bed VARCHAR(50))
---  SET @pBed_No_Int = CONVERT(INT, @pBed_No)
---  —SET @pBed_No_Int = CAST(@pBed_No AS INT)
-  
---  INSERT INTO @pActiveQns
---  SELECT * FROM OPENQUERY(APPSVR,'SELECT Pat_Name, Bed FROM [AMKH_InhouseDB_Production].[dbo].[Current_Patient_list]')
-
---  IF EXISTS (SELECT Pat_Name FROM @pActiveQns WHERE @pBed_No_Int = Bed)  
---  BEGIN    
---    SET @responseMessage = 1
---    SET @pPatient_Name = (SELECT TOP 1 Pat_Name FROM @pActiveQns WHERE @pBed_No_Int = Bed)
---  END  
-   
---    ELSE  
---       SET @responseMessage = 0  
---END;
-
-
---===========================================================================================================================================================================================
-
 ---------------------------------------------------------------------------------------------------  Procedure for retrieving all visitors for dashboard  
 GO
 CREATE PROCEDURE [dbo].[GET_VISITORS_BY_DATES]  
@@ -2849,3 +2770,78 @@ BEGIN
 END;
 
 
+--============= This is for Live DB to call the linked server & query the PATIENT DB ================================================================================================================
+-------------------------------------------------------------------------------------------------------------
+--GO
+--CREATE PROCEDURE [dbo].[CONFIRM_HOSPITAL_PATIENT] 
+--@pPatientFullName NVARCHAR(150),
+--@pBedNo INT,
+--@responseMessage VARCHAR(500) OUTPUT
+
+--AS  
+--BEGIN  
+--  SET NOCOUNT ON  
+--  DECLARE @pPatient_Detail VARCHAR(500)
+--  DECLARE @pActiveQns TABLE (ADM_ID INT, Pat_NRIC VARCHAR(50), Pat_Name VARCHAR(200), ADM_Dt DATETIME, Bed VARCHAR(50))  
+
+--  INSERT INTO @pActiveQns
+--  SELECT * FROM OPENQUERY(APPSVR,'SELECT ADM_ID, Pat_NRIC, Pat_Name, ADM_Dt, Bed FROM [AMKH_InhouseDB].[dbo].[Current_Patient_list]')
+
+--  IF(LEN(@pPatientFullName) > 5)
+--  BEGIN
+--    IF EXISTS (SELECT ADM_ID FROM @pActiveQns WHERE Pat_Name LIKE '%' + @pPatientFullName + '%' AND Bed = @pBedNo)
+--    BEGIN
+--      SET @pPatient_Detail = (SELECT (Pat_NRIC + ',' + Pat_Name + ',' + CAST(Bed AS VARCHAR(100))) FROM @pActiveQns WHERE Pat_Name LIKE '%' + @pPatientFullName + '%' AND Bed = @pBedNo)
+--      SET @responseMessage = @pPatient_Detail
+--    END
+--    ELSE
+--    BEGIN
+--      SET @responseMessage = '0'
+--    END
+--    END
+--    ELSE
+--    BEGIN
+--    IF EXISTS (SELECT ADM_ID FROM @pActiveQns WHERE Pat_Name = @pPatientFullName AND Bed = @pBedNo)
+--    BEGIN
+--      SET @pPatient_Detail = (SELECT (Pat_NRIC + ',' + Pat_Name + ',' + CAST(Bed AS VARCHAR(100))) FROM @pActiveQns WHERE Pat_Name = @pPatientFullName AND Bed = @pBedNo)
+--    SET @responseMessage = @pPatient_Detail
+--    END
+--    ELSE
+--    BEGIN
+--      SET @responseMessage = '0'
+--    END
+--  END
+--END;
+
+
+------------------------------------------------------------------------------ Get Patient's name
+--GO
+--CREATE PROCEDURE [dbo].[GET_PATIENT_NAME]  
+--@pBed_No VARCHAR(15),
+--@pPatient_Name VARCHAR(100) OUTPUT,   
+--@responseMessage INT OUTPUT  
+  
+--AS  
+--BEGIN  
+--  SET NOCOUNT ON  
+
+--  DECLARE @pBed_No_Int INT
+--  DECLARE @pActiveQns TABLE (Pat_Name VARCHAR(200), Bed VARCHAR(50))
+--  SET @pBed_No_Int = CONVERT(INT, @pBed_No)
+--  —SET @pBed_No_Int = CAST(@pBed_No AS INT)
+  
+--  INSERT INTO @pActiveQns
+--  SELECT * FROM OPENQUERY(APPSVR,'SELECT Pat_Name, Bed FROM [AMKH_InhouseDB_Production].[dbo].[Current_Patient_list]')
+
+--  IF EXISTS (SELECT Pat_Name FROM @pActiveQns WHERE @pBed_No_Int = Bed)  
+--  BEGIN    
+--    SET @responseMessage = 1
+--    SET @pPatient_Name = (SELECT TOP 1 Pat_Name FROM @pActiveQns WHERE @pBed_No_Int = Bed)
+--  END  
+   
+--    ELSE  
+--       SET @responseMessage = 0  
+--END;
+
+
+--===========================================================================================================================================================================================
