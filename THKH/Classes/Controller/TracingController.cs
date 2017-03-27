@@ -615,7 +615,7 @@ namespace THKH.Classes.Controller
             {
                 dynamic canvas_dataItem = new ExpandoObject();
                 canvas_dataItem.label = day;
-                canvas_dataItem.y = (string)((IDictionary<string, object>)dayOfWeek_json)[day];
+                canvas_dataItem.y = (int)(dayOfWeek_json)[day];
                 canvasjs_dayOfWeek_list.Add(canvas_dataItem);
             }
 
@@ -627,8 +627,8 @@ namespace THKH.Classes.Controller
             {
                 dynamic canvas_dataItem = new ExpandoObject();
                 canvas_dataItem.label = hour;
-                canvas_dataItem.y = (string)((IDictionary<string, object>)dayOfWeek_json)[hour];
-                canvasjs_dayOfWeek_list.Add(canvas_dataItem);
+                canvas_dataItem.y = (int)(hourOfDay_json)[hour];
+                canvasjs_hourOfday_list.Add(canvas_dataItem);
             }
 
             string dwelltime_json_str = compiled_visitor_json_data_list[2];
@@ -640,7 +640,7 @@ namespace THKH.Classes.Controller
                 dynamic canvas_dataItem = new ExpandoObject();
                 string label = dwelltimes[i - 1];
                 canvas_dataItem.x = (int)(i * 10);
-                canvas_dataItem.y = (string)((IDictionary<string, object>)dwelltime_json)[label];
+                canvas_dataItem.y = (int)(dwelltime_json)[label];
                 canvas_dataItem.label = label;
                 canvasjs_dwelltime_list.Add(canvas_dataItem);
             }
@@ -654,7 +654,7 @@ namespace THKH.Classes.Controller
                 dynamic canvas_dataItem = new ExpandoObject();
                 string label = genders[i - 1];
                 canvas_dataItem.x = (int)(i * 10);
-                canvas_dataItem.y = (string)((IDictionary<string, object>)gender_json)[label];
+                canvas_dataItem.y = (int)(gender_json)[label];
                 canvas_dataItem.label = label;
                 canvasjs_gender_list.Add(canvas_dataItem);
             }
@@ -668,19 +668,20 @@ namespace THKH.Classes.Controller
                 dynamic canvas_dataItem = new ExpandoObject();
                 string label = ages[i - 1];
                 canvas_dataItem.x = (int)(i * 10);
-                canvas_dataItem.y = (string)((IDictionary<string, object>)age_json)[label];
+                canvas_dataItem.y = (int)(age_json)[label];
                 canvas_dataItem.label = label;
                 canvasjs_age_list.Add(canvas_dataItem);
             }
 
             string location_json_str = compiled_visitor_json_data_list[5];
-            dynamic location_json = JsonConvert.DeserializeObject(age_json_str);
+            dynamic location_json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(location_json_str);
+          //  var k= location_json.Keys();
             List<Object> canvasjs_location_list = new List<Object>();
-            foreach(KeyValuePair<string, object> kvp in location_json)
+            foreach (var loc in location_json.Keys)
             {
                 dynamic canvas_dataItem = new ExpandoObject();
-                canvas_dataItem.label = kvp.Key;
-                canvas_dataItem.y = (int)kvp.Value;
+                canvas_dataItem.label = (string)loc;
+                canvas_dataItem.y = (int)location_json[loc];
                 canvasjs_location_list.Add(canvas_dataItem);
             }
 
