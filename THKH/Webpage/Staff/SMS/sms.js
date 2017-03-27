@@ -16,22 +16,30 @@ function checkSMSNumber() {
     }
     var uniqueNums = [];
     for (var i = 0; i < numArr.length; i++) {
-        if (numArr[i] != "") {
-            if (uniqueNums.indexOf(numArr[i]) == -1) uniqueNums.push(numArr[i]);
+        var curNum = numArr[i];
+        if (curNum != "") {
+            if (curNum.charAt(0) == '+' || curNum.charAt(0) != '6') {
+                if (uniqueNums.indexOf(curNum) == -1) uniqueNums.push(curNum);
+            }
         }
     }
+    numbers = "";
     for (i = 0; i < uniqueNums.length; i++) {
-        if (!validatePhone(uniqueNums[i])) {
+        var currentNum = uniqueNums[i]
+        if (!validatePhone(currentNum)) {
             valid = false;
         }
+        numbers += currentNum + ",";
     }
+    $("#targetVisitor").prop('value', numbers.substring(0,numbers.length -1));
     if (valid) {
         checkMessage(uniqueNums);
     } else {
-        // Invalid number warning
+        alert("Invalid Number!");
     }
 }
 
+//
 function checkMessage(numArr) {
     var message = $("#smsMessage").val();
     if (message === "") {
