@@ -10,6 +10,11 @@ namespace THKH.Classes.Controller
     {
         private GenericProcedureDAO procedureCall;
         private String toReturn = "";
+        /// <summary>
+        /// Delete all terminals *no longer in use*
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public String deleteAllTerminals(string id)
         {
             bool success = false;
@@ -27,6 +32,13 @@ namespace THKH.Classes.Controller
             return success ? "true" : "false";
         }
 
+        /// <summary>
+        /// Adds terminal based on the provided paremeters
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="bedNoList">List of bed numbers that is controlled by this terminal</param>
+        /// <param name="infectious">Is this an terminal in an infectious location?</param>
+        /// <returns>true or false</returns>
         public String addTerminal(string id, String bedNoList, String infectious)
         {
             bool success = false;
@@ -125,6 +137,11 @@ namespace THKH.Classes.Controller
             return success ? "true" : "false";
         }
 
+        /// <summary>
+        /// Deletes terminal that has the ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>true or false</returns>
         public String deleteTerminal(string id)
         {
             bool success = false;
@@ -145,6 +162,11 @@ namespace THKH.Classes.Controller
             return success ? "true" : "false";
         }
 
+        /// <summary>
+        /// Used to verify staff attempting to access the terminal activation page based on staff id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>true or false</returns>
         public String verify(String id)
         {
             bool success = false;
@@ -164,6 +186,11 @@ namespace THKH.Classes.Controller
             return success ? "true" : "false";
         }
 
+        /// <summary>
+        /// Activate provided id's terminal
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>true or false</returns>
         public String activateTerminal(String id)
         {
             bool success = false;
@@ -184,6 +211,11 @@ namespace THKH.Classes.Controller
             return success ? "true" : "false";
         }
 
+        /// <summary>
+        /// Deactivate provided terminal
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>true or false</returns>
         public String deactivateTerminal(String id)
         {
             bool success = false;
@@ -205,6 +237,11 @@ namespace THKH.Classes.Controller
             return success ? "true" : "false";
         }
 
+        /// <summary>
+        /// No longer being used. Deactivate all terminals
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public String deactivateAllTerminal(String id)
         {
             bool success = false;
@@ -226,6 +263,12 @@ namespace THKH.Classes.Controller
 
         }
 
+        /// <summary>
+        /// Check in a user at given location id and the visitor id
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <param name="userId"></param>
+        /// <returns>true or false</returns>
         public String  checkInUser(String locationId, String userId)
         {
             bool success = false;
@@ -259,6 +302,10 @@ namespace THKH.Classes.Controller
             return success ? toReturn : "false";
         }
 
+        /// <summary>
+        /// Gets all the Terminals 
+        /// </summary>
+        /// <returns>String of data returned from. Data seperated by row with '|' and columns with ','</returns>
         public String getAllTerminals()
         {
 

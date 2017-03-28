@@ -14,6 +14,10 @@ namespace THKH.Classes.Controller
         private GenericProcedureDAO procedureCall;
         private ProcedureResponse result;
 
+        /// <summary>
+        /// Gets the Pass current state
+        /// </summary>
+        /// <returns>returns dynamic object that holds the pass contents</returns>
         public dynamic getPassState()
         {
             DataTable dataTable = new DataTable();
@@ -43,6 +47,11 @@ namespace THKH.Classes.Controller
             return stateOfPass;
         }
 
+        /// <summary>
+        /// Generates barcode image and returns it in base64 format within a dynamic object
+        /// </summary>
+        /// <param name="textToEncode">Self explanatory</param>
+        /// <returns>Dynamic object that holds the barcode image</returns>
         public dynamic generateBarcode(string textToEncode)
         {
             string successString = "";
@@ -74,6 +83,12 @@ namespace THKH.Classes.Controller
             return jsonReturn;
         }
 
+        /// <summary>
+        /// Gets the state of the pass and saves it to the db
+        /// </summary>
+        /// <param name="state">The state of the pass (html string)</param>
+        /// <param name="statePositions">Old no longer in use but stil needs some input</param>
+        /// <returns>Success or error</returns>
         public string setPassState(string state, string statePositions)
         {
             string successString = "";
