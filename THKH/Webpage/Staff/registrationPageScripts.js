@@ -124,7 +124,7 @@ function callCheck (){
                             $("#visitbookingdate").val(visitObj.visReqTime.substring(0, 10));
                             $("#visitbookingtime").val(visitObj.visReqTime.substring(11, 16));
                             var visPurpose = visitObj.purpose;
-                            $('#pInput').val(visPurpose); 
+                            $('#pInput').val(visPurpose);
                             if (visPurpose == "Visit Patient") {
                                 $("#patientpurposevisit").css("display", "block");
                                 $("#otherpurposevisit").css("display", "none");
@@ -141,15 +141,24 @@ function callCheck (){
                             }
                             $("#qaid").prop('value', visitObj.qAid);
                             $("#remarks").prop('value', visitObj.remarks);
+                        } else {
+                            // Current Time
                         } if (questionnaireArr.length >= 1) {
                             for (i = 0; i < questionnaireArr.length; i++) {
                                 var jsonAnswerObject = questionnaireArr[i];
                                 var qid = jsonAnswerObject.qid;
                                 var answer = jsonAnswerObject.answer
-                                $('#' + qid).val(answer);
-                                $("#questionaireForm input[name='" + qid + "'][value='" + answer + "']").prop("checked", true); // Checkbox
-                                $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
-                                $("#questionaireForm input[id='" + qid + "'][value='" + answer + "']").prop("checked", true) // Radio
+                                if (answer.includes(",")) { // Checkbox
+                                    var arr = answer.split(",");
+                                    for (i = 0; i < arr.length; i++) {
+                                        var answerOpt = arr[i];
+                                        $("#questionaireForm input[name='" + qid + "'][value='" + answerOpt + "']").prop("checked", true);
+                                    }
+                                } else {
+                                    $('#' + qid).val(answer);
+                                    $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
+                                    $("#questionaireForm input[id='" + qid + "'][value='" + answer + "']").prop("checked", true) // Radio
+                                } 
                             }
                         }
                         else if (resultOfGeneration.Visitor === "new" & visitObj === undefined & questionnaireArr.length == 0) {
@@ -381,7 +390,7 @@ $("#temp").on("input", function () {
                 $('#tempLimitWarning').css("display", "none");
                 $("#invalidTempWarning").css("display", "none");
                 $('#lowtempWarning').css("display", "none");
-                $('#tempWarning').html("Visitor's Temperature is above the allowable " + warnTemp + " degrees celcius!");
+                $('#tempWarning').html("Warning Fever!");
                 $('#tempWarning').css("display", "block");
                 validTemp = true;
             }
@@ -530,7 +539,7 @@ function NewExpressReg() {
     var allowNric = false;
 }
 
-//
+// partially or wholly clears the user fields based on a boolean value
 function clearFields(overwrite) {
     if (allowVisit) {
         if (overwrite) {
@@ -622,7 +631,7 @@ function checkLocation() {
     return !blank;
 }
 
-// For field validations
+// Checks the filling of the required fields
 function checkRequiredFields() {
     var valid = true;
     $.each($("#registration input.required"), function (index, value) {
@@ -725,7 +734,7 @@ function getQuestionnaireAnswers() {
         }
         var type = element.prop('type');
         if (type != null & type == 'radio') {
-            var check = element.attr('checked');
+            var check = element.is(':checked');
             if (check) {
                 allAnswers.push(id + ':' + element.val());
             }
@@ -779,7 +788,7 @@ $(function () {
         });
 });
 
-// For datetimepicker
+// Date picker formatter
 function getFormattedDate(date) {
     var day = date.getDate();
     var month = date.getMonth() + 1;
@@ -840,7 +849,7 @@ function hideTags(clear) {
     }
 }
 
-//
+// button settings for check nric button
 function enterToCheckNric(e) {
     if (e.which == 13 || e.keyCode == 13) {
         checkNricWarningDeclaration(); false; }
@@ -1055,6 +1064,9 @@ function populateTime() {
                         $(optin).attr("name", time[i]);
                         $(optin).attr("value", time[i]);
                         $(optin).html(time[i]);
+                        if (time[i] == timeStr) {
+                            $(optin).prop("selected", true);
+                        }
                         $('#visitbookingtime').append(optin);
                     }
                 }

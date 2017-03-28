@@ -10,6 +10,10 @@ namespace THKH.Webpage.Staff.ContactTracing
     {
         private TracingController traceController = new TracingController();
 
+        /// <summary>
+        /// Picks out the action needed & calls the appropriate methods in the related controller class
+        /// </summary>
+        /// <param name="context"></param>
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";

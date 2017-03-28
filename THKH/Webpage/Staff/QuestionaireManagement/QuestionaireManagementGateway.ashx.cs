@@ -12,6 +12,10 @@ namespace THKH.Webpage.Staff.QuestionaireManagement
     {
         QuestionaireManagementController questionaireManagementController = new QuestionaireManagementController();
 
+        /// <summary>
+        /// Picks out the action needed & calls the appropriate methods in the related controller class
+        /// </summary>
+        /// <param name="context"></param>
         public void ProcessRequest(HttpContext context)
         {
 

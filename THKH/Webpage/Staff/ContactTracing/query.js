@@ -9,9 +9,7 @@ var uq_loc = document.getElementById("uq_loc");
 
 //
 function enableToggle(current, other) {
-
     other.disabled = current.value.replace(/\s+/, '').length > 0;
-
 }
 
 //
@@ -62,9 +60,26 @@ function expressTrace() {
     });
 }
 
+// Change checkbox value upon click
+$('#expressTraceCheck').on('change', function () {
+    this.check;
+    var isChecked = $('input[id="expressTraceCheck"]').is(':checked');
+    if (isChecked) {
+        $("#uq_bednos").prop("disabled", true);
+        $("#uq_loc").prop("disabled", true);
+    } else {
+        $("#uq_bednos").prop("disabled", false);
+        $("#uq_loc").prop("disabled", false);
+    }
+});
+
 //
 function unifiedTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
+    var expTrc = $('input[id="expressTraceCheck"]').is(':checked');
+    if (expTrc) {
+        expressTrace();
+    }
     while (resultTable.firstChild) {
         resultTable.removeChild(resultTable.childNodes[0]);
     }
@@ -169,30 +184,35 @@ function fillDashboard() {
 
                 var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
+                    width: 675,
+                    height: 300,
                     title: {
-                        text: "Check-ins by hour of day"
+                        text: "Check-ins per hour"
+                    },
+                    axisX: {
+                        interval: 1,
+                        labelFontSize: 12
                     },
                     data: [
                     {
-                        type: "bar",
+                        type: "column",
                         dataPoints: hourOfDay_json
                     }
-                    ],
-                    axisY: {
-                        interval: 1
-                    }
+                    ]
                 });
 
                 hourOfDay_chart.render();
 
                 var dayOfweek_chart = new CanvasJS.Chart("dayOfWeek_chart",
                 {
+                    width: 425,
+                    height: 300,
                     title: {
-                        text: "Check-ins by day of week"
+                        text: "Check-ins per day"
                     },
                     data: [
                     {
-                        type: "bar",
+                        type: "column",
                         dataPoints: dayOfWeek_json
                     }
                     ]
@@ -202,8 +222,10 @@ function fillDashboard() {
 
                 var age_chart = new CanvasJS.Chart("age_chart",
                 {
+                    width: 675,
+                    height: 300,
                     title: {
-                        text: "Check-ins by age of visitor"
+                        text: "Visitor age range"
                     },
                     data: [
 
@@ -218,8 +240,10 @@ function fillDashboard() {
 
                 var gender_chart = new CanvasJS.Chart("gender_chart",
                 {
+                    width: 425,
+                    height: 300,
                     title: {
-                        text: "Check-ins by gender"
+                        text: "Visitor gender"
                     },
                     data: [
 
@@ -235,10 +259,11 @@ function fillDashboard() {
                 var dwelltime_chart = new CanvasJS.Chart("dwelltime_chart",
                 {
                     title: {
-                        text: "Check-ins by total time spent in hospital"
+                        text: "Visit Duration"
                     },
                         axisX: {
-                    labelAngle: -30
+                            labelAngle: -30,
+                            interval: 1
                     },
                     data: [
 
@@ -254,11 +279,14 @@ function fillDashboard() {
                 var location_chart = new CanvasJS.Chart("location_chart",
                 {
                     title: {
-                        text: "Check-ins by location registered to visit"
+                        text: "Visitors per location"
+                    },
+                    axisX: {
+                        interval: 1
                     },
                     data: [
                     {
-                        type: "bar",
+                        type: "column",
                         dataPoints: location_json
                     }
                     ]
@@ -275,3 +303,19 @@ function fillDashboard() {
         },
     });
 }
+
+// Date time picker
+$(function () {
+    $('#unifiedquery_startdatetime').datetimepicker(
+        {
+            defaultDate: new Date(),
+            maxDate: 'now',
+            format: 'YYYY-MM-DD'
+        }
+        );
+    $('#unifiedquery_enddatetime').datetimepicker({
+        defaultDate: new Date(),
+        maxDate: 'now',
+        format: 'YYYY-MM-DD'
+    });
+});

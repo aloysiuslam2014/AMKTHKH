@@ -12,14 +12,11 @@ namespace THKH.Classes.Controller
     public class QuestionaireManagementController
     {
 
-        // Generate JSON String for Questionnaire & Questions - Initial Page Load
-        public String generateJSONFromData()
-        {
-            String successString = "";
-            return successString;
-        }
-
-        // Add new questionnaire to DB
+        /// <summary>
+        /// Add new questionnaire to DB
+        /// </summary>
+        /// <param name="qName"></param>
+        /// <returns>JSON String</returns>
         public String addQuestionnaire(String qName)
         {
             dynamic result = new ExpandoObject();
@@ -48,7 +45,12 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
-        // Update questionnaire with new question order
+        /// <summary>
+        /// Update questionnaire with new question order
+        /// </summary>
+        /// <param name="qnaire"></param>
+        /// <param name="order"></param>
+        /// <returns>JSON String</returns>
         public String updateQuestionnaire(String qnaire, String order)
         {
             dynamic result = new ExpandoObject();
@@ -70,7 +72,11 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
-        // Sets the selected questionnaire as active & deactivates the rest
+        /// <summary>
+        /// Sets the selected questionnaire as active & deactivates the rest
+        /// </summary>
+        /// <param name="qName"></param>
+        /// <returns>JSON String</returns>
         public String setActiveQuestionnaire(String qName)
         {
             dynamic result = new ExpandoObject();
@@ -91,7 +97,10 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
-        // removes questionnaire
+        /// <summary>
+        /// Removes questionnaire
+        /// </summary>
+        /// <returns>JSON String</returns>
         public String deleteQuestionnaire()
         {
             dynamic result = new ExpandoObject();
@@ -112,7 +121,13 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
-        // Adds new question
+        /// <summary>
+        /// Adds new question
+        /// </summary>
+        /// <param name="qn"></param>
+        /// <param name="qnType"></param>
+        /// <param name="qnValues"></param>
+        /// <returns>JSON String</returns>
         public String addQuestion(String qn, String qnType, String qnValues)
         {
             dynamic result = new ExpandoObject();
@@ -135,7 +150,14 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
-        // Updates a question
+        /// <summary>
+        /// Updates a question
+        /// </summary>
+        /// <param name="qnId"></param>
+        /// <param name="qn"></param>
+        /// <param name="qnType"></param>
+        /// <param name="qnValues"></param>
+        /// <returns>JSON String</returns>
         public String updateQuestion(String qnId, String qn, String qnType, String qnValues)
         {
             dynamic result = new ExpandoObject();
@@ -159,7 +181,10 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
-        // Delete question
+        /// <summary>
+        /// Deletes a selected question
+        /// </summary>
+        /// <returns>JSON String</returns>
         public String deleteQuestion()
         {
             dynamic result = new ExpandoObject();
@@ -179,7 +204,10 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
-        // retrieves all the questionnaires from the DB
+        /// <summary>
+        /// Retrieves all the questionnaires from the DB
+        /// </summary>
+        /// <param name="toSend"></param>
         public void retrieveQuestionnaires(dynamic toSend)
         {
             ArrayList questionaires = new ArrayList();
@@ -213,7 +241,11 @@ namespace THKH.Classes.Controller
 
         }
 
-        // retrieves all the questions in the SELECTED questionnaire
+        /// <summary>
+        /// Retrieves all the questions in the SELECTED questionnaire
+        /// </summary>
+        /// <param name="idList"></param>
+        /// <param name="toSend"></param>
         public void retrieveQuestionnaireQuestions(string idList, dynamic toSend)
         {
             ArrayList qnsQns = new ArrayList();
@@ -318,7 +350,10 @@ namespace THKH.Classes.Controller
             toSend.qnQns = qnsQns;
         }
 
-        // Retrieves all the questions from the DB
+        /// <summary>
+        /// Retrieves all the questions from the DB
+        /// </summary>
+        /// <param name="toSend"></param>
         public void retrieveQuestions(dynamic toSend)
         {
             ArrayList qns = new ArrayList();
@@ -354,6 +389,12 @@ namespace THKH.Classes.Controller
 
         }
 
+        /// <summary>
+        /// Updates the Questionnaire_List Table with the question IDs assigned to it
+        /// </summary>
+        /// <param name="qnaireId"></param>
+        /// <param name="qns"></param>
+        /// <returns></returns>
         public String addQuestionToQuestionnaire(String qnaireId, String qns)
         {
             dynamic result = new ExpandoObject();
@@ -374,6 +415,5 @@ namespace THKH.Classes.Controller
             }
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
-
     }
 }

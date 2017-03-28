@@ -10,6 +10,11 @@ namespace THKH.Classes.Controller
     public class UserManagementController
     {
         GenericProcedureDAO procedureCall;
+
+        /// <summary>
+        /// Returns a string of user profile names
+        /// </summary>
+        /// <returns>JSON String</returns>
         public String loadUsers()
         {
             dynamic jsonObj = new ExpandoObject();
@@ -49,7 +54,11 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj); ;
         }
 
-        // Gets a specific row from the Staff Table
+        /// <summary>
+        /// Gets a specific row from the Staff Table
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>JSON String</returns>
         public String getUser(String email)
         {
             String successString = "";//result and msg 
@@ -105,7 +114,27 @@ namespace THKH.Classes.Controller
             return successString;
         }
 
-        // Creates a new row in the Staff Table
+        /// <summary>
+        /// Creates a new row in the Staff Table
+        /// </summary>
+        /// <param name="fname"></param>
+        /// <param name="lname"></param>
+        /// <param name="snric"></param>
+        /// <param name="email"></param>
+        /// <param name="address"></param>
+        /// <param name="postal"></param>
+        /// <param name="mobtel"></param>
+        /// <param name="hometel"></param>
+        /// <param name="alttel"></param>
+        /// <param name="sex"></param>
+        /// <param name="nationality"></param>
+        /// <param name="dob"></param>
+        /// <param name="title"></param>
+        /// <param name="permissions"></param>
+        /// <param name="password"></param>
+        /// <param name="staffUser"></param>
+        /// <param name="accessProfile"></param>
+        /// <returns>JSON String</returns>
         public String addUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile)
         {
@@ -152,7 +181,12 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(responseJson);
         }
 
-        // Deletes a specific row in the Staff Table
+        /// <summary>
+        /// Deletes a specific row in the Staff Table
+        /// </summary>
+        /// <param name="snric"></param>
+        /// <param name="email"></param>
+        /// <returns>JSON String</returns>
         public String deleteUser(String snric, String email)
         {
             dynamic responseJson = new ExpandoObject();
@@ -175,7 +209,27 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(responseJson);
         }
 
-        // Updates a specific row in the Staff Table
+        /// <summary>
+        /// Updates a specific row in the Staff Table
+        /// </summary>
+        /// <param name="fname"></param>
+        /// <param name="lname"></param>
+        /// <param name="snric"></param>
+        /// <param name="email"></param>
+        /// <param name="address"></param>
+        /// <param name="postal"></param>
+        /// <param name="mobtel"></param>
+        /// <param name="hometel"></param>
+        /// <param name="alttel"></param>
+        /// <param name="sex"></param>
+        /// <param name="nationality"></param>
+        /// <param name="dob"></param>
+        /// <param name="title"></param>
+        /// <param name="permissions"></param>
+        /// <param name="password"></param>
+        /// <param name="staffUser"></param>
+        /// <param name="accessProfile"></param>
+        /// <returns>JSON String</returns>
         public String updateUser(String fname, String lname, String snric, String email, String address, String postal, String mobtel, String hometel, String alttel, String sex,
             String nationality, String dob, String title, int permissions, String password, String staffUser, String accessProfile)
         {
@@ -217,6 +271,10 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(responseJson);
         }
 
+        /// <summary>
+        /// Returns a string of the available user permissions
+        /// </summary>
+        /// <returns>JSON String</returns>
         public String getPermissions()
         {
             String successString = "";//result and msg 

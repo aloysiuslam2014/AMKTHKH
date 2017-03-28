@@ -11,6 +11,10 @@ namespace THKH.Webpage.Staff.TerminalCalls
     {
         private TerminalManagementController terminalController = new TerminalManagementController();
 
+        /// <summary>
+        /// Picks out the action needed & calls the appropriate methods in the related controller class
+        /// </summary>
+        /// <param name="context"></param>
         public void ProcessRequest(HttpContext context)
         {
             var success = "false";
