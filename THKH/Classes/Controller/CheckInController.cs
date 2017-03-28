@@ -13,6 +13,10 @@ namespace THKH.Classes.Controller
     {
         private GenericProcedureDAO procedureCall;
 
+        /// <summary>
+        /// Returns a list of facilities available in the hospital
+        /// </summary>
+        /// <returns>JSON String</returns>
         public String getFacilities()
         {
             dynamic result = new ExpandoObject();
@@ -88,6 +92,10 @@ namespace THKH.Classes.Controller
              
         }
 
+        /// <summary>
+        /// Retrieves a string of the current visitor form
+        /// </summary>
+        /// <returns>JSON String</returns>
         public String loadForm()
         {
             dynamic result = new ExpandoObject();
@@ -132,7 +140,12 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
-        // Check if patient exists in the Patient Database
+        /// <summary>
+        /// Check if patient exists in the Patient Database
+        /// </summary>
+        /// <param name="pName"></param>
+        /// <param name="bedno"></param>
+        /// <returns>JSON String</returns>
         public String checkPatient(String pName, String bedno)
         {
             dynamic result = new ExpandoObject();
@@ -155,6 +168,11 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
+        /// <summary>
+        /// Returns a string of the selected visitor details
+        /// </summary>
+        /// <param name="nric"></param>
+        /// <returns>JSON String</returns>
         public String getVisitorDetails(String nric)
         {
             dynamic result = new ExpandoObject();
@@ -223,6 +241,11 @@ namespace THKH.Classes.Controller
             return JsonConvert.SerializeObject(result);
         }
 
+        /// <summary>
+        /// Returns a string of the selected visitor's visit details
+        /// </summary>
+        /// <param name="nric"></param>
+        /// <returns>JSON String</returns>
         public Visit getVisitDetails(String nric)
         {
             //dynamic result = new ExpandoObject();
@@ -258,6 +281,11 @@ namespace THKH.Classes.Controller
             return vis;
         }
 
+        /// <summary>
+        /// Returns a string of the selected visitor's form responses
+        /// </summary>
+        /// <param name="qAID"></param>
+        /// <returns>JSON String</returns>
         public String getSubmittedQuestionnaireResponse(String qAID)
         {
             String successString = "";
@@ -291,7 +319,27 @@ namespace THKH.Classes.Controller
             return successString;
         }
 
-        // Write to Visitor & Visit Table
+        /// <summary>
+        /// Write to Visitor & Visit Table
+        /// </summary>
+        /// <param name="nric"></param>
+        /// <param name="fname"></param>
+        /// <param name="address"></param>
+        /// <param name="postal"></param>
+        /// <param name="mobtel"></param>
+        /// <param name="sex"></param>
+        /// <param name="nationality"></param>
+        /// <param name="dob"></param>
+        /// <param name="purpose"></param>
+        /// <param name="otherPurpose"></param>
+        /// <param name="bedno"></param>
+        /// <param name="appTime"></param>
+        /// <param name="visitLocation"></param>
+        /// <param name="qListID"></param>
+        /// <param name="qAns"></param>
+        /// <param name="qaid"></param>
+        /// <param name="amend"></param>
+        /// <returns>JSON String</returns>
         public String selfReg(String nric, String fname, String address, String postal, String mobtel,
             String sex, String nationality, String dob, String purpose, String otherPurpose, String bedno, String appTime,
             String visitLocation, String qListID, String qAns, String qaid, String amend)
@@ -370,13 +418,18 @@ namespace THKH.Classes.Controller
             return JsonConvert.SerializeObject(result);
         }
 
-        //Gets patient name from db 
+        /// <summary>
+        /// Returns a string of patient names given their bed numbers
+        /// </summary>
+        /// <param name="beds"></param>
+        /// <returns>JSON String</returns>
         public string getPatientNames(string beds)
         {
             string successString = "";
             dynamic toSend = new ExpandoObject();
 
            procedureCall = new GenericProcedureDAO("GET_PATIENT_NAME", true, true, false);
+            // May need one for the hospital
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameter("@pPatient_Name", SqlDbType.VarChar, 1000);
             procedureCall.addParameterWithValue("@pBed_No", beds);
@@ -396,8 +449,32 @@ namespace THKH.Classes.Controller
             return successString;
         }
 
-
-        // Write to Visitor, Visit & Confirmation Table
+        /// <summary>
+        /// Write to Visitor, Visit, Questionnaire Answer, Check-In & Movement Tables
+        /// </summary>
+        /// <param name="staffuser"></param>
+        /// <param name="nric"></param>
+        /// <param name="fname"></param>
+        /// <param name="address"></param>
+        /// <param name="postal"></param>
+        /// <param name="mobtel"></param>
+        /// <param name="sex"></param>
+        /// <param name="nationality"></param>
+        /// <param name="dob"></param>
+        /// <param name="purpose"></param>
+        /// <param name="pName"></param>
+        /// <param name="pNric"></param>
+        /// <param name="otherPurpose"></param>
+        /// <param name="bedno"></param>
+        /// <param name="appTime"></param>
+        /// <param name="remarks"></param>
+        /// <param name="visitLocation"></param>
+        /// <param name="temperature"></param>
+        /// <param name="qListID"></param>
+        /// <param name="qAns"></param>
+        /// <param name="qaid"></param>
+        /// <param name="visLim"></param>
+        /// <returns>JSON String</returns>
         public String AssistReg(String staffuser, String nric, String fname, String address, String postal, String mobtel,
             String sex, String nationality, String dob, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
             String remarks, String visitLocation, String temperature, String qListID, String qAns, String qaid, String visLim)
@@ -545,7 +622,23 @@ namespace THKH.Classes.Controller
             return JsonConvert.SerializeObject(result);
         }
 
-        // Write to Visitor, Visit & Confirmation Table for Express Reg
+        /// <summary>
+        /// Write to Visitor, Visit, Questionnaire Answer, Check-In & Movement Tables for Express Reg
+        /// </summary>
+        /// <param name="staffuser"></param>
+        /// <param name="nric"></param>
+        /// <param name="purpose"></param>
+        /// <param name="pName"></param>
+        /// <param name="pNric"></param>
+        /// <param name="otherPurpose"></param>
+        /// <param name="bedno"></param>
+        /// <param name="appTime"></param>
+        /// <param name="remarks"></param>
+        /// <param name="visitLocation"></param>
+        /// <param name="qListID"></param>
+        /// <param name="qAns"></param>
+        /// <param name="qaid"></param>
+        /// <returns></returns>
         public String ExpReg(String staffuser, String nric, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
             String remarks, String visitLocation, String qListID, String qAns, String qaid)
         {
@@ -626,7 +719,13 @@ namespace THKH.Classes.Controller
             return JsonConvert.SerializeObject(result);
         }
 
-        // Write the form responses to db
+        /// <summary>
+        /// Writes a NEW row to Questionnaire Answer Table
+        /// </summary>
+        /// <param name="qaid"></param>
+        /// <param name="qListID"></param>
+        /// <param name="qAns"></param>
+        /// <returns>JSON String</returns>
         public String writeQuestionnaireResponse(String qaid, String qListID, String qAns)
         {
             String result = "";
@@ -647,6 +746,13 @@ namespace THKH.Classes.Controller
             return result;
         }
 
+        /// <summary>
+        /// Updates an EXISTING row in the Questionnaire Answer Table
+        /// </summary>
+        /// <param name="qaid"></param>
+        /// <param name="qListID"></param>
+        /// <param name="qAns"></param>
+        /// <returns>JSON String</returns>
         public String updateQuestionnaireResponse(String qaid, String qListID, String qAns)
         {
 
@@ -667,6 +773,12 @@ namespace THKH.Classes.Controller
             return result;
         }
 
+        /// <summary>
+        /// Returns the number of visitors registered to a particular bed number given the condition that the visitor has not left the hospital
+        /// </summary>
+        /// <param name="bedno"></param>
+        /// <param name="limit"></param>
+        /// <returns>JSON String</returns>
         public dynamic checkNumCheckedIn(string bedno, int limit)
         {
             DataTable dataTable = new DataTable();
@@ -700,6 +812,13 @@ namespace THKH.Classes.Controller
             return result;
         }
 
+        /// <summary>
+        /// Writes the to the CheckIn Table
+        /// </summary>
+        /// <param name="staffuser"></param>
+        /// <param name="nric"></param>
+        /// <param name="temp"></param>
+        /// <returns>JSON String</returns>
         public String CheckIn(String staffuser, String nric, String temp)
         {
 

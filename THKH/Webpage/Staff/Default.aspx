@@ -265,16 +265,10 @@
                         <a href="#ContactTracing" data-toggle="tab">Contact Tracing
                         </a>
                     </li>
-                    <%  }
-                    if (accessRightsStr.Contains('6'))
-                    {%>
                     <li>
-                        <a href="#Dashboard" data-toggle="tab">Dashboard
+                        <a href="#Dashboard" data-toggle="tab">Visualization
                         </a>
                     </li>
-                    <%  }
-                    if (accessRightsStr.Contains('6'))
-                    {%>
                     <li>
                         <a href="#SMS" data-toggle="tab">SMS
                         </a>

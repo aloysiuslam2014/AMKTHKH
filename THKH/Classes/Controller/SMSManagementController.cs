@@ -12,6 +12,8 @@ namespace THKH.Classes.Controller
     public class SMSManagementController
     {
         private GenericProcedureDAO procedureCall;
+
+        // Calls an API to send out SMSes given a string of numbers and a message
         public String sendSMS(String message, String numbers)
         {
             List<String> responses = new List<String>();

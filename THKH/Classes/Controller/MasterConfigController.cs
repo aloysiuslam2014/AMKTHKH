@@ -9,6 +9,11 @@ namespace THKH.Classes.Controller
     public class MasterConfigController
     {
         GenericProcedureDAO procedureCall;
+
+        /// <summary>
+        /// Returns a string of all the access profiles available
+        /// </summary>
+        /// <returns>JSON String</returns>
         public String getAccessProfile()
         {
             dynamic json = new ExpandoObject();
@@ -44,7 +49,17 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        // updates the registration configuration & returns a JSON String
+        /// <summary>
+        /// Updates the registration configuration
+        /// </summary>
+        /// <param name="lowTemp"></param>
+        /// <param name="highTemp"></param>
+        /// <param name="warnTemp"></param>
+        /// <param name="lowTime"></param>
+        /// <param name="highTime"></param>
+        /// <param name="staffUser"></param>
+        /// <param name="visLim"></param>
+        /// <returns>JSON String</returns>
         public String updateTempTime(String lowTemp, String highTemp, String warnTemp, String lowTime, String highTime, String staffUser, String visLim)
         {
 
@@ -73,7 +88,10 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        // Gets the registration configuration & returns a JSON String
+        /// <summary>
+        /// Gets the registration configuration
+        /// </summary>
+        /// <returns>JSON String</returns>
         public String getConfig()
         {
             dynamic json = new ExpandoObject();
@@ -112,7 +130,13 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        // Updates the Selected User Access Profile & returns a JSON String
+        /// <summary>
+        /// Updates the Selected User Access Profile
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="permissions"></param>
+        /// <param name="username"></param>
+        /// <returns>JSON String</returns>
         public String updateAccessProfile(String name, String permissions, String username)
         {
             dynamic json = new ExpandoObject();
@@ -137,7 +161,11 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        // Deletes Selected User Access Profile & returns a JSON String
+        /// <summary>
+        /// Deletes Selected User Access Profile & returns a JSON String
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>JSON String</returns>
         public String deleteAccessProfile(String name)
         {
             dynamic json = new ExpandoObject();
@@ -159,7 +187,11 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        // Gets Selected User Access Profile & returns a JSON String
+        /// <summary>
+        /// Gets Selected User Access Profile
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>JSON String</returns>
         public String getSelectedProfile(String name)
         {
             dynamic json = new ExpandoObject();

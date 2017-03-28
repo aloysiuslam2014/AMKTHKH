@@ -390,7 +390,7 @@ $("#temp").on("input", function () {
                 $('#tempLimitWarning').css("display", "none");
                 $("#invalidTempWarning").css("display", "none");
                 $('#lowtempWarning').css("display", "none");
-                $('#tempWarning').html("Visitor's Temperature is above the allowable " + warnTemp + " degrees celcius!");
+                $('#tempWarning').html("Warning Fever!");
                 $('#tempWarning').css("display", "block");
                 validTemp = true;
             }
@@ -539,7 +539,7 @@ function NewExpressReg() {
     var allowNric = false;
 }
 
-//
+// partially or wholly clears the user fields based on a boolean value
 function clearFields(overwrite) {
     if (allowVisit) {
         if (overwrite) {
@@ -631,7 +631,7 @@ function checkLocation() {
     return !blank;
 }
 
-// For field validations
+// Checks the filling of the required fields
 function checkRequiredFields() {
     var valid = true;
     $.each($("#registration input.required"), function (index, value) {
@@ -788,7 +788,7 @@ $(function () {
         });
 });
 
-// For datetimepicker
+// Date picker formatter
 function getFormattedDate(date) {
     var day = date.getDate();
     var month = date.getMonth() + 1;
@@ -849,7 +849,7 @@ function hideTags(clear) {
     }
 }
 
-//
+// button settings for check nric button
 function enterToCheckNric(e) {
     if (e.which == 13 || e.keyCode == 13) {
         checkNricWarningDeclaration(); false; }
