@@ -2687,9 +2687,9 @@ BEGIN 
 
 	DECLARE @pCount INT
 	IF (@isNameSearch = 1)
-			SET @pCount = (SELECT COUNT(patientFullName) FROM [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE Pat_Name LIKE '%'+@pSearchTerm+'%')
+			SET @pCount = (SELECT COUNT(Pat_Name) FROM [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE Pat_Name LIKE '%'+@pSearchTerm+'%')
 	ELSE
-			SET @pCount = (SELECT COUNT(patientFullName) FROM [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE CONCAT(BedNo,WardNo)  like CONVERT(int,@pSearchTerm))
+			SET @pCount = (SELECT COUNT(Pat_Name) FROM [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE CONCAT(BedNo,WardNo)  like CONVERT(int,@pSearchTerm))
 			
 			
 	IF (@pCount > 0)
