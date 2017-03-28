@@ -12,6 +12,10 @@ namespace THKH.Webpage.Staff.PassManagement
     {
         PassManagementController passController = new PassManagementController();
 
+        /// <summary>
+        /// Picks out the action needed & calls the appropriate methods in the related controller class
+        /// </summary>
+        /// <param name="context"></param>
         public void ProcessRequest(HttpContext context)
         {
             dynamic returnMe = new ExpandoObject();
