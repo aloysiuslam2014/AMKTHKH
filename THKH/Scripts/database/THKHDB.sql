@@ -2816,7 +2816,7 @@ END;
 
 ------------------------------------------------------------------------------ Get Patient's name
 GO
-CREATE PROCEDURE [dbo].[GET_PATIENT_NAME]  
+CREATE PROCEDURE [dbo].[GET_HOSPITAL_PATIENT_NAME]  
 @pBed_No VARCHAR(15),
 @pPatient_Name VARCHAR(100) OUTPUT,   
 @responseMessage INT OUTPUT  
