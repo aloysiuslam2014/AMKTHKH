@@ -184,15 +184,18 @@ function fillDashboard() {
 
                 var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
+                    width: 675,
+                    height: 300,
                     title: {
                         text: "Check-ins per hour"
                     },
                     axisX: {
-                        interval: 1
+                        interval: 1,
+                        labelFontSize: 12
                     },
                     data: [
                     {
-                        type: "bar",
+                        type: "column",
                         dataPoints: hourOfDay_json
                     }
                     ]
@@ -202,12 +205,14 @@ function fillDashboard() {
 
                 var dayOfweek_chart = new CanvasJS.Chart("dayOfWeek_chart",
                 {
+                    width: 425,
+                    height: 300,
                     title: {
                         text: "Check-ins per day"
                     },
                     data: [
                     {
-                        type: "bar",
+                        type: "column",
                         dataPoints: dayOfWeek_json
                     }
                     ]
@@ -217,6 +222,8 @@ function fillDashboard() {
 
                 var age_chart = new CanvasJS.Chart("age_chart",
                 {
+                    width: 675,
+                    height: 300,
                     title: {
                         text: "Visitor age range"
                     },
@@ -233,6 +240,8 @@ function fillDashboard() {
 
                 var gender_chart = new CanvasJS.Chart("gender_chart",
                 {
+                    width: 425,
+                    height: 300,
                     title: {
                         text: "Visitor gender"
                     },
@@ -252,8 +261,9 @@ function fillDashboard() {
                     title: {
                         text: "Visit Duration"
                     },
-                        axisY: {
-                    labelAngle: -30
+                        axisX: {
+                            labelAngle: -30,
+                            interval: 1
                     },
                     data: [
 
@@ -276,7 +286,7 @@ function fillDashboard() {
                     },
                     data: [
                     {
-                        type: "bar",
+                        type: "column",
                         dataPoints: location_json
                     }
                     ]
