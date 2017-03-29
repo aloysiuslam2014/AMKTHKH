@@ -1149,7 +1149,7 @@
 
                     </div>
                     <div class="form-group" id="uq_results">
-                        <table id="uq_resultstable" class="table table-responsive table-hover" style="padding-left: 10px padding-right:10px">
+                        <table id="uq_resultstable" class="table table-responsive table-hover" style="padding-left: 10px; padding-right:10px">
                             <thead id="uq_resultstable_head">
                                 <tr>
                                     <th>Registration Location</th>
