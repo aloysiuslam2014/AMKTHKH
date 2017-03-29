@@ -6,6 +6,9 @@ using System.Web;
 
 namespace THKH.Classes.Entity
 {
+    /// <summary>
+    /// Visit object 
+    /// </summary>
     public class Visit
     {
         [JsonProperty]

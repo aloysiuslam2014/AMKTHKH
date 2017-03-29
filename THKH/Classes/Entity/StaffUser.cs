@@ -6,6 +6,9 @@ using System.Web;
 
 namespace THKH.Classes.Entity
 {
+    /// <summary>
+    /// Staff Object
+    /// </summary>
     public class StaffUser
     {
         [JsonProperty]

@@ -6,6 +6,9 @@ using System.Web;
 
 namespace THKH.Classes.Entity
 {
+    /// <summary>
+    /// Question Answer's properties
+    /// </summary>
     public class QuestionnaireAnswer
     {
         [JsonProperty]

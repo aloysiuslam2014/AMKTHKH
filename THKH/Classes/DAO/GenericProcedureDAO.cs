@@ -115,11 +115,22 @@ namespace THKH.Classes.DAO
             return toReturn;
         }
 
+        /// <summary>
+        /// Adds a parameter to the sql query with name and the parameter value as an object
+        /// </summary>
+        /// <param name="parameterName">Name of procedure parameter</param>
+        /// <param name="parameterValue">Value of the parameter (Can be an int or varchar but needs to follow procedure param type)</param>
         public void addParameterWithValue(string parameterName, object parameterValue)
         {
             parameters[parameterName] = parameterValue;
         }
 
+        /// <summary>
+        /// Adds a parameter that has a return value from the procedure.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter</param>
+        /// <param name="type">Return type (varchar, int, boolean etc)</param>
+        /// <param name="length">If undeclared, will not be added to the query.</param>
         public void addParameter(string parameterName, SqlDbType type,int length = 0)
         {
             ArrayList parameterTypeAndLength = new ArrayList();
