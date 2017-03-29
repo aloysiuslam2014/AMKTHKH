@@ -215,7 +215,7 @@
     <div id="wrapper" style="width: 100%;height: 99%;">
     <nav id="mainNav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
           <ul class="nav sidebar-nav  nav-tabs" >
-                    <li class="sidebar-brand">
+                    <li class="sidebar-brand" style="font-size: 14pt;">
                          
                            Thye Hua Kwan Hospital
                         
