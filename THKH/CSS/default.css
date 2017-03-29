@@ -16,7 +16,7 @@ div::-webkit-scrollbar-track
 div::-webkit-scrollbar
 {
 	width: 12px;
-	background-color: #F5F5F5;
+	/*background-color: #F5F5F5;*/
 }
 
 div::-webkit-scrollbar-thumb
