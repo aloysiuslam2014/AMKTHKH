@@ -56,6 +56,12 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(result);
         }
 
+        /// <summary>
+        /// Searches the database for patient names or bed numbers
+        /// </summary>
+        /// <param name="isNameSearch"></param>
+        /// <param name="searchData"></param>
+        /// <returns>JSON String</returns>
         public string searchAutoComplete(string isNameSearch, string searchData)
         {
             dynamic result = new ExpandoObject();
@@ -74,7 +80,7 @@ namespace THKH.Classes.Controller
                 {
                     while (reader.Read())
                     {
-                        output.Add(reader.GetString(0)+","+ reader.GetInt32(1));
+                        output.Add(reader.GetString(0) + "," + reader.GetString(1));
                     }
                     
                 }
@@ -150,8 +156,8 @@ namespace THKH.Classes.Controller
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            procedureCall = new GenericProcedureDAO("CONFIRM_PATIENT", true, true, false);
-            //procedureCall = new GenericProcedureDAO("CONFIRM_HOSPITAL_PATIENT", true, true, false);
+            //procedureCall = new GenericProcedureDAO("CONFIRM_PATIENT", true, true, false);
+            procedureCall = new GenericProcedureDAO("CONFIRM_HOSPITAL_PATIENT", true, true, false);
             procedureCall.addParameter("@responseMessage", SqlDbType.VarChar, 500);
             procedureCall.addParameterWithValue("@pBedNo", bedno);
             procedureCall.addParameterWithValue("@pPatientFullName", pName);
