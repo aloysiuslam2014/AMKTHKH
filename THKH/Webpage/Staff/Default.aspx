@@ -1157,7 +1157,7 @@
                                     <th>Check-in Time</th>
                                     <th>Exit Time</th>
                                     <th>Temperature</th>
-                                    >
+                                 
                             <th>Name</th>
                                     <th>NRIC</th>
                                     <th>Gender</th>
