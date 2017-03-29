@@ -212,18 +212,14 @@
         </div>
     </div>
     <% } %>
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-main">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand"><b>Thye Hua Kwan Hospital</b></a>
-            </div>
-            <div class="collapse navbar-collapse" id="navbar-main">
-                <ul class="nav navbar-nav " id="navigatePage">
+    <div id="wrapper" style="width: 100%;height: 99%;">
+    <nav id="mainNav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <ul class="nav sidebar-nav  nav-tabs" >
+                    <li class="sidebar-brand">
+                         
+                           Thye Hua Kwan Hospital
+                        
+                    </li>
                     <%if (accessRightsStr.Contains('1'))
                         { %>
                     <li id="regtab" runat="server">
@@ -281,18 +277,25 @@
                         </a>
                     </li>
                     <%  }%>
+                   
                 </ul>
-                <form id="logbtn" class="nav navbar-nav navbar-right" style="margin-top: 10px;" runat="server">
+    
+    </nav>
+
+    <div id="main" class="container containerMain">
+         <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+                <span class="hamb-top"></span>
+    			<span class="hamb-middle"></span>
+				<span class="hamb-bottom"></span>
+             
+            </button>
+         <form id="logbtn" class="logoutButton" runat="server">
                     <div>
                         <label>Welcome, <%= Session["username"].ToString()%></label>
                         <asp:Button ID="logout" class="btn btn-danger" Text="Logout" OnClick="logout_Click" runat="server" />
                     </div>
                 </form>
-            </div>
-        </div>
-    </nav>
-
-    <div id="main" class="container containerMain">
+        <a class="rightHeader"><b>TRIAGE 2.0</b></a>
         <div class="tab-content tab-content-main maxHeight" style="border: 0;" id="generalContent">
             <!-- Registration -->
             <%if (accessRightsStr.Contains('1'))
@@ -1320,6 +1323,7 @@
         </div>
     </div>
 
+    </div>
     <%if (accessRightsStr.Contains('4'))
         { %>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/default.js") %>"></script>
