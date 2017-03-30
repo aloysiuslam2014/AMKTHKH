@@ -2848,4 +2848,47 @@ BEGIN
 END;
 
 
+------------------------------------------------------------------------------ Automatically fills up patient's name after certain String is types
+GO
+CREATE PROCEDURE [dbo].[AUTOCOMPLETE_PATIENT_NAME]  
+@pSearchTerm VARCHAR(100),   
+@isNameSearch VARCHAR(100),   
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+
+  DECLARE @pCount INT
+  IF (@isNameSearch = 1)
+      SET @pCount = (SELECT COUNT(Pat_Name) FROM [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Pat_Name LIKE '%'+@pSearchTerm+'%')
+  ELSE
+      SET @pCount = (SELECT COUNT(Pat_Name) FROM [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed like CONVERT(int,@pSearchTerm))
+      
+      
+  IF (@pCount > 0)
+  BEGIN   
+    IF (@isNameSearch = 1)
+      BEGIN
+        SELECT Pat_Name as patientFullName,Bed as bedNo 
+        FROM  [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list]
+        WHERE Pat_Name LIKE '%'+@pSearchTerm+'%'
+      END
+    ELSE
+      BEGIN
+        SELECT  Pat_Name as patientFullName,Bed as bedNo 
+        FROM  [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list]
+        WHERE  Bed = CONVERT(int,@pSearchTerm)
+      END
+
+    
+
+    SET @responseMessage = 1
+  END  
+   
+    ELSE  
+       SET @responseMessage = 0  
+END;
+
+
 --===========================================================================================================================================================================================
