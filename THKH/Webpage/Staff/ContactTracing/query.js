@@ -8,6 +8,18 @@ var uq_bednos = document.getElementById("uq_bednos");
 var uq_loc = document.getElementById("uq_loc");
 
 /**
+ * Define custom CanvasJS color set
+ * @param 
+ * @return 
+ */
+window.onload = function () {
+    CanvasJS.addColorSet("twoGreens",
+            [//colorSet Array
+            "#008080",
+            "#2F4F4F"
+            ]);
+
+/**
  * Lock one entry field if the other is being used
  * @param current - field to check if being used
  * @param other - field to be disabled
@@ -205,6 +217,7 @@ function fillDashboard() {
 
                 var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
+                    colorSet: "twoGreens",
                     width: 675,
                     height: 300,
                     title: {
@@ -226,6 +239,7 @@ function fillDashboard() {
 
                 var dayOfweek_chart = new CanvasJS.Chart("dayOfWeek_chart",
                 {
+                    colorSet: "twoGreens",
                     width: 425,
                     height: 300,
                     title: {
@@ -243,6 +257,7 @@ function fillDashboard() {
 
                 var age_chart = new CanvasJS.Chart("age_chart",
                 {
+                    colorSet: "twoGreens",
                     width: 675,
                     height: 300,
                     title: {
@@ -279,6 +294,7 @@ function fillDashboard() {
 
                 var dwelltime_chart = new CanvasJS.Chart("dwelltime_chart",
                 {
+                    colorSet: "twoGreens",
                     title: {
                         text: "Visit Duration"
                     },
