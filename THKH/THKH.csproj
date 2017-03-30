@@ -342,9 +342,6 @@
     <Content Include="Scripts\vfs_fonts.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Webpage\SQL Script\THKHDB_13Feb17.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_14Feb17.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_17Feb17.sql" />
     <Content Include="Webpage\Staff\SMS\sms.js" />
     <Content Include="Webpage\Staff\TerminalCalls\locationQueries.js" />
     <Content Include="Scripts\moment-with-locales.js">
