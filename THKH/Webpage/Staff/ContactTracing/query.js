@@ -12,12 +12,12 @@ var uq_loc = document.getElementById("uq_loc");
  * @param 
  * @return 
  */
-window.onload = function () {
-    CanvasJS.addColorSet("twoGreens",
-            [//colorSet Array
-            "#008080",
-            "#2F4F4F"
-            ]);
+//window.onload = function () {
+//    CanvasJS.addColorSet("twoGreens",
+//            [//colorSet Array
+//            "#008080",
+//            "#2F4F4F"
+//            ]);
 
 /**
  * Lock one entry field if the other is being used
@@ -185,6 +185,14 @@ function writeUQResultsTable(uqResultJSON) {
  */
 function fillDashboard() {
 
+    $("#hourOfDay_chart").html("");
+    $("#dayOfWeek_chart").html("");
+    $("#age_chart").html("");
+    $("#gender_chart").html("");
+    $("#dwelltime_chart").html("");
+    $("#location_chart").html("");
+
+
     var dash_dateStart = $("#dash_startdatetime").val();
     var dash_dateEnd = $("#dash_enddatetime").val();
 
@@ -218,8 +226,6 @@ function fillDashboard() {
                 var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
                     colorSet: "twoGreens",
-                    width: 675,
-                    height: 300,
                     title: {
                         text: "Check-ins per hour"
                     },
@@ -240,8 +246,6 @@ function fillDashboard() {
                 var dayOfweek_chart = new CanvasJS.Chart("dayOfWeek_chart",
                 {
                     colorSet: "twoGreens",
-                    width: 425,
-                    height: 300,
                     title: {
                         text: "Check-ins per day"
                     },
@@ -258,8 +262,6 @@ function fillDashboard() {
                 var age_chart = new CanvasJS.Chart("age_chart",
                 {
                     colorSet: "twoGreens",
-                    width: 675,
-                    height: 300,
                     title: {
                         text: "Visitor age range"
                     },
@@ -276,8 +278,6 @@ function fillDashboard() {
 
                 var gender_chart = new CanvasJS.Chart("gender_chart",
                 {
-                    width: 425,
-                    height: 300,
                     title: {
                         text: "Visitor gender"
                     },

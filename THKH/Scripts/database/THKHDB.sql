@@ -2654,6 +2654,7 @@ BEGIN
 	LEFT JOIN DAY_BED_EXITS dbe ON dbe.nric = ci.nric AND dbe.visitActualTime = ci.visitActualTime
 	WHERE vp.confirm = 1
 	AND v.confirm = 1
+	AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
   END
 END;
 
