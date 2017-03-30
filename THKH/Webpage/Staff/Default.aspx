@@ -295,7 +295,7 @@
                         <asp:Button ID="logout" class="btn btn-danger" Text="Logout" OnClick="logout_Click" runat="server" />
                     </div>
                 </form>
-        <a class="rightHeader"><b>TRIAGE 2.0</b></a>
+         <b class="rightHeader">TRIAGE 2.0</b>
         <div class="tab-content tab-content-main maxHeight" style="border: 0;" id="generalContent">
             <!-- Registration -->
             <%if (accessRightsStr.Contains('1'))
