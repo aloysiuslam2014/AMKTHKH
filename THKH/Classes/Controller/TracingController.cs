@@ -898,6 +898,10 @@ namespace THKH.Classes.Controller
                 if (bedno.Length == 0)
                 {
                     loc = (string)visitor["location"];
+                    if (loc.Length == 0)
+                    {
+                        loc = "Express check-in";
+                    }
                 }else
                 {
                     if (bedno.Contains(','))
@@ -1018,7 +1022,7 @@ namespace THKH.Classes.Controller
             }
             catch (Exception ex)
             {
-                loc = "error: " + ex;
+                loc = "Unassigned bed number";
             }
             return loc;
         }
