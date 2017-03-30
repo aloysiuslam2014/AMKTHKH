@@ -2586,12 +2586,11 @@ BEGIN 
 	SET @pBed_No_Int = CONVERT(INT, @pBed_No)
 	--SET @pBed_No_Int = CAST(@pBed_No AS INT)
   
-	IF EXISTS (SELECT patientFullName FROM PATIENT WHERE @pBed_No_Int = bedNo)  
+	IF EXISTS (SELECT Pat_Name FROM [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )  
 	BEGIN    
 		SET @responseMessage = 1
-		SET @pPatient_Name = (SELECT TOP 1 patientFullName FROM PATIENT 
-							  WHERE @pBed_No_Int = bedNo ORDER BY startDate DESC)
-	END  
+		SET @pPatient_Name = (SELECT TOP 1 Pat_Name from [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )
+	END 
 	 
     ELSE  
        SET @responseMessage = 0  
