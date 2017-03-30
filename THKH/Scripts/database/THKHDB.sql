@@ -2679,46 +2679,47 @@ END;
 
 
 ------------------------------------------------------------------------------------------- Procedures for Getting partial Patient's name
-GO
-CREATE PROCEDURE [dbo].[AUTOCOMPLETE_PATIENT_NAME]  
-@pSearchTerm VARCHAR(100),   
-@isNameSearch VARCHAR(100),   
-@responseMessage INT OUTPUT  
+-- Old version. Keep for the time being for future reference is necessary
+--GO
+--CREATE PROCEDURE [dbo].[AUTOCOMPLETE_PATIENT_NAME]  
+--@pSearchTerm VARCHAR(100),   
+--@isNameSearch VARCHAR(100),   
+--@responseMessage INT OUTPUT  
   
-AS  
-BEGIN  
-	SET NOCOUNT ON  
+--AS  
+--BEGIN  
+--	SET NOCOUNT ON  
 
-	DECLARE @pCount INT
-	IF (@isNameSearch = 1)
-			SET @pCount = (SELECT COUNT(Pat_Name) FROM [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE Pat_Name LIKE '%'+@pSearchTerm+'%')
-	ELSE
-			SET @pCount = (SELECT COUNT(Pat_Name) FROM [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE CONCAT(BedNo,WardNo)  like CONVERT(int,@pSearchTerm))
+--	DECLARE @pCount INT
+--	IF (@isNameSearch = 1)
+--			SET @pCount = (SELECT COUNT(Pat_Name) FROM [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE Pat_Name LIKE '%'+@pSearchTerm+'%')
+--	ELSE
+--			SET @pCount = (SELECT COUNT(Pat_Name) FROM [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list] WHERE CONCAT(BedNo,WardNo)  like CONVERT(int,@pSearchTerm))
 			
 			
-	IF (@pCount > 0)
-	BEGIN   
-		IF (@isNameSearch = 1)
-			BEGIN
-				SELECT Pat_Name as patientFullName,CONCAT(BedNo,WardNo) as bedNo 
-				FROM  [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list]
-				WHERE Pat_Name LIKE '%'+@pSearchTerm+'%'
-			END
-		ELSE
-			BEGIN
-				SELECT  Pat_Name as patientFullName,CONCAT(BedNo,WardNo) as bedNo 
-				FROM  [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list]
-				WHERE  CONCAT(BedNo,WardNo) = CONVERT(int,@pSearchTerm)
-			END
+--	IF (@pCount > 0)
+--	BEGIN   
+--		IF (@isNameSearch = 1)
+--			BEGIN
+--				SELECT Pat_Name as patientFullName,CONCAT(BedNo,WardNo) as bedNo 
+--				FROM  [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list]
+--				WHERE Pat_Name LIKE '%'+@pSearchTerm+'%'
+--			END
+--		ELSE
+--			BEGIN
+--				SELECT  Pat_Name as patientFullName,CONCAT(BedNo,WardNo) as bedNo 
+--				FROM  [APPSVR].[AMKH_InhouseDB].[dbo].[Current_Patient_list]
+--				WHERE  CONCAT(BedNo,WardNo) = CONVERT(int,@pSearchTerm)
+--			END
 
 		
 
-		SET @responseMessage = 1
-	END  
+--		SET @responseMessage = 1
+--	END  
 	 
-    ELSE  
-       SET @responseMessage = 0  
-END; 
+--    ELSE  
+--       SET @responseMessage = 0  
+--END;
 
 
 ----------------------------------------------------------------------------------------------------- Procedure for retrieving every visitor so long as they scanned in the given Bedno
@@ -2848,7 +2849,7 @@ BEGIN
 END;
 
 
------------------------------------------------------------------------------- Automatically fills up patient's name after certain String is types
+------------------------------------------------------------------------------ Procedures for Getting partial Patient's name. Automatically fills up patient's name
 GO
 CREATE PROCEDURE [dbo].[AUTOCOMPLETE_PATIENT_NAME]  
 @pSearchTerm VARCHAR(100),   
