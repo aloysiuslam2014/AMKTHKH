@@ -91,6 +91,8 @@ function updateAccessProfile() {
                 if (resultOfGeneration.Msg == "1") {
                     alert("Profile Saved!");
                     getVisLim();
+                    loadFacilities();
+                    populateTime();
                 } else {
                     alert("Profile Not Saved!");
                 }

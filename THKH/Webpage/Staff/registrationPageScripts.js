@@ -647,10 +647,8 @@ function checkRequiredFields() {
         valid = false;
     }
 
-    if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !validDate || !checkNationals() || !purposePanels() || !checkTime() || !checkGender() || !validEmail) {
+    if (!validMob || !validTemp || !validPos || !validDate || !checkNationals() || !purposePanels() || !checkTime() || !checkGender()) {
         valid = false;
-    } else {
-        valid = true;
     }
     if (valid) {
         $('#emptyFields').css("display", "none");
