@@ -149,7 +149,11 @@ CREATE TABLE STAFF 
 	createdBy VARCHAR(100)
 );
   
-
+-- Add Admin account into staff table --
+INSERT INTO STAFF (firstName, lastName, nric, address, postalCode, homeTel, altTel, mobTel, email, sex, nationality, 
+              dateOfBirth, PasswordHash, permission, accessProfile, position, dateCreated, dateUpdated, createdBy)  
+        VALUES('THK', 'admin', 'S2548934A', 'SMU', 123417, '999', '999', '999', 'admin@amk.org.sg', 'M', 'SINGAPOREAN', 
+        '1992-01-01', HASHBYTES('SHA2_512', '@mkd3nt'),  123456, 'Front Desk', 'Admin', GETDATE(), GETDATE(), @pCreatedBy) ; 
 ------------------------------------------------------------------------------------------------------- Table to store Access Profile
 GO
 CREATE TABLE ACCESS_PROFILE  
@@ -2650,6 +2654,7 @@ BEGIN
 	LEFT JOIN DAY_BED_EXITS dbe ON dbe.nric = ci.nric AND dbe.visitActualTime = ci.visitActualTime
 	WHERE vp.confirm = 1
 	AND v.confirm = 1
+	AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
   END
 END;
 

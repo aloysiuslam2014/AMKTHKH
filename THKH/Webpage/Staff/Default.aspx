@@ -295,7 +295,7 @@
                         <asp:Button ID="logout" class="btn btn-danger" Text="Logout" OnClick="logout_Click" runat="server" />
                     </div>
                 </form>
-        <a class="rightHeader"><b>TRIAGE 2.0</b></a>
+         <b class="rightHeader">TRIAGE 2.0</b>
         <div class="tab-content tab-content-main maxHeight" style="border: 0;" id="generalContent">
             <!-- Registration -->
             <%if (accessRightsStr.Contains('1'))
@@ -1283,18 +1283,18 @@
                     </div>
                     <div class="col-sm-offset-1 col-sm-10" id="chart_container">
                         <div class="col-sm-12" id="time_chart_container">
-                            <div id="hourOfDay_chart" style="height: 300px; width: 675px; display: inline-block;"></div>
-                            <div id="dayOfWeek_chart" style="height: 300px; width: 425px; display: inline-block;"></div>
+                            <div id="hourOfDay_chart" style="height: 300px; width: 55%; display: inline-block;"></div>
+                            <div id="dayOfWeek_chart" style="height: 300px; width: 35%; display: inline-block;"></div>
                         </div>
                         <div class="col-sm-12" id="demographic_chart_container">
-                            <div id="age_chart" style="height: 300px; width: 675px; display: inline-block;"></div>
-                            <div id="gender_chart" style="height: 300px; width: 425px; display: inline-block;"></div>
+                            <div id="age_chart" style="height: 300px; width: 55%; display: inline-block;"></div>
+                            <div id="gender_chart" style="height: 300px; width: 35%; display: inline-block;"></div>
                         </div>
                         <div class="col-sm-12" id="dwelltime_chart_container">
-                            <div id="dwelltime_chart" style="height: 300px; width: 100%; display: inline-block;"></div>
+                            <div id="dwelltime_chart" style="height: 300px; width: 91%; display: inline-block;"></div>
                         </div>
                         <div class="col-sm-12" id="location_chart_container">
-                            <div id="location_chart" style="height: 300px; width: 100%; display: inline-block;"></div>
+                            <div id="location_chart" style="height: 300px; width: 91%; display: inline-block;"></div>
                         </div>
                     </div>
                 </div>

@@ -289,6 +289,8 @@
     <Content Include="Scripts\buttons.html5.min.js" />
     <Content Include="Scripts\buttons.print.min.js" />
     <Content Include="Scripts\canvasjs.min.js" />
+    <Content Include="Scripts\database\THKHDB.sql" />
+    <Content Include="Scripts\database\THKHDB_TestData.sql" />
     <Content Include="Scripts\dataTables.bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -340,9 +342,6 @@
     <Content Include="Scripts\vfs_fonts.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Webpage\SQL Script\THKHDB_13Feb17.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_14Feb17.sql" />
-    <Content Include="Webpage\SQL Script\THKHDB_17Feb17.sql" />
     <Content Include="Webpage\Staff\SMS\sms.js" />
     <Content Include="Webpage\Staff\TerminalCalls\locationQueries.js" />
     <Content Include="Scripts\moment-with-locales.js">
@@ -613,6 +612,7 @@
     <None Include="Properties\PublishProfiles\stepwiseis480 - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\stepwiseis480 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Triage20.pubxml" />
+    <Content Include="Scripts\database\ContactTracingTestCases.xlsx" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -15,6 +15,11 @@ namespace THKH.Classes.Controller
     public class TracingController
     {
 
+        /// <summary>
+        /// The main method for contact tracing of express entry visitors
+        /// </summary>
+        /// <param name="query">Tilde-delimited string, with the first term being the start date(inclusive) of the query in "yyyy-MM-dd" format, and the second term being the end date(inclusive) of the query in "yyyy-MM-dd" format</param>
+        /// <returns>A JSON object, containing the attribute Msg, which is a JSON array of data each representing one visit, formatted for DataTable to process, in the form: [location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned?]</returns>
         public String expressTrace(String query)
         {
             String result = "";
@@ -47,7 +52,12 @@ namespace THKH.Classes.Controller
             return result;
         }
 
-        //
+
+        /// <summary>
+        /// Main method for the contact tracing process
+        /// </summary>
+        /// <param name="query">Tilde-delimited string, with the first term being either "bybed" or "byloc", the second term being the start date(inclusive) of the query in "yyyy-MM-dd" format, the third term being the end date(inclusive) of the query in "yyyy-MM-dd" format, and the fourth term being either a comma-delimited and/or hypenated range of bed numbers, or a comma-delimited string of locations</param>
+        /// <returns>A JSON object, containing the attribute Msg, which is a JSON array of data each representing one visit, formatted for DataTable to process, in the form: [location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned?]</returns>
         public String unifiedTrace(String query)
         {
             String result = "";
@@ -156,7 +166,12 @@ namespace THKH.Classes.Controller
             return result;
         }
 
-        //
+        
+        /// <summary>
+        /// Convert contact tracing results into a form acceptable by DataTables
+        /// </summary>
+        /// <param name="categorizedResults">A List of Tuples, each Tule being: A List of JSON strings, each corresponding to a visit; a boolean corresponding to whether or not the visitor registered to visit the bed/location queried; a boolean corresponding to whether or not the visitor scanned their pass at the bed/location queried</param>
+        /// <returns>A JSON string in the DataTable format</returns>
         public String buildDisplayResults(List<Tuple<List<String>, bool, bool>> categorizedResults)
         {
             List<dynamic> serializedResults1 = new List<dynamic>();
@@ -197,7 +212,7 @@ namespace THKH.Classes.Controller
                     if (reg) { innerItem.reg = "Y"; } else { innerItem.reg = ""; }
                     if (scan) { innerItem.scan = "Y"; } else { innerItem.scan = ""; }
 
-                    datatable_arrayitem.Add((string)innerItem.location);
+                    datatable_arrayitem.Add((string)innerItem.location); 
                     datatable_arrayitem.Add((string)innerItem.bedno);
                     datatable_arrayitem.Add((string)innerItem.checkin_time);
                     datatable_arrayitem.Add((string)innerItem.exit_time);
@@ -222,7 +237,14 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json); ;
         }
 
-        //
+
+        /// <summary>
+        /// Trace visitors who scanned their visitor pass at the terminal the patient's bed is assigned to 
+        /// </summary>
+        /// <param name="startdatetime">Start of tracing period(inclusive)</param>
+        /// <param name="enddatetime">End of tracing period(inclusive)</param>
+        /// <param name="bedno">4-digit bed number as a String</param>
+        /// <returns>If successful, a JSON object with an attribute Msg containing the attributes: location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned?; if unsuccessful, a JSON object with the attribute Msg containing the database access exception</returns>
         public String traceByScanBed(DateTime startdatetime, DateTime enddatetime, String bedno)
         {
             DataTable dt = new DataTable();
@@ -284,7 +306,14 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        //
+
+        /// <summary>
+        /// Trace visitors who indicated at check-in registration that they would be visiting a patient's bed  
+        /// </summary>
+        /// <param name="startdatetime">Start of tracing period(inclusive)</param>
+        /// <param name="enddatetime">End of tracing period(inclusive)</param>
+        /// <param name="bedno">4-digit bed number as a String</param>
+        /// <returns>If successful, a JSON object with an attribute Msg containing the attributes: location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned?; if unsuccessful, a JSON object with the attribute Msg containing the database access exception</returns>
         public String traceByRegBed(DateTime startdatetime, DateTime enddatetime, String bedno)
         {
             DataTable dt = new DataTable();
@@ -347,6 +376,12 @@ namespace THKH.Classes.Controller
         }
 
         //
+        /// <summary>
+        /// Trace visitors who used Express Check-in
+        /// </summary>
+        /// <param name="startdatetime">Start of tracing period(inclusive)</param>
+        /// <param name="enddatetime">End of tracing period(inclusive)</param>
+        /// <returns>If successful, a JSON object with an attribute Msg containing the attributes: location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers; if unsuccessful, a JSON object with the attribute Msg containing the database access exception</returns>
         public String traceByExpress(DateTime startdatetime, DateTime enddatetime)
         {
             DataTable dt = new DataTable();
@@ -407,7 +442,14 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
-        //
+
+        /// <summary>
+        /// Trace visitors who scanned their visitor pass at a terminal that has no beds assigned to it
+        /// </summary>
+        /// <param name="startdatetime">Start of tracing period(inclusive)</param>
+        /// <param name="enddatetime">End of tracing period(inclusive)</param>
+        /// <param name="loc">A terminal name, or substring of a terminal name</param>
+        /// <returns>If successful, a JSON object with an attribute Msg containing the attributes: location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned?; if unsuccessful, a JSON object with the attribute Msg containing the database access exception</returns>
         public String traceByScanLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
             DataTable dt = new DataTable();
@@ -469,6 +511,14 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json); ;
         }
 
+
+        /// <summary>
+        /// Trace visitors who indicated at check-in registration that they would be visiting a location that has no beds assigned to it
+        /// </summary>
+        /// <param name="startdatetime">Start of tracing period(inclusive)</param>
+        /// <param name="enddatetime">End of tracing period(inclusive)</param>
+        /// <param name="loc">A terminal name, or substring of a terminal name</param>
+        /// <returns>If successful, a JSON object with an attribute Msg containing the attributes: location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned?; if unsuccessful, a JSON object with the attribute Msg containing the database access exception</returns>
         public String traceByRegLoc(DateTime startdatetime, DateTime enddatetime, String loc)
         {
             DataTable dt = new DataTable();
@@ -530,6 +580,11 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
+        /// <summary>
+        /// Converts an array of beds containing hypenated bed number ranges, to one containing only bed numbers
+        /// </summary>
+        /// <param name="bedno_arr">An array of bed numbers that might contain hypenated bed number ranges, e.g. ["1101", "1103", "1107-1112", "1121"]</param>
+        /// <returns>An array of bed numbers, e.g. ["1101", "1103", "1107", "1108", "1109", "1110", "1111", "1112", "1121"]</returns>
         public String[] processBedNos(String[] bedno_arr)
         {
             ArrayList result = new ArrayList();
@@ -560,6 +615,11 @@ namespace THKH.Classes.Controller
             return (String[])result.ToArray(typeof(string));
         }
 
+        /// <summary>
+        /// Converts screening form answers from JSON object to a semicolon delimited string of question:answer pairs.
+        /// </summary>
+        /// <param name="qa_json">JSON string of visitor registration questionnaire questions and answers</param>
+        /// <returns>Semicolon delimited string of question:answer pairs, e.g. "Did you travel overseas in the last 2 weeks?:Yes;Have you had a fever in the past 3 days?:No"</returns>
         public String parseFormJson(String qa_json)
         {
             String sc_delim_ans = "";
@@ -578,6 +638,11 @@ namespace THKH.Classes.Controller
             return sc_delim_ans;
         }
 
+        /// <summary>
+        /// Main method for the visitor data visualization dashboard
+        /// </summary>
+        /// <param name="query">Tilde-delimited string, with the first term being the start date(inclusive) of the query in "yyyy-MM-dd" format, and the second term being the end date(inclusive) of the query in "yyyy-MM-dd" format</param>
+        /// <returns>JSON array of JSON arrays, each inner array corresponding to the data set for a CanvasJS chart</returns>
         public String fillDashboard(String query)
         {
             String[] queryParts = query.Split('~');
@@ -598,11 +663,14 @@ namespace THKH.Classes.Controller
 
             String result = Newtonsoft.Json.JsonConvert.SerializeObject(canvasjs_converted_data_list);
 
-            //result = result.Replace(@"\", "");
-
             return result;
         }
 
+        /// <summary>
+        /// Convert dictionary-like aggregated chart data into a format that CanvasJS accepts
+        /// </summary>
+        /// <param name="compiled_visitor_json_data_list">A List of JSON strings, each corresponding to a chart, containing the attributes for each category/bin, with values containing the count of visitors in each category/bin</param>
+        /// <returns>A List of Lists, each inner list corresponding to a CanvasJS chart, containing JSON objects corresponding to one data point on the CanvasJS chart.</returns>
         public List<List<Object>> canvasjs_convert(List<String> compiled_visitor_json_data_list)
         {
             List<List<Object>> canvasjs_json_data_list = new List<List<Object>>();
@@ -695,6 +763,11 @@ namespace THKH.Classes.Controller
             return canvasjs_json_data_list;
         }
 
+        /// <summary>
+        /// Conversion of transactional visit data into aggregated data, based on bins if necessary
+        /// </summary>
+        /// <param name="visitors_json_list">A List of JSON objects representing visits, each only containing the attributes needed to engineer the parameters to be visualized.</param>
+        /// <returns>A List of JSON strings, each corresponding to a chart, containing the attributes for each category/bin, with values containing the count of visitors in each category/bin</returns>
         public List<String> compileVisitorData(List<Object> visitors_json_list)
         {
             List<String> datajson_list = new List<String>();
@@ -802,6 +875,11 @@ namespace THKH.Classes.Controller
             return datajson_list;
         }
 
+        /// <summary>
+        /// Retrieve visitor information available on database needed to engineer data to be visualized
+        /// </summary>
+        /// <param name="visitors_jsonstr">A JSON string with an attribute Msg containing a list of JSON objects, each representing a visitor, with the attributes: location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned? </param>
+        /// <returns>A List of JSON objects representing visits, each only containing the attributes needed to engineer the parameters to be visualized.</returns>
         public List<Object> processVisitors(String visitors_jsonstr)
         {
             List<Object> processed_visitor_json_list = new List<Object>();
@@ -820,6 +898,10 @@ namespace THKH.Classes.Controller
                 if (bedno.Length == 0)
                 {
                     loc = (string)visitor["location"];
+                    if (loc.Length == 0)
+                    {
+                        loc = "Express check-in";
+                    }
                 }else
                 {
                     if (bedno.Contains(','))
@@ -865,6 +947,12 @@ namespace THKH.Classes.Controller
             return processed_visitor_json_list;
         }
 
+        /// <summary>
+        /// Get all visitors within a time frame
+        /// </summary>
+        /// <param name="startdatetime">Start of tracing period(inclusive)</param>
+        /// <param name="enddatetime">End of tracing period(inclusive)</param>
+        /// <returns>If successful, a JSON string with an attribute Msg containing a list of JSON objects, each representing a visitor, with the attributes: location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned?; if unsuccessful, a JSON object with the attribute Msg containing the database access exception</returns>
         public String getVisitors(DateTime startdatetime, DateTime enddatetime)
         {
             DataTable dt = new DataTable();
@@ -911,6 +999,11 @@ namespace THKH.Classes.Controller
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
 
+        /// <summary>
+        /// Convert bed number to corresponding terminal name
+        /// </summary>
+        /// <param name="bedno">4-digit bed number as a String</param>
+        /// <returns>Terminal name corresponding to the bed number</returns>
         public String getLocFromBedno(String bedno)
         {
             String loc = "";
@@ -922,14 +1015,14 @@ namespace THKH.Classes.Controller
             {
                 ProcedureResponse resultss = procedureCall.runProcedure();
                 dt = resultss.getDataTable();
-                for (var i = 0; i < dt.Rows.Count; i++)
-                {
-                    loc = (string)dt.Rows[i]["location"];
-                }
+                //for (var i = 0; i < dt.Rows.Count; i++)
+                //{
+                    loc = (string)dt.Rows[0]["location"];
+                //}
             }
             catch (Exception ex)
             {
-                loc = "error: " + ex;
+                loc = "Unassigned bed number";
             }
             return loc;
         }
