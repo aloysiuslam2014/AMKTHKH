@@ -30,6 +30,8 @@ div::-webkit-scrollbar-thumb
 											  transparent)
 }
 
+
+
 table.dataTable.select tbody tr,
 table.dataTable thead th:first-child {
   cursor: pointer;
@@ -239,22 +241,22 @@ body{
 .logoutButton{
     width: 230px;
     position: fixed;
-    top: 10px;
+    top: 13px;
     z-index: 998;
     display: block;
     height: 32px;
-    margin-left: 55px;
+    right: 0px;
     background: transparent;
     border: none;
 }
 
 .rightHeader{
    position: fixed;
-top: 5px;
+top: 8px;
 z-index: 998;
 display: block;
 height: 32px;
-right: 5px;
+left: 75px;
 background: transparent;
 border: none;
 font-size: 20pt;
