@@ -7,12 +7,17 @@ var visitors, visitDetails;
 var uq_bednos = document.getElementById("uq_bednos");
 var uq_loc = document.getElementById("uq_loc");
 
-//
+/**
+ * Lock one entry field if the other is being used
+ * @param current - field to check if being used
+ * @param other - field to be disabled
+ * @return 
+ */
 function enableToggle(current, other) {
     other.disabled = current.value.replace(/\s+/, '').length > 0;
 }
 
-//
+
 function expressTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
     while (resultTable.firstChild) {
@@ -60,7 +65,11 @@ function expressTrace() {
     });
 }
 
-// Change checkbox value upon click
+/**
+ * Change express entry visitor tracing checkbox value on click
+ * @param 
+ * @return 
+ */
 $('#expressTraceCheck').on('change', function () {
     this.check;
     var isChecked = $('input[id="expressTraceCheck"]').is(':checked');
@@ -73,7 +82,11 @@ $('#expressTraceCheck').on('change', function () {
     }
 });
 
-//
+/**
+ * Fill Datatable with contact tracing data
+ * @param 
+ * @return 
+ */
 function unifiedTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
     var expTrc = $('input[id="expressTraceCheck"]').is(':checked');
@@ -133,7 +146,11 @@ function unifiedTrace() {
     });
 }
 
-//
+/**
+ * Draws charts using the CanvasJS library
+ * @param 
+ * @return 
+ */
 function writeUQResultsTable(uqResultJSON) {
             var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "reg", "scan"];
             var row = document.createElement("tr");
@@ -149,7 +166,11 @@ function writeUQResultsTable(uqResultJSON) {
             $("#uq_resultstable_body").append(row);
 }
 
-//
+/**
+ * Draws charts using the CanvasJS library
+ * @param 
+ * @return 
+ */
 function fillDashboard() {
 
     var dash_dateStart = $("#dash_startdatetime").val();
@@ -304,7 +325,11 @@ function fillDashboard() {
     });
 }
 
-// Date time picker
+/**
+ * datetime picker formatting for contact tracing
+ * @param 
+ * @return 
+ */
 $(function () {
     $('#unifiedquery_startdatetime').datetimepicker(
         {
