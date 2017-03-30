@@ -861,7 +861,11 @@ function checkNricWarningDeclaration() {
         $("#emptyNricWarning").css("display", "block");
         allowNric = $('input[id="ignoreNric"]').is(':checked');
     } else if ($('input[id="ambulCheck"]').is(':checked')) {
-        NewExpressReg();
+        if ($("#remarksExpressInput").val() !== "") {
+            NewExpressReg();
+        } else {
+            alert("Please a reason for express entry!");
+        }
     } else {
         $("#emptyNricWarning").css("display", "none");
         var allowNric = false;
