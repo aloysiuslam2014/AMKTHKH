@@ -8,18 +8,6 @@ var uq_bednos = document.getElementById("uq_bednos");
 var uq_loc = document.getElementById("uq_loc");
 
 /**
- * Define custom CanvasJS color set
- * @param 
- * @return 
- */
-//window.onload = function () {
-//    CanvasJS.addColorSet("twoGreens",
-//            [//colorSet Array
-//            "#008080",
-//            "#2F4F4F"
-//            ]);
-
-/**
  * Lock one entry field if the other is being used
  * @param current - field to check if being used
  * @param other - field to be disabled
@@ -225,7 +213,6 @@ function fillDashboard() {
 
                 var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
-                    colorSet: "twoGreens",
                     title: {
                         text: "Check-ins per hour"
                     },
@@ -235,6 +222,7 @@ function fillDashboard() {
                     },
                     data: [
                     {
+                        color: "#008080",
                         type: "column",
                         dataPoints: hourOfDay_json
                     }
@@ -251,6 +239,7 @@ function fillDashboard() {
                     },
                     data: [
                     {
+                        color: "#00cccc",
                         type: "column",
                         dataPoints: dayOfWeek_json
                     }
@@ -268,6 +257,7 @@ function fillDashboard() {
                     data: [
 
                     {
+                        color: "#00e6e6",
                         type: "column",
                         dataPoints: age_json
                     }
@@ -305,6 +295,7 @@ function fillDashboard() {
                     data: [
 
                     {
+                        color: "#006666",
                         type: "column",
                         dataPoints: dwelltime_json
                     }
