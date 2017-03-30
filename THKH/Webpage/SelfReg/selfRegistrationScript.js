@@ -79,7 +79,7 @@ function checkNationals() {
     } else {
         $("#natWarning").css("display", "none");
     }
-    return blank;
+    return !blank;
 }
 
 // Check gender input field
@@ -90,7 +90,7 @@ function checkGender() {
     } else {
         $("#sexWarning").css("display", "none");
     }
-    return blank;
+    return !blank;
 }
 
 // Reload Page & Clear Cache
@@ -284,7 +284,6 @@ function checkRequiredFields() {
     if (existUser !== true) {
         nationalitycheck = checkNationals();
         genCheck = checkGender();
-        emCheck = validEmail;
     }
     timeCheck = checkTime();
     $.each($("#selfregistration input.required"), function (index, value) {
@@ -294,7 +293,7 @@ function checkRequiredFields() {
             $(value).css('background', '#f3f78a');
         }
     });
-    if (!validMob || !validHom || !validAlt || !validPos || !validDate || !nationalitycheck || !timeCheck || !genCheck || !emCheck) {
+    if (!validMob || !validPos || !validDate || !nationalitycheck || !timeCheck || !genCheck) {
         valid = false;
     }
     if (valid) {

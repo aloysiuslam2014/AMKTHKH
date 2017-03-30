@@ -647,10 +647,8 @@ function checkRequiredFields() {
         valid = false;
     }
 
-    if (!validMob || !validHom || !validAlt || !validTemp || !validPos || !validDate || !checkNationals() || !purposePanels() || !checkTime() || !checkGender() || !validEmail) {
+    if (!validMob || !validTemp || !validPos || !validDate || !checkNationals() || !purposePanels() || !checkTime() || !checkGender()) {
         valid = false;
-    } else {
-        valid = true;
     }
     if (valid) {
         $('#emptyFields').css("display", "none");
@@ -861,7 +859,11 @@ function checkNricWarningDeclaration() {
         $("#emptyNricWarning").css("display", "block");
         allowNric = $('input[id="ignoreNric"]').is(':checked');
     } else if ($('input[id="ambulCheck"]').is(':checked')) {
-        NewExpressReg();
+        if ($("#remarksExpressInput").val() !== "") {
+            NewExpressReg();
+        } else {
+            alert("Please a reason for express entry!");
+        }
     } else {
         $("#emptyNricWarning").css("display", "none");
         var allowNric = false;

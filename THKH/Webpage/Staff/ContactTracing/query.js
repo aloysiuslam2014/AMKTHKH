@@ -7,12 +7,17 @@ var visitors, visitDetails;
 var uq_bednos = document.getElementById("uq_bednos");
 var uq_loc = document.getElementById("uq_loc");
 
-//
+/**
+ * Lock one entry field if the other is being used
+ * @param current - field to check if being used
+ * @param other - field to be disabled
+ * @return 
+ */
 function enableToggle(current, other) {
     other.disabled = current.value.replace(/\s+/, '').length > 0;
 }
 
-//
+
 function expressTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
     while (resultTable.firstChild) {
@@ -60,7 +65,11 @@ function expressTrace() {
     });
 }
 
-// Change checkbox value upon click
+/**
+ * Change express entry visitor tracing checkbox value on click
+ * @param 
+ * @return 
+ */
 $('#expressTraceCheck').on('change', function () {
     this.check;
     var isChecked = $('input[id="expressTraceCheck"]').is(':checked');
@@ -73,7 +82,11 @@ $('#expressTraceCheck').on('change', function () {
     }
 });
 
-//
+/**
+ * Fill Datatable with contact tracing data
+ * @param 
+ * @return 
+ */
 function unifiedTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
     var expTrc = $('input[id="expressTraceCheck"]').is(':checked');
@@ -133,7 +146,11 @@ function unifiedTrace() {
     });
 }
 
-//
+/**
+ * Draws charts using the CanvasJS library
+ * @param 
+ * @return 
+ */
 function writeUQResultsTable(uqResultJSON) {
             var vparams = ["location", "bedno", "checkin_time", "exit_time", "fullName", "nric", "mobileTel", "nationality", "reg", "scan"];
             var row = document.createElement("tr");
@@ -149,8 +166,20 @@ function writeUQResultsTable(uqResultJSON) {
             $("#uq_resultstable_body").append(row);
 }
 
-//
+/**
+ * Draws charts using the CanvasJS library
+ * @param 
+ * @return 
+ */
 function fillDashboard() {
+
+    $("#hourOfDay_chart").html("");
+    $("#dayOfWeek_chart").html("");
+    $("#age_chart").html("");
+    $("#gender_chart").html("");
+    $("#dwelltime_chart").html("");
+    $("#location_chart").html("");
+
 
     var dash_dateStart = $("#dash_startdatetime").val();
     var dash_dateEnd = $("#dash_enddatetime").val();
@@ -184,8 +213,6 @@ function fillDashboard() {
 
                 var hourOfDay_chart = new CanvasJS.Chart("hourOfDay_chart",
                 {
-                    width: 675,
-                    height: 300,
                     title: {
                         text: "Check-ins per hour"
                     },
@@ -195,6 +222,7 @@ function fillDashboard() {
                     },
                     data: [
                     {
+                        color: "#008080",
                         type: "column",
                         dataPoints: hourOfDay_json
                     }
@@ -205,13 +233,13 @@ function fillDashboard() {
 
                 var dayOfweek_chart = new CanvasJS.Chart("dayOfWeek_chart",
                 {
-                    width: 425,
-                    height: 300,
+                    colorSet: "twoGreens",
                     title: {
                         text: "Check-ins per day"
                     },
                     data: [
                     {
+                        color: "#00cccc",
                         type: "column",
                         dataPoints: dayOfWeek_json
                     }
@@ -222,14 +250,14 @@ function fillDashboard() {
 
                 var age_chart = new CanvasJS.Chart("age_chart",
                 {
-                    width: 675,
-                    height: 300,
+                    colorSet: "twoGreens",
                     title: {
                         text: "Visitor age range"
                     },
                     data: [
 
                     {
+                        color: "#00e6e6",
                         type: "column",
                         dataPoints: age_json
                     }
@@ -240,8 +268,6 @@ function fillDashboard() {
 
                 var gender_chart = new CanvasJS.Chart("gender_chart",
                 {
-                    width: 425,
-                    height: 300,
                     title: {
                         text: "Visitor gender"
                     },
@@ -258,6 +284,7 @@ function fillDashboard() {
 
                 var dwelltime_chart = new CanvasJS.Chart("dwelltime_chart",
                 {
+                    colorSet: "twoGreens",
                     title: {
                         text: "Visit Duration"
                     },
@@ -268,6 +295,7 @@ function fillDashboard() {
                     data: [
 
                     {
+                        color: "#006666",
                         type: "column",
                         dataPoints: dwelltime_json
                     }
@@ -304,7 +332,11 @@ function fillDashboard() {
     });
 }
 
-// Date time picker
+/**
+ * datetime picker formatting for contact tracing
+ * @param 
+ * @return 
+ */
 $(function () {
     $('#unifiedquery_startdatetime').datetimepicker(
         {
