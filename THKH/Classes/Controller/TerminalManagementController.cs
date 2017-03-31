@@ -269,9 +269,9 @@ namespace THKH.Classes.Controller
         /// <param name="locationId"></param>
         /// <param name="userId"></param>
         /// <returns>true or false</returns>
-        public String  checkInUser(String locationId, String userId)
+        public String checkInUser(String locationId, String userId)
         {
-            bool success = false;
+            //bool success = false;
             int id = Convert.ToInt32(locationId);
             procedureCall = new GenericProcedureDAO("CREATE_MOVEMENT", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -282,8 +282,8 @@ namespace THKH.Classes.Controller
 
                 ProcedureResponse responseOutput = procedureCall.runProcedure();
                 string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
-                success = respon.Equals("1") || respon.Equals("2") ? true : false;
-                if (success) {
+                //success = respon.Equals("1") || respon.Equals("2") ? true : false;
+                if (respon.Equals("1")) {
                     toReturn = "success";
                 }
                 else if (respon.Equals("2"))
@@ -292,14 +292,15 @@ namespace THKH.Classes.Controller
                 }
                 else if (respon.Equals("3"))
                 {
-                    toReturn = "success,noCheckIn";
+                    //toReturn = "success,noCheckIn";
+                    toReturn = "false";
                 }
             }
             catch (Exception ex)
             {
                 var test = ex;
             }
-            return success ? toReturn : "false";
+            return toReturn;
         }
 
         /// <summary>

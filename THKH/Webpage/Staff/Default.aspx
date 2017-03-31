@@ -365,12 +365,14 @@
                                 </div>
                             </div>
                             <br />
+                            <div id="tempDiv">
                             <label class="control-label" id="tempLbl" for="temp"><span style="color: lightcoral">*</span>Temperature</label>
                             <input id="temp" onkeypress=" return enterToCheckNric(event)" class="form-control required regInput" type="text" />
                             <h4 id="tempWarning" style="color: lightcoral">Warning! Fever!</h4>
                             <h4 id="tempLimitWarning" style="color: lightcoral">Invalid Temperature</h4>
                             <h4 id="lowtempWarning" style="color: lightcoral">Invalid Temperature</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
+                                </div>
                             <div id="remarksExpressDiv">
                                 <h3 style="color: lightblue">Additional Information</h3>
                                 <label for="remarksExpressInput"><span style="color: lightcoral">*</span>Remarks</label>
@@ -551,7 +553,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 style="">Select a Form to Begin</h3>
+                        <h3 style="">Health Screening Form</h3>
                         <h5 style="font-style: italic">Please remember to save your form</h5>
                         <div class="input-group" id="qnaireSelection">
                             <select class="form-control qnaire" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
