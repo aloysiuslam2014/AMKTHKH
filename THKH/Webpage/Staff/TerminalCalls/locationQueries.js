@@ -130,6 +130,10 @@ function updateCheckIn() {
                     {
                         $("#userWelcome").html("No Entry!<br> Wrong location.");
                         $("#userWelcome").css('color', 'lightcoral');
+                    } else if (result == "deactivated") {
+                        $("#userWelcome").html("Terminal Has Been deactivated.<br>Refreshing.");
+                        $("#userWelcome").css('color', 'lightcoral');
+                        location.reload();
                     } else {
                         $("#userWelcome").html("Not Registered!<br> Proceed to front desk.");
                         $("#userWelcome").css('color', 'lightcoral');

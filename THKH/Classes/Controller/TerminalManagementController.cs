@@ -295,6 +295,11 @@ namespace THKH.Classes.Controller
                     //toReturn = "success,noCheckIn";
                     toReturn = "false";
                 }
+                else if (respon.Equals("-1"))
+                {
+                    //toReturn = "success,noCheckIn";
+                    toReturn = "deactivated";
+                }
             }
             catch (Exception ex)
             {

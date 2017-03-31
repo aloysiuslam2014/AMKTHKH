@@ -1250,6 +1250,13 @@ CREATE PROCEDURE [dbo].[CREATE_MOVEMENT]
 AS  
 BEGIN  
 
+/*Check if terminal is active if not exit*/
+IF((Select activated from TERMINAL where terminalID = @pLocationID) = 0)
+begin
+    set @responseMessage = -1
+	return @responseMessage
+end
+
 SET NOCOUNT ON  
 DECLARE @pVisit_Date DATETIME
 DECLARE @pLast_LocationID INT
