@@ -7,6 +7,11 @@ var visitors, visitDetails;
 var uq_bednos = document.getElementById("uq_bednos");
 var uq_loc = document.getElementById("uq_loc");
 
+$(document).ready(function () {
+    loadTracingFacilities();
+});
+
+
 /**
  * Lock one entry field if the other is being used
  * @param current - field to check if being used
@@ -351,3 +356,37 @@ $(function () {
         format: 'YYYY-MM-DD'
     });
 });
+
+//
+function loadTracingFacilities() {
+    var headersToProcess = {
+        requestType: "facilities"
+    };
+    $.ajax({
+        url: '../Staff/CheckInOut/CheckInGateway.ashx',
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Result === "Success") {
+                var facString = resultOfGeneration.Facilities;
+                if (facString !== null) {
+                    var arr = facString.split(",");
+                    for (s in arr) {
+                        var optin = document.createElement("option");
+                        $(optin).attr("style", "background:white");
+                        $(optin).attr("name", arr[s]);
+                        $(optin).html(arr[s]);
+                        $('#uq_loc').append(optin);
+                    }
+                }
+            } else {
+                alert("Error: " + resultOfGeneration.Facilities);
+            }
+        },
+        error: function (err) {
+        },
+    });
+}

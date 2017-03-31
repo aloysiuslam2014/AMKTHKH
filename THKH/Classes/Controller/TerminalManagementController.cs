@@ -318,10 +318,7 @@ namespace THKH.Classes.Controller
                 dataTable = responseOutput.getDataTable();
             }
             catch (Exception ex)
-            {
-
-            }
-
+            { }
             toReturn = "";
             for (var i = 0; i < dataTable.Rows.Count; i++)
             {

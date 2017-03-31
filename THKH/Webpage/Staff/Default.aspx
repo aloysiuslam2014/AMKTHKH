@@ -19,7 +19,6 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap-datetimepicker.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/rsvp-3.1.0.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/sha-256.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/canvasjs.min.js") %>"></script>
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
@@ -1117,10 +1116,18 @@
                         </div>
                         <div id="unifiedquery_bednos" class="input-group col-sm-8">
                             <div class="col-sm-6">
+                                <%--<label>Bed Number</label>--%>
                                 <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 2101-2105 " type="text" />
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" id="uq_loc" placeholder="Location: NKF" type="text" />
+                                <%--<label>Location</label>--%>
+                                <%--<input class="form-control" id="uq_loc" placeholder="Location: NKF" type="text" />--%>
+                                <%--Change to populated dropdown--%>
+                                <div class="form-group">
+                                    <select class="form-control" id="uq_loc">
+                                        <option value="">-- Select One --</option>
+                                    </select>
+                                </div>
                             </div>
                             <span class="input-group-btn">
                                 <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace(); false;"><span class="glyphicon glyphicon-search"></span>Trace</button>
@@ -1353,6 +1360,7 @@
     <%}
         if (accessRightsStr.Contains('6'))
         { %>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/canvasjs.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.dataTables.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.buttons.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.colVis.min.js") %>"></script>
