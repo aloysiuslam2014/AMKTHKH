@@ -14,6 +14,11 @@ var numTries = 5;
 var ipAdd = "";
 
 // write to form information DB
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function NewSelfReg() {
     if (allowVisit) {
         var fname = $("#namesInput").val();
@@ -72,6 +77,11 @@ function NewSelfReg() {
 }
 
 // Check nationality input field
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function checkNationals() {
     var blank = checkBlankField($("#nationalsInput").val());
     if (blank) {    
@@ -83,6 +93,11 @@ function checkNationals() {
 }
 
 // Check gender input field
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function checkGender() {
     var blank = checkBlankField($("#sexinput").val());
     if (blank) {
@@ -94,11 +109,21 @@ function checkGender() {
 }
 
 // Reload Page & Clear Cache
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function reloadPage() {
     location.reload(true);
 }
 
 // Enter Button Trigger
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 $("#submitNric").keyup(function (event) {
     if (event.keyCode == 13) {
         $("#submitNric").click();
@@ -106,6 +131,11 @@ $("#submitNric").keyup(function (event) {
 });
 
 //add patient to be visited
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function addBedToVisit(patientName, patientBedNo) {
 
     if ($("#bedsAdded #" + patientBedNo).prop("id") != null) {
@@ -144,7 +174,13 @@ function addBedToVisit(patientName, patientBedNo) {
     $("#bedsAdded").append(newPatientObj);
     $('[data-toggle="tooltip"]').tooltip();
 }
+
 // ensure patient info is valid
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function validatePatient() {
     var pName = $("#patientName").val();
     var bedno = $("#bedno").val();
@@ -202,6 +238,11 @@ function validatePatient() {
 }
 
 // Increments invalid tries variable & blocks out the form if necessary
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function plusInvalid() {
     invalidTries += 1;
     if (invalidTries > numTries) {
@@ -210,12 +251,22 @@ function plusInvalid() {
 }
 
 // Show lock modal
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function showLockModal() {
     $('#lockModal').modal({ backdrop: 'static', keyboard: false });
     $('#lockModal').modal('show');
 }
 
 // Check for visitor details & any online self registration information
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function checkIfExistingVisitor() {
     var snric = $("#selfRegNric").val();
     if (snric === "") {
@@ -253,28 +304,53 @@ function checkIfExistingVisitor() {
 }
 
 // Show Modal on Page Load
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 $(window).load(function () {
     $('#myModal').modal({ backdrop: 'static', keyboard: false });
     $('#myModal').modal('show');
 });
 
 // Prevent page refresh upon submit
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 $("#selfregistration").submit(function (e) {
     e.preventDefault();
 });
 
 // show Visit Details DIV & Hide Modal
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function showVisitDetails() {
     $('#visitDetailsDiv').css("display", "block");
     hideModal();
 }
 
 // Show empty NRIC Field warning
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function showNricWarning() {
     emptyNricWarning$('#emptyNricWarning').css("display", "block");
 }
 
 // Check if required fields are filled
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function checkRequiredFields() {
     var valid = true;
     var nationalitycheck = true;
@@ -306,34 +382,64 @@ function checkRequiredFields() {
 }
 
 // Show Modal
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function showModal() {
     $('#myModal').modal('show');
 }
 
 // Show Success Modal
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function showSuccessModal() {
     $('#successModal').modal({ backdrop: 'static', keyboard: false });
     $('#successModal').modal('show');
 }
 
 // Hide Modal
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function hideModal() {
     $('#myModal').modal('hide');
 }
 
 // Show Visit Details Div
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function showVisitDetails() {
     $('#visitDetailsDiv').css("display", "block");
     hideModal();
 }
 
 // Show new visitor registration form
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function showNewContent() {
     $('#newusercontent').css("display", "block");
     $('#staticinfocontainer').css("display", "block");
 }
 
 // Show only the Visit Purpose & Questionnaire
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function showExistContent() {
     $('#visitDetailsDiv').css("display", "block");
     $('#changeddetailsdeclaration').css("display", "block");
@@ -341,6 +447,11 @@ function showExistContent() {
 }
 
 // Display Submit Button according to whether the user has checked the declaration checkbox
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function declarationValidation() {
     if ($("#declaration").prop('checked') === true && patientValidated === true) {
         $("#submitNewEntry").css("display", "block");
@@ -350,6 +461,11 @@ function declarationValidation() {
 }
 
 // Datetime Picker JQuery
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 $(function () {
     $('#datetimepicker').datetimepicker({
         defaultDate: new Date(),
@@ -373,6 +489,11 @@ $(function () {
 });
 
 // Validate NRIC format
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 $("#selfRegNric").on("input", function () {
     var validNric = validateNRIC($("#selfRegNric").val());
     if ($("#selfRegNric").val() == "") {
@@ -391,6 +512,11 @@ $("#selfRegNric").on("input", function () {
 });
 
 // Validate mobile phone number format
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 $("#mobilesInput").on("input", function () {
     var validPhone = validatePhone($("#mobilesInput").val());
     if (validPhone) {
@@ -404,6 +530,11 @@ $("#mobilesInput").on("input", function () {
 });
 
 // Check date format
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 $("#daterange").on("input", function () {
     var dateStr = $('#daterange').val();
     if (validateDate(dateStr)) {
@@ -416,6 +547,11 @@ $("#daterange").on("input", function () {
 });
 
 // Validate postal code number format
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 $("#postalsInput").on("input", function () {
     var validNric = validatePostal($("#postalsInput").val());
     if (validNric !== false) {
@@ -428,6 +564,11 @@ $("#postalsInput").on("input", function () {
 });
 
 // Check Other Purpose Input
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function checkOtherInput() {
     var purpose = $("#purposeInput").val();
     if (checkBlankField(purpose)) {
@@ -438,6 +579,11 @@ function checkOtherInput() {
 }
 
 // Display appropriate panels according to visit purpose
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function purposePanels() {
     var purpose = $("#pInput").val();
     if (purpose === "Visit Patient") {
@@ -482,6 +628,11 @@ function purposePanels() {
 }
 
 // display checkbox that allows user to declare that his/her details have changed
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function amendVisitorDetails() {
     if ($("#changed").prop('checked') === true) {
         $('#newusercontent').css("display", "block");
@@ -498,6 +649,11 @@ function amendVisitorDetails() {
 }
 
 // hide all warnings on page load
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function hideTags() {
     $('#emptyNricWarning').css("display", "none");
     $('#nricWarning').css("display", "none");
@@ -540,6 +696,11 @@ function hideTags() {
 }
 
 // Get Questionnaire Answers by .answer class
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function getQuestionnaireAnswers() {
     var answers = '';
     var questions = [];
@@ -601,6 +762,11 @@ function getQuestionnaireAnswers() {
 }
 
 // Loads all facilities in the hospital
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function loadFacilities() {
     var headersToProcess = {
         requestType: "facilities"
@@ -635,6 +801,11 @@ function loadFacilities() {
 }
 
 // Loads & displays the active questionnaire from the DB for Self-Reg
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function loadActiveForm() {
     var headersToProcess = {
         requestType: "form"
@@ -710,6 +881,11 @@ function loadActiveForm() {
 }
 
 // Populates Nationality Field
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function populateNationalities() {
     var nationalities = getNationalityArray();
     for (var i = 0; i < nationalities.length; i++) {
@@ -722,6 +898,11 @@ function populateNationalities() {
 }
 
 // Populates Visit Time Field
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function populateTime() {
     var lowTime = "";
     var highTime = "";
@@ -789,6 +970,11 @@ function populateTime() {
 }
 
 // Check visit time input field
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function checkTime() {
     var blank = checkBlankField($("#visitbookingtime").val());
     if (blank) {
@@ -800,6 +986,11 @@ function checkTime() {
 }
 
 // Check visit location input field
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function checkLocation() {
     var blank = checkBlankField($("#visLoc").val());
     if (blank) {
@@ -811,6 +1002,11 @@ function checkLocation() {
 }
 
 // Email Format Validation
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 $("#emailsInput").on("input", function () {
     var email = $("#emailsInput").val();
     var valid = validateEmail(email);
@@ -823,6 +1019,11 @@ $("#emailsInput").on("input", function () {
 });
 
 // Checks for existing cookies & locks the app if a cookie exists
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function checkSessionCookie() {
     var existingCookie = $.cookie('ip');
     if (existingCookie != undefined & existingCookie !== "") {
@@ -831,6 +1032,11 @@ function checkSessionCookie() {
 }
 
 // Set Cookie with 10 minute expiry
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function createCookie() {
     var date = new Date();
     var minutes = 10;

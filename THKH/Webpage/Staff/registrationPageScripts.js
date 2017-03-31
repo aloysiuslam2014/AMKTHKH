@@ -79,7 +79,11 @@ var links = [
 ];
 
 
-// Check for visitor details & any online self registration information
+/**
+ * Check for visitor details & any online self registration information
+ * @param 
+ * @return 
+ */
 function callCheck (){
         var nricValue = nric.value;
         var visDate = $('#visitbookingdate').val();
@@ -142,7 +146,31 @@ function callCheck (){
                             $("#qaid").prop('value', visitObj.qAid);
                             $("#remarks").prop('value', visitObj.remarks);
                         } else {
-                            // Current Time
+                            var d = new Date();
+                            var localTime = d.getTime();
+                            var localOffset = d.getTimezoneOffset() * 60000;
+                            var utc = localTime + localOffset;
+                            var offset = 8;
+                            var singaporeTime = utc + (3600000 * offset);
+                            var date = new Date(singaporeTime);
+                            var timeStr = "";
+                            if (date.getMinutes() > 30) {
+                                if (date.getHours() == 23) {
+                                    timeStr = "00:00";
+                                    adjustedTime = true;
+                                } else if (date.getHours() < 10) {
+                                    timeStr = "0" + (date.getHours() + 1) + ":00";
+                                } else {
+                                    timeStr = (date.getHours() + 1) + ":00";
+                                }
+                            } else {
+                                if (date.getHours() < 10) {
+                                    timeStr = "0" + date.getHours() + ":30";
+                                } else {
+                                    timeStr = (date.getHours()) + ":30";
+                                }
+                            }
+                            $("#visitbookingtime").val(timeStr);
                         } if (questionnaireArr.length >= 1) {
                             for (i = 0; i < questionnaireArr.length; i++) {
                                 var jsonAnswerObject = questionnaireArr[i];
@@ -184,7 +212,11 @@ function callCheck (){
         dataFound = true;
 }
 
-// Load patient name & bed number
+/**
+ * Load patient name & bed number
+ * @param 
+ * @return 
+ */
 function loadBedPatientName(bedno) {
     var patientBedRequest = { requestType: "pName", bedNo: "" + bedno };
     var patientName = "";
@@ -208,7 +240,11 @@ function loadBedPatientName(bedno) {
     });
 }
 
-// Loads all facilities in the hospital
+/**
+ * Loads all facilities in the hospital
+ * @param 
+ * @return 
+ */
 function loadFacilities() {
     var headersToProcess = {
         requestType: "facilities"
@@ -242,7 +278,11 @@ function loadFacilities() {
     });
 }
 
-// Check nationality input field
+/**
+ * Check nationality input field
+ * @param 
+ * @return 
+ */
 function checkNationals() {
     var blank = checkBlankField($("#nationalsInput").val());
     if (blank) {
@@ -253,7 +293,11 @@ function checkNationals() {
     return !blank;
 }
 
-// Check gender input field
+/**
+ * Check gender input field
+ * @param 
+ * @return 
+ */
 function checkGender() {
     var blank = checkBlankField($("#sexinput").val());
     if (blank) {
@@ -264,7 +308,11 @@ function checkGender() {
     return !blank;
 }
 
-// Check visit time input field
+/**
+ * Check visit time input field
+ * @param 
+ * @return 
+ */
 function checkTime() {
     var blank = checkBlankField($("#visitbookingtime").val());
     if (blank) {
@@ -275,8 +323,11 @@ function checkTime() {
     return !blank;
 }
 
-
-// Add bed to list
+/**
+ * Add bed to list
+ * @param 
+ * @return 
+ */
 function addBedToVisit(patientName, patientBedNo) {
 
     if ($("#bedsAdded #"+patientBedNo).prop("id") != null) {
@@ -311,7 +362,11 @@ function addBedToVisit(patientName, patientBedNo) {
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-// ensure patient info is valid
+/**
+ * Ensure patient info is valid
+ * @param 
+ * @return 
+ */
 function validatePatient() {
     var pName = $("#patientName").val();
     var bedno = $("#bedno").val();
@@ -352,7 +407,11 @@ function validatePatient() {
     });
 }
 
-// Check visitor's temperature
+/**
+ * Check visitor's temperature
+ * @param 
+ * @return 
+ */
 $("#temp").on("input", function () {
     var temper = $("#temp").val();
     if (checkBlankField(temper)) {
@@ -411,7 +470,11 @@ $("#temp").on("input", function () {
     }
 });
 
-// ASHX page call to write info to DB
+/**
+ * ASHX page call to write info to DB
+ * @param 
+ * @return 
+ */
 function NewAssistReg() {
     var username = user; 
     var fname = $("#namesInput").val();
@@ -492,18 +555,15 @@ function NewAssistReg() {
     $('input[id="ambulCheck"]').prop('checked', false);
     var allowNric = false;
 }
-
-// ASHX page call to write info to DB for express entry
+ 
+/**
+ * ASHX page call to write info to DB for express entry
+ * @param 
+ * @return 
+ */
 function NewExpressReg() {
     var username = user;
-    //var fname = $("#namesInput").val();
     var snric = $("#nric").val();
-    //var address = $("#addresssInput").val();
-    //var postal = $("#postalsInput").val();
-    //var mobtel = $("#mobilesInput").val();
-    //var sex = $("#sexinput").val();
-    //var nationality = $("#nationalsInput").val();
-    //var dob = $("#daterange").val();
     var qListID = $("#qnlistid").val();
     var remarks = $("#remarksExpressInput").val();
     var qAnswers = getQuestionnaireAnswers();
@@ -539,7 +599,11 @@ function NewExpressReg() {
     var allowNric = false;
 }
 
-// partially or wholly clears the user fields based on a boolean value
+/**
+ * Partially or wholly clears the user fields based on a boolean value
+ * @param 
+ * @return 
+ */
 function clearFields(overwrite) {
     if (allowVisit) {
         if (overwrite) {
@@ -577,7 +641,11 @@ function clearFields(overwrite) {
     }
 }
 
-// Display appropriate panels according to visit purpose
+/**
+ * Display appropriate panels according to visit purpose
+ * @param 
+ * @return 
+ */
 function purposePanels() {
     var purpose = $("#pInput").val();
     if (purpose === "Visit Patient") {
@@ -621,7 +689,11 @@ function purposePanels() {
     return false;
 }
 
-// Check visit location input field
+/**
+ * Check visit location input field
+ * @param 
+ * @return 
+ */
 function checkLocation() {
     var blank = checkBlankField($("#visLoc").val());
     if (blank) {
@@ -632,7 +704,11 @@ function checkLocation() {
     return !blank;
 }
 
-// Checks the filling of the required fields
+/**
+ * Checks the filling of the required fields
+ * @param 
+ * @return 
+ */
 function checkRequiredFields() {
     var valid = true;
     $.each($("#registration input.required"), function (index, value) {
@@ -660,7 +736,11 @@ function checkRequiredFields() {
     }
 }
 
-// Validate NRIC format
+/**
+ * Validate NRIC format
+ * @param 
+ * @return 
+ */
 $("#nric").on("input", function () {
     var validNric = validateNRIC($("#nric").val());
     if (validNric !== false) {
@@ -675,7 +755,11 @@ $("#nric").on("input", function () {
     }
 });
 
-// Validate mobile phone number format
+/**
+ * Validate mobile phone number format
+ * @param 
+ * @return 
+ */
 $("#mobilesInput").on("input", function () {
     var validPhone = validatePhone($("#mobilesInput").val());
     if (validPhone) {
@@ -686,7 +770,11 @@ $("#mobilesInput").on("input", function () {
     validMob = validPhone;
 });
 
-// Validate postal code number format
+/**
+ * Validate postal code number format
+ * @param 
+ * @return 
+ */
 $("#postalsInput").on("input", function () {
     var validPostal = validatePostal($("#postalsInput").val());
     if (validPostal) {
@@ -697,7 +785,11 @@ $("#postalsInput").on("input", function () {
     validPos = validPostal;
 });
 
-// Check if visitor record exists in database
+/**
+ * Check if visitor record exists in database
+ * @param 
+ * @return 
+ */
 function checkExistOrNew() {
     $("#emptyNricWarning").css("display", "none");
     if (validTemp) {
@@ -709,7 +801,11 @@ function checkExistOrNew() {
     }
 }
 
-// Get Questionnaire Answers by .answer class
+/**
+ * Get Questionnaire Answers by .answer class
+ * @param 
+ * @return 
+ */
 function getQuestionnaireAnswers() {
     var answers = '';
     var questions = [];
@@ -771,7 +867,11 @@ function getQuestionnaireAnswers() {
     return jsonString;
 }
 
-// Datetime Picker JQuery
+/**
+ * Datetime Picker JQuery
+ * @param 
+ * @return 
+ */
 $(function () {
     $('#datetimepicker').datetimepicker({
         defaultDate: new Date(),
@@ -787,7 +887,11 @@ $(function () {
         });
 });
 
-// Date picker formatter
+/**
+ * Date picker formatter
+ * @param 
+ * @return 
+ */
 function getFormattedDate(date) {
     var day = date.getDate();
     var month = date.getMonth() + 1;
@@ -795,7 +899,11 @@ function getFormattedDate(date) {
     return day + '-' + month + '-' + year;
 }
 
-// Check date format
+/**
+ * Check date format
+ * @param 
+ * @return 
+ */
 $("#daterange").on("input", function () {
     var dateStr = $('#daterange').val();
     var valid = validateDate(dateStr);
@@ -807,7 +915,11 @@ $("#daterange").on("input", function () {
     validDate = valid;
 });
 
-// hide all warnings on page load
+/**
+ * Hide all warnings on page load
+ * @param 
+ * @return 
+ */
 function hideTags(clear) {
     if (clear) {
         clearFields(true);
@@ -848,13 +960,22 @@ function hideTags(clear) {
     }
 }
 
-// button settings for check nric button
+/**
+ * Button settings for check nric button
+ * @param 
+ * @return 
+ */
 function enterToCheckNric(e) {
     if (e.which == 13 || e.keyCode == 13) {
         checkNricWarningDeclaration(); false; }
 }
 
 // Check nature of NRIC
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function checkNricWarningDeclaration() {
     if (checkBlankField($("#nric").val())) {
         $("#emptyNricWarning").css("display", "block");
@@ -878,7 +999,11 @@ function checkNricWarningDeclaration() {
     }
 }
 
-// Check nature of Express Entry Checkbox
+/**
+ * Check nature of Express Entry Checkbox
+ * @param 
+ * @return 
+ */
 function checkExpressDeclaration() {
     if (checkBlankField($("#nric").val())) {
         $("#emptyNricWarning").css("display", "block");
@@ -905,18 +1030,30 @@ function checkExpressDeclaration() {
     }
 }
 
-// Change checkbox value upon click
+/**
+ * Change checkbox value upon click
+ * @param 
+ * @return 
+ */
 $('#ignoreNric').on('change', function () {
      this.check;
 });
 
-// Change checkbox value upon click
+/**
+ * Change checkbox value upon click
+ * @param 
+ * @return 
+ */
 $('#ambulCheck').on('change', function () {
     this.check;
     checkExpressDeclaration();
 });
 
-// Loads & displays the active questionnaire from the DB for Assisted Reg
+/**
+ * Loads & displays the active questionnaire from the DB for Assisted Reg
+ * @param 
+ * @return 
+ */
 function loadActiveForm() {
     $("#questionaireForm").html("");
     var k = $("#questionaireForm");
@@ -994,7 +1131,11 @@ function loadActiveForm() {
     });
 }
 
-// Populates Nationality Field
+/**
+ * Populates Nationality Field
+ * @param 
+ * @return 
+ */
 function populateRegNationalities() {
     var nationalities = getNationalityArray();
     for (var i = 0; i < nationalities.length; i++) {
@@ -1006,7 +1147,11 @@ function populateRegNationalities() {
     }
 }
 
-// Populates Visit Time Field
+/**
+ * Populates Visit Time Field
+ * @param 
+ * @return 
+ */
 function populateTime() {
     var lowTime = "";
     var adjustedTime = false;
@@ -1083,7 +1228,11 @@ function populateTime() {
     });
 }
 
-// Show Success Modal
+/**
+ * Show Success Modal
+ * @param 
+ * @return 
+ */
 function showSuccessModal() {
     $('#successModal').unbind("shown.bs.modal");
     $('#successModal').on('shown.bs.modal', function () {
@@ -1092,25 +1241,41 @@ function showSuccessModal() {
     $('#successModal').modal({ backdrop: 'static', keyboard: false });
 }
 
-// Hide Success Modal
+/**
+ * Hide Success Modal
+ * @param 
+ * @return 
+ */
 function hideSuccessModal() {
     $('#successModal').modal('hide');
     $(" #imgPass").remove();//remove the currently generated pass
     clearFields(true);//clear all fields
 }
 
-// Show Max Limit Modal
+/**
+ * Show Max Limit Modal
+ * @param 
+ * @return 
+ */
 function showMaxLimitModal() {
     $('#maxLimitModal').modal({ backdrop: 'static', keyboard: false });
     $('#maxLimitModal').modal('show');
 }
 
-// Hide Max Limit Modal
+/**
+ * Hide Max Limit Modal
+ * @param 
+ * @return 
+ */
 function hideMaxLimitModal() {
     $('#maxLimitModal').modal('hide');
 }
 
-// Email Format Validation
+/**
+ * Email Format Validation
+ * @param 
+ * @return 
+ */
 $("#emailsInput").on("input", function () {
     var email = $("#emailsInput").val();
     var valid = validateEmail(email);
@@ -1122,7 +1287,11 @@ $("#emailsInput").on("input", function () {
     validEmail = valid;
 });
 
-// Get visitor limit
+/**
+ * Get visitor limit
+ * @param 
+ * @return 
+ */
 function getVisLim() {
     var headersToProcess = {
         requestType: "getConfig"

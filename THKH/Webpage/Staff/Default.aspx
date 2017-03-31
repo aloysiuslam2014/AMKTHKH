@@ -918,23 +918,23 @@
                                     <input id="staffAltNum" class="form-control userInput" />
                                     <label id="altWarningUser" style="color: lightcoral">Invalid Phone Number Format!</label>
                                 </div>
-                                <label><span style="color: lightcoral">*</span>Sex</label>
+                                <label>Sex</label>
                                 <div class="form-group">
-                                    <select id="staffSex" class="form-control required userInput">
+                                    <select id="staffSex" class="form-control userInput">
                                         <option value="M">Male</option>
                                         <option value="F">Female</option>
                                     </select>
                                 </div>
-                                <label><span style="color: lightcoral">*</span>Country (Nationality)</label>
+                                <label>Country (Nationality)</label>
                                 <div class="form-group">
-                                    <select class="form-control required userInput" onchange="checkNationals(); false;" id="staffNationality">
+                                    <select class="form-control userInput" onchange="checkNationals(); false;" id="staffNationality">
                                         <option value="">-- Select One --</option>
                                     </select>
                                     <label for="nationalsInput" id="natWarningUser" style="color: lightcoral">Please select a nationality!</label>
                                 </div>
-                                <label><span style="color: lightcoral">*</span>Date Of Birth</label>
+                                <label>Date Of Birth</label>
                                 <div class="input-group date" id="staffDOBDiv">
-                                    <input type='text' id="staffDOB" class="form-control userInput required" readonly />
+                                    <input type='text' id="staffDOB" class="form-control userInput" readonly />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>

@@ -1,8 +1,6 @@
 ﻿//var to check if users are already loaded
 var loadedUsers = false;
-// To check if current process is add user or update user
 var newUser = true;
-// To check if inputs are valid
 var validMobUser = true;
 var validAltUser = true;
 var validHomUser = true;
@@ -10,7 +8,11 @@ var validPosUser = true;
 var userPageUrl = '../Staff/UserManagement/UserManagementGateway.ashx';
 var configPageUrl = '../Staff/MasterConfig/MasterConfigGateway.ashx';
 
-//Load users once
+/**
+ * Load users once
+ * @param 
+ * @return 
+ */
 function loadUsersOnce() {
     if (!loadedUsers) {
         hideUserTags();
@@ -21,7 +23,11 @@ function loadUsersOnce() {
     } 
 }
 
-// Load & Populate User List
+/**
+ * Load & Populate User List
+ * @param 
+ * @return 
+ */
 function getAllUsers() {
     var headersToProcess = {
         requestType: "loadUsers"
@@ -46,9 +52,11 @@ function getAllUsers() {
     });
 }
 
-
-
-//Initialize all uers
+/**
+ * Initialize all uers
+ * @param 
+ * @return 
+ */
 function initUsersList(data) {
     populateNationalities();
     var target = $("#usersLis");
@@ -148,7 +156,11 @@ function initUsersList(data) {
 
 }
 
-// get a selected users details
+/**
+ * Get a selected users details
+ * @param 
+ * @return 
+ */
 function getUserDetails(listObj) {
     populateNationalities();
     var headersToProcess = {
@@ -190,7 +202,11 @@ function getUserDetails(listObj) {
     });
 }
 
-// Update User Data
+/**
+ * Update User Data
+ * @param 
+ * @return 
+ */
 function updateUser() {
     var username = user;
     var permissions = getPermissionInput();
@@ -237,7 +253,11 @@ function updateUser() {
     });
 }
 
-// Add new user
+/**
+ * Add new user
+ * @param 
+ * @return 
+ */
 function addUser() {
     var username = user;
     var permissions = getPermissionInput();
@@ -286,7 +306,11 @@ function addUser() {
     });
 }
 
-
+/**
+ * Clears all fields in the staff page
+ * @param 
+ * @return 
+ */
 function clearStaffFields(newUser) {
     $('#userInfo .userInput').each(function (idx, obj) {
         if ($(obj).attr("type") !== "checkbox") {
@@ -311,7 +335,11 @@ function clearStaffFields(newUser) {
     $('#permiss').find('input[type=checkbox]:checked').removeAttr('checked');
 }
 
-// Retrive value from checkbox
+/**
+ * Retrive value from checkbox
+ * @param 
+ * @return 
+ */
 function getPermissionInput() {
     var permissions = "";
     $("#permiss .perm").each(function (index, value) {
@@ -325,7 +353,11 @@ function getPermissionInput() {
     return permissions;
 }
 
-// For field validations
+/**
+ * For field validations
+ * @param 
+ * @return 
+ */
 function checkRequiredFieldsUser(type) {
     var valid = true;
     if (type == "update") {
@@ -338,7 +370,7 @@ function checkRequiredFieldsUser(type) {
             $(value).css('background', '#f3f78a');
         }
     });
-    if (!validMobUser || !validHomUser || !validAltUser || !validPosUser || !checkNationalsUser()) {
+    if (!validMobUser || !validHomUser || !validAltUser || !validPosUser) {
         valid = false;
     }
     if (valid) {
@@ -354,7 +386,11 @@ function checkRequiredFieldsUser(type) {
     }
 }
 
-// Populates Nationality Field
+/**
+ * Populates Nationality Field
+ * @param 
+ * @return 
+ */
 function populateNationalities() {
     var nationalities = getNationalityArray();
         for (var i = 0; i < nationalities.length; i++) {
@@ -367,7 +403,11 @@ function populateNationalities() {
     }
 }
 
-// Populates dropdown with all profiles
+/**
+ * Populates dropdown with all profiles
+ * @param 
+ * @return 
+ */
 function fillAccessProfileListUser() {
     var resultOfGeneration = "";
     var headersToProcess = {
@@ -407,7 +447,11 @@ function fillAccessProfileListUser() {
     });
 }
 
-// Get selected access profile values
+/**
+ * Get selected access profile values
+ * @param 
+ * @return 
+ */
 function getSelectedAccessProfileUser() {
     var profile = $('#permissionProfileDropdown').val();
     var resultOfGeneration = "";
@@ -447,6 +491,11 @@ function getSelectedAccessProfileUser() {
     });
 }
 
+/**
+ * Loads the checkbox list of user modules
+ * @param 
+ * @return 
+ */
 function loadPermissionsField() {
     var headersToProcess = {
         requestType: "getPermissions"
@@ -484,7 +533,11 @@ function loadPermissionsField() {
     });
 }
 
-// Datetime Picker JQuery
+/**
+ * Datetime Picker JQuery
+ * @param 
+ * @return 
+ */
 $(function () {
     $('#staffDOBDiv').datetimepicker({
         // dateFormat: 'dd-mm-yy',
@@ -495,7 +548,11 @@ $(function () {
     });
 });
 
-// hide all warnings on page load
+/**
+ * hide all warnings on page load
+ * @param 
+ * @return 
+ */
 function hideUserTags() {
     $("#emptyUserFields").css("display", "none");
     $("#altWarningUser").css("display", "none");
@@ -510,7 +567,11 @@ function hideUserTags() {
     $("#updateUser").prop('disabled', true);
 }
 
-// Check nationality input field
+/**
+ * Check nationality input field
+ * @param 
+ * @return 
+ */
 function checkNationalsUser() {
     if ($("#staffNationality").val() == "") {
         $("#natWarningUser").css("display", "block");
@@ -521,7 +582,11 @@ function checkNationalsUser() {
     return true;
 }
 
-// Validate NRIC format
+/**
+ * Validate NRIC format
+ * @param 
+ * @return 
+ */
 $("#staffNric").on("input", function () {
     if ($("#staffNric").val() == "") {
         $("#emptyNricWarningUser").css("display", "block");
@@ -538,7 +603,11 @@ $("#staffNric").on("input", function () {
     }
 });
 
-// Email Format Validation
+/**
+ * Email Format Validation
+ * @param 
+ * @return 
+ */
 $("#staffEmail").on("input", function () {
     var email = $("#staffEmail").val();
     var valid = validateEmail(email);
@@ -550,7 +619,11 @@ $("#staffEmail").on("input", function () {
     validEmail = valid;
 });
 
-// Validate mobile phone number format
+/**
+ * Validate mobile phone number format
+ * @param 
+ * @return 
+ */
 $("#staffMobileNum").on("input", function () {
     var validPhone = validatePhone($("#staffMobileNum").val());
     if (validPhone !== false) {
@@ -561,7 +634,11 @@ $("#staffMobileNum").on("input", function () {
     validMobUser = validPhone;
 });
 
-// Validate postal code number format
+/**
+ * Validate postal code number format
+ * @param 
+ * @return 
+ */
 $("#staffPostal").on("input", function () {
     var validPostal = validatePostal($("#staffPostal").val());
     if (validPostal !== false) {
@@ -572,7 +649,11 @@ $("#staffPostal").on("input", function () {
     validPosUser = validPostal;
 });
 
-// Validate home phone number format
+/**
+ * Validate home phone number format
+ * @param 
+ * @return 
+ */
 $("#staffHomeNum").on("input", function () {
     var validPhone = validatePhone($("#staffHomeNum").val());
     if (validPhone !== false) {
@@ -583,7 +664,11 @@ $("#staffHomeNum").on("input", function () {
     validHomUser = validPhone;
 });
 
-// Validate alt phone number format
+/**
+ * Validate alt phone number format
+ * @param 
+ * @return 
+ */
 $("#staffAltNum").on("input", function () {
     var validPhone = validatePhone($("#staffAltNum").val());
     if (validPhone !== false) {
@@ -594,18 +679,30 @@ $("#staffAltNum").on("input", function () {
     validAltUser = validPhone;
 });
 
-// Show Success Modal
+/**
+ * Show Add User Success Modal
+ * @param 
+ * @return 
+ */
 function showAddUserSuccessModal() {
     $('#addUserSuccessModal').modal('show');
     $('#addUserSuccessModal').modal({ backdrop: 'static', keyboard: false });
 }
 
-// Hide Success Modal
+/**
+ * Hide Add User Success Modal
+ * @param 
+ * @return 
+ */
 function hideAddUserSuccessModal() {
     $('#addUserSuccessModal').modal('hide');
 }
-
-// Show Success Modal
+ 
+/**
+ * Show Update User Success Modal
+ * @param 
+ * @return 
+ */
 function showUpdateUserSuccessModal(text) {
     if (text == "1") {
         $("#updateUserTextDiv").text("User information and password updated!");
@@ -614,7 +711,11 @@ function showUpdateUserSuccessModal(text) {
     $('#updateUserSuccessModal').modal({ backdrop: 'static', keyboard: false });
 }
 
-// Hide Success Modal
+/**
+ * Hide Update User Success Modal
+ * @param 
+ * @return 
+ */
 function hideUpdateUserSuccessModal() {
     $('#updateUserSuccessModal').modal('hide');
 }

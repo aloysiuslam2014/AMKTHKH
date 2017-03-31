@@ -23,6 +23,11 @@ function enableToggle(current, other) {
 }
 
 
+/**
+ * Fill Datatable with contact tracing data for express
+ * @param
+ * @return 
+ */
 function expressTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
     while (resultTable.firstChild) {
@@ -79,6 +84,8 @@ $('#expressTraceCheck').on('change', function () {
     this.check;
     var isChecked = $('input[id="expressTraceCheck"]').is(':checked');
     if (isChecked) {
+        $("#uq_bednos").prop('value', "");
+        $("#uq_loc").prop('value', "");
         $("#uq_bednos").prop("disabled", true);
         $("#uq_loc").prop("disabled", true);
     } else {
@@ -95,9 +102,6 @@ $('#expressTraceCheck').on('change', function () {
 function unifiedTrace() {
     var resultTable = document.getElementById("uq_resultstable_body");
     var expTrc = $('input[id="expressTraceCheck"]').is(':checked');
-    if (expTrc) {
-        expressTrace();
-    }
     while (resultTable.firstChild) {
         resultTable.removeChild(resultTable.childNodes[0]);
     }
@@ -111,44 +115,48 @@ function unifiedTrace() {
         alert("End date of query period must be before start date!");
         return;
     }
-    var uq_querybeds = $("#uq_bednos").val();
-    var uq_loc = $("#uq_loc").val();
-    uq_params = "";
-    if (uq_loc == "") {
-        uq_params = "bybed~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_querybeds;
-    }
-    if (uq_querybeds == "") {
-        uq_params = "byloc~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_loc;
-    }
+    if (expTrc) {
+        expressTrace();
+    } else {
+        var uq_querybeds = $("#uq_bednos").val();
+        var uq_loc = $("#uq_loc").val();
+        uq_params = "";
+        if (uq_loc == "") {
+            uq_params = "bybed~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_querybeds;
+        }
+        if (uq_querybeds == "") {
+            uq_params = "byloc~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_loc;
+        }
 
-    var headersToProcess = { action: "unifiedTrace", queries: uq_params };
-    $.ajax({
-        url: toTracing,
-        method: 'post',
-        data: headersToProcess,
+        var headersToProcess = { action: "unifiedTrace", queries: uq_params };
+        $.ajax({
+            url: toTracing,
+            method: 'post',
+            data: headersToProcess,
 
-        success: function (returner) {
-            try {
-                var uqResult = JSON.parse(returner);
-                var arrLen = uqResult.Msg.length;
+            success: function (returner) {
+                try {
+                    var uqResult = JSON.parse(returner);
+                    var arrLen = uqResult.Msg.length;
 
-                var result_table = $('#uq_resultstable').dataTable();
-                
-                result_table.fnClearTable();
+                    var result_table = $('#uq_resultstable').dataTable();
 
-                for (i = 0; i < arrLen; i++) {
-                    var uqResultJSON = uqResult.Msg[i];
-                    result_table.fnAddData(uqResultJSON);
+                    result_table.fnClearTable();
+
+                    for (i = 0; i < arrLen; i++) {
+                        var uqResultJSON = uqResult.Msg[i];
+                        result_table.fnAddData(uqResultJSON);
+                    }
+                } catch (err) {
+                    alert("Selected period returns no data. Please try again. " + err);
                 }
-            } catch (err) {
-                alert("Selected period returns no data. Please try again. " + err);
-            }
-           
-        },
-        error: function (err) {
-            alert("There was a problem executing the trace, please contact the admin.");
-        },
-    });
+
+            },
+            error: function (err) {
+                alert("There was a problem executing the trace, please contact the admin.");
+            },
+        });
+    }
 }
 
 /**
@@ -357,7 +365,11 @@ $(function () {
     });
 });
 
-//
+/**
+ * Populates the dropdown list from tracing by location
+ * @param 
+ * @return 
+ */
 function loadTracingFacilities() {
     var headersToProcess = {
         requestType: "facilities"
