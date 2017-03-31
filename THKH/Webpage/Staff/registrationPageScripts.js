@@ -52,15 +52,15 @@ var regUrl = '../Staff/CheckInOut/CheckInGateway.ashx';
 var configUrl = '../Staff/MasterConfig/MasterConfigGateway.ashx';
 var links = [
 {
-    "bgcolor":"#03A9F4",
-    "icon":"+"
+    "bgcolor": "#03A9F4",
+    "icon": "+"
 },
 {
     "url": "hideTagsFalse",
-    "bgcolor":"#DB4A39",
-    "color":"#fffff",
+    "bgcolor": "#DB4A39",
+    "color": "#fffff",
     "icon": "<i class='fa fa-undo'></i>",
-    "target":"Clear Fields"
+    "target": "Clear Fields"
 },
 {
     "url": "checkNric",
@@ -80,108 +80,108 @@ var links = [
 
 
 // Check for visitor details & any online self registration information
-function callCheck (){
-        var nricValue = nric.value;
-        var visDate = $('#visitbookingdate').val();
-        var msg;
-        var headersToProcess = { nric: nricValue, requestType: "getdetails" }; 
-        $.ajax({
-            url: regUrl,
-            method: 'post',
-            data: headersToProcess,
+function callCheck() {
+    var nricValue = nric.value;
+    var visDate = $('#visitbookingdate').val();
+    var msg;
+    var headersToProcess = { nric: nricValue, requestType: "getdetails" };
+    $.ajax({
+        url: regUrl,
+        method: 'post',
+        data: headersToProcess,
 
 
-            success: function (returner) {
-                var resultOfGeneration = JSON.parse(returner);
-                if (resultOfGeneration.Result === "Success") {
-                    var visitorString = resultOfGeneration.Visitor;
-                    if (resultOfGeneration.Visitor === "new") {
-                        clearFields(false);
-                        $('#visitbookingdate').val(visDate);
-                    } else {
-                        var visitObj = resultOfGeneration.Visit;
-                        var questionnaireAns = resultOfGeneration.Questionnaire;
-                        var questionnaireArr = [];
-                        if (resultOfGeneration.Visitor != null) {
-                            if (resultOfGeneration.Questionnaire != null) {
-                                try {
-                                    questionnaireArr = resultOfGeneration.Questionnaire.Main;
-                                } catch (err) {
-
-                                }
-                            }
-                        }
-                        if (resultOfGeneration.Visitor !== "new") {
-                            $("#nric").prop('value', resultOfGeneration.Visitor.nric);
-                            $("#namesInput").prop('value', resultOfGeneration.Visitor.name);
-                            $("#sexinput").prop('value', resultOfGeneration.Visitor.gender);
-                            $("#nationalsInput").val(resultOfGeneration.Visitor.nationality);
-                            $("#daterange").val(resultOfGeneration.Visitor.dob.toString()); 
-                            $("#addresssInput").prop('value', resultOfGeneration.Visitor.address);
-                            $("#postalsInput").prop('value', resultOfGeneration.Visitor.postal);
-                            $("#mobilesInput").prop('value', resultOfGeneration.Visitor.contactNum);
-                        } if (visitObj !== undefined) {
-                            $("#visitbookingdate").val(visitObj.visReqTime.substring(0, 10));
-                            $("#visitbookingtime").val(visitObj.visReqTime.substring(11, 16));
-                            var visPurpose = visitObj.purpose;
-                            $('#pInput').val(visPurpose);
-                            if (visPurpose == "Visit Patient") {
-                                $("#patientpurposevisit").css("display", "block");
-                                $("#otherpurposevisit").css("display", "none");
-                            } else if (visPurpose == "Other Purpose") {
-                                $("#patientpurposevisit").css("display", "none");
-                                $("#otherpurposevisit").css("display", "block");
-                                $("#visLoc").prop('value', visitObj.visitLocation);
-                                $("#purposeInput").prop('value', visitObj.otherPurpose);
-                            }
-                            if (visitObj.bedno.length > 0) {
-                                $(visitObj.bedno.split('|')).each(function () {
-                                    loadBedPatientName(this);
-                                });
-                            }
-                            $("#qaid").prop('value', visitObj.qAid);
-                            $("#remarks").prop('value', visitObj.remarks);
-                        } else {
-                            // Current Time
-                        } if (questionnaireArr.length >= 1) {
-                            for (i = 0; i < questionnaireArr.length; i++) {
-                                var jsonAnswerObject = questionnaireArr[i];
-                                var qid = jsonAnswerObject.qid;
-                                var answer = jsonAnswerObject.answer
-                                if (answer.includes(",")) { // Checkbox
-                                    var arr = answer.split(",");
-                                    for (i = 0; i < arr.length; i++) {
-                                        var answerOpt = arr[i];
-                                        $("#questionaireForm input[name='" + qid + "'][value='" + answerOpt + "']").prop("checked", true);
-                                    }
-                                } else {
-                                    $('#' + qid).val(answer);
-                                    $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
-                                    $("#questionaireForm input[id='" + qid + "'][value='" + answer + "']").prop("checked", true) // Radio
-                                } 
-                            }
-                        }
-                        else if (resultOfGeneration.Visitor === "new" & visitObj === undefined & questionnaireArr.length == 0) {
-                            clearFields(false);
-                            // Except Visit Date
-                            $('#visitbookingdate').val(visDate);
-                            $("#nric").prop('value', nricValue);
-                        }
-                        $("#nric").prop('disabled', true);
-                        $("#temp").prop('disabled', true);
-                    }
-                    $('#main').animate({
-                        scrollTop: $("#userData").offset().top
-                    }, 200);
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Result === "Success") {
+                var visitorString = resultOfGeneration.Visitor;
+                if (resultOfGeneration.Visitor === "new") {
+                    clearFields(false);
+                    $('#visitbookingdate').val(visDate);
                 } else {
-                    alert("Error: " + resultOfGeneration.Msg);
+                    var visitObj = resultOfGeneration.Visit;
+                    var questionnaireAns = resultOfGeneration.Questionnaire;
+                    var questionnaireArr = [];
+                    if (resultOfGeneration.Visitor != null) {
+                        if (resultOfGeneration.Questionnaire != null) {
+                            try {
+                                questionnaireArr = resultOfGeneration.Questionnaire.Main;
+                            } catch (err) {
+
+                            }
+                        }
+                    }
+                    if (resultOfGeneration.Visitor !== "new") {
+                        $("#nric").prop('value', resultOfGeneration.Visitor.nric);
+                        $("#namesInput").prop('value', resultOfGeneration.Visitor.name);
+                        $("#sexinput").prop('value', resultOfGeneration.Visitor.gender);
+                        $("#nationalsInput").val(resultOfGeneration.Visitor.nationality);
+                        $("#daterange").val(resultOfGeneration.Visitor.dob.toString());
+                        $("#addresssInput").prop('value', resultOfGeneration.Visitor.address);
+                        $("#postalsInput").prop('value', resultOfGeneration.Visitor.postal);
+                        $("#mobilesInput").prop('value', resultOfGeneration.Visitor.contactNum);
+                    } if (visitObj !== undefined) {
+                        $("#visitbookingdate").val(visitObj.visReqTime.substring(0, 10));
+                        $("#visitbookingtime").val(visitObj.visReqTime.substring(11, 16));
+                        var visPurpose = visitObj.purpose;
+                        $('#pInput').val(visPurpose);
+                        if (visPurpose == "Visit Patient") {
+                            $("#patientpurposevisit").css("display", "block");
+                            $("#otherpurposevisit").css("display", "none");
+                        } else if (visPurpose == "Other Purpose") {
+                            $("#patientpurposevisit").css("display", "none");
+                            $("#otherpurposevisit").css("display", "block");
+                            $("#visLoc").prop('value', visitObj.visitLocation);
+                            $("#purposeInput").prop('value', visitObj.otherPurpose);
+                        }
+                        if (visitObj.bedno.length > 0) {
+                            $(visitObj.bedno.split('|')).each(function () {
+                                loadBedPatientName(this);
+                            });
+                        }
+                        $("#qaid").prop('value', visitObj.qAid);
+                        $("#remarks").prop('value', visitObj.remarks);
+                    } else {
+                        // Current Time
+                    } if (questionnaireArr.length >= 1) {
+                        for (i = 0; i < questionnaireArr.length; i++) {
+                            var jsonAnswerObject = questionnaireArr[i];
+                            var qid = jsonAnswerObject.qid;
+                            var answer = jsonAnswerObject.answer
+                            if (answer.includes(",")) { // Checkbox
+                                var arr = answer.split(",");
+                                for (i = 0; i < arr.length; i++) {
+                                    var answerOpt = arr[i];
+                                    $("#questionaireForm input[name='" + qid + "'][value='" + answerOpt + "']").prop("checked", true);
+                                }
+                            } else {
+                                $('#' + qid).val(answer);
+                                $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
+                                $("#questionaireForm input[id='" + qid + "'][value='" + answer + "']").prop("checked", true) // Radio
+                            }
+                        }
+                    }
+                    else if (resultOfGeneration.Visitor === "new" & visitObj === undefined & questionnaireArr.length == 0) {
+                        clearFields(false);
+                        // Except Visit Date
+                        $('#visitbookingdate').val(visDate);
+                        $("#nric").prop('value', nricValue);
+                    }
+                    $("#nric").prop('disabled', true);
+                    $("#temp").prop('disabled', true);
                 }
-            },
-            error: function (err) {
-                alert(err.Msg);
-            },
-        });
-        dataFound = true;
+                $('#main').animate({
+                    scrollTop: $("#userData").offset().top
+                }, 200);
+            } else {
+                alert("Error: " + resultOfGeneration.Msg);
+            }
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
+    dataFound = true;
 }
 
 // Load patient name & bed number
@@ -279,7 +279,7 @@ function checkTime() {
 // Add bed to list
 function addBedToVisit(patientName, patientBedNo) {
 
-    if ($("#bedsAdded #"+patientBedNo).prop("id") != null) {
+    if ($("#bedsAdded #" + patientBedNo).prop("id") != null) {
         alert("Patient has already been added.");
         return;
     }
@@ -296,9 +296,9 @@ function addBedToVisit(patientName, patientBedNo) {
 
     $(newPatientObj).html(patientBedNo);
     $(newPatientObj).append(closeButon);
-    
-  
-    
+
+
+
     $(newPatientObj).attr("id", patientBedNo);
     $(newPatientObj).attr("data-toggle", "tooltip");
     $(newPatientObj).attr("data-placement", "top");
@@ -336,7 +336,7 @@ function validatePatient() {
                     $("#patientStatusGreen").css("display", "block");
                     $("#patientStatusRed").css("display", "none");
                     addBedToVisit(arr[1], arr[2]);
-                }else {
+                } else {
                     alert("Patient Not Found!");
                     $("#patientStatusGreen").css("display", "none");
                     $("#patientStatusRed").css("display", "block");
@@ -413,7 +413,7 @@ $("#temp").on("input", function () {
 
 // ASHX page call to write info to DB
 function NewAssistReg() {
-    var username = user; 
+    var username = user;
     var fname = $("#namesInput").val();
     var snric = $("#nric").val();
     var address = $("#addresssInput").val();
@@ -424,7 +424,7 @@ function NewAssistReg() {
     var sex = $("#sexinput").val();
     var nationality = $("#nationalsInput").val();
     var dob = $("#daterange").val();
-    var race = ""; 
+    var race = "";
     var age = 0;
     var temp = $("#temp").val();
     var Email = "";
@@ -432,7 +432,7 @@ function NewAssistReg() {
     var pName = $("#patientName").val();
     var pNric = $("#patientNric").val();
     var otherPurpose = $("#purposeInput").val();
-    var bedno ="";
+    var bedno = "";
     var bedsLength = $("#bedsAdded").children().length;
     $("#bedsAdded").children().each(function (idx, iitem) {
         bedno += $(this).prop('id');
@@ -451,8 +451,8 @@ function NewAssistReg() {
     var qaid = $("#qaid").val();
 
     var headersToProcess = {
-        staffUser:username,fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
-        AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose,pName: pName, pNric: pNric,
+        staffUser: username, fullName: fname, nric: snric, ADDRESS: address, POSTAL: postal, MobTel: mobtel, email: Email,
+        AltTel: alttel, HomeTel: hometel, SEX: sex, Natl: nationality, DOB: dob, RACE: race, AGE: age, PURPOSE: purpose, pName: pName, pNric: pNric,
         otherPurpose: otherPurpose, bedno: bedno, appTime: appTime, remarks: remarks, visitLocation: visitLoc, requestType: "confirmation", temperature: temp, qListID: qListID, qAnswers: qAnswers, qaid: qaid, visLim: visLim
     };
     $.ajax({
@@ -463,15 +463,15 @@ function NewAssistReg() {
             try {
                 var resultOfGeneration = JSON.parse(returner);
                 if (resultOfGeneration.Result === "Success") {
-                        regCompleted = true;
-                        showSuccessModal();
-                        hideTags(false); 
-            } else {
+                    regCompleted = true;
+                    showSuccessModal();
+                    hideTags(false);
+                } else {
                     if (resultOfGeneration.Visitor.toString().includes("per bed has been reached")) {
                         showMaxLimitModal();
                         hideTags(true);
                         regCompleted = true;
-                    } 
+                    }
                     else if (resultOfGeneration.Visitor !== "1") {
                         alert("Error: " + resultOfGeneration.Visitor);
                     } else if (resultOfGeneration.Questionnaire !== "1") {
@@ -582,7 +582,7 @@ function purposePanels() {
     var purpose = $("#pInput").val();
     if (purpose === "Visit Patient") {
         $("#otherpurposevisit .regInput").each(function (idx, obj) {
-             $(obj).prop("value", "");
+            $(obj).prop("value", "");
         });
         $("#patientpurposevisit").css("display", "block");
         $("#otherpurposevisit").css("display", "none");
@@ -767,7 +767,7 @@ function getQuestionnaireAnswers() {
         var obj = { qid: currentQid, question: questions[i], answer: answers };
         holder.push(obj);
     }
-    var jsonObject = {Main:holder};
+    var jsonObject = { Main: holder };
     var jsonString = JSON.stringify(jsonObject);
     return jsonString;
 }
@@ -803,7 +803,7 @@ $("#daterange").on("input", function () {
     if (valid) {
         $("#dateWarning").css("display", "none");
     } else {
-        $("#dateWarning").css("display", "block");     
+        $("#dateWarning").css("display", "block");
     }
     validDate = valid;
 });
@@ -852,7 +852,8 @@ function hideTags(clear) {
 // button settings for check nric button
 function enterToCheckNric(e) {
     if (e.which == 13 || e.keyCode == 13) {
-        checkNricWarningDeclaration(); false; }
+        checkNricWarningDeclaration(); false;
+    }
 }
 
 // Check nature of NRIC
@@ -873,7 +874,7 @@ function checkNricWarningDeclaration() {
         var panelShown = $('#nricWarnDiv').is(":visible");
         if ((!allowNric & !panelShown) || (allowNric & panelShown)) {
             checkExistOrNew();
-        }else {
+        } else {
             alert("Please check the 'Allow Anyway' Checkbox");
         }
     }
@@ -908,7 +909,7 @@ function checkExpressDeclaration() {
 
 // Change checkbox value upon click
 $('#ignoreNric').on('change', function () {
-     this.check;
+    this.check;
 });
 
 // Change checkbox value upon click
