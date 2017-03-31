@@ -1618,7 +1618,7 @@ AS 
 BEGIN  
 	SET NOCOUNT ON  
  	
-	IF NOT EXISTS (SELECT QQ_ID FROM QUESTIONAIRE_QNS WHERE question = @pQuestion AND qnsType = @pQnsValue)
+	IF ((SELECT Count(QQ_ID) FROM QUESTIONAIRE_QNS WHERE question = @pQuestion AND qnsValue = @pQnsValue) = 0)
 	BEGIN TRY
 		INSERT INTO QUESTIONAIRE_QNS(question, qnsType, qnsValue, startDate, endDate)
 		VALUES (@pQuestion, @pQnsType, @pQnsValue, SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), NULL)
