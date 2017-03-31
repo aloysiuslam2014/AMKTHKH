@@ -2324,8 +2324,8 @@ BEGIN
   BEGIN
     SET @responseMessage = 1;
 
-  ----------------------------------------------- First retrieve all registered visits to the location
-  ----------------------------------------------- in question which checked in within query period
+  ------------------------------------------------ First retrieve all registered visits to the location
+  ------------------------------------------------ in question which checked in within query period
   WITH DAY_BED_CHECKINS(nric, visitActualTime, temperature, bedNo, visitLocation, qa_json)
   AS
   (
@@ -2342,9 +2342,9 @@ BEGIN
     (
       SELECT dbc.nric, dbc.visitActualTime, t.tName, m.locationTime
       FROM DAY_BED_CHECKINS dbc  
-      LEFT JOIN MOVEMENT M ON m.NRIC = dbc.nric
+      JOIN MOVEMENT M ON m.NRIC = dbc.nric
         AND m.visitActualTime = dbc.visitActualTime
-      LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
+      JOIN TERMINAL t ON m.locationID = t.terminalID
       WHERE t.tName LIKE 'EXIT%'
     )
   SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.temperature AS 'temperature', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbc.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
@@ -2352,6 +2352,8 @@ BEGIN
     JOIN DAY_BED_EXITS dbe ON dbe.nric = dbc.nric AND dbe.visitActualTime = dbc.visitActualTime
     JOIN VISITOR_PROFILE vp ON vp.nric = dbc.nric
     WHERE vp.confirm = 1
+    AND dbc.visitLocation <> ''
+    AND dbc.bedNo <> ''
   END
 END;
 
@@ -2736,8 +2738,8 @@ BEGIN
 
   BEGIN
     SET @responseMessage = 1;
-    ---------------------------------------------- First retrieve all visits to the location in question
-    ---------------------------------------------- which were scanned within the query period
+    ----------------------------------------------- First retrieve all visits to the location in question
+    ----------------------------------------------- which were scanned within the query period
     WITH EXPRESS_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json)
     AS
     (
@@ -2755,7 +2757,7 @@ BEGIN
       AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
     ),    
 
-    ---------------------------------------------- Find the corresponding exit terminals and exit times
+    —--------------------------------------------- Find the corresponding exit terminals and exit times
     EXPRESS_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
     AS
     (
@@ -2768,9 +2770,9 @@ BEGIN
     )
     SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
     FROM EXPRESS_SCANS dbs 
-    LEFT JOIN EXPRESS_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
+    JOIN EXPRESS_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
     JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
-    LEFT JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
+    JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
     WHERE v.purpose = ''
       AND v.visitLocation = ''
       AND v.bedNo = ''
