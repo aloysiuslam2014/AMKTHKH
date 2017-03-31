@@ -17,6 +17,7 @@ $(function () {
             $("#beds").prop('disabled', false);
         } else {
             $("#beds").prop('disabled', true);
+            $("#beds").val('');
         }
     })
 
@@ -49,7 +50,7 @@ $(function () {
         var headersToProcess = {
             action: "addTerminal",
             id: terminalNameInput.value,
-            bedList: beds.value,
+            bedList: beds.value ,
             isInfectious: terminalBedLink.value == "Yes" ? 1 : 0
         };
             $.ajax({
