@@ -573,6 +573,7 @@ function clearFields(overwrite) {
         $("#bedsAdded").html("");
         $("#nric").prop('disabled', false);
         $("#temp").prop('disabled', false);
+        $("#tempDiv").css("display", "block");
     }
 }
 
@@ -889,6 +890,7 @@ function checkExpressDeclaration() {
             $("#tempLbl").prop("disabled", true);
             $("#temp").prop("disabled", true);
             $('#temp input').removeClass('required');
+            $("#tempDiv").css("display", "none");
             $("#remarksExpressDiv").css("display", "block");
             $('#remarksExpressDiv textarea').addClass('required');
             $("#emptyNricWarning").css("display", "none");
@@ -896,6 +898,7 @@ function checkExpressDeclaration() {
             $("#tempLbl").prop("disabled", false);
             $("#temp").prop("disabled", false);
             $('#temp input').addClass('required');
+            $("#tempDiv").css("display", "block");
             $('#remarksExpressDiv textarea').removeClass('required');
             $("#remarksExpressDiv").css("display", "none");
             $("#emptyNricWarning").css("display", "none");

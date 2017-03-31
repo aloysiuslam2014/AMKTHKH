@@ -19,7 +19,6 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap-datetimepicker.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/rsvp-3.1.0.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/sha-256.min.js") %>"></script>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/canvasjs.min.js") %>"></script>
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
@@ -365,12 +364,14 @@
                                 </div>
                             </div>
                             <br />
+                            <div id="tempDiv">
                             <label class="control-label" id="tempLbl" for="temp"><span style="color: lightcoral">*</span>Temperature</label>
                             <input id="temp" onkeypress=" return enterToCheckNric(event)" class="form-control required regInput" type="text" />
                             <h4 id="tempWarning" style="color: lightcoral">Warning! Fever!</h4>
                             <h4 id="tempLimitWarning" style="color: lightcoral">Invalid Temperature</h4>
                             <h4 id="lowtempWarning" style="color: lightcoral">Invalid Temperature</h4>
                             <h4 id="invalidTempWarning" style="color: lightcoral">Please enter a valid temperature in the following format: "36.7"</h4>
+                                </div>
                             <div id="remarksExpressDiv">
                                 <h3 style="color: lightblue">Additional Information</h3>
                                 <label for="remarksExpressInput"><span style="color: lightcoral">*</span>Remarks</label>
@@ -551,7 +552,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 style="">Select a Form to Begin</h3>
+                        <h3 style="">Health Screening Form</h3>
                         <h5 style="font-style: italic">Please remember to save your form</h5>
                         <div class="input-group" id="qnaireSelection">
                             <select class="form-control qnaire" id="qnaires" onchange="displayQuestionnaireQuestions(); false;">
@@ -1115,10 +1116,18 @@
                         </div>
                         <div id="unifiedquery_bednos" class="input-group col-sm-8">
                             <div class="col-sm-6">
+                                <%--<label>Bed Number</label>--%>
                                 <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 2101-2105 " type="text" />
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control" id="uq_loc" placeholder="Location: NKF" type="text" />
+                                <%--<label>Location</label>--%>
+                                <%--<input class="form-control" id="uq_loc" placeholder="Location: NKF" type="text" />--%>
+                                <%--Change to populated dropdown--%>
+                                <div class="form-group">
+                                    <select class="form-control" id="uq_loc">
+                                        <option value="">-- Select One --</option>
+                                    </select>
+                                </div>
                             </div>
                             <span class="input-group-btn">
                                 <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace(); false;"><span class="glyphicon glyphicon-search"></span>Trace</button>
@@ -1351,6 +1360,7 @@
     <%}
         if (accessRightsStr.Contains('6'))
         { %>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/canvasjs.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery.dataTables.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.buttons.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/buttons.colVis.min.js") %>"></script>
