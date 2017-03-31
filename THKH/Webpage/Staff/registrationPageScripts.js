@@ -599,6 +599,7 @@ function purposePanels() {
         $("#purWarning").css("display", "none");
         $('#patientName').prop('value', "");
         $('#patientNric').prop('value', "");
+        $('#bedsAdded').html("");
         $('#bedno').prop('value', "");
         $("#patientStatusRed").css("display", "none");
         $("#patientStatusGreen").css("display", "none");
