@@ -1,3 +1,91 @@
+-- http://stackoverflow.com/questions/1260952/how-to-execute-a-stored-procedure-within-c-sharp-program For running stored procedures in C#  
+-- I declare this region… mine! -- 
+-- http://stackoverflow.com/questions/7770924/how-to-use-output-parameter-in-stored-procedure This explains how to read from the output from stored procedures 
+-- To store Visitor Registration Data  
+
+
+--USE [master]
+--GO
+--EXEC master.dbo.sp_addlinkedserver @server = N'150.200.1.227', @srvproduct=N'SQL Server'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'collation compatible', @optvalue=N'false'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'data access', @optvalue=N'true'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'dist', @optvalue=N'false'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'pub', @optvalue=N'false'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'rpc', @optvalue=N'false'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'rpc out', @optvalue=N'false'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'sub', @optvalue=N'false'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'connect timeout', @optvalue=N'0'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'collation name', @optvalue=null
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'lazy schema validation', @optvalue=N'false'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'query timeout', @optvalue=N'0'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'use remote collation', @optvalue=N'true'
+
+--GO
+--EXEC master.dbo.sp_serveroption @server=N'150.200.1.227', @optname=N'remote proc transaction promotion', @optvalue=N'true'
+
+--GO
+--USE [master]
+
+--GO
+--EXEC master.dbo.sp_addlinkedsrvlogin @rmtsrvname = N'150.200.1.227', @locallogin = NULL , @useself = N'False', @rmtuser = N'triage', @rmtpassword = N'triage'
+
+--GO
+
+--USE MASTER;     
+
+--IF EXISTS(SELECT * from sys.databases WHERE name='thkhdb')      
+----IF EXISTS(SELECT * from sys.databases WHERE name='stepwise')    
+--BEGIN    
+--	DECLARE @DatabaseName NVARCHAR(50)  
+--	--SET @DatabaseName = 'stepwise' 
+--	SET @DatabaseName = 'thkhdb'  
+  
+--	DECLARE @SQL varchar(max)  
+  	
+--	SELECT @SQL = COALESCE(@SQL,'') + 'Kill ' + CONVERT(VARCHAR, SPId) + ';'  
+--	FROM MASTER..SysProcesses  
+--	WHERE DBId = DB_ID(@DatabaseName) AND SPId <> @@SPId  
+      
+--	SELECT @SQL   
+--	EXEC(@SQL)  
+ 	
+--	--DROP DATABASE stepwise;
+--	DROP DATABASE thkhdb;   
+--END
+
+--GO
+----CREATE DATABASE stepwise;   
+--CREATE DATABASE thkhdb;   
+  
+--GO
+--USE thkhdb;  
+----USE stepwise;  
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------- To store the format of Pass 
 GO
 CREATE TABLE PASS_FORMAT
@@ -2123,10 +2211,10 @@ BEGIN
     SELECT ci.nric, ci.visitActualTime, ci.temperature, v.bedNo, v.visitLocation, qa.QA_JSON
     FROM CHECK_IN ci
     JOIN VISIT v ON v.visitorNric = ci.nric
-	AND ci.qa_id = v.QaID
+  AND ci.qa_id = v.QaID
     JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
     WHERE v.bedNo LIKE '%' + @pBed_No + '%'
-    --AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+    AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
     AND v.confirm = 1
   ),
   DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
@@ -2190,13 +2278,13 @@ BEGIN
       JOIN TERMINAL t ON m.locationID = t.terminalID
       WHERE t.tName LIKE 'EXIT%'
     )
+
     SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress as 'homeadd', vp.postalCode as 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
     FROM DAY_BED_SCANS dbs 
     JOIN DAY_BED_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
-    JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
+    JOIN VISIT v ON v.visitorNric = dbs.nric
     JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
     WHERE vp.confirm = 1
-    AND v.visitLocation <> ''
     AND v.bedNo <> ''
   END
 END;
@@ -2252,7 +2340,7 @@ END;
 
 
 
--------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 GO
 CREATE PROCEDURE [dbo].[TRACE_BY_SCAN_LOC] -- Retrieve every visitor so long as they scanned in the given Bedno
 @pStart_Date DATE,
@@ -2262,46 +2350,44 @@ CREATE PROCEDURE [dbo].[TRACE_BY_SCAN_LOC] -- Retrieve every visitor so long as 
 
 AS
 BEGIN
-	SET NOCOUNT ON
+  SET NOCOUNT ON
 
-	BEGIN
-		SET @responseMessage = 1;
-		------------------------------------------------ First retrieve all visits to the location in question
-		------------------------------------------------ which were scanned within the query period
-		WITH DAY_BED_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json)
-		AS
-		(
-			SELECT DISTINCT m.nric, m.visitActualTime, ci.temperature, m.locationID, m.locationTime, t.tName, qa.QA_JSON
-			FROM MOVEMENT m
-			JOIN TERMINAL t ON m.locationID = t.terminalID
-			JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
-			JOIN VISIT v ON v.visitorNric = m.nric
-			AND v.QaID = ci.qa_id
-			JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
-			WHERE t.tName LIKE '%' + @pLocation + '%'
-			AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
-			AND v.confirm = 1
-		),		
-		------------------------------------------------ Find the corresponding exit terminals and exit times
-		DAY_BED_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
-		AS
-		(
-			SELECT dbs.nric, dbs.visitActualTime, dbs.locationTime, t.tName, m.locationTime
-			FROM DAY_BED_SCANS dbs	
-			JOIN MOVEMENT M ON m.NRIC = dbs.nric
-				AND m.visitActualTime = dbs.visitActualTime
-			JOIN TERMINAL t ON m.locationID = t.terminalID
-			WHERE t.tName LIKE 'EXIT%'
-		)
-		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
-		FROM DAY_BED_SCANS dbs 
-		JOIN DAY_BED_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
-		JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
-		JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
-		WHERE vp.confirm = 1
-		AND v.visitLocation <> ''
-		AND v.bedNo <> ''
-	END
+  BEGIN
+    SET @responseMessage = 1;
+    ------------------------------------------------ First retrieve all visits to the location in question
+    ------------------------------------------------ which were scanned within the query period
+    WITH DAY_BED_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json)
+    AS
+    (
+      SELECT DISTINCT m.nric, m.visitActualTime, ci.temperature, m.locationID, m.locationTime, t.tName, qa.QA_JSON
+      FROM MOVEMENT m
+      JOIN TERMINAL t ON m.locationID = t.terminalID
+      JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
+      JOIN VISIT v ON v.visitorNric = m.nric
+      AND v.QaID = ci.qa_id
+      JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
+      WHERE t.tName LIKE '%' + @pLocation + '%'
+      AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+      AND v.confirm = 1
+    ),    
+    ------------------------------------------------ Find the corresponding exit terminals and exit times
+    DAY_BED_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
+    AS
+    (
+      SELECT dbs.nric, dbs.visitActualTime, dbs.locationTime, t.tName, m.locationTime
+      FROM DAY_BED_SCANS dbs  
+      JOIN MOVEMENT M ON m.NRIC = dbs.nric
+        AND m.visitActualTime = dbs.visitActualTime
+      JOIN TERMINAL t ON m.locationID = t.terminalID
+      WHERE t.tName LIKE 'EXIT%'
+    )
+    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
+    FROM DAY_BED_SCANS dbs 
+    JOIN DAY_BED_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
+    JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
+    JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
+    WHERE vp.confirm = 1
+  END
 END;
 
 
@@ -2602,14 +2688,14 @@ BEGIN
       JOIN TERMINAL t ON m.locationID = t.terminalID
       JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
       JOIN VISIT v ON v.visitorNric = m.nric
-	  AND ci.qa_id = v.QaID
-	  AND v.purpose = ''
+		AND ci.qa_id = v.QaID
+		AND v.purpose = ''
       AND v.visitLocation = ''
       AND v.bedNo = ''
       JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
       WHERE t.tName LIKE 'ENTRANCE%'
       AND v.confirm = 1
-      AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+      --AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
     ),    
 
     ----------------------------------------------- Find the corresponding exit terminals and exit times
@@ -2623,13 +2709,11 @@ BEGIN
       JOIN TERMINAL t ON m.locationID = t.terminalID
       WHERE t.tName LIKE 'EXIT%'
     )
-    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
+
+    SELECT DISTINCT v.visitLocation AS 'location', v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
     FROM EXPRESS_SCANS dbs 
     JOIN EXPRESS_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
-    JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
-	AND v.bedNo = ''
-	AND v.purpose = ''
-	AND v.visitLocation = ''
+    JOIN VISIT v ON v.visitorNric = dbs.nric
     JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
     WHERE vp.confirm = 1
   END
