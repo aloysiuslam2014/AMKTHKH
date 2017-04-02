@@ -120,42 +120,47 @@ function unifiedTrace() {
     } else {
         var uq_querybeds = $("#uq_bednos").val();
         var uq_loc = $("#uq_loc").val();
-        uq_params = "";
-        if (uq_loc == "") {
-            uq_params = "bybed~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_querybeds;
-        }
-        if (uq_querybeds == "") {
-            uq_params = "byloc~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_loc;
-        }
+        var validBeds = validateBeds(uq_querybeds);
+        if (validBeds || uq_loc !== "") {
+            uq_params = "";
+            if (uq_loc == "") {
+                uq_params = "bybed~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_querybeds;
+            }
+            if (uq_querybeds == "") {
+                uq_params = "byloc~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_loc;
+            }
 
-        var headersToProcess = { action: "unifiedTrace", queries: uq_params };
-        $.ajax({
-            url: toTracing,
-            method: 'post',
-            data: headersToProcess,
+            var headersToProcess = { action: "unifiedTrace", queries: uq_params };
+            $.ajax({
+                url: toTracing,
+                method: 'post',
+                data: headersToProcess,
 
-            success: function (returner) {
-                try {
-                    var uqResult = JSON.parse(returner);
-                    var arrLen = uqResult.Msg.length;
+                success: function (returner) {
+                    try {
+                        var uqResult = JSON.parse(returner);
+                        var arrLen = uqResult.Msg.length;
 
-                    var result_table = $('#uq_resultstable').dataTable();
+                        var result_table = $('#uq_resultstable').dataTable();
 
-                    result_table.fnClearTable();
+                        result_table.fnClearTable();
 
-                    for (i = 0; i < arrLen; i++) {
-                        var uqResultJSON = uqResult.Msg[i];
-                        result_table.fnAddData(uqResultJSON);
+                        for (i = 0; i < arrLen; i++) {
+                            var uqResultJSON = uqResult.Msg[i];
+                            result_table.fnAddData(uqResultJSON);
+                        }
+                    } catch (err) {
+                        alert("Selected period returns no data. Please try again. " + err);
                     }
-                } catch (err) {
-                    alert("Selected period returns no data. Please try again. " + err);
-                }
 
-            },
-            error: function (err) {
-                alert("There was a problem executing the trace, please contact the admin.");
-            },
-        });
+                },
+                error: function (err) {
+                    alert("There was a problem executing the trace, please contact the admin.");
+                },
+            });
+        } else {
+            alert("Bed numbers should be 4 digits long!");
+        }
     }
 }
 
@@ -401,4 +406,22 @@ function loadTracingFacilities() {
         error: function (err) {
         },
     });
+}
+
+/**
+ * Validates the beds string format sent for contact tracing
+ * @param 
+ * @return 
+ */
+function validateBeds(beds) {
+    if (beds === "") {
+        return false;
+    }
+    var uq_bedArr = beds.split(',');
+    for (i = 0; i < uq_bedArr.length; i++) {
+        if (uq_bedArr[i].length !== 4) {
+            return false;
+        }
+    }
+    return true;
 }

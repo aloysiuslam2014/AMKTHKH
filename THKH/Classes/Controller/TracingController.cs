@@ -623,18 +623,21 @@ namespace THKH.Classes.Controller
         public String parseFormJson(String qa_json)
         {
             String sc_delim_ans = "";
-            JObject form = JObject.Parse(qa_json);
-            List<Object> formItems = form["Main"].ToList<Object>();
-
-            foreach (Object formItem in formItems)
+            try
             {
-                JObject item = JObject.FromObject(formItem);
-                String question = (string)item["question"];
-                String answer = (string)item["answer"];
-                String itemString = question + ":" + answer + ";";
-                sc_delim_ans = sc_delim_ans + itemString;
-            }
+                JObject form = JObject.Parse(qa_json);
+                List<Object> formItems = form["Main"].ToList<Object>();
 
+                foreach (Object formItem in formItems)
+                {
+                    JObject item = JObject.FromObject(formItem);
+                    String question = (string)item["question"];
+                    String answer = (string)item["answer"];
+                    String itemString = question + ":" + answer + ";";
+                    sc_delim_ans = sc_delim_ans + itemString;
+                }
+            }
+            catch (Exception ex) {}
             return sc_delim_ans;
         }
 

@@ -591,7 +591,7 @@ namespace THKH.Classes.Controller
                     }
                     if (valid) 
                     {
-                        checkin = CheckIn(staffuser, nric, temperature);
+                        checkin = CheckIn(staffuser, nric, temperature, qAid);
                     }
                     else
                     {
@@ -611,7 +611,7 @@ namespace THKH.Classes.Controller
             {
                 try
                 {
-                    checkin = CheckIn(staffuser, nric, temperature);
+                    checkin = CheckIn(staffuser, nric, temperature, qAid);
                 }
                 catch (Exception ex)
                 {
@@ -710,7 +710,7 @@ namespace THKH.Classes.Controller
             // Check in visitor with no check on visitor limit
             try
             {
-                checkin = CheckIn(staffuser, nric, "0");
+                checkin = CheckIn(staffuser, nric, "0", qAid);
             }
             catch (Exception ex)
             {
@@ -825,7 +825,7 @@ namespace THKH.Classes.Controller
         /// <param name="nric"></param>
         /// <param name="temp"></param>
         /// <returns>JSON String</returns>
-        public String CheckIn(String staffuser, String nric, String temp)
+        public String CheckIn(String staffuser, String nric, String temp, String qa_id)
         {
 
             String result = "";
@@ -834,6 +834,7 @@ namespace THKH.Classes.Controller
             procedureCall.addParameterWithValue("@pNric", nric.ToUpper());
             procedureCall.addParameterWithValue("@pStaffEmail", staffuser);
             procedureCall.addParameterWithValue("@pTemperature", temp);
+            procedureCall.addParameterWithValue("@pQa_id", qa_id);
             try
             {
 

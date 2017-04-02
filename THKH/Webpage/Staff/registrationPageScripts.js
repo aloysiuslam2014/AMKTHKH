@@ -719,9 +719,12 @@ function checkRequiredFields() {
         }
     });
 
-    if ($("#bedsAdded").children().length == 0) {
-        $("#bedsAdded").css('background', '#f3f78a');
-        valid = false;
+    var purpose = $("#pInput").val();
+    if (purpose === "Visit Patient") {
+        if ($("#bedsAdded").children().length == 0) {
+            $("#bedsAdded").css('background', '#f3f78a');
+            valid = false;
+        }
     }
 
     if (!validMob || !validTemp || !validPos || !validDate || !checkNationals() || !purposePanels() || !checkTime() || !checkGender()) {
