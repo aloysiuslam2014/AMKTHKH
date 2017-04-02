@@ -844,7 +844,7 @@ namespace THKH.Classes.Controller
                 int visitor_age_floor = (int)(Math.Floor((double)visitor_age / 10) * 10) + 1; //19 return 10, 21 returns 20
                 int visitor_age_ceiling = visitor_age_floor + 10 - 1;
                 string visitor_age_bucket = "<10y";
-                if (visitor_age >= 90)
+                if (visitor_age > 90)
                 {
                     visitor_age_bucket = ">90y";
                 }
