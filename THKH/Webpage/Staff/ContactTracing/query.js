@@ -1,4 +1,4 @@
-﻿var toTracing = './ContactTracing/TracingGateway.ashx';
+﻿var toTracing = '../Staff/ContactTracing/TracingGateway.ashx';
 var selfRegNoDataError = "Selected period returns no data. Please try another date";
 var serverAjaxFailureError = "There was a problem retrieving valid terminals.";
 

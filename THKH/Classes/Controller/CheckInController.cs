@@ -199,7 +199,7 @@ namespace THKH.Classes.Controller
                     //result.Visitor = response;
                     var arr = response.Split(',');
                     Visitor vistr = new Visitor(arr[1], arr[0], arr[2].Trim(), arr[3], arr[4], arr[5], arr[6], arr[7]);
-                    result.Visitor = vistr.toJsonObject(); ;
+                    result.Visitor = vistr.toJsonObject();
                 }
                 else
                 {
@@ -646,7 +646,7 @@ namespace THKH.Classes.Controller
         /// <param name="qaid"></param>
         /// <returns></returns>
         public String ExpReg(String staffuser, String nric, String purpose, String pName, String pNric, String otherPurpose, String bedno, String appTime,
-            String remarks, String visitLocation, String qListID, String qAns, String qaid)
+            String remarks, String visitLocation, String qListID, String qAns, String qaid, String fname, String address, String postal, String mobtel, String sex, String nationality, String dob)
         {
 
             dynamic result = new ExpandoObject();
@@ -654,8 +654,38 @@ namespace THKH.Classes.Controller
             String visit = "";
             String questionnaire = "";
             String checkin = "";
+            String visitor = "";
             string qAid = qaid;
-            int pos = 0;
+            //String date = dob;
+            //if (date == "") {
+            //    date = "08-08-1965";
+            //}
+
+            if (fname == "")
+            {
+                //update visitor profile
+                procedureCall = new GenericProcedureDAO("UPDATE_VISITOR_PROFILE", true, true, false);
+                procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
+                procedureCall.addParameterWithValue("@pNRIC", nric.ToUpper());
+                procedureCall.addParameterWithValue("@pFullName", fname);
+                procedureCall.addParameterWithValue("@pGender", sex);
+                procedureCall.addParameterWithValue("@pNationality", nationality);
+                procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
+                procedureCall.addParameterWithValue("@pMobileTel", mobtel);
+                procedureCall.addParameterWithValue("@pHomeAddress", address);
+                procedureCall.addParameterWithValue("@pPostalCode", postal);
+                try
+                {
+                    ProcedureResponse responseOutput = procedureCall.runProcedure();
+                    visitor = responseOutput.getSqlParameterValue("@responseMessage").ToString();
+                }
+                catch (Exception ex)
+                {
+                    result.Result = "Failure";
+                    result.Visitor = ex.Message;
+                    return JsonConvert.SerializeObject(result);
+                }
+            }
 
             //update or add questionaire ans
             try

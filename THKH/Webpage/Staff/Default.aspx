@@ -38,6 +38,7 @@
 
             $(document).ready(function () {// once ready then we toggle based on ajax calls
                 $("#loadingGif").toggle(false);
+                $('#wrapper').addClass('toggled');
 
                 $(document).ajaxStart(function () {
                     $("#loadingGif").toggle(true);
@@ -918,7 +919,7 @@
                                     <input id="staffAltNum" class="form-control userInput" />
                                     <label id="altWarningUser" style="color: lightcoral">Invalid Phone Number Format!</label>
                                 </div>
-                                <label>Sex</label>
+                                <label>Gender</label>
                                 <div class="form-group">
                                     <select id="staffSex" class="form-control userInput">
                                         <option value="M">Male</option>

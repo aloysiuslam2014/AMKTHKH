@@ -84,7 +84,7 @@ var links = [
  * @param 
  * @return 
  */
-function callCheck (){
+function callCheck(callback){
         var nricValue = nric.value;
         var visDate = $('#visitbookingdate').val();
         var msg;
@@ -204,6 +204,7 @@ function callCheck (){
                 } else {
                     alert("Error: " + resultOfGeneration.Msg);
                 }
+                callback();
             },
             error: function (err) {
                 alert(err.Msg);
@@ -479,7 +480,7 @@ function NewAssistReg() {
     var username = user; 
     var fname = $("#namesInput").val();
     var snric = $("#nric").val();
-    var address = $("#addresssInput").val();
+    var address = $("#addresssInput").val().toString().replace(/,/g, ";");
     var postal = $("#postalsInput").val();
     var mobtel = $("#mobilesInput").val();
     var alttel = "";
@@ -568,9 +569,17 @@ function NewExpressReg() {
     var remarks = $("#remarksExpressInput").val();
     var qAnswers = getQuestionnaireAnswers();
     var qaid = $("#qaid").val();
+    var fname = $("#namesInput").val();
+    var address = $("#addresssInput").val().toString().replace(/,/g, ";");
+    var postal = $("#postalsInput").val();
+    var mobtel = $("#mobilesInput").val();
+    var sex = $("#sexinput").val();
+    var nationality = $("#nationalsInput").val();
+    var dob = $("#daterange").val();
 
     var headersToProcess = {
-        staffUser: username, nric: snric, remarks: remarks, requestType: "express", qListID: qListID, qAnswers: qAnswers, qaid: qaid
+        staffUser: username, nric: snric, remarks: remarks, requestType: "express", qListID: qListID, qAnswers: qAnswers, qaid: qaid, fullName: fname,
+        ADDRESS: address, POSTAL: postal, MobTel: mobtel, SEX: sex, Natl: nationality, DOB: dob
     };
     $.ajax({
         url: regUrl,
@@ -630,9 +639,10 @@ function clearFields(overwrite) {
                         $(obj).css('background', '#ffffff');
                     }
                 });
+                $('input[id="ignoreNric"]').prop('checked', false);
+                $('input[id="ambulCheck"]').prop('checked', false);
+                var allowNric = false;
             }
-            $('input[id="ignoreNric"]').prop('checked', false);
-            var allowNric = false;
         }
         $("#bedsAdded").html("");
         $("#nric").prop('disabled', false);
@@ -796,7 +806,7 @@ $("#postalsInput").on("input", function () {
 function checkExistOrNew() {
     $("#emptyNricWarning").css("display", "none");
     if (validTemp) {
-        callCheck();
+        callCheck(function () {});
         $("#newusercontent").css("display", "block");
         $("#staticinfocontainer").css("display", "block");
     } else {
@@ -985,7 +995,9 @@ function checkNricWarningDeclaration() {
         allowNric = $('input[id="ignoreNric"]').is(':checked');
     } else if ($('input[id="ambulCheck"]').is(':checked')) {
         if ($("#remarksExpressInput").val() !== "") {
-            NewExpressReg();
+            callCheck(function () {
+                NewExpressReg();
+            }); // Race condition here
         } else {
             alert("Please a reason for express entry!");
         }

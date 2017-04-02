@@ -184,6 +184,7 @@ function addBedToVisit(patientName, patientBedNo) {
 function validatePatient() {
     var pName = $("#patientName").val();
     var bedno = $("#bedno").val();
+    var bedsLength = $("#bedsAdded").children().length;
     if (pName !== "" && bedno !== "") {
         var headersToProcess = {
             pName: pName, bedno: bedno, requestType: "patient"
@@ -199,10 +200,12 @@ function validatePatient() {
                         $("#patientStatusRed").css("display", "block");
                         $("#patientStatusGreen").css("display", "none");
                         $("#patientStatusNone").css("display", "none");
-                        $('#newusercontent').css("display", "none");
-                        $('#staticinfocontainer').css("display", "none");
-                        $("#patientName").attr('readonly', false);
-                        $("#bedno").attr('readonly', false);
+                        if (bedsLength == 0) {
+                            $('#newusercontent').css("display", "none");
+                            $('#staticinfocontainer').css("display", "none");
+                            $("#patientName").attr('readonly', false);
+                            $("#bedno").attr('readonly', false);
+                        }
                         plusInvalid();
                     } else {
                         $("#patientStatusGreen").css("display", "block");
@@ -217,8 +220,10 @@ function validatePatient() {
                     $("#patientStatusRed").css("display", "block");
                     $("#patientStatusGreen").css("display", "none");
                     $("#patientStatusNone").css("display", "none");
-                    $('#newusercontent').css("display", "none");
-                    $('#staticinfocontainer').css("display", "none");
+                    if (bedsLength == 0) {
+                        $('#newusercontent').css("display", "none");
+                        $('#staticinfocontainer').css("display", "none");
+                    }
                     plusInvalid();
                 }
             },
@@ -229,10 +234,12 @@ function validatePatient() {
     } else {
         $("#patientStatusNone").css("display", "block");
         $("#patientStatusRed").css("display", "none");
-        $("#patientStatusGreen").css("display", "none");
-        $("#userDetails").css("display", "none");
-        $('#newusercontent').css("display", "none");
-        $('#staticinfocontainer').css("display", "none");
+        $("#patientStatusGreen").css("display", "none");     
+        if (bedsLength == 0) {
+            $("#userDetails").css("display", "none");
+            $('#newusercontent').css("display", "none");
+            $('#staticinfocontainer').css("display", "none");
+        }
         plusInvalid();
     }
 }
@@ -723,7 +730,7 @@ function getQuestionnaireAnswers() {
         }
         var type = element.prop('type');
         if (type != null & type == 'radio') {
-            var check = element.attr('checked');
+            var check = element.is(':checked');
             if (check) {
                 allAnswers.push(id + ':' + element.val());
             }
@@ -742,13 +749,13 @@ function getQuestionnaireAnswers() {
     // construct json answers
     for (var i = 0; i < qIds.length; i++) {
         var currentQid = qIds[i];
+        var answers = "";
         for (var j = 0; j < allAnswers.length; j++) {
             var row = allAnswers[j];
             var arr = row.split(':');
             var id = arr[0];
             if (id == currentQid) {
                 var ans = arr[1];
-                //answerObject += ans + ",";
                 answers += ans + ",";
             }
         }
