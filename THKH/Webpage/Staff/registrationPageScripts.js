@@ -176,18 +176,15 @@ function callCheck(callback){
                                 var jsonAnswerObject = questionnaireArr[i];
                                 var qid = jsonAnswerObject.qid;
                                 var answer = jsonAnswerObject.answer
-                                if (answer.includes(",")) { // Checkbox
-                                    var arr = answer.split(",");
-                                    for (i = 0; i < arr.length; i++) {
-                                        var answerOpt = arr[i];
-                                        $("#questionaireForm input[name='" + qid + "'][value='" + answerOpt + "']").prop("checked", true);
-                                    }
-                                } else {
-                                    $('#' + qid).val(answer);
-                                    $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
-                                    $("#questionaireForm input[id='" + qid + "'][value='" + answer + "']").prop("checked", true) // Radio
-                                } 
-                            }
+                                var arr = answer.split(",");
+                                for (j = 0; j < arr.length; j++) {
+                                    var answerOpt = arr[j];
+                                    $("#questionaireForm input[name='" + qid + "'][value='" + answerOpt + "']").prop("checked", true); // Checkbox
+                                }
+                                $('#' + qid).val(answer);
+                                $("#questionaireForm input[id='" + qid + "']").prop("value", answer);
+                                //$("#questionaireForm input[name='" + qid + "'][value='" + answer + "']").prop("checked", true) // Radio
+                            } 
                         }
                         else if (resultOfGeneration.Visitor === "new" & visitObj === undefined & questionnaireArr.length == 0) {
                             clearFields(false);
