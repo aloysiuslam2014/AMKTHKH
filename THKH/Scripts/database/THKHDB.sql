@@ -1131,38 +1131,38 @@ END;
 
 
 -----------------------------------------------------------------------------------------------------  Procedures for retrieving Visit details   
-GO
-CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
-@pNric VARCHAR(100),  
-@responseMessage VARCHAR(MAX) OUTPUT
+--GO
+--CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
+--@pNric VARCHAR(100),  
+--@responseMessage VARCHAR(MAX) OUTPUT
 
-AS  
-BEGIN  
-  SET NOCOUNT ON  
-  DECLARE @pVisit_Details VARCHAR(MAX)
-  DECLARE @pLatestTimestamp DATETIME
+--AS  
+--BEGIN  
+--  SET NOCOUNT ON  
+--  DECLARE @pVisit_Details VARCHAR(MAX)
+--  DECLARE @pLatestTimestamp DATETIME
 
-  IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
-  BEGIN
-    SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
-                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
-                 WHERE visitorNRIC = @pNric
-                 AND YEAR(visitRequestTime) = YEAR(GETDATE())
-                 AND MONTH(visitRequestTime) = MONTH(GETDATE())
-                 AND DAY(visitRequestTime) = DAY(GETDATE())))
+--  IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
+--  BEGIN
+--    SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
+--                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
+--                 WHERE visitorNRIC = @pNric
+--                 AND YEAR(visitRequestTime) = YEAR(GETDATE())
+--                 AND MONTH(visitRequestTime) = MONTH(GETDATE())
+--                 AND DAY(visitRequestTime) = DAY(GETDATE())))
 
-    SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
-                    visitorNric + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
-                    bedNo + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
-    FROM VISIT 
-    WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp)
+--    SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
+--                    visitorNric + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
+--                    bedNo + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
+--    FROM VISIT 
+--    WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp)
 
-    SET @responseMessage = @pVisit_Details
-  END  
+--    SET @responseMessage = @pVisit_Details
+--  END  
 
-  ELSE
-    SET @responseMessage = '0'
-END;
+--  ELSE
+--    SET @responseMessage = '0'
+--END;
 
 
 
@@ -2211,25 +2211,14 @@ BEGIN
     SELECT ci.nric, ci.visitActualTime, ci.temperature, v.bedNo, v.visitLocation, qa.QA_JSON
     FROM CHECK_IN ci
     JOIN VISIT v ON v.visitorNric = ci.nric
-  AND ci.qa_id = v.QaID
+	AND ci.qa_id = v.QaID
     JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
     WHERE v.bedNo LIKE '%' + @pBed_No + '%'
     AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
-    AND v.confirm = 1
-  ),
-  DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
-    AS
-    (
-      SELECT dbc.nric, dbc.visitActualTime, t.tName, m.locationTime
-      FROM DAY_BED_CHECKINS dbc  
-      JOIN MOVEMENT M ON m.NRIC = dbc.nric
-        AND m.visitActualTime = dbc.visitActualTime
-      JOIN TERMINAL t ON m.locationID = t.terminalID
-      WHERE t.tName LIKE 'EXIT%'
-    )
-  SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.temperature AS 'temperature', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd',  vp.postalCode AS 'postalcode', dbc.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
+    AND v.confirm = 1)
+
+  SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbc.temperature AS 'temperature', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd',  vp.postalCode AS 'postalcode', dbc.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
     FROM DAY_BED_CHECKINS dbc
-    JOIN DAY_BED_EXITS dbe ON dbe.nric = dbc.nric AND dbe.visitActualTime = dbc.visitActualTime
     JOIN VISITOR_PROFILE vp ON vp.nric = dbc.nric
     WHERE vp.confirm = 1
   END
@@ -2265,23 +2254,10 @@ BEGIN
       WHERE tb.bedNoList LIKE '%' + @pBed_No + '%'
       AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
       AND v.confirm = 1
-    ),    
-
-    ------------------------------------------------ Find the corresponding exit terminals and exit times
-    DAY_BED_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
-    AS
-    (
-      SELECT dbs.nric, dbs.visitActualTime, dbs.locationTime, t.tName, m.locationTime
-      FROM DAY_BED_SCANS dbs  
-      JOIN MOVEMENT M ON m.NRIC = dbs.nric
-        AND m.visitActualTime = dbs.visitActualTime
-      JOIN TERMINAL t ON m.locationID = t.terminalID
-      WHERE t.tName LIKE 'EXIT%'
     )
 
-    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress as 'homeadd', vp.postalCode as 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
+    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress as 'homeadd', vp.postalCode as 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
     FROM DAY_BED_SCANS dbs 
-    JOIN DAY_BED_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
     JOIN VISIT v ON v.visitorNric = dbs.nric
     JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
     WHERE vp.confirm = 1
@@ -2316,23 +2292,12 @@ BEGIN
 		AND v.QaID = ci.qa_id
 		JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
 		WHERE v.visitLocation LIKE '%'+@pLocation+'%'
-		--AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+		AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
 		AND v.confirm = 1
-	),
-	DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
-		AS
-		(
-			SELECT dbc.nric, dbc.visitActualTime, t.tName, m.locationTime
-			FROM DAY_BED_CHECKINS dbc	
-			JOIN MOVEMENT M ON m.NRIC = dbc.nric
-				AND m.visitActualTime = dbc.visitActualTime
-			JOIN TERMINAL t ON m.locationID = t.terminalID
-			WHERE t.tName LIKE 'EXIT%'
-		)
-	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbc.temperature AS 'temperature', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbc.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
+	)
+
+	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbc.temperature AS 'temperature', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbc.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
 		FROM DAY_BED_CHECKINS dbc
-		JOIN DAY_BED_EXITS dbe ON dbe.nric = dbc.nric 
-		AND dbe.visitActualTime = dbc.visitActualTime
 		JOIN VISITOR_PROFILE vp ON vp.nric = dbc.nric
 		WHERE vp.confirm = 1
   END
@@ -2350,44 +2315,68 @@ CREATE PROCEDURE [dbo].[TRACE_BY_SCAN_LOC] -- Retrieve every visitor so long as 
 
 AS
 BEGIN
-  SET NOCOUNT ON
+	SET NOCOUNT ON
 
+	BEGIN
+		SET @responseMessage = 1;
+		------------------------------------------------ First retrieve all visits to the location in question
+		------------------------------------------------ which were scanned within the query period
+		WITH DAY_BED_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json)
+		AS
+		(
+			SELECT DISTINCT m.nric, m.visitActualTime, ci.temperature, m.locationID, m.locationTime, t.tName, qa.QA_JSON
+			FROM MOVEMENT m
+			JOIN TERMINAL t ON m.locationID = t.terminalID
+			JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
+			JOIN VISIT v ON v.visitorNric = m.nric
+			AND v.QaID = ci.qa_id
+			JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
+			WHERE t.tName LIKE '%' + @pLocation + '%'
+			AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+			AND v.confirm = 1
+		)
+
+		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
+		FROM DAY_BED_SCANS dbs 
+		JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
+		JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
+		WHERE vp.confirm = 1
+	END
+END;
+
+-------------------------------------------------------------------------------------------------  Procedures for retrieving Visit details 
+GO
+CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
+@pNric VARCHAR(100),  
+@responseMessage VARCHAR(MAX) OUTPUT
+
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+  DECLARE @pVisit_Details VARCHAR(MAX)
+  DECLARE @pLatestTimestamp DATETIME
+
+  IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
   BEGIN
-    SET @responseMessage = 1;
-    ------------------------------------------------ First retrieve all visits to the location in question
-    ------------------------------------------------ which were scanned within the query period
-    WITH DAY_BED_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json)
-    AS
-    (
-      SELECT DISTINCT m.nric, m.visitActualTime, ci.temperature, m.locationID, m.locationTime, t.tName, qa.QA_JSON
-      FROM MOVEMENT m
-      JOIN TERMINAL t ON m.locationID = t.terminalID
-      JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
-      JOIN VISIT v ON v.visitorNric = m.nric
-      AND v.QaID = ci.qa_id
-      JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
-      WHERE t.tName LIKE '%' + @pLocation + '%'
-      AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
-      AND v.confirm = 1
-    ),    
-    ------------------------------------------------ Find the corresponding exit terminals and exit times
-    DAY_BED_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
-    AS
-    (
-      SELECT dbs.nric, dbs.visitActualTime, dbs.locationTime, t.tName, m.locationTime
-      FROM DAY_BED_SCANS dbs  
-      JOIN MOVEMENT M ON m.NRIC = dbs.nric
-        AND m.visitActualTime = dbs.visitActualTime
-      JOIN TERMINAL t ON m.locationID = t.terminalID
-      WHERE t.tName LIKE 'EXIT%'
-    )
-    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
-    FROM DAY_BED_SCANS dbs 
-    JOIN DAY_BED_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
-    JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
-    JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
-    WHERE vp.confirm = 1
-  END
+    SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
+                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
+                 WHERE visitorNRIC = @pNric
+                 AND YEAR(visitRequestTime) = YEAR(GETDATE())
+                 AND MONTH(visitRequestTime) = MONTH(GETDATE())
+                 AND DAY(visitRequestTime) = DAY(GETDATE())))
+
+    SET @pVisit_Details = (SELECT TOP 1 (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
+                    visitorNric + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
+                    bedNo + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
+    FROM VISIT 
+    WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp
+  ORDER BY createdOn desc)
+
+    SET @responseMessage = @pVisit_Details
+  END  
+
+  ELSE
+    SET @responseMessage = '0'
 END;
 
 
@@ -2559,32 +2548,6 @@ BEGIN
 END;
 
 
----------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Getting Patient's name
-GO
-CREATE PROCEDURE [dbo].[GET_PATIENT_NAME]  
-@pBed_No VARCHAR(15),
-@pPatient_Name VARCHAR(100) OUTPUT,   
-@responseMessage INT OUTPUT  
-  
-AS  
-BEGIN  
-	SET NOCOUNT ON  
-
-	DECLARE @pBed_No_Int INT
-	SET @pBed_No_Int = CONVERT(INT, @pBed_No)
-	--SET @pBed_No_Int = CAST(@pBed_No AS INT)
-  
-	IF EXISTS (SELECT Pat_Name FROM [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )  
-	BEGIN    
-		SET @responseMessage = 1
-		SET @pPatient_Name = (SELECT TOP 1 Pat_Name from [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )
-	END 
-	 
-    ELSE  
-       SET @responseMessage = 0  
-END; 
-
-
 -----------------------------------------------------------------------------------------------------------------------------------
 GO
 CREATE PROCEDURE [dbo].[RECORD_SMS]  
@@ -2689,32 +2652,19 @@ BEGIN
       JOIN TERMINAL t ON m.locationID = t.terminalID
       JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
       JOIN VISIT v ON v.visitorNric = m.nric
-		AND ci.qa_id = v.QaID
-		AND v.purpose = ''
+	  AND ci.qa_id = v.QaID
+	  AND v.purpose = 'Express Entry'
       AND v.visitLocation = ''
       AND v.bedNo = ''
       JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
       WHERE t.tName LIKE 'ENTRANCE%'
       AND v.confirm = 1
-      --AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
-    ),    
-
-    ----------------------------------------------- Find the corresponding exit terminals and exit times
-    EXPRESS_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
-    AS
-    (
-      SELECT dbs.nric, dbs.visitActualTime, dbs.locationTime, t.tName, m.locationTime
-      FROM EXPRESS_SCANS dbs  
-      JOIN MOVEMENT M ON m.NRIC = dbs.nric
-        AND m.visitActualTime = dbs.visitActualTime
-      JOIN TERMINAL t ON m.locationID = t.terminalID
-      WHERE t.tName LIKE 'EXIT%'
+      AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
     )
 
-    SELECT DISTINCT v.visitLocation AS 'location', v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
+    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed'
     FROM EXPRESS_SCANS dbs 
-    JOIN EXPRESS_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
-    JOIN VISIT v ON v.visitorNric = dbs.nric
+    JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
     JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
     WHERE vp.confirm = 1
   END
@@ -2779,7 +2729,6 @@ BEGIN
   DECLARE @pBed_No_Int INT
   DECLARE @pActiveQns TABLE (Pat_Name VARCHAR(200), Bed VARCHAR(50))
   SET @pBed_No_Int = CONVERT(INT, @pBed_No)
-  --SET @pBed_No_Int = CAST(@pBed_No AS INT)
   
   INSERT INTO @pActiveQns
   SELECT * FROM OPENQUERY(APPSVR,'SELECT Pat_Name, Bed FROM [AMKH_InhouseDB_Production].[dbo].[Current_Patient_list]')
@@ -2793,6 +2742,31 @@ BEGIN
     ELSE  
        SET @responseMessage = 0  
 END;
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Getting Patient's name
+GO
+CREATE PROCEDURE [dbo].[GET_PATIENT_NAME]  
+@pBed_No VARCHAR(15),
+@pPatient_Name VARCHAR(100) OUTPUT,   
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	DECLARE @pBed_No_Int INT
+	SET @pBed_No_Int = CONVERT(INT, @pBed_No)
+  
+	IF EXISTS (SELECT Pat_Name FROM [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )  
+	BEGIN    
+		SET @responseMessage = 1
+		SET @pPatient_Name = (SELECT TOP 1 Pat_Name from [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )
+	END 
+	 
+    ELSE  
+       SET @responseMessage = 0  
+END; 
 
 
 ------------------------------------------------------------------------------ Procedures for Getting partial Patient's name. Automatically fills up patient's name

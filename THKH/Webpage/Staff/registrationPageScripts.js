@@ -683,7 +683,6 @@ function purposePanels() {
         $("#patientStatusGreen").css("display", "none");
         $('#patientpurposevisit input').removeClass('required');
         $('#otherpurposevisit input').addClass('required');
-        // Clear beds
         return true;
     } else {
         $("#patientpurposevisit").css("display", "none");
