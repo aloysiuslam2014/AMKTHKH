@@ -670,7 +670,7 @@ namespace THKH.Classes.Controller
                 procedureCall.addParameterWithValue("@pFullName", fname);
                 procedureCall.addParameterWithValue("@pGender", sex);
                 procedureCall.addParameterWithValue("@pNationality", nationality);
-                procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
+                procedureCall.addParameterWithValue("@pDateOfBirth", dob.Equals("") ? DateTime.ParseExact("04-03-1965", "dd-MM-yyyy", CultureInfo.InvariantCulture)  : DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
                 procedureCall.addParameterWithValue("@pMobileTel", mobtel);
                 procedureCall.addParameterWithValue("@pHomeAddress", address);
                 procedureCall.addParameterWithValue("@pPostalCode", postal);
