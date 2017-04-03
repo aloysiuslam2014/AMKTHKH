@@ -984,7 +984,9 @@ namespace THKH.Classes.Controller
                     var gender = dt.Rows[i]["gender"];
                     var dob = dt.Rows[i]["dob"];
 
-                    if (gender.ToString().Trim().Length > 0) //check that the visitor is not an express entry visitor
+                    bool noloc = location.ToString().Length == 0 & regbedno.ToString().Length == 0;
+
+                    if (gender.ToString().Trim().Length > 0 && !noloc) //check that the visitor is not an express entry visitor
                     {
                         innerItem = new ExpandoObject();
                         innerItem.location = location.ToString();
