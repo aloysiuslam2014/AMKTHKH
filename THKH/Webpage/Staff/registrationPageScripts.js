@@ -678,11 +678,12 @@ function purposePanels() {
         $("#purWarning").css("display", "none");
         $('#patientName').prop('value', "");
         $('#patientNric').prop('value', "");
-        $('#bedno').prop('value', "");
+        $('#bedsAdded').html("");
         $("#patientStatusRed").css("display", "none");
         $("#patientStatusGreen").css("display", "none");
         $('#patientpurposevisit input').removeClass('required');
         $('#otherpurposevisit input').addClass('required');
+        // Clear beds
         return true;
     } else {
         $("#patientpurposevisit").css("display", "none");
@@ -690,7 +691,7 @@ function purposePanels() {
         $("#purWarning").css("display", "block");
         $('#patientName').prop('value', "");
         $('#patientNric').prop('value', "");
-        $('#bedno').prop('value', "");
+        $('#bedsAdded').html("");
         $('#visLoc').val("");
         $('#purposeInput').prop('value', "");
         $("#patientStatusRed").css("display", "none");
