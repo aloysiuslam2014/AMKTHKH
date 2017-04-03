@@ -638,7 +638,7 @@ BEGIN 
 	SET NOCOUNT ON  
   
 	IF EXISTS (SELECT SUBSTRING(email, 1, CHARINDEX('@', email) - 1) 
-				FROM dbo.STAFF WHERE SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pEmail)  
+				FROM dbo.STAFF WHERE SUBSTRING(email, 1, CHARINDEX('@', email) - 1) = @pEmail and  permission like '%7%' )  
 	BEGIN  
 		SET @responseMessage = 1
 	END  
@@ -2479,6 +2479,7 @@ BEGIN
     UPDATE ACCESS_PROFILE
     SET accessRights = @pAccessRights, dateUpdated = SWITCHOFFSET(SYSDATETIMEOFFSET(), '+08:00'), updatedBy = @pUpdatedBy
     WHERE profileName = @pProfileName
+	Update STAFF set permission = @pAccessRights where @pProfileName = accessProfile; 
     END
     ELSE
     BEGIN

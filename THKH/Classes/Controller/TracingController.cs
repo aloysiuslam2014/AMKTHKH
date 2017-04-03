@@ -801,7 +801,7 @@ namespace THKH.Classes.Controller
                 ((IDictionary<string, object>)dwelltime_json)[dwelltime_bucket] = 0;
             }
             dynamic gender_json = new ExpandoObject();
-            List<string> genders = new List<string>(new string[] { "M", "F" });
+            List<string> genders = new List<string>(new string[] { "M", "F"});
             foreach (String gender in genders)
             {
                 ((IDictionary<string, object>)gender_json)[gender] = 0;
@@ -907,7 +907,7 @@ namespace THKH.Classes.Controller
                     loc = (string)visitor["location"];
                     if (loc.Length == 0)
                     {
-                        loc = "Express check-in";
+                        loc = "No location or bed provided";
                     }
                 }else
                 {
@@ -984,15 +984,21 @@ namespace THKH.Classes.Controller
                     var gender = dt.Rows[i]["gender"];
                     var dob = dt.Rows[i]["dob"];
 
-                    innerItem = new ExpandoObject();
-                    innerItem.location = location.ToString();
-                    innerItem.bedno = regbedno.ToString();
-                    innerItem.checkin_time = visitActualTime.ToString();
-                    innerItem.exit_time = exit_time.ToString();
-                    innerItem.nric = visitorNric.ToString();
-                    innerItem.gender = gender.ToString();
-                    innerItem.dob = dob.ToString();
-                    jsonArray.Add(innerItem);
+                    bool noloc = location.ToString().Length == 0 & regbedno.ToString().Length == 0;
+
+                    if (gender.ToString().Trim().Length > 0 && !noloc) //check that the visitor is not an express entry visitor
+                    {
+                        innerItem = new ExpandoObject();
+                        innerItem.location = location.ToString();
+                        innerItem.bedno = regbedno.ToString();
+                        innerItem.checkin_time = visitActualTime.ToString();
+                        innerItem.exit_time = exit_time.ToString();
+                        innerItem.nric = visitorNric.ToString();
+                        innerItem.gender = gender.ToString();
+                        innerItem.dob = dob.ToString();
+                        jsonArray.Add(innerItem);
+                    }
+                    
                 }
                 json.Result = "Success";
                 json.Msg = jsonArray;

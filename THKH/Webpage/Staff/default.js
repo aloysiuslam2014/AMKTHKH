@@ -4,10 +4,12 @@ var validSetTemp = false;
 var validSetTime = false;
 var configUrl = '../Staff/MasterConfig/MasterConfigGateway.ashx';
 
-//Set the first tab as active!
-$('.nav-tabs a:first').tab('show');
+
 
 $(document).ready(function () {
+
+    //Set the first tab as active!
+    $('.nav-tabs a:first').tab('show');
     var trigger = $('.hamburger'),
         overlay = $('.overlay'),
        isClosed = false;
@@ -160,86 +162,9 @@ function delAccessProfile() {
     });
 }
 
-// Populates dropdown with all profiles
-function fillAccessProfileList() {
-    var resultOfGeneration = "";
-    var headersToProcess = {
-        requestType: "getProfiles"
-    };
-    $.ajax({
-        url: configUrl,
-        method: 'post',
-        data: headersToProcess,
 
 
-        success: function (returner) {
-            resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.Result;
-            // Some array here
-            if (res.toString() == "Success") {
-                var mes = resultOfGeneration.Msg;
 
-                //clear existing options
-                $('#permissionProfile').html("");
-                for (var i = 0; i < mes.length; i++) {
-                    var optin = document.createElement("option");
-
-                    $(optin).attr("style", "background:white");
-                    $(optin).attr("name", mes[i].AccessProfile);
-                    $(optin).html(mes[i].AccessProfile);
-                    $('#permissionProfile').append(optin);
-                }
-                getSelectedAccessProfile();
-            } else {
-                alert(resultOfGeneration.Result);
-            }
-        },
-        error: function (err) {
-            alert(err.Msg);
-        },
-    });
-}
-
-// Get selected access profile values
-function getSelectedAccessProfile() {
-    var profile = $('#permissionProfile').val();
-    var resultOfGeneration = "";
-    // Get name of selected profile
-    var headersToProcess = {
-        profileName: profile, requestType: "getSelectedProfile"
-    };
-    $.ajax({
-        url: configUrl,
-        method: 'post',
-        data: headersToProcess,
-
-
-        success: function (returner) {
-            resultOfGeneration = JSON.parse(returner);
-            var res = resultOfGeneration.Result;
-            // Some array here
-            if (res.toString() == "Success") {
-                var mes = resultOfGeneration.Msg;
-
-                //clear existing options
-                $('#permissSet').find('input[type=checkbox]:checked').removeAttr('checked');
-
-                for (i = 0; i < mes.length; i++) {
-                    var item = mes[i].Permissions.toString();
-                    for (j = 0; j < item.length; j++) {
-                        var val = item.charAt(j);
-                        $("#permissSet input[name='" + val + "'][value='" + val + "']").prop("checked", true);
-                    }
-                }
-            } else {
-                alert(resultOfGeneration.Result);
-            }
-        },
-        error: function (err) {
-            alert(err.Msg);
-        },
-    });
-}
 
 // Get current configuration
 function getCurrentConfig() {
