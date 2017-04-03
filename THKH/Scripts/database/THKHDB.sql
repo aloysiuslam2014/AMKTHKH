@@ -2344,7 +2344,7 @@ BEGIN
 	END
 END;
 
-----------------------
+-------------------------------------------------------------------------------------------------  Procedures for retrieving Visit details 
 GO
 CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
 @pNric VARCHAR(100),  
