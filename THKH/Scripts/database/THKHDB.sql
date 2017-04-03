@@ -1131,38 +1131,38 @@ END;
 
 
 -----------------------------------------------------------------------------------------------------  Procedures for retrieving Visit details   
-GO
-CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
-@pNric VARCHAR(100),  
-@responseMessage VARCHAR(MAX) OUTPUT
+--GO
+--CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
+--@pNric VARCHAR(100),  
+--@responseMessage VARCHAR(MAX) OUTPUT
 
-AS  
-BEGIN  
-  SET NOCOUNT ON  
-  DECLARE @pVisit_Details VARCHAR(MAX)
-  DECLARE @pLatestTimestamp DATETIME
+--AS  
+--BEGIN  
+--  SET NOCOUNT ON  
+--  DECLARE @pVisit_Details VARCHAR(MAX)
+--  DECLARE @pLatestTimestamp DATETIME
 
-  IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
-  BEGIN
-    SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
-                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
-                 WHERE visitorNRIC = @pNric
-                 AND YEAR(visitRequestTime) = YEAR(GETDATE())
-                 AND MONTH(visitRequestTime) = MONTH(GETDATE())
-                 AND DAY(visitRequestTime) = DAY(GETDATE())))
+--  IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
+--  BEGIN
+--    SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
+--                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
+--                 WHERE visitorNRIC = @pNric
+--                 AND YEAR(visitRequestTime) = YEAR(GETDATE())
+--                 AND MONTH(visitRequestTime) = MONTH(GETDATE())
+--                 AND DAY(visitRequestTime) = DAY(GETDATE())))
 
-    SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
-                    visitorNric + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
-                    bedNo + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
-    FROM VISIT 
-    WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp)
+--    SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
+--                    visitorNric + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
+--                    bedNo + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
+--    FROM VISIT 
+--    WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp)
 
-    SET @responseMessage = @pVisit_Details
-  END  
+--    SET @responseMessage = @pVisit_Details
+--  END  
 
-  ELSE
-    SET @responseMessage = '0'
-END;
+--  ELSE
+--    SET @responseMessage = '0'
+--END;
 
 
 
@@ -2345,6 +2345,7 @@ BEGIN
 END;
 
 ----------------------
+GO
 CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
 @pNric VARCHAR(100),  
 @responseMessage VARCHAR(MAX) OUTPUT
@@ -2547,32 +2548,6 @@ BEGIN
 END;
 
 
----------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Getting Patient's name
-GO
-CREATE PROCEDURE [dbo].[GET_PATIENT_NAME]  
-@pBed_No VARCHAR(15),
-@pPatient_Name VARCHAR(100) OUTPUT,   
-@responseMessage INT OUTPUT  
-  
-AS  
-BEGIN  
-	SET NOCOUNT ON  
-
-	DECLARE @pBed_No_Int INT
-	SET @pBed_No_Int = CONVERT(INT, @pBed_No)
-	--SET @pBed_No_Int = CAST(@pBed_No AS INT)
-  
-	IF EXISTS (SELECT Pat_Name FROM [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )  
-	BEGIN    
-		SET @responseMessage = 1
-		SET @pPatient_Name = (SELECT TOP 1 Pat_Name from [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )
-	END 
-	 
-    ELSE  
-       SET @responseMessage = 0  
-END; 
-
-
 -----------------------------------------------------------------------------------------------------------------------------------
 GO
 CREATE PROCEDURE [dbo].[RECORD_SMS]  
@@ -2754,7 +2729,6 @@ BEGIN
   DECLARE @pBed_No_Int INT
   DECLARE @pActiveQns TABLE (Pat_Name VARCHAR(200), Bed VARCHAR(50))
   SET @pBed_No_Int = CONVERT(INT, @pBed_No)
-  --SET @pBed_No_Int = CAST(@pBed_No AS INT)
   
   INSERT INTO @pActiveQns
   SELECT * FROM OPENQUERY(APPSVR,'SELECT Pat_Name, Bed FROM [AMKH_InhouseDB_Production].[dbo].[Current_Patient_list]')
@@ -2768,6 +2742,31 @@ BEGIN
     ELSE  
        SET @responseMessage = 0  
 END;
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------- Procedures for Getting Patient's name
+GO
+CREATE PROCEDURE [dbo].[GET_PATIENT_NAME]  
+@pBed_No VARCHAR(15),
+@pPatient_Name VARCHAR(100) OUTPUT,   
+@responseMessage INT OUTPUT  
+  
+AS  
+BEGIN  
+	SET NOCOUNT ON  
+
+	DECLARE @pBed_No_Int INT
+	SET @pBed_No_Int = CONVERT(INT, @pBed_No)
+  
+	IF EXISTS (SELECT Pat_Name FROM [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )  
+	BEGIN    
+		SET @responseMessage = 1
+		SET @pPatient_Name = (SELECT TOP 1 Pat_Name from [APPSVR].[AMKH_InhouseDB_Production].[dbo].[Current_Patient_list] WHERE Bed = @pBed_No_Int )
+	END 
+	 
+    ELSE  
+       SET @responseMessage = 0  
+END; 
 
 
 ------------------------------------------------------------------------------ Procedures for Getting partial Patient's name. Automatically fills up patient's name
