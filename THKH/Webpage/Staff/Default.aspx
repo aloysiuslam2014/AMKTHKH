@@ -19,6 +19,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap-datetimepicker.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/rsvp-3.1.0.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dependencies/sha-256.min.js") %>"></script>
+     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/default.js") %>"></script>
     <link href="~/CSS/default.css" rel="stylesheet" />
     <link href="~/CSS/adminTerminal.css" rel="stylesheet" />
     <link href="~/CSS/formManagement.css" rel="stylesheet" />
@@ -38,8 +39,7 @@
 
             $(document).ready(function () {// once ready then we toggle based on ajax calls
                 $("#loadingGif").toggle(false);
-                $('#wrapper').addClass('toggled');
-
+                $(".hamburger").click()
                 $(document).ajaxStart(function () {
                     $("#loadingGif").toggle(true);
                 });
@@ -1334,10 +1334,9 @@
     </div>
 
     </div>
-    <%if (accessRightsStr.Contains('4'))
-        { %>
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/default.js") %>"></script>
-    <%}
+  
+   
+    <%
         if (accessRightsStr.Contains('3'))
         {%>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/TerminalCalls/adminTerminal.js") %>"></script>
