@@ -1268,7 +1268,7 @@ BEGIN TRY
 			SET	@pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
 
 			INSERT INTO @pVisitingBedTb 
-				SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, ',')
+				SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, '|')
 			
 			INSERT INTO @pTerminalBedTb 
 				SELECT * FROM dbo.FUNC_SPLIT(@pTerminal_Bedno, ',')
