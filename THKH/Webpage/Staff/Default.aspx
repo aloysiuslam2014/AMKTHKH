@@ -219,7 +219,7 @@
           <ul class="nav sidebar-nav  nav-tabs" >
                     <li class="sidebar-brand" style="font-size: 14pt;">
                          
-                           Thye Hua Kwan Hospital
+                          Thye Hua Kwan Hospital
                         
                     </li>
                     <%if (accessRightsStr.Contains('1'))

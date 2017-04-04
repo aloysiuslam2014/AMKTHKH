@@ -40,7 +40,6 @@ namespace THKH.Webpage.Staff.PassManagement
                 result = passController.getPassState();
                 returnMe.Result = result.Result;
                 returnMe.Msg = result.Msg;//Json object contains: divState(div object holding pass contents) and positions(position offsets of elements within div)
-                //
             }
             context.Response.ContentType = "text/plain";
            // If this result has more that success means there is data
