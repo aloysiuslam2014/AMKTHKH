@@ -27,6 +27,7 @@ $('#userNric').keypress(function (e) {
     }
 });
 
+/// <summary>When a terminal has been selected to be activated. Gets the if from the target 'me'</summary>
 function activateMe(me) {
    
     var termName = "";
@@ -63,6 +64,7 @@ function activateMe(me) {
     });
 }
 
+/// <summary>Focuses in the userNric field after selection.</summary>
 function activaTab(tab) {
     $(' a[href="#' + tab + '"]').tab('show');
    
@@ -70,6 +72,7 @@ function activaTab(tab) {
     
 }
 
+/// <summary>Verify's a staff who wants to activate a terminal</summary>
 function verifyUser() {
     var headersToProcess = { action: "verify", id: termValue.value, user: usrname.value };
     $.ajax({
@@ -93,6 +96,7 @@ function verifyUser() {
 
 var exisingTimeouts = "";
 
+/// <summary>Updates a visitors movement into the database</summary>
 function updateCheckIn() {
 
     if ($("#userNric").val() == "deactivate") {
@@ -153,6 +157,7 @@ function updateCheckIn() {
     
 }
 
+/// <summary>Self explanatory</summary>
 function hideWelcome(){
     $("#userWelcome").html('Please Scan Your Card');
     $("#userNric").prop('value', '');
@@ -163,6 +168,7 @@ function hideWelcome(){
    
 }
 
+/// <summary>Self explanatory</summary>
 function returnToLogin() {
     
     var goTo = "./Login.aspx";
@@ -170,6 +176,7 @@ function returnToLogin() {
     
 }
 
+/// <summary>Self explanatory</summary>
 function launchFail() {
     $("#alertModal").modal({
         backdrop: 'static',

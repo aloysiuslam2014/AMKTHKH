@@ -7,6 +7,7 @@ var sPositions = {};
 var level = 0;
 var loadPassOnce = false;
 var creatingPass = false;
+/// <summary>Converts passclone div to canvas image</summary>
 function convertDvToImg() {
     html2canvas($("#passClone"), {
         onrendered: function (canvas) {
@@ -17,12 +18,14 @@ function convertDvToImg() {
     });
 }
 
+/// <summary>Convert from mm to px measurements</summary>
 function convertMMtoPx(mmvalue) {
     //http://www.translatorscafe.com/unit-converter/typography/4-8/ convert to px from mm formula from here
     var convertedpx = (parseInt(mmvalue.replace('mm', '')) * 3.78) + "px";
     return convertedpx;
 }
 
+/// <summary>Gets pass state from the server and load it when pass management loads for the first time</summary>
 function loadPassState() {
 
 
@@ -89,6 +92,7 @@ function loadPassState() {
 
 }
 
+/// <summary>Convert from mm to px measurements</summary>
 function getPassState() {
     var headersToProcess = {
         requestType: "getPassState"
@@ -127,6 +131,7 @@ function getPassState() {
 
 }
 
+/// <summary>Save current pass state to the server Database</summary>
 function savePassState() {
     var cloneDump = $("#passLayout").clone()[0];
     $(cloneDump).prop("id", "passClone");
@@ -157,7 +162,7 @@ function savePassState() {
     });
 }
 
-
+/// <summary>Creates the pass and appends it to the target</summary>
 function createPassAppendParent(parent, target, datapositions) {
     $("#passClone").remove();
     $(parent).append(target);
@@ -215,6 +220,7 @@ function createPassAppendParent(parent, target, datapositions) {
     });
 }
 
+/// <summary>Removes the event listeners and any remnant even listeners within the children.</summary>
 function cleanChildrenElements(element) {
 
     if (element.id != "") {
@@ -232,6 +238,7 @@ function cleanChildrenElements(element) {
 
 }
 
+/// <summary>Converts element into a draggable element</summary>
 function createDraggablElement(element) {
     $(element).draggable({
         stack: "#passLayout .zax", snap: "#passLayout", snapTolerance: 1, containment: "#passLayout", scroll: false,
@@ -252,16 +259,19 @@ function createDraggablElement(element) {
     $(element).addClass("zax");
 }
 
+/// <summary>Change current pass dimensions</summary>
 function changePassDimen(width, height) {
     $("#passLayout").css("width", convertMMtoPx(width));
     $("#passLayout").css("height", convertMMtoPx(height));
 }
 
+/// <summary>Sets pass dimensions to custom parameters</summary>
 function customDimenstions() {
     var dimensionss = customSizePass.value.split("*");
     changePassDimen(dimensionss[0], dimensionss[1]);
 }
 
+/// <summary>Self explanatory</summary>
 function toggleOrientation() {
     var width = $("#passLayout").width();
     var height = $("#passLayout").height();
@@ -269,6 +279,7 @@ function toggleOrientation() {
     $("#passLayout").height(width);
 }
 
+/// <summary>Creates text based on a specific visitor field or a custom set text.</summary>
 function addTextToPass() {
     //text-overflow:ellipsis
     var selectedSource = $("#source").val();
@@ -304,6 +315,7 @@ function addTextToPass() {
 
 }
 
+/// <summary>If the text to be added to the pass is a custom text show the custom textfield</summary>
 function ifCustom() {
     var selectedSource = $("#source").val();
     if (selectedSource == "custom") {
@@ -313,6 +325,7 @@ function ifCustom() {
     }
 }
 
+/// <summary>Deletes an element from the pass based on right click</summary>
 function deletAddedElement(eventSelect) {
     if (eventSelect.which == 3) {
         eventSelect.preventDefault();
@@ -320,7 +333,7 @@ function deletAddedElement(eventSelect) {
     }
 }
 
-
+/// <summary>Self explanatory</summary>
 function addBarCodeToPassLayout() {
     var barcode = createBarCodeImg("s98375843");
     var divWrapper = document.createElement("div");
@@ -339,7 +352,7 @@ function addBarCodeToPassLayout() {
     $("#passLayout ").append(divWrapper);
 }
 
-
+/// <summary>Creates the barcode image based on provided text. If injectAfterLoad is not null, append to it.</summary>
 function createBarCodeImg(textToCreate, injectAfterLoad) {
     var imageToCreate = new Image();
 
@@ -378,6 +391,7 @@ function createBarCodeImg(textToCreate, injectAfterLoad) {
     return imageToCreate;
 }
 var imgcounter = 0;
+/// <summary>Creates te image from the canvas generated and add to the target 'me'.</summary>
 function createImageAndAdd(me) {
     var imageToCreate = new Image();
 
@@ -400,6 +414,7 @@ function createImageAndAdd(me) {
     $("#passLayout ").append(divWrapper);
 }
 
+/// <summary>Prints the pass using QZ tray's default certifiate. Recommended to replace with your own root certificate authority.</summary>
 function printPass() {
     qz.security.setCertificatePromise(function (resolve, reject) { 
         // $.ajax("./PassManagement/signing/digital-certificate.txt").then(resolve, reject); Best to select your own certificate 
@@ -495,6 +510,7 @@ function printPass() {
 
 }
 
+/// <summary>Ends the connection with Qztray.</summary>
 function endConnection() {
     if (qz.websocket.isActive()) {
         qz.websocket.disconnect().then(function () {
