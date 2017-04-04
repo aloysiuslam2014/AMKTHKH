@@ -159,7 +159,7 @@ namespace THKH.Classes.Controller
             List<Tuple<List<String>, bool, bool>> categorizedResults = new List<Tuple<List<String>, bool, bool>>();
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_and_scan, true, true));
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_only, true, false));
-            categorizedResults.Add(new Tuple<List<String>, bool, bool>(scan_only, false, true));
+            //categorizedResults.Add(new Tuple<List<String>, bool, bool>(scan_only, false, true));
 
             result = buildDisplayResults(categorizedResults);
 

@@ -1130,40 +1130,40 @@ BEGIN
 END;
 
 
------------------------------------------------------------------------------------------------------  Procedures for retrieving Visit details   
---GO
---CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
---@pNric VARCHAR(100),  
---@responseMessage VARCHAR(MAX) OUTPUT
+-------------------------------------------------------------------------------------------------  Procedures for retrieving Visit details 
+GO
+CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
+@pNric VARCHAR(100),  
+@responseMessage VARCHAR(MAX) OUTPUT
 
---AS  
---BEGIN  
---  SET NOCOUNT ON  
---  DECLARE @pVisit_Details VARCHAR(MAX)
---  DECLARE @pLatestTimestamp DATETIME
+AS  
+BEGIN  
+  SET NOCOUNT ON  
+  DECLARE @pVisit_Details VARCHAR(MAX)
+  DECLARE @pLatestTimestamp DATETIME
 
---  IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
---  BEGIN
---    SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
---                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
---                 WHERE visitorNRIC = @pNric
---                 AND YEAR(visitRequestTime) = YEAR(GETDATE())
---                 AND MONTH(visitRequestTime) = MONTH(GETDATE())
---                 AND DAY(visitRequestTime) = DAY(GETDATE())))
+  IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
+  BEGIN
+    SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
+                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
+                 WHERE visitorNRIC = @pNric
+                 AND YEAR(visitRequestTime) = YEAR(GETDATE())
+                 AND MONTH(visitRequestTime) = MONTH(GETDATE())
+                 AND DAY(visitRequestTime) = DAY(GETDATE())))
 
---    SET @pVisit_Details = (SELECT (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
---                    visitorNric + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
---                    bedNo + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
---    FROM VISIT 
---    WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp)
+    SET @pVisit_Details = (SELECT TOP 1 (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
+                    visitorNric + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
+                    bedNo + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
+    FROM VISIT 
+    WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp
+  ORDER BY createdOn desc)
 
---    SET @responseMessage = @pVisit_Details
---  END  
+    SET @responseMessage = @pVisit_Details
+  END  
 
---  ELSE
---    SET @responseMessage = '0'
---END;
-
+  ELSE
+    SET @responseMessage = '0'
+END;
 
 
 ---------------------------------------------------------------------------------------------------------- Procedure for confirming visitor's check-in
@@ -1268,7 +1268,7 @@ BEGIN TRY
 			SET	@pTerminal_Bedno = (SELECT bedNoList FROM TERMINAL_BED WHERE terminalID = @pLocationID)
 
 			INSERT INTO @pVisitingBedTb 
-				SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, ',')
+				SELECT * FROM dbo.FUNC_SPLIT(@pVisiting_Bedno, '|')
 			
 			INSERT INTO @pTerminalBedTb 
 				SELECT * FROM dbo.FUNC_SPLIT(@pTerminal_Bedno, ',')
@@ -2342,41 +2342,6 @@ BEGIN
 		JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
 		WHERE vp.confirm = 1
 	END
-END;
-
--------------------------------------------------------------------------------------------------  Procedures for retrieving Visit details 
-GO
-CREATE PROCEDURE [dbo].[GET_VISIT_DETAILS]  
-@pNric VARCHAR(100),  
-@responseMessage VARCHAR(MAX) OUTPUT
-
-AS  
-BEGIN  
-  SET NOCOUNT ON  
-  DECLARE @pVisit_Details VARCHAR(MAX)
-  DECLARE @pLatestTimestamp DATETIME
-
-  IF EXISTS (SELECT visitorNRIC FROM dbo.VISIT WHERE visitorNRIC = @pNric)  
-  BEGIN
-    SET @pLatestTimestamp = (SELECT MAX(visitRequestTime) FROM VISIT WHERE visitorNRIC = @pNric 
-                 AND visitRequestTime = (SELECT MAX(visitRequestTime) FROM VISIT 
-                 WHERE visitorNRIC = @pNric
-                 AND YEAR(visitRequestTime) = YEAR(GETDATE())
-                 AND MONTH(visitRequestTime) = MONTH(GETDATE())
-                 AND DAY(visitRequestTime) = DAY(GETDATE())))
-
-    SET @pVisit_Details = (SELECT TOP 1 (CONVERT(VARCHAR(100), visitRequestTime, 105) + ' ' + CONVERT(VARCHAR(10), visitRequestTime, 108) + ',' +  
-                    visitorNric + ',' + purpose  + ',' + reason  + ',' +  visitLocation  + ',' + 
-                    bedNo + ',' +  CAST(QaID AS VARCHAR(100))  + ',' +  remarks + ',' +  CAST(confirm AS VARCHAR(5)))
-    FROM VISIT 
-    WHERE visitorNRIC = @pNric AND visitRequestTime = @pLatestTimestamp
-  ORDER BY createdOn desc)
-
-    SET @responseMessage = @pVisit_Details
-  END  
-
-  ELSE
-    SET @responseMessage = '0'
 END;
 
 
