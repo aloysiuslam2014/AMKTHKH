@@ -1134,6 +1134,7 @@
                             </div>
                             <span class="input-group-btn">
                                 <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace(); false;"><span class="glyphicon glyphicon-search"></span>Trace</button>
+                                
                                 <%--<button class="btn btn-warning" id="execute_expressTrace" onclick="expressTrace(); false;"><span class="glyphicon glyphicon-search"></span> Trace Express Entries</button>--%>
                             </span>
                         </div>
@@ -1243,6 +1244,7 @@
                         </script>
                     </div>
                 </div>
+                <div id="editor"></div>
             </div>
             <!-- End of ContactTracing -->
             <!-- Dashboard -->
@@ -1270,6 +1272,7 @@
 
                         <div class="col-sm-2">
                             <button class="btn btn-warning" id="fill_dashboard" onclick="fillDashboard(); false;"><span class="glyphicon glyphicon-search"></span>View</button>
+                            <button class="btn btn-warning" id="printViz" ><span class="glyphicon glyphicon-print"></span>To PDF</button>
                         </div>
 
                         <script type="text/javascript"> //Shift to separate Script
@@ -1370,6 +1373,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/dataTables.bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/ContactTracing/query.js") %>"></script>
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Webpage/Staff/SMS/sms.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jspdf.debug.js") %>"></script>
     <%}
         if (accessRightsStr.Contains('5') || accessRightsStr.Contains('1'))
         {%>
