@@ -1170,8 +1170,7 @@
                                     <th>Check-in Time</th>
                                     <th>Exit Time</th>
                                     <th>Temperature</th>
-                                 
-                            <th>Name</th>
+                                    <th>Name</th>
                                     <th>NRIC</th>
                                     <th>Gender</th>
                                     <th>Date of Birth</th>
@@ -1180,6 +1179,7 @@
                                     <th>Postal Code</th>
                                     <th>Country (Nationality)</th>
                                     <th>Form Answers</th>
+                                    <th>Remarks</th>
                                     <th>Registered</th>
                                     <th>Scanned</th>
                                 </tr>
