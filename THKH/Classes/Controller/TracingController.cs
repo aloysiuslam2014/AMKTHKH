@@ -206,7 +206,7 @@ namespace THKH.Classes.Controller
                     innerItem.dob = deserializedVisit["dob"];
                     innerItem.homeadd = deserializedVisit["homeadd"];
                     innerItem.postalcode = deserializedVisit["postalcode"];
-                    //innerItem.remarks = deserializedVisit["remarks"];
+                    innerItem.remarks = deserializedVisit["remarks"];
 
                     innerItem.formAnswers = parseFormJson((string)deserializedVisit["formAnswers"]);
 
@@ -227,7 +227,7 @@ namespace THKH.Classes.Controller
                     datatable_arrayitem.Add((string)innerItem.postalcode);  //hidden
                     datatable_arrayitem.Add((string)innerItem.nationality);
                     datatable_arrayitem.Add((string)innerItem.formAnswers); //hidden
-                    //datatable_arrayitem.Add((string)innerItem.remarks); //hidden
+                    datatable_arrayitem.Add((string)innerItem.remarks); //hidden
                     datatable_arrayitem.Add((string)innerItem.reg);
                     datatable_arrayitem.Add((string)innerItem.scan);
                     datatable_array.Add(datatable_arrayitem);
@@ -279,7 +279,7 @@ namespace THKH.Classes.Controller
                     var homeadd = dt.Rows[i]["homeadd"];
                     var postalcode = dt.Rows[i]["postalcode"];
                     var formAnswers = dt.Rows[i]["formAnswers"];
-                    //var remarks = dt.Rows[i]["remarks"];
+                    var remarks = dt.Rows[i]["remarks"];
 
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
@@ -296,7 +296,7 @@ namespace THKH.Classes.Controller
                     innerItem.homeadd = homeadd.ToString();
                     innerItem.postalcode = postalcode.ToString();
                     innerItem.formAnswers = formAnswers.ToString();
-                    //innerItem.remarks = remarks.ToString();
+                    innerItem.remarks = remarks.ToString();
                     jsonArray.Add(innerItem);
                 }
                 json.Result = "Success";
@@ -349,7 +349,7 @@ namespace THKH.Classes.Controller
                     var homeadd = dt.Rows[i]["homeadd"];
                     var postalcode = dt.Rows[i]["postalcode"];
                     var formAnswers = dt.Rows[i]["formAnswers"];
-                    //var remarks = dt.Rows[i]["remarks"];
+                    var remarks = dt.Rows[i]["remarks"];
 
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
@@ -366,7 +366,7 @@ namespace THKH.Classes.Controller
                     innerItem.homeadd = homeadd.ToString();
                     innerItem.postalcode = postalcode.ToString();
                     innerItem.formAnswers = formAnswers.ToString();
-                    //innerItem.remarks = remarks.ToString();
+                    innerItem.remarks = remarks.ToString();
                     jsonArray.Add(innerItem);
                 }
                 json.Result = "Success";
@@ -418,7 +418,7 @@ namespace THKH.Classes.Controller
                     var homeadd = dt.Rows[i]["homeadd"];
                     var postalcode = dt.Rows[i]["postalcode"];
                     var formAnswers = dt.Rows[i]["formAnswers"];
-                    //var remarks = dt.Rows[i]["remarks"];
+                    var remarks = dt.Rows[i]["remarks"];
 
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
@@ -435,7 +435,7 @@ namespace THKH.Classes.Controller
                     innerItem.homeadd = homeadd.ToString();
                     innerItem.postalcode = postalcode.ToString();
                     innerItem.formAnswers = formAnswers.ToString();
-                    //innerItem.remarks = remarks.ToString();
+                    innerItem.remarks = remarks.ToString();
                     jsonArray.Add(innerItem);
                 }
                 json.Result = "Success";
@@ -489,7 +489,7 @@ namespace THKH.Classes.Controller
                     var homeadd = dt.Rows[i]["homeadd"];
                     var postalcode = dt.Rows[i]["postalcode"];
                     var formAnswers = dt.Rows[i]["formAnswers"];
-                    //var remarks = dt.Rows[i]["remarks"];
+                    var remarks = dt.Rows[i]["remarks"];
 
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
@@ -506,7 +506,7 @@ namespace THKH.Classes.Controller
                     innerItem.homeadd = homeadd.ToString();
                     innerItem.postalcode = postalcode.ToString();
                     innerItem.formAnswers = formAnswers.ToString();
-                    //innerItem.remarks = remarks.ToString();
+                    innerItem.remarks = remarks.ToString();
                     jsonArray.Add(innerItem);
                 }
                 json.Result = "Success";
@@ -560,7 +560,7 @@ namespace THKH.Classes.Controller
                     var homeadd = dt.Rows[i]["homeadd"];
                     var postalcode = dt.Rows[i]["postalcode"];
                     var formAnswers = dt.Rows[i]["formAnswers"];
-                    //var remarks = dt.Rows[i]["remarks"];
+                    var remarks = dt.Rows[i]["remarks"];
 
                     innerItem = new ExpandoObject();
                     innerItem.location = location.ToString();
@@ -577,7 +577,7 @@ namespace THKH.Classes.Controller
                     innerItem.homeadd = homeadd.ToString();
                     innerItem.postalcode = postalcode.ToString();
                     innerItem.formAnswers = formAnswers.ToString();
-                    //innerItem.remarks = remarks.ToString();
+                    innerItem.remarks = remarks.ToString();
                     jsonArray.Add(innerItem);
                 }
                 json.Result = "Success";
