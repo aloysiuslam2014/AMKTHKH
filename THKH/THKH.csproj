@@ -33,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -284,17 +285,27 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\buttons.colVis.min.js" />
+    <Content Include="Scripts\buttons.colVis.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\buttons.flash.min.js" />
-    <Content Include="Scripts\buttons.html5.min.js" />
-    <Content Include="Scripts\buttons.print.min.js" />
-    <Content Include="Scripts\canvasjs.min.js" />
+    <Content Include="Scripts\buttons.html5.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\buttons.print.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\canvasjs.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\database\THKHDB.sql" />
     <Content Include="Scripts\database\THKHDB_TestData.sql" />
     <Content Include="Scripts\dataTables.bootstrap.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\dataTables.buttons.min.js" />
+    <Content Include="Scripts\dataTables.buttons.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\dependencies\rsvp-3.1.0.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -322,11 +333,15 @@
     <Content Include="Scripts\jquery-ui.theme.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\jquery.cookie.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\jquery.dataTables.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\jszip.min.js" />
+    <Content Include="Scripts\jszip.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\kc.fab.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -334,11 +349,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Webpage\Staff\patientAutocomplete.js" />
-    <Content Include="Scripts\pdfmake.min.js" />
+    <Content Include="Scripts\pdfmake.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\qz-tray.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\regData.js" />
+    <Content Include="Scripts\regData.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\vfs_fonts.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -356,7 +375,9 @@
     <Content Include="Scripts\moment.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Webpage\SelfReg\selfRegistrationScript.js" />
+    <Content Include="Webpage\SelfReg\selfRegistrationScript.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\w3data.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -631,8 +652,12 @@
     <Content Include="Scripts\jquery-3.1.1.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Webpage\Staff\registrationPageScripts.js" />
-    <Content Include="Webpage\SelfReg\SelfRegister.aspx" />
+    <Content Include="Webpage\Staff\registrationPageScripts.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webpage\SelfReg\SelfRegister.aspx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Webpage\Staff\Default.aspx" />
     <Content Include="Webpage\Staff\Login.aspx" />
     <Content Include="Scripts\jquery-1.9.1.min.map">
@@ -685,9 +710,11 @@
     <Compile Include="Webpage\SelfReg\SelfRegister.aspx.cs">
       <DependentUpon>SelfRegister.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Webpage\SelfReg\SelfRegister.aspx.designer.cs">
       <DependentUpon>SelfRegister.aspx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Webpage\Staff\CheckInOut\CheckInGateway.ashx.cs">
       <DependentUpon>CheckInGateway.ashx</DependentUpon>
