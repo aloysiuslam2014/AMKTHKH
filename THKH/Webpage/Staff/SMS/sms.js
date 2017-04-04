@@ -18,7 +18,7 @@ function checkSMSNumber() {
     for (var i = 0; i < numArr.length; i++) {
         var curNum = numArr[i];
         if (curNum != "") {
-            if (curNum.charAt(0) == '+' || curNum.charAt(0) != '6') {
+            if (curNum.charAt(0) === '+' || curNum.charAt(0) !== '6') {
                 if (uniqueNums.indexOf(curNum) == -1) uniqueNums.push(curNum);
             }
         }
