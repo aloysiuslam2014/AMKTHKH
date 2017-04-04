@@ -1269,9 +1269,7 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <span class="input-group-btn">
-                                <button class="btn btn-warning" id="fill_dashboard" onclick="fillDashboard(); false;"><span class="glyphicon glyphicon-search"></span>View</button>
-                            </span>
+                            <button class="btn btn-warning" id="fill_dashboard" onclick="fillDashboard(); false;"><span class="glyphicon glyphicon-search"></span>View</button>
                         </div>
 
                         <script type="text/javascript"> //Shift to separate Script

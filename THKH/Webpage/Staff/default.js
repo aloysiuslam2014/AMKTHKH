@@ -9,7 +9,8 @@ var configUrl = '../Staff/MasterConfig/MasterConfigGateway.ashx';
 $(document).ready(function () {
 
     //Set the first tab as active!
-    $('.nav-tabs a:first').tab('show');
+    // $('.nav-tabs a:first').tab('show');
+    $('.nav-tabs a:first').click();
     var trigger = $('.hamburger'),
         overlay = $('.overlay'),
        isClosed = false;
@@ -193,6 +194,124 @@ function getCurrentConfig() {
         },
         error: function (err) {
             alert("Error: " + err.Msg);
+        },
+    });
+}
+
+/**
+ * Populates dropdown with all profiles
+ * @param 
+ * @return 
+ */
+function fillAccessProfileList() {
+    var resultOfGeneration = "";
+    var headersToProcess = {
+        requestType: "getProfiles"
+    };
+    $.ajax({
+        url: configUrl,
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Result;
+            // Some array here
+            if (res.toString() == "Success") {
+                var mes = resultOfGeneration.Msg;
+
+                //clear existing options
+                $('#permissionProfile').html("");
+                for (var i = 0; i < mes.length; i++) {
+                    var optin = document.createElement("option");
+
+                    $(optin).attr("style", "background:white");
+                    $(optin).attr("name", mes[i].AccessProfile);
+                    $(optin).html(mes[i].AccessProfile);
+                    $('#permissionProfile').append(optin);
+                }
+                getSelectedAccessProfileUser();
+            } else {
+                alert(resultOfGeneration.Result);
+            }
+        },
+        error: function (err) {
+            alert(err.Msg);
+        },
+    });
+}
+
+/**
+ * Get visitor limit
+ * @param 
+ * @return 
+ */
+function getVisLim() {
+    var headersToProcess = {
+        requestType: "getConfig"
+    };
+    $.ajax({
+        url: configUrl,
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            var mes = resultOfGeneration.Msg;
+            var arr = mes.toString().split(",");
+            if (arr.length > 1) {
+                visLim = arr[5];
+            }
+            fillAccessProfileList();
+        },
+        error: function (err) {
+            alert("Error: " + err.Msg);
+        },
+    });
+}
+
+/**
+ * Get selected access profile values
+ * @param 
+ * @return 
+ */
+function getSelectedAccessProfile() {
+    var profile = $('#permissionProfile').val();
+    var resultOfGeneration = "";
+    // Get name of selected profile
+    var headersToProcess = {
+        profileName: profile, requestType: "getSelectedProfile"
+    };
+    $.ajax({
+        url: configUrl,
+        method: 'post',
+        data: headersToProcess,
+
+
+        success: function (returner) {
+            resultOfGeneration = JSON.parse(returner);
+            var res = resultOfGeneration.Result;
+            // Some array here
+            if (res.toString() == "Success") {
+                var mes = resultOfGeneration.Msg;
+
+                //clear existing options
+                $('#permissSet').find('input[type=checkbox]:checked').removeAttr('checked');
+                for (i = 0; i < mes.length; i++) {
+                    var item = mes[i].Permissions.toString();
+                    for (j = 0; j < item.length; j++) {
+                        var val = item.charAt(j);
+                        $("#permissSet input[value='" + val + "']").prop("checked", true);
+                    }
+                }
+            } else {
+                alert(resultOfGeneration.Result);
+            }
+        },
+        error: function (err) {
+            alert(err.Msg);
         },
     });
 }
