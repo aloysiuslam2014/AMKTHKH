@@ -1,5 +1,4 @@
-﻿// Variable to check if all fields are valid
-var validMob = true;
+﻿var validMob = true;
 var validAlt = true;
 var validHom = true;
 var validPos = true;
@@ -13,9 +12,8 @@ var invalidTries = 0;
 var numTries = 5;
 var ipAdd = "";
 
-// write to form information DB
 /**
- * Populates the dropdown list from tracing by location
+ * write to form information DB
  * @param 
  * @return 
  */
@@ -76,9 +74,8 @@ function NewSelfReg() {
     }
 }
 
-// Check nationality input field
 /**
- * Populates the dropdown list from tracing by location
+ * Check nationality input field
  * @param 
  * @return 
  */
@@ -92,9 +89,8 @@ function checkNationals() {
     return !blank;
 }
 
-// Check gender input field
 /**
- * Populates the dropdown list from tracing by location
+ * Check gender input field
  * @param 
  * @return 
  */
@@ -108,9 +104,8 @@ function checkGender() {
     return !blank;
 }
 
-// Reload Page & Clear Cache
 /**
- * Populates the dropdown list from tracing by location
+ * Reload Page & Clear Cache
  * @param 
  * @return 
  */
@@ -118,9 +113,8 @@ function reloadPage() {
     location.reload(true);
 }
 
-// Enter Button Trigger
 /**
- * Populates the dropdown list from tracing by location
+ * Enter Button Trigger
  * @param 
  * @return 
  */
@@ -130,9 +124,8 @@ $("#submitNric").keyup(function (event) {
     }
 });
 
-//add patient to be visited
 /**
- * Populates the dropdown list from tracing by location
+ * add patient to be visited
  * @param 
  * @return 
  */
@@ -154,7 +147,7 @@ function addBedToVisit(patientName, patientBedNo) {
         if ($(this).parent().parent().children().length == 0) {
             $("#userDetails").css("display", "none");
             $("#patientStatusGreen").css("display", "none");
-            $('#staticinfocontainer').css("display", "none"); // is actually the questionaire form div
+            $('#staticinfocontainer').css("display", "none");
         }
     });
 
@@ -175,9 +168,8 @@ function addBedToVisit(patientName, patientBedNo) {
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-// ensure patient info is valid
 /**
- * Populates the dropdown list from tracing by location
+ * ensure patient info is valid
  * @param 
  * @return 
  */
@@ -244,9 +236,8 @@ function validatePatient() {
     }
 }
 
-// Increments invalid tries variable & blocks out the form if necessary
 /**
- * Populates the dropdown list from tracing by location
+ * Increments invalid tries variable & blocks out the form if necessary
  * @param 
  * @return 
  */
@@ -257,9 +248,8 @@ function plusInvalid() {
     }
 }
 
-// Show lock modal
 /**
- * Populates the dropdown list from tracing by location
+ * Show lock modal
  * @param 
  * @return 
  */
@@ -268,9 +258,8 @@ function showLockModal() {
     $('#lockModal').modal('show');
 }
 
-// Check for visitor details & any online self registration information
 /**
- * Populates the dropdown list from tracing by location
+ * Check for visitor details & any online self registration information
  * @param 
  * @return 
  */
@@ -310,9 +299,8 @@ function checkIfExistingVisitor() {
     }
 }
 
-// Show Modal on Page Load
 /**
- * Populates the dropdown list from tracing by location
+ * Show Modal on Page Load
  * @param 
  * @return 
  */
@@ -321,9 +309,8 @@ $(window).load(function () {
     $('#myModal').modal('show');
 });
 
-// Prevent page refresh upon submit
 /**
- * Populates the dropdown list from tracing by location
+ * Prevent page refresh upon submit
  * @param 
  * @return 
  */
@@ -331,9 +318,8 @@ $("#selfregistration").submit(function (e) {
     e.preventDefault();
 });
 
-// show Visit Details DIV & Hide Modal
 /**
- * Populates the dropdown list from tracing by location
+ * show Visit Details DIV & Hide Modal
  * @param 
  * @return 
  */
@@ -342,9 +328,8 @@ function showVisitDetails() {
     hideModal();
 }
 
-// Show empty NRIC Field warning
 /**
- * Populates the dropdown list from tracing by location
+ * Show empty NRIC Field warning
  * @param 
  * @return 
  */
@@ -352,9 +337,8 @@ function showNricWarning() {
     emptyNricWarning$('#emptyNricWarning').css("display", "block");
 }
 
-// Check if required fields are filled
 /**
- * Populates the dropdown list from tracing by location
+ * Check if required fields are filled
  * @param 
  * @return 
  */
@@ -388,9 +372,8 @@ function checkRequiredFields() {
     }
 }
 
-// Show Modal
 /**
- * Populates the dropdown list from tracing by location
+ * Show Modal
  * @param 
  * @return 
  */
@@ -398,9 +381,8 @@ function showModal() {
     $('#myModal').modal('show');
 }
 
-// Show Success Modal
 /**
- * Populates the dropdown list from tracing by location
+ * Show Success Modal
  * @param 
  * @return 
  */
@@ -409,9 +391,8 @@ function showSuccessModal() {
     $('#successModal').modal('show');
 }
 
-// Hide Modal
 /**
- * Populates the dropdown list from tracing by location
+ * Hide Modal
  * @param 
  * @return 
  */
@@ -419,9 +400,8 @@ function hideModal() {
     $('#myModal').modal('hide');
 }
 
-// Show Visit Details Div
 /**
- * Populates the dropdown list from tracing by location
+ * Show Visit Details Div
  * @param 
  * @return 
  */
@@ -430,9 +410,8 @@ function showVisitDetails() {
     hideModal();
 }
 
-// Show new visitor registration form
 /**
- * Populates the dropdown list from tracing by location
+ * Show new visitor registration form
  * @param 
  * @return 
  */
@@ -441,9 +420,8 @@ function showNewContent() {
     $('#staticinfocontainer').css("display", "block");
 }
 
-// Show only the Visit Purpose & Questionnaire
 /**
- * Populates the dropdown list from tracing by location
+ * Show only the Visit Purpose & Questionnaire
  * @param 
  * @return 
  */
@@ -453,9 +431,8 @@ function showExistContent() {
     $('#staticinfocontainer').css("display", "block");
 }
 
-// Display Submit Button according to whether the user has checked the declaration checkbox
 /**
- * Populates the dropdown list from tracing by location
+ * Display Submit Button according to whether the user has checked the declaration checkbox
  * @param 
  * @return 
  */
@@ -467,9 +444,8 @@ function declarationValidation() {
     }
 }
 
-// Datetime Picker JQuery
 /**
- * Populates the dropdown list from tracing by location
+ * Datetime Picker JQuery
  * @param 
  * @return 
  */
@@ -495,9 +471,8 @@ $(function () {
         });
 });
 
-// Validate NRIC format
 /**
- * Populates the dropdown list from tracing by location
+ * Validate NRIC format & displays appropriate warnings
  * @param 
  * @return 
  */
@@ -518,9 +493,8 @@ $("#selfRegNric").on("input", function () {
     }
 });
 
-// Validate mobile phone number format
 /**
- * Populates the dropdown list from tracing by location
+ * Validate mobile phone number format
  * @param 
  * @return 
  */
@@ -536,9 +510,8 @@ $("#mobilesInput").on("input", function () {
     validMob = validPhone;
 });
 
-// Check date format
 /**
- * Populates the dropdown list from tracing by location
+ * Check date format
  * @param 
  * @return 
  */
@@ -553,9 +526,8 @@ $("#daterange").on("input", function () {
     }
 });
 
-// Validate postal code number format
 /**
- * Populates the dropdown list from tracing by location
+ * Validate postal code number format
  * @param 
  * @return 
  */
@@ -570,9 +542,8 @@ $("#postalsInput").on("input", function () {
     }
 });
 
-// Check Other Purpose Input
 /**
- * Populates the dropdown list from tracing by location
+ * Check Other Purpose Input
  * @param 
  * @return 
  */
@@ -585,9 +556,8 @@ function checkOtherInput() {
     }
 }
 
-// Display appropriate panels according to visit purpose
 /**
- * Populates the dropdown list from tracing by location
+ * Display appropriate panels according to visit purpose
  * @param 
  * @return 
  */
@@ -634,9 +604,8 @@ function purposePanels() {
     }
 }
 
-// display checkbox that allows user to declare that his/her details have changed
 /**
- * Populates the dropdown list from tracing by location
+ * display checkbox that allows user to declare that his/her details have changed
  * @param 
  * @return 
  */
@@ -655,9 +624,8 @@ function amendVisitorDetails() {
     }
 }
 
-// hide all warnings on page load
 /**
- * Populates the dropdown list from tracing by location
+ * hide all warnings on page load
  * @param 
  * @return 
  */
@@ -702,9 +670,8 @@ function hideTags() {
     loadActiveForm();
 }
 
-// Get Questionnaire Answers by .answer class
 /**
- * Populates the dropdown list from tracing by location
+ * Get Questionnaire Answers by .answer class
  * @param 
  * @return 
  */
@@ -768,9 +735,8 @@ function getQuestionnaireAnswers() {
     return jsonString;
 }
 
-// Loads all facilities in the hospital
 /**
- * Populates the dropdown list from tracing by location
+ * Loads all facilities in the hospital
  * @param 
  * @return 
  */
@@ -807,9 +773,8 @@ function loadFacilities() {
     });
 }
 
-// Loads & displays the active questionnaire from the DB for Self-Reg
 /**
- * Populates the dropdown list from tracing by location
+ * Loads & displays the active questionnaire from the DB for Self-Reg
  * @param 
  * @return 
  */
@@ -886,10 +851,9 @@ function loadActiveForm() {
         },
     });
 }
-
-// Populates Nationality Field
+ 
 /**
- * Populates the dropdown list from tracing by location
+ * Populates Nationality Field
  * @param 
  * @return 
  */
@@ -904,9 +868,8 @@ function populateNationalities() {
     }
 }
 
-// Populates Visit Time Field
 /**
- * Populates the dropdown list from tracing by location
+ * Populates Visit Time Field
  * @param 
  * @return 
  */
@@ -976,9 +939,8 @@ function populateTime() {
     });
 }
 
-// Check visit time input field
 /**
- * Populates the dropdown list from tracing by location
+ * Check visit time input field
  * @param 
  * @return 
  */
@@ -992,9 +954,8 @@ function checkTime() {
     return !blank;
 }
 
-// Check visit location input field
 /**
- * Populates the dropdown list from tracing by location
+ * Check visit location input field
  * @param 
  * @return 
  */
@@ -1008,9 +969,8 @@ function checkLocation() {
     return blank;
 }
 
-// Email Format Validation
 /**
- * Populates the dropdown list from tracing by location
+ * Email Format Validation
  * @param 
  * @return 
  */
@@ -1025,9 +985,8 @@ $("#emailsInput").on("input", function () {
     validEmail = valid;
 });
 
-// Checks for existing cookies & locks the app if a cookie exists
 /**
- * Populates the dropdown list from tracing by location
+ * Checks for existing cookies & locks the app if a cookie exists
  * @param 
  * @return 
  */
@@ -1038,9 +997,8 @@ function checkSessionCookie() {
     }
 }
 
-// Set Cookie with 10 minute expiry
 /**
- * Populates the dropdown list from tracing by location
+ * Sets Cookie with 10 minute expiry
  * @param 
  * @return 
  */

@@ -208,12 +208,7 @@ namespace THKH.Classes.Controller
                 {
                     dynamic innerJson = new ExpandoObject();
                     var itemArr = row.ItemArray;
-                    //innerJson.ProfileName = itemArr[0];
                     innerJson.Permissions = itemArr[1];
-                    //innerJson.dateUpdated = itemArr[2];
-                    //innerJson.updatedBy = itemArr[3];
-
-                    // Add to JSON Array
                     jsonArray.Add(innerJson);
                 }
                 json.Msg = jsonArray;
@@ -225,7 +220,6 @@ namespace THKH.Classes.Controller
                 json.Result = "Failure";
                 return Newtonsoft.Json.JsonConvert.SerializeObject(json);
             }
-
             return Newtonsoft.Json.JsonConvert.SerializeObject(json);
         }
     }

@@ -83,7 +83,6 @@ namespace THKH.Classes.Controller
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
 
-            //trace by bedno
             if (bedORloc == "bybed")
             {
                 for (var i = 0; i < processed_uq_place_arr.Length; i++)
@@ -159,7 +158,6 @@ namespace THKH.Classes.Controller
             List<Tuple<List<String>, bool, bool>> categorizedResults = new List<Tuple<List<String>, bool, bool>>();
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_and_scan, true, true));
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_only, true, false));
-            //categorizedResults.Add(new Tuple<List<String>, bool, bool>(scan_only, false, true));
 
             result = buildDisplayResults(categorizedResults);
 
@@ -227,7 +225,7 @@ namespace THKH.Classes.Controller
                     datatable_arrayitem.Add((string)innerItem.postalcode);  //hidden
                     datatable_arrayitem.Add((string)innerItem.nationality);
                     datatable_arrayitem.Add((string)innerItem.formAnswers); //hidden
-                    datatable_arrayitem.Add((string)innerItem.remarks); //hidden
+                    datatable_arrayitem.Add((string)innerItem.remarks); 
                     datatable_arrayitem.Add((string)innerItem.reg);
                     datatable_arrayitem.Add((string)innerItem.scan);
                     datatable_array.Add(datatable_arrayitem);
@@ -722,7 +720,6 @@ namespace THKH.Classes.Controller
             {
                 dynamic canvas_dataItem = new ExpandoObject();
                 string label = dwelltimes[i - 1];
-                //canvas_dataItem.x = (int)(i * 10);
                 canvas_dataItem.y = (int)(dwelltime_json)[label];
                 canvas_dataItem.label = label;
                 canvasjs_dwelltime_list.Add(canvas_dataItem);
@@ -736,7 +733,6 @@ namespace THKH.Classes.Controller
             {
                 dynamic canvas_dataItem = new ExpandoObject();
                 string label = genders[i - 1];
-                //canvas_dataItem.x = (int)(i * 10);
                 canvas_dataItem.y = (int)(gender_json)[label];
                 canvas_dataItem.label = label;
                 canvasjs_gender_list.Add(canvas_dataItem);
@@ -750,7 +746,6 @@ namespace THKH.Classes.Controller
             {
                 dynamic canvas_dataItem = new ExpandoObject();
                 string label = ages[i - 1];
-                //canvas_dataItem.x = (int)(i * 10);
                 canvas_dataItem.y = (int)(age_json)[label];
                 canvas_dataItem.label = label;
                 canvasjs_age_list.Add(canvas_dataItem);
@@ -758,7 +753,6 @@ namespace THKH.Classes.Controller
 
             string location_json_str = compiled_visitor_json_data_list[5];
             dynamic location_json = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(location_json_str);
-          //  var k= location_json.Keys();
             List<Object> canvasjs_location_list = new List<Object>();
             foreach (var loc in location_json.Keys)
             {
@@ -827,7 +821,6 @@ namespace THKH.Classes.Controller
 
             dynamic location_json = new ExpandoObject();
 
-            //update counts
             foreach (dynamic visitor in visitors_json_list)
             {
                 string visitor_dayOfweek = (string)visitor.dayOfWeek;
@@ -835,7 +828,7 @@ namespace THKH.Classes.Controller
                 string visitor_hourOfDay = (string)visitor.hourOfDay;
                 ((IDictionary<string, object>)hourOfDay_json)[visitor_hourOfDay] = (int)((IDictionary<string, object>)hourOfDay_json)[visitor_hourOfDay] + 1;
                 int visitor_dwelltime = Int32.Parse((string)visitor.dwelltime_min);
-                int visitor_dwelltime_floor = (int)(Math.Floor((double)visitor_dwelltime / 30) * 30) + 1 ; //28m return 0, 31m returns 30
+                int visitor_dwelltime_floor = (int)(Math.Floor((double)visitor_dwelltime / 30) * 30) + 1 ; 
                 int visitor_dwelltime_ceiling = visitor_dwelltime_floor + 30 - 1;
                 string visitor_dwelltime_bucket = "<30m";
                 if (visitor_dwelltime > 360)
@@ -849,11 +842,11 @@ namespace THKH.Classes.Controller
                 string visitor_gender = ((string)visitor.gender).Trim();
                 ((IDictionary<string, object>)gender_json)[visitor_gender] = (int)((IDictionary<string, object>)gender_json)[visitor_gender] + 1;
                 int visitor_age = (int)visitor.age;
-                if (visitor_age % 10 == 0) //if visitor age is multiple of 10 we need to move them down by one bin
+                if (visitor_age % 10 == 0) 
                 {
                     visitor_age = visitor_age - 1;
                 }
-                int visitor_age_floor = (int)(Math.Floor((double)visitor_age / 10) * 10) + 1; //19 return 10, 21 returns 20
+                int visitor_age_floor = (int)(Math.Floor((double)visitor_age / 10) * 10) + 1; 
                 int visitor_age_ceiling = visitor_age_floor + 10 - 1;
                 string visitor_age_bucket = "<10y";
                 if (visitor_age > 90)
@@ -911,7 +904,6 @@ namespace THKH.Classes.Controller
                 JObject visitor = JObject.Parse(visitor_str);
                 dynamic innerItem = new ExpandoObject();
 
-                //location from location/bedno
                 string loc = "";
                 string bedno = (string)visitor["bedno"];
                 if (bedno.Length == 0)
@@ -926,7 +918,7 @@ namespace THKH.Classes.Controller
                     if (bedno.Contains(','))
                     {
                         String[] bednos = bedno.Split(',');
-                        loc = getLocFromBedno(bednos[0]); //if more than one registered bedno, use only the first one
+                        loc = getLocFromBedno(bednos[0]); 
                     }else
                     {
                         loc = getLocFromBedno(bedno);
@@ -934,13 +926,11 @@ namespace THKH.Classes.Controller
                 }
                 innerItem.location = loc;
 
-                //day of week, and hour of day from checkin_time
                 string checkin_time_str = (string)visitor["checkin_time"];
                 DateTime checkin_time = DateTime.ParseExact(checkin_time_str, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 innerItem.dayOfWeek = checkin_time.ToString("ddd");
                 innerItem.hourOfDay = checkin_time.ToString("h tt");
 
-                //dwelltime from checkin_time and exit_time
                 string exit_time_str = (string)visitor["exit_time"];
                 if(exit_time_str.Length == 0)
                 {
@@ -953,7 +943,6 @@ namespace THKH.Classes.Controller
                 innerItem.nric = (string)visitor["nric"];
                 innerItem.gender = (string)visitor["gender"];
 
-                //age from dob
                 string birthday_str = (string)visitor["dob"];
                 DateTime birthday = DateTime.ParseExact(birthday_str, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 TimeSpan visitor_agespan = checkin_time.Subtract(birthday);
@@ -995,10 +984,11 @@ namespace THKH.Classes.Controller
                     var visitorNric = dt.Rows[i]["nric"];
                     var gender = dt.Rows[i]["gender"];
                     var dob = dt.Rows[i]["dob"];
+                    var purpose = dt.Rows[i]["purpose"].ToString();
 
                     bool noloc = location.ToString().Length == 0 & regbedno.ToString().Length == 0;
 
-                    if (gender.ToString().Trim().Length > 0 && !noloc) //check that the visitor is not an express entry visitor
+                    if ((gender.ToString().Trim().Length > 0 && !noloc) || (purpose == "Express Entry")) 
                     {
                         innerItem = new ExpandoObject();
                         innerItem.location = location.ToString();
@@ -1040,10 +1030,7 @@ namespace THKH.Classes.Controller
             {
                 ProcedureResponse resultss = procedureCall.runProcedure();
                 dt = resultss.getDataTable();
-                //for (var i = 0; i < dt.Rows.Count; i++)
-                //{
                     loc = (string)dt.Rows[0]["location"];
-                //}
             }
             catch (Exception ex)
             {

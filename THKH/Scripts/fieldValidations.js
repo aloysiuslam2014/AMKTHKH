@@ -1,4 +1,8 @@
-﻿// validation of NRIC
+﻿/**
+ * validation of NRIC
+ * @param 
+ * @return 
+ */
 function validateNRIC(str) {
     if (str.length != 9)
         return false;
@@ -37,7 +41,11 @@ function validateNRIC(str) {
     return (icArray[8] === theAlpha);
 }
 
-// Validation of phone number
+/**
+ * Validation of phone number
+ * @param 
+ * @return 
+ */
 function validatePhone(txtPhone) {
     var filter = /^[0-9-+]+$/;
     if (txtPhone.includes('+')) {
@@ -54,7 +62,11 @@ function validatePhone(txtPhone) {
     return false;
 }
 
-// Validation of postal code
+/**
+ * Validation of postal code
+ * @param 
+ * @return 
+ */
 function validatePostal(code) {
     var filter = /^[0-9-+]+$/;
     if (code == "") {
@@ -66,7 +78,11 @@ function validatePostal(code) {
     return false;
 }
 
-// Validates email address format
+/**
+ * Validates email address format
+ * @param 
+ * @return 
+ */
 function validateEmail(email) {
     if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
         return true;
@@ -74,7 +90,11 @@ function validateEmail(email) {
     return false;
 }
 
-// Checks for blank field
+/**
+ * Checks for blank field
+ * @param 
+ * @return 
+ */
 function checkBlankField(field) {
     if (field === '') {
         return true;
@@ -82,14 +102,22 @@ function checkBlankField(field) {
     return false;
 }
 
-// Validates date input format
+/**
+ * Validates date input format
+ * @param 
+ * @return 
+ */
 function validateDate(date) {
     var filter = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
     return filter.test(date);
 }
 
-function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
-    //compatibility for firefox and chrome
+/**
+ * Listener function for new IP Addresses. Compatibility for firefox and chrome
+ * @param 
+ * @return 
+ */
+function getUserIP(onNewIP) {
     var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
     var pc = new myPeerConnection({
         iceServers: []

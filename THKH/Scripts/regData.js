@@ -1,4 +1,8 @@
-﻿// Returns an array of time values
+﻿/**
+ * Returns an array of time values
+ * @param 
+ * @return String[]
+ */
 function getTimeArray() {
     return [
             '00:00',
@@ -50,7 +54,11 @@ function getTimeArray() {
             '23:30'];
 }
 
-// Returns an array of nationalities
+/**
+ * Returns an array of nationalities
+ * @param 
+ * @return String[]
+ */
 function getNationalityArray() {
     return [
         'Singapore | Singaporean',

@@ -10,6 +10,7 @@ namespace THKH.Classes.Controller
     {
         private GenericProcedureDAO procedureCall;
         private String toReturn = "";
+
         /// <summary>
         /// Delete all terminals *no longer in use*
         /// </summary>
@@ -47,7 +48,6 @@ namespace THKH.Classes.Controller
             {
                 if (bedNoList.Contains(','))
                 {
-                    // Split by , then by - then increment
                     String[] bedranges = bedNoList.Split(',');
                     foreach (String s in bedranges)
                     {
@@ -76,14 +76,11 @@ namespace THKH.Classes.Controller
                             }
                         }
                         else
-                        {
-                            // Throw Format Exception
-                        }
+                        {}
                     }
                 }
                 else
                 {
-                    // split by - then increment
                     String[] lowerUpperBedLimit = bedNoList.Split('-');
                     if (lowerUpperBedLimit.Length == 2)
                     {
@@ -109,9 +106,7 @@ namespace THKH.Classes.Controller
                         }
                     }
                     else
-                    {
-                        // Throw Format Exception
-                    }
+                    {}
                 }
             }
             else
@@ -132,7 +127,7 @@ namespace THKH.Classes.Controller
             }
             catch (Exception ex)
             {
-                var d = ex;//to read any errors
+                var d = ex;
             }
             return success ? "true" : "false";
         }
@@ -157,7 +152,7 @@ namespace THKH.Classes.Controller
             }
             catch (Exception ex)
             {
-                var d = ex;//to read any errors
+                var d = ex;
             }
             return success ? "true" : "false";
         }
@@ -181,7 +176,7 @@ namespace THKH.Classes.Controller
             }
             catch (Exception ex)
             {
-                var d = ex;//to read any errors
+                var d = ex;
             }
             return success ? "true" : "false";
         }
@@ -271,7 +266,6 @@ namespace THKH.Classes.Controller
         /// <returns>true or false</returns>
         public String checkInUser(String locationId, String userId)
         {
-            //bool success = false;
             int id = Convert.ToInt32(locationId);
             procedureCall = new GenericProcedureDAO("CREATE_MOVEMENT", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -282,7 +276,6 @@ namespace THKH.Classes.Controller
 
                 ProcedureResponse responseOutput = procedureCall.runProcedure();
                 string respon = responseOutput.getSqlParameterValue("@responseMessage").ToString();
-                //success = respon.Equals("1") || respon.Equals("2") ? true : false;
                 if (respon.Equals("1")) {
                     toReturn = "success";
                 }
@@ -292,12 +285,10 @@ namespace THKH.Classes.Controller
                 }
                 else if (respon.Equals("3"))
                 {
-                    //toReturn = "success,noCheckIn";
                     toReturn = "false";
                 }
                 else if (respon.Equals("-1"))
                 {
-                    //toReturn = "success,noCheckIn";
                     toReturn = "deactivated";
                 }
             }
