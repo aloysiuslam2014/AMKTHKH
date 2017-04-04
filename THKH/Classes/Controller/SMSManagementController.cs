@@ -13,7 +13,12 @@ namespace THKH.Classes.Controller
     {
         private GenericProcedureDAO procedureCall;
 
-        // Calls an API to send out SMSes given a string of numbers and a message
+        /// <summary>
+        /// Calls an API to send out SMSes given a string of numbers and a message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="numbers"></param>
+        /// <returns>JSON String</returns>
         public String sendSMS(String message, String numbers)
         {
             List<String> responses = new List<String>();

@@ -119,17 +119,9 @@ namespace THKH.Classes.Controller
 
                     while (reader.Read())
                     {
-                        //dynamic questionO = new ExpandoObject();
-                        //questionO.QuestionNumber = reader.GetInt32(1);
-                        //questionO.QuestionList = reader.GetString(0);
-                        //questionO.Question = reader.GetString(2);
-                        //questionO.QuestionType = reader.GetString(3);
-                        //questionO.QuestionAnswers = reader.GetString(4);
                         Question qn = new Question(reader.GetInt32(1).ToString(),
                             reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(0));
                         questionItems.Add(qn);
-                        // New Solution Here
-                        
                     }
 
                 }
@@ -156,7 +148,6 @@ namespace THKH.Classes.Controller
         {
             dynamic result = new ExpandoObject();
             result.Result = "Success";
-            //procedureCall = new GenericProcedureDAO("CONFIRM_PATIENT", true, true, false);
             procedureCall = new GenericProcedureDAO("CONFIRM_HOSPITAL_PATIENT", true, true, false);
             procedureCall.addParameter("@responseMessage", SqlDbType.VarChar, 500);
             procedureCall.addParameterWithValue("@pBedNo", bedno);
@@ -195,8 +186,6 @@ namespace THKH.Classes.Controller
 
                 if (!response.Contains("Visitor not found"))
                 {
-                    //msg += response;
-                    //result.Visitor = response;
                     var arr = response.Split(',');
                     Visitor vistr = new Visitor(arr[1], arr[0], arr[2].Trim(), arr[3], arr[4], arr[5], arr[6], arr[7]);
                     result.Visitor = vistr.toJsonObject();
@@ -223,12 +212,9 @@ namespace THKH.Classes.Controller
                 {
 
                     result.Visit = visit.toJsonObject();
-                    //var arr = tempMsg.Split(',');
-                    //var qAID = arr[arr.Length - 3];
                     String qAID = result.Visit.qAid.Value;
 
                     QuestionnaireAnswer qA = new QuestionnaireAnswer(getSubmittedQuestionnaireResponse(qAID));
-                    //result.Questionnaire = JsonConvert.DeserializeObject(getSubmittedQuestionnaireResponse(qAID));
                     result.Questionnaire = qA.toJsonObject();
                 }
                 else
@@ -254,7 +240,6 @@ namespace THKH.Classes.Controller
         /// <returns>JSON String</returns>
         public Visit getVisitDetails(String nric)
         {
-            //dynamic result = new ExpandoObject();
            procedureCall = new GenericProcedureDAO("GET_VISIT_DETAILS", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.VarChar, -1);
             procedureCall.addParameterWithValue("@pNric", nric);
@@ -267,23 +252,14 @@ namespace THKH.Classes.Controller
                 String response = resultdata.getSqlParameterValue("@responseMessage").ToString();
                 if (response.Length > 4)
                 {
-                    //result.Visit = response;
                     var resArr = response.Split(',');
                     vis = new Visit(resArr[0], resArr[1], resArr[2], resArr[3], resArr[4], resArr[5], resArr[6], resArr[7]);
                 }
-                //else
-                //{
-                //    result.Visit = "none";
-                //    return result;
-                //}
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
-
-            //return result;
             return vis;
         }
 
@@ -383,7 +359,6 @@ namespace THKH.Classes.Controller
             }
             try
             {
-                //msg += writeQuestionnaireResponse(qaid, qListID, qAns);
                 questionnaire = writeQuestionnaireResponse(qaid, qListID, qAns);
             }
             catch (Exception ex)
@@ -406,7 +381,6 @@ namespace THKH.Classes.Controller
             {
                 ProcedureResponse responsedata = procedureCall.runProcedure();
                 string respon = responsedata.getSqlParameterValue("@responseMessage").ToString();
-                //msg += ",\"Visit\":\"" + respon.Value + "\"";
                 if (respon != null)
                 {
                     visit = respon;
@@ -435,7 +409,6 @@ namespace THKH.Classes.Controller
             dynamic toSend = new ExpandoObject();
 
            procedureCall = new GenericProcedureDAO("GET_PATIENT_NAME", true, true, false);
-            // May need one for the hospital
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameter("@pPatient_Name", SqlDbType.VarChar, 1000);
             procedureCall.addParameterWithValue("@pBed_No", beds);
@@ -501,7 +474,6 @@ namespace THKH.Classes.Controller
             catch (Exception ex)
             {
             }
-            //update visitor profile
            procedureCall = new GenericProcedureDAO("UPDATE_VISITOR_PROFILE", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pNRIC", nric.ToUpper());
@@ -524,7 +496,6 @@ namespace THKH.Classes.Controller
                 return JsonConvert.SerializeObject(result);
             }
 
-            //update or add questionaire ans
             try
             {
                 if (qAid == "")
@@ -573,7 +544,6 @@ namespace THKH.Classes.Controller
                 return JsonConvert.SerializeObject(result);
             }
 
-            //check number of visitors currently with patient
             if (purpose == "Visit Patient")
             {
                 try
@@ -656,14 +626,9 @@ namespace THKH.Classes.Controller
             String checkin = "";
             String visitor = "";
             string qAid = qaid;
-            //String date = dob;
-            //if (date == "") {
-            //    date = "08-08-1965";
-            //}
 
             if (fname == "")
             {
-                //update visitor profile
                 procedureCall = new GenericProcedureDAO("UPDATE_VISITOR_PROFILE", true, true, false);
                 procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
                 procedureCall.addParameterWithValue("@pNRIC", nric.ToUpper());
@@ -687,14 +652,13 @@ namespace THKH.Classes.Controller
                 }
             }
 
-            //update or add questionaire ans
             try
             {
                 if (qAid == "")
                 {
                     long ticks = DateTime.Now.Ticks;
                     byte[] bytes = BitConverter.GetBytes(ticks);
-                    qAid = Convert.ToBase64String(bytes) // Find a way to generate UNIQUE numbers!!!
+                    qAid = Convert.ToBase64String(bytes)
                                             .Replace('+', '_')
                                             .Replace('/', '-')
                                             .TrimEnd('=');
@@ -714,7 +678,6 @@ namespace THKH.Classes.Controller
                 return JsonConvert.SerializeObject(result);
             }
 
-            // Update visit details with blank fields
             procedureCall = new GenericProcedureDAO("UPDATE_VISIT", true, true, false);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
             procedureCall.addParameterWithValue("@pVisitRequestTime", DateTime.UtcNow.AddHours(8));
@@ -737,7 +700,6 @@ namespace THKH.Classes.Controller
                 return JsonConvert.SerializeObject(result);
             }
 
-            // Check in visitor with no check on visitor limit
             try
             {
                 checkin = CheckIn(staffuser, nric, "0", qAid);
@@ -857,7 +819,6 @@ namespace THKH.Classes.Controller
         /// <returns>JSON String</returns>
         public String CheckIn(String staffuser, String nric, String temp, String qa_id)
         {
-
             String result = "";
            procedureCall = new GenericProcedureDAO("CONFIRM_CHECK_IN", true, true, false);
             procedureCall.addParameter("@responseMessage", SqlDbType.Int);
@@ -867,7 +828,6 @@ namespace THKH.Classes.Controller
             procedureCall.addParameterWithValue("@pQa_id", qa_id);
             try
             {
-
                 ProcedureResponse dataResponse = procedureCall.runProcedure();
                 result = dataResponse.getSqlParameterValue("@responseMessage").ToString();
             }
@@ -875,7 +835,6 @@ namespace THKH.Classes.Controller
             {
                 throw ex;
             }
-
             return result;
         }
     }

@@ -61,9 +61,8 @@ namespace THKH.Classes.Controller
         /// <returns>JSON String</returns>
         public String getUser(String email)
         {
-            String successString = "";//result and msg 
+            String successString = "";
             dynamic jsonObj = new ExpandoObject();
-            //dynamic responseJson = new ExpandoObject();
             ArrayList contentOf = new ArrayList();
            procedureCall = new GenericProcedureDAO("GET_SELECTED_STAFF", true, true, true);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -79,21 +78,6 @@ namespace THKH.Classes.Controller
 
                     while (reader.Read())
                     {
-                        //responseJson.email = reader.GetString(0);
-                        //responseJson.firstName = reader.GetString(1);
-                        //responseJson.lastName = reader.GetString(2);
-                        //responseJson.nric = reader.GetString(3);
-                        //responseJson.address = reader.GetString(4);
-                        //responseJson.postalCode = reader.GetInt32(5);
-                        //responseJson.homeTel = reader.GetString(6);
-                        //responseJson.altTel = reader.GetString(7);
-                        //responseJson.mobTel = reader.GetString(8);
-                        //responseJson.sex = reader.GetString(9);
-                        //responseJson.nationality = reader.GetString(10);
-                        //responseJson.dateOfBirth = reader.GetDateTime(11).ToString("dd/MM/yyyy");
-                        //responseJson.permissions = reader.GetInt32(14);
-                        //responseJson.position = reader.GetString(16);
-                        //responseJson.accessProfile = reader.GetString(15);
                         StaffUser stf = new StaffUser(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(9), reader.GetString(10), reader.GetDateTime(11).ToString("dd/MM/yyyy"),
                             reader.GetString(8), reader.GetString(4), reader.GetInt32(5), reader.GetString(0), reader.GetString(6), reader.GetString(7), reader.GetInt32(14),
                             reader.GetString(15), reader.GetString(16));
@@ -277,7 +261,7 @@ namespace THKH.Classes.Controller
         /// <returns>JSON String</returns>
         public String getPermissions()
         {
-            String successString = "";//result and msg 
+            String successString = "";
             dynamic jsonObj = new ExpandoObject();
             dynamic responseJson = new ExpandoObject();
             ArrayList contentOf = new ArrayList();

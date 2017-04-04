@@ -1,15 +1,15 @@
-﻿// Logic to get temp range & time range & send to ashx
-var loadedTime = false;
+﻿var loadedTime = false;
 var validSetTemp = false;
 var validSetTime = false;
 var configUrl = '../Staff/MasterConfig/MasterConfigGateway.ashx';
 
 
-
+/**
+ * First run on script load
+ * @param 
+ * @return 
+ */
 $(document).ready(function () {
-
-    //Set the first tab as active!
-    // $('.nav-tabs a:first').tab('show');
     $('.nav-tabs a:first').click();
     var trigger = $('.hamburger'),
         overlay = $('.overlay'),
@@ -39,7 +39,11 @@ $(document).ready(function () {
     });
 });
 
-// update configurations
+/**
+ * update configurations
+ * @param 
+ * @return 
+ */
 function updateConfig() {
     var username = user;
     var lowTemp = $('#temSetInputLow').val();
@@ -75,7 +79,11 @@ function updateConfig() {
     }
 }
 
-// Updates currently selected Access Profile
+/**
+ * Updates currently selected Access Profile
+ * @param 
+ * @return 
+ */
 function updateAccessProfile() {
     var profileName = $('#permissionProfile').val();
     var permissions = getPermissionSettingsInput();
@@ -109,7 +117,11 @@ function updateAccessProfile() {
     }
 }
 
-// Creates a new access profile
+/**
+ * Creates a new access profile
+ * @param 
+ * @return 
+ */
 function newAccessProfile() {
     var profileName = $('#newProfNameInput').val();
     var existProfile = "";
@@ -126,7 +138,11 @@ function newAccessProfile() {
     }
 }
 
-// Selects newly created questionnaire after adding
+/**
+ * Selects newly created questionnaire after adding
+ * @param 
+ * @return 
+ */
 function selectNewProfile(name) {
     var optin = document.createElement("option");
     $(optin).attr("name", name);
@@ -136,7 +152,11 @@ function selectNewProfile(name) {
     $('.profDrop').css('background', '#aaddff');
 }
 
-// Deletes selected access profile
+/**
+ * Deletes selected access profile
+ * @param 
+ * @return 
+ */
 function delAccessProfile() {
     var profileName = $('#permissionProfile').val();
     var headersToProcess = {
@@ -163,11 +183,11 @@ function delAccessProfile() {
     });
 }
 
-
-
-
-
-// Get current configuration
+/**
+ * Get current configuration
+ * @param 
+ * @return 
+ */
 function getCurrentConfig() {
     var headersToProcess = {
         requestType: "getConfig"
@@ -217,11 +237,9 @@ function fillAccessProfileList() {
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Result;
-            // Some array here
             if (res.toString() == "Success") {
                 var mes = resultOfGeneration.Msg;
 
-                //clear existing options
                 $('#permissionProfile').html("");
                 for (var i = 0; i < mes.length; i++) {
                     var optin = document.createElement("option");
@@ -280,7 +298,6 @@ function getVisLim() {
 function getSelectedAccessProfile() {
     var profile = $('#permissionProfile').val();
     var resultOfGeneration = "";
-    // Get name of selected profile
     var headersToProcess = {
         profileName: profile, requestType: "getSelectedProfile"
     };
@@ -293,11 +310,9 @@ function getSelectedAccessProfile() {
         success: function (returner) {
             resultOfGeneration = JSON.parse(returner);
             var res = resultOfGeneration.Result;
-            // Some array here
             if (res.toString() == "Success") {
                 var mes = resultOfGeneration.Msg;
 
-                //clear existing options
                 $('#permissSet').find('input[type=checkbox]:checked').removeAttr('checked');
                 for (i = 0; i < mes.length; i++) {
                     var item = mes[i].Permissions.toString();
@@ -316,7 +331,11 @@ function getSelectedAccessProfile() {
     });
 }
 
-// Retrive value from checkbox
+/**
+ * Retrive value from checkbox
+ * @param 
+ * @return 
+ */
 function getPermissionSettingsInput() {
     var permissions = "";
     $("#permissSet .perm").each(function (index, value) {
@@ -330,7 +349,11 @@ function getPermissionSettingsInput() {
     return permissions;
 }
 
-// Load permissions checkbox
+/**
+ * Load permissions checkbox
+ * @param 
+ * @return 
+ */
 function loadPermissionSettingsField() {
     var headersToProcess = {
         requestType: "getPermissions"
@@ -359,7 +382,6 @@ function loadPermissionSettingsField() {
                 $(formElement).html(htmlString);
                 $("#permissSet").append(formElement);
             } else {
-                // Error Msg here
             }
         },
         error: function (err) {
@@ -368,7 +390,11 @@ function loadPermissionSettingsField() {
     });
 }
 
-// populate time fields
+/**
+ * populate time fields
+ * @param 
+ * @return 
+ */
 function populateSettingsTime() {
     if (!loadedTime) {
         var time = getTimeArray();
@@ -392,7 +418,11 @@ function populateSettingsTime() {
     }
 }
 
-// Check lower limit temperature settings
+/**
+ * Check lower limit temperature settings
+ * @param 
+ * @return 
+ */
 $("#temSetInputLow").on("input", function () {
     var temper = $("#temSetInputLow").val();
     if (temper == "") {
@@ -416,7 +446,11 @@ $("#temSetInputLow").on("input", function () {
     }
 });
 
-// Check upper limit temperature settings
+/**
+ * Check upper limit temperature settings
+ * @param 
+ * @return 
+ */
 $("#temSetInputHigh").on("input", function () {
     var temper = $("#temSetInputHigh").val();
     if (temper == "") {
@@ -440,7 +474,11 @@ $("#temSetInputHigh").on("input", function () {
     }
 });
 
-// Check warning temperature settings
+/**
+ * Check warning temperature settings
+ * @param 
+ * @return 
+ */
 $("#temSetInputWarn").on("input", function () {
     var temper = $("#temSetInputWarn").val();
     if (temper == "") {
@@ -470,7 +508,11 @@ $("#temSetInputWarn").on("input", function () {
     }
 });
 
-// compare temperature fields
+/**
+ * compare temperature fields
+ * @param 
+ * @return 
+ */
 function compareTemp() {
     var temp1 = $("#temSetInputLow").val();
     var temp2 = $("#temSetInputHigh").val();
@@ -516,7 +558,11 @@ function compareTemp() {
     }
 }
 
-// Check upper limit time settings
+/**
+ * Check upper limit time settings
+ * @param 
+ * @return 
+ */
 $("#visTimeSetInputHigh").on("input", function () {
     var time = $("#visTimeSetInputHigh").val();
     if (checkBlankField(time)) {
@@ -528,7 +574,11 @@ $("#visTimeSetInputHigh").on("input", function () {
     }
 });
 
-// Check lower limit time settings
+/**
+ * Check lower limit time settings
+ * @param 
+ * @return 
+ */
 $("#visTimeSetInputLower").on("input", function () {
     var time = $("#visTimeSetInputLower").val();
     if (checkBlankField(time)) {
@@ -540,7 +590,11 @@ $("#visTimeSetInputLower").on("input", function () {
     }
 });
 
-// compare time fields
+/**
+ * compare time fields
+ * @param 
+ * @return 
+ */
 function compareTime() {
     var time1 = $("#visTimeSetInputHigh").val();
     var time2 = $("#visTimeSetInputLower").val();
@@ -562,36 +616,55 @@ function compareTime() {
     }
 }
 
-// Hide New Profile Modal
+/**
+ * Hide New Profile Modal
+ * @param 
+ * @return 
+ */
 function hideNewProfileModal() {
     $('#newProfileModal').modal('hide');
     $('#newProfNameInput').prop('value', "")
-    //clear existing options
     $('#permissSet').find('input[type=checkbox]:checked').removeAttr('checked');
     showSettingsModalWithNew();
 }
 
-// Show New Profile Modal
+/**
+ * Show New Profile Modal
+ * @param 
+ * @return 
+ */
 function showNewProfileModal() {
     hideSettingsModal();
     $('#newProfileModal').modal({ backdrop: 'static', keyboard: false });
     $('#newProfileModal').modal('show');
 }
 
-// Hide Delete Profile Modal
+/**
+ * Hide Delete Profile Modal
+ * @param 
+ * @return 
+ */
 function hideDelProfileModal() {
     $('#delProfileModal').modal('hide');
     showSettingsModal();
 }
 
-// Show Delete Profile Modal
+/**
+ * Show Delete Profile Modal
+ * @param 
+ * @return 
+ */
 function showDelProfileModal() {
     hideSettingsModal();
     $('#delProfileModal').modal({ backdrop: 'static', keyboard: false });
     $('#delProfileModal').modal('show');
 }
 
-// Show Settings Modal with New Profile Entry
+/**
+ * Show Settings Modal with New Profile Entry
+ * @param 
+ * @return 
+ */
 function showSettingsModalWithNew() {
     $('#settingsModal').modal({ backdrop: 'static', keyboard: false });
     $('#settingsModal').modal('show');

@@ -249,10 +249,6 @@ namespace THKH.Classes.Controller
         public void retrieveQuestionnaireQuestions(string idList, dynamic toSend)
         {
             ArrayList qnsQns = new ArrayList();
-            //List<String> qids = new List<string>();
-            //List<String> questions = new List<string>();
-            //List<String> qnTypes = new List<string>();
-            //List<String> qnValues = new List<string>();
             ArrayList qnList = new ArrayList();
             GenericProcedureDAO procedureCall = new GenericProcedureDAO("GET_SELECTED_QUESTIONNARIE", true, true, true);
             procedureCall.addParameter("@responseMessage", System.Data.SqlDbType.Int);
@@ -266,14 +262,6 @@ namespace THKH.Classes.Controller
                 {
                     while (reader.Read())
                     {
-                        // Get Question ID
-                        //qids.Add(reader.GetInt32(0).ToString());
-                        //// Get Question
-                        //questions.Add(reader.GetString(1));
-                        //// Get Question Type
-                        //qnTypes.Add(reader.GetString(2));
-                        //// Get Question Value
-                        //qnValues.Add(reader.GetString(3));
                         Question qn = new Question(reader.GetInt32(0).ToString(), reader.GetString(1), reader.GetString(2), reader.GetString(3), "");
                         qnList.Add(qn.toJsonObject());
                         count++;
@@ -330,17 +318,6 @@ namespace THKH.Classes.Controller
                 String thisQid = orderArr[j];
                 for (int i = 0; i < qnList.Count; i++)
                 {
-                    //dynamic qnObj = new ExpandoObject();
-                    //String listQid = qids[i];
-                    //if (thisQid == listQid)
-                    //{
-
-                    //    qnObj.qId = listQid;
-                    //    qnObj.question = questions[i];
-                    //    qnObj.qnType = qnTypes[i];
-                    //    qnObj.values = qnValues[i];
-                    //    qnsQns.Add(qnObj);
-                    //}
                     dynamic thisQuestion = qnList[i];
                     if (thisQuestion.qnid == thisQid) {
                         qnsQns.Add(thisQuestion);
@@ -367,11 +344,6 @@ namespace THKH.Classes.Controller
                 {
                     while (reader.Read())
                     {
-                        //dynamic question = new ExpandoObject();
-                        //question.qId = reader.GetInt32(0);
-                        //question.question = reader.GetString(1);
-                        //question.qnType = reader.GetString(2);
-                        //question.values = reader.GetString(3);
                         Question qn = new Question(reader.GetInt32(0).ToString(), reader.GetString(1), reader.GetString(2), reader.GetString(3), "");
                         qns.Add(qn.toJsonObject());
                     }

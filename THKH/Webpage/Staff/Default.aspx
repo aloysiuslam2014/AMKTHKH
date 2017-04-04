@@ -380,7 +380,6 @@
                                 <label for="remarksExpressInput"><span style="color: lightcoral">*</span>Remarks</label>
                                 <div class="form-group">
                                     <textarea id="remarksExpressInput" class="form-control regInput" rows="2" placeholder="Please enter the reason for express entry, contact & vehicle number" cols="60"></textarea>
-                                    <%--<input type="text" class="form-control regInput" id="remarksExpressInput" placeholder="Please enter the reason for express entry, contact & vehicle number"/>--%>
                                 </div>
                             </div>
                             <button class="btn btn-warning" id="checkNricButton" onclick="checkNricWarningDeclaration(); false;"><span class="glyphicon glyphicon-search"></span>Proceed</button>
@@ -459,7 +458,6 @@
                                 </div>
                                 <div id="searchResultsDiv" class="searchbox"></div>
                                 <label for="bedno"><span style="color: lightcoral">*</span>Bed Number</label>
-                                <%--Bed Number--%>
                                 <div class="form-group">
                                     <input type="text" class="form-control regInput" onkeyup="bedSearch(this);" id="bedno" />
                                 </div>
@@ -549,9 +547,6 @@
                                         <button type="submit" class="btn btn-danger btn-default" onclick="hideAddQuestionnaireModal();"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
                                         <button type="button" class="btn btn-success" onclick="newQuestionnaire();"><span class="glyphicon glyphicon-plus"></span>Add Form</button>
                                     </div>
-                                    <%-- <div class="modal-footer" style="text-align: center !important;">
-                                        
-                                    </div>--%>
                                 </div>
                             </div>
                         </div>
@@ -592,12 +587,8 @@
 
                                     </div>
                                     <div class="modal-body" style="text-align: center;">
-                                        <%--<label>Form Saved!</label>--%>
                                         <button type="button" id="closeUpdateQuestionnaire" onclick="closeUpdateSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
                                     </div>
-                                    <%--<div class="modal-footer" style="text-align: center !important;">
-                                                
-                                            </div>--%>
                                 </div>
 
                             </div>
@@ -612,12 +603,8 @@
                                         <h4>Form Activated!</h4>
                                     </div>
                                     <div class="modal-body" style="text-align: center;">
-                                        <%--<label>Form set as Active!</label>--%>
                                         <button type="button" id="closeActiveSuccess" onclick="closeActiveSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
                                     </div>
-                                    <%--<div class="modal-footer" style="text-align: center !important;">
-                                                
-                                            </div>--%>
                                 </div>
 
                             </div>
@@ -633,12 +620,8 @@
 
                                     </div>
                                     <div class="modal-body" style="text-align: center;">
-                                        <%--<label>Form Added!</label>--%>
                                         <button type="button" id="closeAddQuestionnaireSuccess" onclick="closeAddQuestionnaireSuccess(); false;" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Close</button>
                                     </div>
-                                    <%--<div class="modal-footer" style="text-align: center !important;">
-                                                
-                                            </div>--%>
                                 </div>
 
                             </div>
@@ -861,9 +844,6 @@
                 <div class="row inheritHeight">
                     <div class="col-sm-4 inheritHeight">
                         <h3 style="">Existing Users</h3>
-                        <%--<div class="form-group" id="searchUser">
-                            <input type="text" class="form-control maxWidth" placeholder="Search Name" onkeyup="filterUserList(this)" />
-                        </div>--%>
                         <div class=" " style="border: solid 1pt; margin-bottom: 25px; border-radius: 2px; height: 77%; overflow-y: auto; margin-top: 2px;">
                             <ul class="list-group checked-list-box maxHeight" id="usersLis" style="">
                                 <%--List of users here--%>
@@ -1119,12 +1099,9 @@
                         </div>
                         <div id="unifiedquery_bednos" class="input-group col-sm-8">
                             <div class="col-sm-6">
-                                <%--<label>Bed Number</label>--%>
                                 <input class="form-control" id="uq_bednos" placeholder="Beds: 1101, 1103, 2101-2105 " type="text" />
                             </div>
                             <div class="col-sm-6">
-                                <%--<label>Location</label>--%>
-                                <%--<input class="form-control" id="uq_loc" placeholder="Location: NKF" type="text" />--%>
                                 <%--Change to populated dropdown--%>
                                 <div class="form-group">
                                     <select class="form-control" id="uq_loc">
@@ -1133,9 +1110,7 @@
                                 </div>
                             </div>
                             <span class="input-group-btn">
-                                <button class="btn btn-warning" id="execute_unifiedTrace" onclick="unifiedTrace(); false;"><span class="glyphicon glyphicon-search"></span>Trace</button>
-                                
-                                <%--<button class="btn btn-warning" id="execute_expressTrace" onclick="expressTrace(); false;"><span class="glyphicon glyphicon-search"></span> Trace Express Entries</button>--%>
+                                <button class="btn btn-success" id="execute_unifiedTrace" onclick="unifiedTrace(); false;"><span class="glyphicon glyphicon-search"></span>Trace</button>
                             </span>
                         </div>
                         <div class="input-group col-sm-2">
@@ -1234,7 +1209,6 @@
                                         }
                                     }
                                 });
-                                //table.columns('export_only').visible(false);
                                 table.columns([4, 7, 8, 10, 11, 13]).visible(false, false);
                                 $('#uq_resultstable').prop("style", "width:100%");
                                 $('#uq_resultstable').removeClass("dataTable");
@@ -1271,11 +1245,13 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <button class="btn btn-warning" id="fill_dashboard" onclick="fillDashboard(); false;"><span class="glyphicon glyphicon-search"></span>View</button>
-                            <button class="btn btn-warning" id="printViz" ><span class="glyphicon glyphicon-print"></span>To PDF</button>
+                            <div class="btn-group">
+                                <button class="btn btn-success" id="fill_dashboard" onclick="fillDashboard(); false;"><span class="glyphicon glyphicon-search"></span>View</button>
+                                <button class="btn btn-warning" id="printViz" ><span class="glyphicon glyphicon-print"></span>To PDF</button>
+                            </div>
                         </div>
 
-                        <script type="text/javascript"> //Shift to separate Script
+                        <script type="text/javascript">
                             $(function () {
                                 $('#dashboard_startdatetime').datetimepicker(
                                     {

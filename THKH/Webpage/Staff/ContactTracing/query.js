@@ -31,10 +31,6 @@ $(document).ready(function () {
             doc.addImage(imgData, 'PNG', 0, 0, x.width/1.4  , x.height/1.4  );
            
         });
-        //doc.fromHTML($('#chart_container')[0], 15, 15, {
-            
-        //    'background': '#fff',
-        //});
         doc.save('VisitorVisualizations.pdf');
     });
 });

@@ -66,7 +66,6 @@ namespace THKH.Classes.Controller
                 myimg.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                 jsonReturn.Result = "Success";
                 byte[] imageData = ms.ToArray();
-                //  jsonReturn.Msg = HexStringFromBytes(imageData);
                 jsonReturn.Msg = imageData;
 
             }
