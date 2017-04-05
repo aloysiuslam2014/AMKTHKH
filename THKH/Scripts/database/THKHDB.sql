@@ -2551,24 +2551,24 @@ BEGIN
   BEGIN
     SET @responseMessage = 1;
 
-	WITH DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
-		AS
-		(
-			SELECT ci.nric, ci.visitActualTime, t.tName, m.locationTime
-			FROM CHECK_IN ci	
-			FULL OUTER JOIN MOVEMENT M ON m.NRIC = ci.nric
-				AND m.visitActualTime = ci.visitActualTime
-			LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
-			WHERE t.tName LIKE 'EXIT%'
-		)
-	SELECT DISTINCT v.visitLocation AS 'location', v.bedNo AS 'bedno', ci.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', ci.nric AS 'nric', vp.gender AS 'gender', vp.dateOfBirth AS 'dob'
-	FROM CHECK_IN ci
-	LEFT JOIN VISITOR_PROFILE vp ON vp.nric = ci.nric
-	LEFT JOIN VISIT v ON v.visitorNric = ci.nric
-	LEFT JOIN DAY_BED_EXITS dbe ON dbe.nric = ci.nric AND dbe.visitActualTime = ci.visitActualTime
-	WHERE vp.confirm = 1
-	AND v.confirm = 1
-	AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+  WITH DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
+    AS
+    (
+      SELECT ci.nric, ci.visitActualTime, t.tName, m.locationTime
+      FROM CHECK_IN ci  
+      FULL OUTER JOIN MOVEMENT M ON m.NRIC = ci.nric
+        AND m.visitActualTime = ci.visitActualTime
+      LEFT JOIN TERMINAL t ON m.locationID = t.terminalID
+      WHERE t.tName LIKE 'EXIT%'
+    )
+  SELECT DISTINCT v.visitLocation AS 'location', v.bedNo AS 'bedno', ci.visitActualTime AS 'checkin_time', dbe.exitTime AS 'exit_time', ci.nric AS 'nric', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', v.purpose AS 'purpose'
+  FROM CHECK_IN ci
+  LEFT JOIN VISITOR_PROFILE vp ON vp.nric = ci.nric
+  LEFT JOIN VISIT v ON v.visitorNric = ci.nric
+  LEFT JOIN DAY_BED_EXITS dbe ON dbe.nric = ci.nric AND dbe.visitActualTime = ci.visitActualTime
+  WHERE vp.confirm = 1
+  AND v.confirm = 1
+  AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
   END
 END;
 
