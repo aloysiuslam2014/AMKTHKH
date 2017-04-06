@@ -11,7 +11,7 @@ $(function () {
         $('#addTerminalModal').css('width', 'inherit');
         $('#addTerminalModal').css('height', 'inherit');
     });
-    
+
     $('#terminalBedLink').on('change', function () {
         if (this.value == "Yes") {
             $("#beds").prop('disabled', false);
@@ -43,38 +43,37 @@ $(function () {
 
     $('#addNewTerminal').on('click', function (event) {
         event.preventDefault();
-         
+
         //create looped ajax call to delete terminal
-        
+
 
         var headersToProcess = {
             action: "addTerminal",
             id: terminalNameInput.value,
-            bedList: beds.value ,
+            bedList: beds.value,
             isInfectious: terminalBedLink.value == "Yes" ? 1 : 0
         };
-            $.ajax({
-                url: pathToTerminal,
-                method: 'post',
-                data: headersToProcess,
+        $.ajax({
+            url: pathToTerminal,
+            method: 'post',
+            data: headersToProcess,
 
 
-                success: function (returner) {
-                    //Alert to show terminal has been added
-                    $('#promptTerminalModal').modal({ backdrop: false, keyboard: false });
-                    if (returner.toString() == "success")
-                    {
-                        $('#prompText').html("Terminal Successfully Added!");
-                    } else {
-                        $('#prompText').html("Terminal Name Already Exist!");
-                    }
-                    
-                },
-                error: function (err) {
-                    alert(ajaxServerError);
-                },
-            });
-       
+            success: function (returner) {
+                //Alert to show terminal has been added
+                $('#promptTerminalModal').modal({ backdrop: false, keyboard: false });
+                if (returner.toString() == "success") {
+                    $('#prompText').html("Terminal Successfully Added!");
+                } else {
+                    $('#prompText').html("Terminal Name Already Exist!");
+                }
+
+            },
+            error: function (err) {
+                alert(ajaxServerError);
+            },
+        });
+
     });
 
     $('#cancelAction').on('click', function (event) {
@@ -89,19 +88,19 @@ $(function () {
             return;
         }
         var inavtiveTerminaltest = "";
-      
-        if ( $("#terminalList .active").hasClass("inactive")) {
+
+        if ($("#terminalList .active").hasClass("inactive")) {
             inavtiveTerminaltest = "<i>Inactive terminal(s) selected.</i>";
         }
-    
+
         $('#GenericMessage').html("Are you sure you want to <B>DEACTIVATE</B> the selected terminal(s)? <br>" + inavtiveTerminaltest);
         $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
         $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
-        $('.modal-backdrop').appendTo('#TerminalManagement'); 
+        $('.modal-backdrop').appendTo('#TerminalManagement');
         $('#confirmAction').on('click', function (event) {
             genericTerminalCofirmation("deactivateTerminal");
         });
-      
+
     });
     $('#deleteTerminal').on('click', function (event) {
         event.preventDefault();
@@ -114,8 +113,8 @@ $(function () {
     });
     $('#deactivateAll').on('click', function (event) {
         event.preventDefault();
-        
-      
+
+
         $('#GenericMessage').html("Are you sure you want to <B>DEACTIVATE <font color='red'>ALL</font></B> the selected terminal(s)?");
         $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
         $('.modal-backdrop').appendTo('#TerminalManagement');
@@ -126,7 +125,7 @@ $(function () {
     });
     $('#deleteAll').on('click', function (event) {
         event.preventDefault();
-       ;
+        ;
         $('#GenericMessage').html("Are you sure you want to  <B>DELETE <font color='red'>ALL</font></B> the selected terminal(s)?");
         $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
         $('.modal-backdrop').appendTo('#TerminalManagement');
@@ -136,6 +135,7 @@ $(function () {
     });
 });
 
+/// <summary>Displays warning that no terminal has been selected if selected</summary>
 function noTerminalSelected() {
     $('#GenericMessage').html("No terminals have been selected. Please select a terminal and try again.");
     $('#genericTerminalModal').modal({ backdrop: 'static', keyboard: false });
@@ -143,13 +143,14 @@ function noTerminalSelected() {
     $("#confirmAction").toggle(false);
 }
 
+/// <summary>Self explanatory</summary>
 function selectAllTerminals() {
-        //get the list and get all the options
+    //get the list and get all the options
     $("#terminalList li:not(.active)").each(function (idx, li) {
-            $(li).triggerHandler('click');
-        });
+        $(li).triggerHandler('click');
+    });
 }
- 
+/// <summary>Self explanatory</summary>
 function deselectAllTerminals() {
     //get the list and get all the options
     $("#terminalList li.active").each(function (idx, li) {
@@ -157,11 +158,12 @@ function deselectAllTerminals() {
     });
 }
 
-function genericTerminalCofirmation(type){
+/// <summary>Generates the appropriate activities to be executed based on type of action required.</summary>
+function genericTerminalCofirmation(type) {
     //All buttons will have a warning before proceeding on...
     var selectedItems = getSelectedTerminals();
     if (type == "deactivateTerminal") {
-       
+
         //create looped ajax call to deactivate Terminal
         for (var i = 0; i < selectedItems.length ; i++) {
             var headersToProcess = { action: "deactivate", id: selectedItems[i] };
@@ -232,11 +234,12 @@ function genericTerminalCofirmation(type){
             },
         });
     }
-  
+
     $('#genericTerminalModal').modal('hide');
     $('#confirmAction').prop('onclick', null);
 }
 
+/// <summary>Loads all terminals on first time click of the terminals management tab.</summary>
 function loadTerminals() {
     var headersToProcess = { action: "getAllTerminals", id: "" };
     //get the terminals
@@ -254,6 +257,7 @@ function loadTerminals() {
     });
 }
 
+/// <summary>Terminals initialization</summary>
 function generateTerminalListAndInit(terminalData) {
     $("#terminalList").html('');
     var terminalsReceived = terminalData.split("|");
@@ -332,12 +336,12 @@ function generateTerminalListAndInit(terminalData) {
         init();
     });
 }
-
+/// <summary>Get the terminals based on the staff's selection</summary>
 function getSelectedTerminals() {
     var checkedItems = [];
     $("#terminalList li.active").each(function (idx, li) {
         checkedItems.push($(li).attr('id'));
-        });
-        //$('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
-        return checkedItems;
+    });
+    //$('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
+    return checkedItems;
 }
