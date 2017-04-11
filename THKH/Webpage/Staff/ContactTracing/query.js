@@ -123,6 +123,37 @@ $('#expressTraceCheck').on('change', function () {
     }
 });
 
+
+/**
+ * Disable location dropdown on bed number change
+ * @param 
+ * @return 
+ */
+$('#uq_bednos').on('change', function () {
+    var num = $("#uq_bednos").val();
+    if (num.length > 0) {
+        $("#uq_loc").prop('value', "");
+        $("#uq_loc").prop("disabled", true);
+    } else {
+        $("#uq_loc").prop("disabled", false);
+    }
+});
+
+/**
+ * Disable bed number field on location dropdown change
+ * @param 
+ * @return 
+ */
+$('#uq_loc').on('change', function () {
+    var num = $("#uq_loc").val();
+    if (num.length > 0) {
+        $("#uq_bednos").prop('value', "");
+        $("#uq_bednos").prop("disabled", true);
+    } else {
+        $("#uq_bednos").prop("disabled", false);
+    }
+});
+
 /**
  * Fill Datatable with contact tracing data
  * @param 

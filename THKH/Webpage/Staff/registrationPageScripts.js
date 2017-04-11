@@ -619,6 +619,16 @@ function clearFields(overwrite) {
                     $(obj).css('background', '#ffffff');
                 }
             });
+            $("#questionaireForm .answer").each(function (index, value) {
+                var element = $(this);
+                var ischeckbox = element.is(':checkbox');
+                var check = element.is(':checked');
+                if (check & ischeckbox) {
+                    element.prop("checked", false);
+                } else if (ischeckbox) {
+                    element.prop('value', "");
+                }
+            });
             regCompleted = false;
         } else {
             if (regCompleted) {
@@ -626,6 +636,16 @@ function clearFields(overwrite) {
                     if ($(obj).attr("id") != "visitbookingdate") {
                         $(obj).prop("value", "");
                         $(obj).css('background', '#ffffff');
+                    }
+                });
+                $("#questionaireForm .answer").each(function (index, value) {
+                    var element = $(this);
+                    var ischeckbox = element.is(':checkbox');
+                    var check = element.is(':checked');
+                    if (check & ischeckbox) {
+                        element.prop("checked", false);
+                    } else if (ischeckbox) {
+                        element.prop('value', "");
                     }
                 });
                 regCompleted = false;
