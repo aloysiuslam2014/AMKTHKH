@@ -45,7 +45,7 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var limit = context.Request.Form["visLimit"];
                
                 dynamic result = checkInController.checkNumCheckedIn(bedNo, Int32.Parse( limit));
-                if(result.bedno != null)
+                if(result.visitors > Int32.Parse(limit))
                 {
                     result.Result = "Failed";
                 }else

@@ -629,14 +629,14 @@
     <Content Include="fonts\FontAwesome.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ClassDiagram1.cd" />
-    <Content Include="ClassDiagram2.cd" />
+    <None Include="Properties\PublishProfiles\exportToFolder.pubxml" />
     <None Include="Properties\PublishProfiles\Stepwise-is480.pubxml" />
     <None Include="Properties\PublishProfiles\stepwiseis480 - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\stepwiseis480 - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\stepwiseis480 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Triage20.pubxml" />
     <Content Include="Scripts\database\ContactTracingTestCases.xlsx" />
+    <None Include="Properties\PublishProfiles\uatTest.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
