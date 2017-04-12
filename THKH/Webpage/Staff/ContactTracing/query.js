@@ -9,6 +9,35 @@ var uq_loc = document.getElementById("uq_loc");
 
 $(document).ready(function () {
     loadTracingFacilities();
+
+    var specialElementHandlers = {
+        '#editor': function (element, renderer) {
+            return true;
+        }
+    };
+
+    $('#printViz').click(function () {
+        var doc = new jsPDF('l', 'pt');
+        $('#chart_container canvas').each(function (point, x) {
+
+            var imgData = x.toDataURL("image/png");
+
+            if (point >= 1 && x.width > 500) {
+                doc.addPage('a4', 'l');
+            } else if (point >= 1) {
+                doc.addPage('a4', 'p');
+            }
+
+            doc.addImage(imgData, 'PNG', 0, 0, x.width / 1.4, x.height / 1.4);
+
+        });
+        //doc.fromHTML($('#chart_container')[0], 15, 15, {
+
+        //    'background': '#fff',
+        //});
+        doc.save('VisitorVisualizations.pdf');
+    });
+
 });
 
 
@@ -91,6 +120,37 @@ $('#expressTraceCheck').on('change', function () {
     } else {
         $("#uq_bednos").prop("disabled", false);
         $("#uq_loc").prop("disabled", false);
+    }
+});
+
+
+/**
+ * Disable location dropdown on bed number change
+ * @param 
+ * @return 
+ */
+$('#uq_bednos').on('change', function () {
+    var num = $("#uq_bednos").val();
+    if (num.length > 0) {
+        $("#uq_loc").prop('value', "");
+        $("#uq_loc").prop("disabled", true);
+    } else {
+        $("#uq_loc").prop("disabled", false);
+    }
+});
+
+/**
+ * Disable bed number field on location dropdown change
+ * @param 
+ * @return 
+ */
+$('#uq_loc').on('change', function () {
+    var num = $("#uq_loc").val();
+    if (num.length > 0) {
+        $("#uq_bednos").prop('value', "");
+        $("#uq_bednos").prop("disabled", true);
+    } else {
+        $("#uq_bednos").prop("disabled", false);
     }
 });
 
