@@ -333,31 +333,56 @@ function addBedToVisit(patientName, patientBedNo) {
         return;
     }
 
-    var newPatientObj = document.createElement("div");
+    //Check if patient bed full or not bahh
+    var headersToProcess = {
+        visLimit:visLim,bedNo: patientBedNo, requestType: "checkBed"
+    };
+    $.ajax({
+        url: regUrl,
+        method: 'post',
+        data: headersToProcess,
 
-    var closeButon = document.createElement("a");
-    $(closeButon).prop("class", "close");
-    $(closeButon).html("&times;");
-    $(closeButon).on("click", function () {
-        $(this).parent().mouseout();
-        $(this).parent().remove();
+
+        success: function (returner) {
+            var resultOfGeneration = JSON.parse(returner);
+            if (resultOfGeneration.Result == "Success") {
+               
+                var newPatientObj = document.createElement("div");
+
+                var closeButon = document.createElement("a");
+                $(closeButon).prop("class", "close");
+                $(closeButon).html("&times;");
+                $(closeButon).on("click", function () {
+                    $(this).parent().mouseout();
+                    $(this).parent().remove();
+                });
+
+                $(newPatientObj).html(patientBedNo);
+                $(newPatientObj).append(closeButon);
+
+
+
+                $(newPatientObj).attr("id", patientBedNo);
+                $(newPatientObj).attr("data-toggle", "tooltip");
+                $(newPatientObj).attr("data-placement", "top");
+                $(newPatientObj).attr("data-container", "body");
+                $(newPatientObj).attr("class", "bedNoBox");
+                $(newPatientObj).attr("title", patientBedNo + ": " + patientName);
+                $("#patientName").val("");
+                $("#bedno").val("");
+                $("#bedsAdded").append(newPatientObj);
+                $('[data-toggle="tooltip"]').tooltip();
+                
+            } else {
+                alert("Patient visitor limit has been reached. Please try again later.");
+            }
+        },
+        error: function (err) {
+            alert("Error: " + err.msg + ". Please contact the adminsitrator.");
+        },
     });
 
-    $(newPatientObj).html(patientBedNo);
-    $(newPatientObj).append(closeButon);
-    
-  
-    
-    $(newPatientObj).attr("id", patientBedNo);
-    $(newPatientObj).attr("data-toggle", "tooltip");
-    $(newPatientObj).attr("data-placement", "top");
-    $(newPatientObj).attr("data-container", "body");
-    $(newPatientObj).attr("class", "bedNoBox");
-    $(newPatientObj).attr("title", patientBedNo + ": " + patientName);
-    $("#patientName").val("");
-    $("#bedno").val("");
-    $("#bedsAdded").append(newPatientObj);
-    $('[data-toggle="tooltip"]').tooltip();
+   
 }
 
 /**
