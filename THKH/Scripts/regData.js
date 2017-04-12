@@ -255,3 +255,35 @@ function getNationalityArray() {
         'Zambian',
         'Zimbabwean'];
 }
+
+/**
+ * Returns String containing the current time
+ * @param 
+ * @return String
+ */
+function getCurrentTime() {
+    var d = new Date();
+    var localTime = d.getTime();
+    var localOffset = d.getTimezoneOffset() * 60000;
+    var utc = localTime + localOffset;
+    var offset = 8;
+    var singaporeTime = utc + (3600000 * offset);
+    var date = new Date(singaporeTime);
+    var timeStr = "";
+    if (date.getMinutes() > 30) {
+        if (date.getHours() == 23) {
+            timeStr = "00:00";
+        } else if (date.getHours() < 9) {
+            timeStr = "0" + (date.getHours() + 1) + ":00";
+        } else {
+            timeStr = (date.getHours() + 1) + ":00";
+        }
+    } else {
+        if (date.getHours() < 9) {
+            timeStr = "0" + date.getHours() + ":30";
+        } else {
+            timeStr = (date.getHours()) + ":30";
+        }
+    }
+    return timeStr;
+}

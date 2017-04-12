@@ -146,31 +146,7 @@ function callCheck(callback){
                             $("#qaid").prop('value', visitObj.qAid);
                             $("#remarks").prop('value', visitObj.remarks);
                         } else {
-                            var d = new Date();
-                            var localTime = d.getTime();
-                            var localOffset = d.getTimezoneOffset() * 60000;
-                            var utc = localTime + localOffset;
-                            var offset = 8;
-                            var singaporeTime = utc + (3600000 * offset);
-                            var date = new Date(singaporeTime);
-                            var timeStr = "";
-                            if (date.getMinutes() > 30) {
-                                if (date.getHours() == 23) {
-                                    timeStr = "00:00";
-                                    adjustedTime = true;
-                                } else if (date.getHours() < 10) {
-                                    timeStr = "0" + (date.getHours() + 1) + ":00";
-                                } else {
-                                    timeStr = (date.getHours() + 1) + ":00";
-                                }
-                            } else {
-                                if (date.getHours() < 10) {
-                                    timeStr = "0" + date.getHours() + ":30";
-                                } else {
-                                    timeStr = (date.getHours()) + ":30";
-                                }
-                            }
-                            $("#visitbookingtime").val(timeStr);
+                            $("#visitbookingtime").val(getCurrentTime());
                         } if (questionnaireArr.length >= 1) {
                             for (i = 0; i < questionnaireArr.length; i++) {
                                 var jsonAnswerObject = questionnaireArr[i];
@@ -1188,6 +1164,7 @@ function populateTime() {
     var lowTime = "";
     var adjustedTime = false;
     var highTime = "";
+    var timeStr = "";
     var d = new Date();
     var localTime = d.getTime();
     var localOffset = d.getTimezoneOffset() * 60000;
@@ -1200,13 +1177,13 @@ function populateTime() {
         if (date.getHours() == 23) {
             timeStr = "00:00";
             adjustedTime = true;
-        } else if (date.getHours() < 10) {
+        } else if (date.getHours() < 9) {
             timeStr = "0" + (date.getHours() + 1) + ":00";
         } else {
             timeStr = (date.getHours() + 1) + ":00";
         }
     } else {
-        if (date.getHours() < 10) {
+        if (date.getHours() < 9) {
             timeStr = "0" + date.getHours() + ":30";
         } else {
             timeStr = (date.getHours()) + ":30";
