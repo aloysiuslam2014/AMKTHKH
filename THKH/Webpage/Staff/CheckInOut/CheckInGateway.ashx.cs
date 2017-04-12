@@ -39,6 +39,22 @@ namespace THKH.Webpage.Staff.CheckInOut
                 var isNameSearch = context.Request.Form["isNameSearch"];
                 successString = checkInController.searchAutoComplete(isNameSearch,searchData);
             }
+            if (typeOfRequest == "checkBed")
+            {
+                var bedNo = context.Request.Form["bedNo"];
+                var limit = context.Request.Form["visLimit"];
+               
+                dynamic result = checkInController.checkNumCheckedIn(bedNo, Int32.Parse( limit));
+                if(result.bedno != null)
+                {
+                    result.Result = "Failed";
+                }else
+                {
+                    result.Result = "Success";
+                }
+
+                successString = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            }
             if (typeOfRequest == "self")
             {
                 var nric = context.Request.Form["nric"].ToString();
