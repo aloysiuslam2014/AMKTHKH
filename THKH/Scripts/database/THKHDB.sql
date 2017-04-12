@@ -2123,10 +2123,12 @@ BEGIN
                                   AND MONTH(a.visitActualTime) = MONTH(b.visitRequestTime) 
                                   AND YEAR(a.visitActualTime) = YEAR(b.visitRequestTime)
                   AND bedNo = @pBedNo
-                  AND nric NOT IN (SELECT DISTINCT nric FROM MOVEMENT WHERE locationID = 2
-                                  AND DAY(visitActualTime) = DAY(GETDATE())
-                                  AND MONTH(visitActualTime) = MONTH(GETDATE()) 
-                                  AND YEAR(visitActualTime) = YEAR(GETDATE()))) AS INT)
+                  AND nric NOT IN (SELECT DISTINCT nric FROM MOVEMENT m, TERMINAL t 
+									WHERE locationID = t.terminalID 
+									AND t.tName NOT LIKE '%EXIT%'
+									AND DAY(visitActualTime) = DAY(GETDATE())
+									AND MONTH(visitActualTime) = MONTH(GETDATE()) 
+									AND YEAR(visitActualTime) = YEAR(GETDATE()))) AS INT)
     END TRY  
     BEGIN CATCH
         SET @responseMessage = 0 
@@ -2204,8 +2206,6 @@ BEGIN
   BEGIN
     SET @responseMessage = 1;
 
-  ----------------------------------------------- First retrieve all registered visits to the bed
-  ----------------------------------------------- in question which checked in within query period
   WITH DAY_BED_CHECKINS(nric, visitActualTime, temperature, bedNo, visitLocation, qa_json, remarks)
   AS
   (
@@ -2213,18 +2213,28 @@ BEGIN
     FROM CHECK_IN ci
     JOIN VISIT v ON v.visitorNric = ci.nric
 	AND ci.qa_id = v.QaID
+	AND v.purpose = 'Visit Patient'
     JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
     WHERE v.bedNo LIKE '%' + @pBed_No + '%'
     AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
-    AND v.confirm = 1)
-
-  SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbc.temperature AS 'temperature', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd',  vp.postalCode AS 'postalcode', dbc.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', dbc.remarks AS 'remarks'
+    AND v.confirm = 1),
+	DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
+    AS
+    (
+      SELECT dbc.nric, dbc.visitActualTime, t.tName, m.locationTime
+      FROM DAY_BED_CHECKINS dbc  
+      JOIN MOVEMENT M ON m.NRIC = dbc.nric
+        AND m.visitActualTime = dbc.visitActualTime
+      JOIN TERMINAL t ON m.locationID = t.terminalID
+      WHERE t.tName LIKE 'EXIT%'
+    )
+  SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', exitTime AS 'exit_time', dbc.temperature AS 'temperature', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd',  vp.postalCode AS 'postalcode', dbc.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', dbc.remarks AS 'remarks'
     FROM DAY_BED_CHECKINS dbc
+    LEFT JOIN DAY_BED_EXITS dbe ON dbe.nric = dbc.nric AND dbe.visitActualTime = dbc.visitActualTime
     JOIN VISITOR_PROFILE vp ON vp.nric = dbc.nric
     WHERE vp.confirm = 1
   END
 END;
-
 
 
 ---------------------------------------------------------------------------------------------------  Procedures for Tracing Visitors by Check-In  
@@ -2283,8 +2293,6 @@ BEGIN
   BEGIN
     SET @responseMessage = 1;
 
-	------------------------------------------------ First retrieve all registered visits to the location
-	------------------------------------------------ in question which checked in within query period
 	WITH DAY_BED_CHECKINS(nric, visitActualTime, temperature, bedNo, visitLocation, qa_json, remarks)
 	AS
 	(
@@ -2292,14 +2300,26 @@ BEGIN
 		FROM CHECK_IN ci
 		JOIN VISIT v ON v.visitorNric = ci.nric
 		AND v.QaID = ci.qa_id
+		AND v.purpose = 'Other Purpose'
 		JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
 		WHERE v.visitLocation LIKE '%'+@pLocation+'%'
 		AND CAST(ci.visitActualTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
 		AND v.confirm = 1
-	)
-	
-	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbc.temperature AS 'temperature', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbc.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', dbc.remarks AS 'remarks'
+	),
+	DAY_BED_EXITS (nric, visitActualTime, exitTerminal, exitTime)
+		AS
+		(
+			SELECT dbc.nric, dbc.visitActualTime, t.tName, m.locationTime
+			FROM DAY_BED_CHECKINS dbc	
+			JOIN MOVEMENT M ON m.NRIC = dbc.nric
+				AND m.visitActualTime = dbc.visitActualTime
+			JOIN TERMINAL t ON m.locationID = t.terminalID
+			WHERE t.tName LIKE 'EXIT%'
+		)
+	SELECT DISTINCT dbc.visitLocation AS 'location',  dbc.bedNo AS 'bedNo', dbc.visitActualTime AS 'checkin_time', exitTime AS 'exit_time', dbc.temperature AS 'temperature', dbc.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbc.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', dbc.remarks AS 'remarks'
 		FROM DAY_BED_CHECKINS dbc
+		LEFT JOIN DAY_BED_EXITS dbe ON dbe.nric = dbc.nric 
+		AND dbe.visitActualTime = dbc.visitActualTime
 		JOIN VISITOR_PROFILE vp ON vp.nric = dbc.nric
 		WHERE vp.confirm = 1
   END
@@ -2619,19 +2639,30 @@ BEGIN
       JOIN VISIT v ON v.visitorNric = m.nric
 	  AND ci.qa_id = v.QaID
 	  AND v.purpose = 'Express Entry'
-      AND v.visitLocation = ''
-      AND v.bedNo = ''
+	  AND v.remarks <> ''
       JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
       WHERE t.tName LIKE 'ENTRANCE%'
-      AND v.confirm = 1
       AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+    ),
+    EXPRESS_EXITS (nric, visitActualTime, locationTime, exitTerminal, exitTime)
+    AS
+    (
+      SELECT dbs.nric, dbs.visitActualTime, dbs.locationTime, t.tName, m.locationTime
+      FROM EXPRESS_SCANS dbs  
+      JOIN MOVEMENT M ON m.NRIC = dbs.nric
+        AND m.visitActualTime = dbs.visitActualTime
+      JOIN TERMINAL t ON m.locationID = t.terminalID
+      WHERE t.tName LIKE 'EXIT%'
     )
 
-    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', v.remarks
+    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', exitTime AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', v.remarks
     FROM EXPRESS_SCANS dbs 
-    JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
-    JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
-    WHERE vp.confirm = 1
+    LEFT JOIN EXPRESS_EXITS dbe ON dbs.nric = dbe.nric AND dbe.visitActualTime = dbs.visitActualTime
+    JOIN VISIT v ON v.visitorNric = dbs.nric 
+	AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
+	AND v.purpose = 'Express Entry'
+	AND v.remarks <> ''
+    LEFT JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
   END
 END;
 
