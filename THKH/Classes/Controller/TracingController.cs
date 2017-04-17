@@ -109,20 +109,20 @@ namespace THKH.Classes.Controller
 
                 }
 
-                //for (var i = 0; i < processed_uq_place_arr.Length; i++)
-                //{
-                //    String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
-                //    if (singleBedResult != "")
-                //    {
-                //        JObject obj = JObject.Parse(singleBedResult);
-                //        JArray arr = (JArray)obj["Msg"];
-                //        foreach (JToken item in arr.Children())
-                //        {
-                //            String entry = item.Value<JObject>().ToString(Formatting.None);
-                //            byScan_response_visitors.Add(entry);
-                //        }
-                //    }
-                //}
+                for (var i = 0; i < processed_uq_place_arr.Length; i++)
+                {
+                    String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
+                    if (singleBedResult != "")
+                    {
+                        JObject obj = JObject.Parse(singleBedResult);
+                        JArray arr = (JArray)obj["Msg"];
+                        foreach (JToken item in arr.Children())
+                        {
+                            String entry = item.Value<JObject>().ToString(Formatting.None);
+                            byScan_response_visitors.Add(entry);
+                        }
+                    }
+                }
             }
 
             if (bedORloc == "byloc")
@@ -166,6 +166,7 @@ namespace THKH.Classes.Controller
             List<Tuple<List<String>, bool, bool>> categorizedResults = new List<Tuple<List<String>, bool, bool>>();
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_and_scan, true, true));
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_only, true, false));
+            categorizedResults.Add(new Tuple<List<String>, bool, bool>(scan_only, false, true));
 
             result = buildDisplayResults(categorizedResults);
 

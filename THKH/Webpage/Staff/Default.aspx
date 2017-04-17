@@ -1136,7 +1136,7 @@
                         </script>
 
                     </div>
-                    <div class="form-group" id="uq_results">
+                    <div class="form-group sidepaddings" id="uq_results">
 
                         <table id="uq_resultstable_hidden" class="table table-responsive table-hover" style="padding-left: 10px; padding-right:10px;display:none">
                             <thead id="uq_resultstable_head_hidden">
@@ -1200,7 +1200,32 @@
                                     traceby = location
                                 }
 
-                                var table = $('#uq_resultstable_hidden').DataTable({
+                                var table3 = $('#uq_resultstable_hidden').DataTable({
+                                    "columnDefs": [
+                                        { className: "export_only", "targets": [0] },
+
+                                    ],
+                                    "searching": false,
+                                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                                    "deferRender": true,
+                                    dom: 'Bfrtipl',
+                                    stateSave: true,
+                                    buttons: [
+                                    {
+                                        extend: 'csvHtml5',
+                                        text: 'Export to CSV',
+                                        title: 'Trace done on ' + datetime_str
+                                    },
+                                    {
+                                        extend: 'excelHtml5',
+                                        text: 'Export to Excel',
+                                        title: 'Trace done on ' + datetime_str
+                                    }
+                                    ]
+                                    
+                                });
+
+                                var table = $('#uq_resultstable').DataTable({
                                     "columnDefs": [
                                         { className: "export_only", "targets": [0] },
 
@@ -1212,14 +1237,6 @@
                                     stateSave: true,
                                     buttons: [
                                     'colvis',
-                                    {
-                                        extend: 'csvHtml5',
-                                        title: 'Trace done on ' + datetime_str
-                                    },
-                                    {
-                                        extend: 'excelHtml5',
-                                        title: 'Trace done on ' + datetime_str
-                                    },
                                     {
                                         extend: 'copyHtml5',
                                         text: 'Copy Numbers',
@@ -1236,13 +1253,20 @@
                                         }
                                     }
                                 });
-                                table.columns([4, 7, 8, 10, 11, 13, 15, 16]).visible(false, false);
-                                var tableActual = $('#uq_resultstable').DataTable({});
-                                tableActual.columns([4, 7, 8, 10, 11, 13, 15, 16]).visible(false, false);
+
+                                table3.columns([4, 7, 8, 10, 11, 13, 15, 16]).visible(false, false);
+                               // var tableActual = $('#uq_resultstable').DataTable({});
+                                table.columns([4, 7, 8, 10, 11, 13]).visible(false, false);
                                 $('#uq_resultstable').prop("style", "width:100%");
                                 $('#uq_resultstable').removeClass("dataTable");
                                 $('#uq_resultstable #uq_resultstable_info').removeClass("dataTables_info");
                                 $('#uq_resultstable #uq_resultstable_length').removeClass("dataTables_length");
+                                $('#uq_resultstable_hidden_paginate').css("display", "none");
+                                $('#uq_resultstable_hidden_length').css("display", "none");
+                                $('#uq_resultstable_hidden_info').css("display", "none");
+                                $('#uq_resultstable_hidden #uq_resultstable_filter').css("display", "none");
+                                $('#uq_resultstable_hidden #uq_resultstable_length').css("display", "none");
+
                             });
                         </script>
                     </div>
