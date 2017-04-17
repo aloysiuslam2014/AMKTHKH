@@ -70,6 +70,14 @@ namespace THKH.Classes.Controller
             DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             String uq_place = queryParts[3];
             String[] uq_place_arr = uq_place.Split(',');
+            if (uq_place.Contains('-')) {
+                String[] bedRange = uq_place.Split('-');
+                List<String> list = new List<String>();
+                for (int i = Int32.Parse(bedRange[0]); i < Int32.Parse(bedRange[1]); i++) {
+                    list.Add(i.ToString());
+                }
+                uq_place_arr = list.ToArray();
+            }
 
             String[] processed_uq_place_arr = uq_place_arr;
 
@@ -101,20 +109,20 @@ namespace THKH.Classes.Controller
 
                 }
 
-                for (var i = 0; i < processed_uq_place_arr.Length; i++)
-                {
-                    String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
-                    if (singleBedResult != "")
-                    {
-                        JObject obj = JObject.Parse(singleBedResult);
-                        JArray arr = (JArray)obj["Msg"];
-                        foreach (JToken item in arr.Children())
-                        {
-                            String entry = item.Value<JObject>().ToString(Formatting.None);
-                            byScan_response_visitors.Add(entry);
-                        }
-                    }
-                }
+                //for (var i = 0; i < processed_uq_place_arr.Length; i++)
+                //{
+                //    String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
+                //    if (singleBedResult != "")
+                //    {
+                //        JObject obj = JObject.Parse(singleBedResult);
+                //        JArray arr = (JArray)obj["Msg"];
+                //        foreach (JToken item in arr.Children())
+                //        {
+                //            String entry = item.Value<JObject>().ToString(Formatting.None);
+                //            byScan_response_visitors.Add(entry);
+                //        }
+                //    }
+                //}
             }
 
             if (bedORloc == "byloc")

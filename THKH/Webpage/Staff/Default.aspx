@@ -1209,7 +1209,7 @@
                                         }
                                     }
                                 });
-                                table.columns([4, 7, 8, 10, 11, 13]).visible(false, false);
+                                table.columns([4, 7, 8, 10, 11, 13, 15, 16]).visible(false, false);
                                 $('#uq_resultstable').prop("style", "width:100%");
                                 $('#uq_resultstable').removeClass("dataTable");
                                 $('#uq_resultstable_info').removeClass("dataTables_info");

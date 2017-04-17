@@ -477,10 +477,20 @@ function validateBeds(beds) {
     if (beds === "") {
         return false;
     }
-    var uq_bedArr = beds.split(',');
-    for (i = 0; i < uq_bedArr.length; i++) {
-        if (uq_bedArr[i].length !== 4) {
-            return false;
+    var uq_bedArr = beds.trim().split(',');
+    if (uq_bedArr.length > 1) {
+        for (i = 0; i < uq_bedArr.length; i++) {
+            if (uq_bedArr[i].trim().length !== 4) {
+                return false;
+            }
+        }
+    }
+    uq_bedArr = beds.split('-');
+    if (uq_bedArr.length > 1) {
+        for (i = 0; i < uq_bedArr.length; i++) {
+            if (uq_bedArr[i].trim().length !== 4) {
+                return false;
+            }
         }
     }
     return true;
