@@ -190,7 +190,7 @@ function unifiedTrace() {
                 uq_params = "byloc~" + uq_dateStart + '~' + uq_dateEnd + '~' + uq_loc;
             }
 
-            var headersToProcess = { action: "unifiedTrace", queries: uq_params };
+            var headersToProcess = { action: "unifiedTraceUI", queries: uq_params };
             $.ajax({
                 url: toTracing,
                 method: 'post',
@@ -202,6 +202,35 @@ function unifiedTrace() {
                         var arrLen = uqResult.Msg.length;
 
                         var result_table = $('#uq_resultstable').dataTable();
+
+                        result_table.fnClearTable();
+
+                        for (i = 0; i < arrLen; i++) {
+                            var uqResultJSON = uqResult.Msg[i];
+                            result_table.fnAddData(uqResultJSON);
+                        }
+                    } catch (err) {
+                        alert("Selected period returns no data. Please try again. " + err);
+                    }
+
+                },
+                error: function (err) {
+                    alert("There was a problem executing the trace, please contact the admin.");
+                },
+            });
+            // Fill 2nd Datatable
+            headersToProcess = { action: "unifiedTrace", queries: uq_params };
+            $.ajax({
+                url: toTracing,
+                method: 'post',
+                data: headersToProcess,
+
+                success: function (returner) {
+                    try {
+                        var uqResult = JSON.parse(returner);
+                        var arrLen = uqResult.Msg.length;
+
+                        var result_table = $('#uq_resultstable_hidden').dataTable();
 
                         result_table.fnClearTable();
 

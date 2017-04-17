@@ -1254,9 +1254,9 @@
                                     }
                                 });
 
-                                table3.columns([4, 7, 8, 10, 11, 13, 15, 16]).visible(false, false);
+                                //table3.columns([4, 7, 8, 10, 11, 13, 15, 16]).visible(false, false);
                                // var tableActual = $('#uq_resultstable').DataTable({});
-                                table.columns([4, 7, 8, 10, 11, 13]).visible(false, false);
+                                table.columns([4, 7, 8, 10, 11, 13, 15, 16]).visible(false, false);
                                 $('#uq_resultstable').prop("style", "width:100%");
                                 $('#uq_resultstable').removeClass("dataTable");
                                 $('#uq_resultstable #uq_resultstable_info').removeClass("dataTables_info");
@@ -1353,7 +1353,12 @@
                     <label>Message</label>
                     <div class="form-group">
                         <%--<input type="text" class="form-control" id="messageContent" />--%>
-                        <textarea id="smsMessage" class="form-control" rows="3" placeholder="Enter message content here"></textarea>
+                        <textarea id="smsMessage" class="form-control" rows="3" placeholder="Enter message content here">
+** From Ang Mo Kio Thye Hua Kwan Community Hospital **
+
+You have been in contact with an infected patient. 
+Please take care of you health & remember to drink up regularly.
+                        </textarea>
                     </div>
                     <button class="btn btn-success btn-block" id="sendSMS" onclick="checkSMSNumber(); false;"><span class="glyphicon glyphicon-send"></span>Send SMS</button>
                     <label style="color: lightcoral" id="invalidSMSNumber">Invalid Contact Number</label>

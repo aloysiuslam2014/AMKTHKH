@@ -54,7 +54,7 @@ namespace THKH.Classes.Controller
 
 
         /// <summary>
-        /// Main method for the contact tracing process
+        /// Main method for the contact tracing process for the export functions
         /// </summary>
         /// <param name="query">Tilde-delimited string, with the first term being either "bybed" or "byloc", the second term being the start date(inclusive) of the query in "yyyy-MM-dd" format, the third term being the end date(inclusive) of the query in "yyyy-MM-dd" format, and the fourth term being either a comma-delimited and/or hypenated range of bed numbers, or a comma-delimited string of locations</param>
         /// <returns>A JSON object, containing the attribute Msg, which is a JSON array of data each representing one visit, formatted for DataTable to process, in the form: [location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned?]</returns>
@@ -87,6 +87,139 @@ namespace THKH.Classes.Controller
             }
             List<String> byReg_response_visitors = new List<String>();
             List<String> byScan_response_visitors = new List<String>();
+            Dictionary<String, String> dict = new Dictionary<string, string>();
+
+            dynamic json = new ExpandoObject();
+            dynamic innerItem = new ExpandoObject();
+
+            if (bedORloc == "bybed")
+            {
+                for (var i = 0; i < processed_uq_place_arr.Length; i++)
+                {
+                    String singleBedResult = traceByRegBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
+                    if (singleBedResult != "")
+                    {
+                        JObject obj = JObject.Parse(singleBedResult);
+                        JArray arr = (JArray)obj["Msg"];
+                        foreach (JToken item in arr.Children())
+                        {
+                            String entry = item.Value<JObject>().ToString(Formatting.None);
+                            String nric = item.Value<JObject>()["nric"].ToString();
+                            dict.Add(nric, nric);
+                            byReg_response_visitors.Add(entry);
+                        }
+                    }
+
+                }
+
+                for (var i = 0; i < processed_uq_place_arr.Length; i++)
+                {
+                    String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
+                    if (singleBedResult != "")
+                    {
+                        JObject obj = JObject.Parse(singleBedResult);
+                        JArray arr = (JArray)obj["Msg"];
+                        foreach (JToken item in arr.Children())
+                        {                     
+                            String nric = item.Value<JObject>()["nric"].ToString();
+                            if (dict.ContainsValue(nric)) {
+                                String entry = item.Value<JObject>().ToString(Formatting.None);
+                                byScan_response_visitors.Add(entry);
+                            }    
+                        }
+                    }
+                }
+            }
+
+            if (bedORloc == "byloc")
+            {
+                for (var i = 0; i < processed_uq_place_arr.Length; i++)
+                {
+                    String singleBedResult = traceByRegLoc(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
+                    if (singleBedResult != "")
+                    {
+                        JObject obj = JObject.Parse(singleBedResult);
+                        JArray arr = (JArray)obj["Msg"];
+                        foreach (JToken item in arr.Children())
+                        {
+                            String entry = item.Value<JObject>().ToString(Formatting.None);
+                            String nric = item.Value<JObject>()["nric"].ToString();
+                            dict.Add(nric, nric);
+                            byReg_response_visitors.Add(entry);
+                        }
+                    }
+
+                }
+
+                for (var i = 0; i < processed_uq_place_arr.Length; i++)
+                {
+                    String singleBedResult = traceByScanLoc(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
+                    if (singleBedResult != "")
+                    {
+                        JObject obj = JObject.Parse(singleBedResult);
+                        JArray arr = (JArray)obj["Msg"];
+                        foreach (JToken item in arr.Children())
+                        {   
+                            String nric = item.Value<JObject>()["nric"].ToString();
+                            if (dict.ContainsValue(nric))
+                            {
+                                String entry = item.Value<JObject>().ToString(Formatting.None);
+                                byScan_response_visitors.Add(entry);
+                            }
+                        }
+                    }
+                }
+            }
+
+            List<String> reg_and_scan = (List<String>)byReg_response_visitors.Intersect(byScan_response_visitors).ToList();
+            List<String> reg_only = (List<String>)byReg_response_visitors.Except(reg_and_scan).ToList();
+            List<String> scan_only = (List<String>)byScan_response_visitors.Except(reg_and_scan).ToList(); // If NRIC exists above, get it
+
+            List<Tuple<List<String>, bool, bool>> categorizedResults = new List<Tuple<List<String>, bool, bool>>();
+            categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_and_scan, true, true));
+            categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_only, true, false));
+            categorizedResults.Add(new Tuple<List<String>, bool, bool>(scan_only, false, true));
+
+            result = buildDisplayResults(categorizedResults);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Main method for the contact tracing process for the User Interface
+        /// </summary>
+        /// <param name="query">Tilde-delimited string, with the first term being either "bybed" or "byloc", the second term being the start date(inclusive) of the query in "yyyy-MM-dd" format, the third term being the end date(inclusive) of the query in "yyyy-MM-dd" format, and the fourth term being either a comma-delimited and/or hypenated range of bed numbers, or a comma-delimited string of locations</param>
+        /// <returns>A JSON object, containing the attribute Msg, which is a JSON array of data each representing one visit, formatted for DataTable to process, in the form: [location, bedno, checkin_time, exit_time, temperature, fullName, nric, gender, date_of_birth, mobileTel, homeAdd, postalcode, nationality, formAnswers, registered?, scanned?]</returns>
+        public String unifiedTraceUI(String query)
+        {
+            String result = "";
+
+            String[] queryParts = query.Split('~');
+            String bedORloc = queryParts[0];
+            String uq_startdate_str = queryParts[1];
+            String uq_enddate_str = queryParts[2];
+            DateTime uq_startdate = DateTime.ParseExact(uq_startdate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime uq_enddate = DateTime.ParseExact(uq_enddate_str, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            String uq_place = queryParts[3];
+            String[] uq_place_arr = uq_place.Split(',');
+            if (uq_place.Contains('-'))
+            {
+                String[] bedRange = uq_place.Split('-');
+                List<String> list = new List<String>();
+                for (int i = Int32.Parse(bedRange[0]); i < Int32.Parse(bedRange[1]); i++)
+                {
+                    list.Add(i.ToString());
+                }
+                uq_place_arr = list.ToArray();
+            }
+
+            String[] processed_uq_place_arr = uq_place_arr;
+
+            if (bedORloc == "bybed")
+            {
+                processed_uq_place_arr = processBedNos(uq_place_arr);
+            }
+            List<String> byReg_response_visitors = new List<String>();
 
             dynamic json = new ExpandoObject();
             dynamic innerItem = new ExpandoObject();
@@ -108,21 +241,6 @@ namespace THKH.Classes.Controller
                     }
 
                 }
-
-                for (var i = 0; i < processed_uq_place_arr.Length; i++)
-                {
-                    String singleBedResult = traceByScanBed(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
-                    if (singleBedResult != "")
-                    {
-                        JObject obj = JObject.Parse(singleBedResult);
-                        JArray arr = (JArray)obj["Msg"];
-                        foreach (JToken item in arr.Children())
-                        {
-                            String entry = item.Value<JObject>().ToString(Formatting.None);
-                            byScan_response_visitors.Add(entry);
-                        }
-                    }
-                }
             }
 
             if (bedORloc == "byloc")
@@ -142,38 +260,19 @@ namespace THKH.Classes.Controller
                     }
 
                 }
-
-                for (var i = 0; i < processed_uq_place_arr.Length; i++)
-                {
-                    String singleBedResult = traceByScanLoc(uq_startdate, uq_enddate, processed_uq_place_arr[i]);
-                    if (singleBedResult != "")
-                    {
-                        JObject obj = JObject.Parse(singleBedResult);
-                        JArray arr = (JArray)obj["Msg"];
-                        foreach (JToken item in arr.Children())
-                        {
-                            String entry = item.Value<JObject>().ToString(Formatting.None);
-                            byScan_response_visitors.Add(entry);
-                        }
-                    }
-                }
             }
 
-            List<String> reg_and_scan = (List<String>)byReg_response_visitors.Intersect(byScan_response_visitors).ToList();
-            List<String> reg_only = (List<String>)byReg_response_visitors.Except(reg_and_scan).ToList();
-            List<String> scan_only = (List<String>)byScan_response_visitors.Except(reg_and_scan).ToList();
+            List<String> reg_and_scan = (List<String>)byReg_response_visitors.ToList();
 
             List<Tuple<List<String>, bool, bool>> categorizedResults = new List<Tuple<List<String>, bool, bool>>();
             categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_and_scan, true, true));
-            categorizedResults.Add(new Tuple<List<String>, bool, bool>(reg_only, true, false));
-            categorizedResults.Add(new Tuple<List<String>, bool, bool>(scan_only, false, true));
 
             result = buildDisplayResults(categorizedResults);
 
             return result;
         }
 
-        
+
         /// <summary>
         /// Convert contact tracing results into a form acceptable by DataTables
         /// </summary>

@@ -238,7 +238,7 @@ namespace THKH.Classes.Controller
             procedureCall.addParameterWithValue("@pMobileTel", mobtel);
             procedureCall.addParameterWithValue("@pSex", sex);
             procedureCall.addParameterWithValue("@pNationality", nationality);
-            procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+            procedureCall.addParameterWithValue("@pDateOfBirth", DateTime.ParseExact(dob, "dd-MM-yyyy", CultureInfo.InvariantCulture));
             procedureCall.addParameterWithValue("@pPermission", permissions);
             procedureCall.addParameterWithValue("@pAccessProfile", accessProfile);
             procedureCall.addParameterWithValue("@pPosition", title);

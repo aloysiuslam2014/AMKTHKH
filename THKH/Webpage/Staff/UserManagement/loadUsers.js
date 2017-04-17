@@ -188,7 +188,7 @@ function getUserDetails(listObj) {
                 $("#staffMobileNum").val(item.mobTel);
                 $("#staffSex").val(item.sex.trim());
                 $("#staffNationality").val(item.nationality);
-                $("#staffDOB").val(item.dateOfBirth);
+                $("#staffDOB").val(getFormattedUserDate(item.dateOfBirth));
                 $("#staffTitle").val(item.position);
                 $("#permissionProfileDropdown").val(item.accessProfile);
                 getSelectedAccessProfileUser();
@@ -221,7 +221,7 @@ function updateUser() {
     var hometel = $("#staffHomeNum").val();
     var sex = $("#staffSex").val();
     var nationality = $("#staffNationality").val();
-    var dob = $("#staffDOB").val();
+    var dob = getFormattedUserDate($("#staffDOB").val());
     var Email = $("#staffEmail").val();
     var staffTitle = $("#staffTitle").val();
     var staffPwd = $("#staffPwd").val();
@@ -271,7 +271,7 @@ function addUser() {
     var hometel = $("#staffHomeNum").val();
     var sex = $("#staffSex").val();
     var nationality = $("#staffNationality").val();
-    var dob = $("#staffDOB").val();
+    var dob = getFormattedUserDate($("#staffDOB").val());
     var Email = $("#staffEmail").val();
     var staffTitle = $("#staffTitle").val();
     var staffPwd = $("#staffPwd").val();
@@ -718,4 +718,20 @@ function showUpdateUserSuccessModal(text) {
  */
 function hideUpdateUserSuccessModal() {
     $('#updateUserSuccessModal').modal('hide');
+}
+
+/**
+ * Date picker formatter
+ * @param 
+ * @return 
+ */
+function getFormattedUserDate(date) {
+    var arr = date.split('/');
+    if (arr.length > 1) {
+        var day = arr[0];
+        var month = arr[1];
+        var year = arr[2];
+        return day + '-' + month + '-' + year;
+    }
+    return date;
 }
