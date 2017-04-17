@@ -738,8 +738,6 @@ CREATE PROCEDURE [dbo].[UPDATE_STAFF]
 @pSex CHAR(5),
 @pNationality VARCHAR(500),
 @pDateOfBirth DATE,
---@pAge INT,
---@pRace VARCHAR(50),
 @pPermission INT,
 @pAccessProfile VARCHAR(100),
 @pPosition VARCHAR(50),
@@ -760,8 +758,8 @@ BEGIN
 				UPDATE STAFF
 				SET firstName = @pFirstName, lastName = @pLastName, address = @pAddress, postalCode = @pPostalCode,
 					homeTel = @pHomeTel, altTel = @pAltTel, mobTel = @pMobileTel, sex= @pSex, nationality = @pNationality, dateOfBirth = @pDateOfBirth,
-					permission = @pPermission, accessProfile = @pAccessProfile, position = @pPosition, dateUpdated = @pDateUpdated
-				WHERE nric = @pNRIC
+					permission = @pPermission, accessProfile = @pAccessProfile, position = @pPosition, dateUpdated = @pDateUpdated, nric = @pNRIC
+				WHERE email = @pEmail
 
 			SET @responseMessage = 2
 		END
@@ -770,8 +768,8 @@ BEGIN
 			UPDATE STAFF
 			SET passwordHash = HASHBYTES('SHA2_512', @pPassword), firstName = @pFirstName, lastName = @pLastName, address = @pAddress, postalCode = @pPostalCode,
 				homeTel = @pHomeTel, altTel = @pAltTel, mobTel = @pMobileTel, sex= @pSex, nationality = @pNationality, dateOfBirth = @pDateOfBirth,
-				permission = @pPermission, accessProfile = @pAccessProfile, position = @pPosition, dateUpdated = @pDateUpdated
-			WHERE nric = @pNRIC
+				permission = @pPermission, accessProfile = @pAccessProfile, position = @pPosition, dateUpdated = @pDateUpdated, nric = @pNRIC
+			WHERE email = @pEmail
 
 			SET @responseMessage = 1 
 		END
@@ -2238,6 +2236,45 @@ END;
 
 
 ---------------------------------------------------------------------------------------------------  Procedures for Tracing Visitors by Check-In  
+--GO
+--CREATE PROCEDURE [dbo].[TRACE_BY_SCAN_BED]  -- Retrieve every visitor so long as they scanned in the given Bedno
+--@pStart_Date DATE,
+--@pEnd_Date DATE,
+--@pBed_No VARCHAR(10),
+--@responseMessage INT OUT
+
+--AS  
+--BEGIN  
+--  SET NOCOUNT ON
+
+--  BEGIN
+--    SET @responseMessage = 1;
+--    ------------------------------------------------ First retrieve all visits to the bed in question
+--    ------------------------------------------------ which were scanned within the query period
+--    WITH DAY_BED_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json, remarks)
+--    AS
+--    (
+--      SELECT DISTINCT m.nric, m.visitActualTime, ci.temperature, m.locationID, m.locationTime, tb.bedNoList, qa.QA_JSON, v.remarks
+--      FROM MOVEMENT m
+--      JOIN TERMINAL_BED tb ON m.locationID = tb.terminalID
+--      JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
+--      JOIN VISIT v ON v.visitorNric = m.nric
+--      AND v.QaID = ci.qa_id
+--      JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
+--      WHERE tb.bedNoList LIKE '%' + @pBed_No + '%'
+--      AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+--      AND v.confirm = 1
+--    )
+
+--    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress as 'homeadd', vp.postalCode as 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', v.remarks
+--    FROM DAY_BED_SCANS dbs 
+--    JOIN VISIT v ON v.visitorNric = dbs.nric
+--    JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
+--    WHERE vp.confirm = 1
+--    AND v.bedNo <> ''
+--  END
+--END;
+
 GO
 CREATE PROCEDURE [dbo].[TRACE_BY_SCAN_BED]  -- Retrieve every visitor so long as they scanned in the given Bedno
 @pStart_Date DATE,
@@ -2251,29 +2288,11 @@ BEGIN
 
   BEGIN
     SET @responseMessage = 1;
-    ------------------------------------------------ First retrieve all visits to the bed in question
-    ------------------------------------------------ which were scanned within the query period
-    WITH DAY_BED_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json, remarks)
-    AS
-    (
-      SELECT DISTINCT m.nric, m.visitActualTime, ci.temperature, m.locationID, m.locationTime, tb.bedNoList, qa.QA_JSON, v.remarks
+	SELECT DISTINCT t.tName AS 'location',  '' AS 'bedNo', m.locationTime AS 'checkin_time', '' AS 'exit_time', '' AS 'temperature', ci.nric AS 'nric', '' AS 'fullName', '' AS 'gender', '' AS 'dob', '' AS 'nationality', '' AS 'mobileTel', '' as 'homeadd', '' as 'postalcode', '' AS 'formAnswers', '' AS 'confirmed', '' AS 'remarks'
       FROM MOVEMENT m
-      JOIN TERMINAL_BED tb ON m.locationID = tb.terminalID
       JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
-      JOIN VISIT v ON v.visitorNric = m.nric
-      AND v.QaID = ci.qa_id
-      JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
-      WHERE tb.bedNoList LIKE '%' + @pBed_No + '%'
-      AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
-      AND v.confirm = 1
-    )
-
-    SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender', vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress as 'homeadd', vp.postalCode as 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', v.remarks
-    FROM DAY_BED_SCANS dbs 
-    JOIN VISIT v ON v.visitorNric = dbs.nric
-    JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
-    WHERE vp.confirm = 1
-    AND v.bedNo <> ''
+	  JOIN TERMINAL t ON m.locationID = t.terminalID
+      WHERE CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
   END
 END;
 
@@ -2327,6 +2346,43 @@ END;
 
 
 ---------------------------------------------------------------------------------------------------------------------
+--GO
+--CREATE PROCEDURE [dbo].[TRACE_BY_SCAN_LOC] -- Retrieve every visitor so long as they scanned in the given Bedno
+--@pStart_Date DATE,
+--@pEnd_Date DATE,
+--@pLocation VARCHAR(128),
+--@responseMessage INT OUT
+
+--AS
+--BEGIN
+--	SET NOCOUNT ON
+
+--	BEGIN
+--		SET @responseMessage = 1;
+--		------------------------------------------------ First retrieve all visits to the location in question
+--		------------------------------------------------ which were scanned within the query period
+--		WITH DAY_BED_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json, remarks)
+--		AS
+--		(
+--			SELECT DISTINCT m.nric, m.visitActualTime, ci.temperature, m.locationID, m.locationTime, t.tName, qa.QA_JSON, v.remarks
+--			FROM MOVEMENT m
+--			JOIN TERMINAL t ON m.locationID = t.terminalID
+--			JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
+--			JOIN VISIT v ON v.visitorNric = m.nric
+--			AND v.QaID = ci.qa_id
+--			JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
+--			WHERE t.tName LIKE '%' + @pLocation + '%'
+--			AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
+--			AND v.confirm = 1
+--		)
+--		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', v.remarks AS 'remarks'
+--		FROM DAY_BED_SCANS dbs 
+--		JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
+--		JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
+--		WHERE vp.confirm = 1
+--	END
+--END;
+
 GO
 CREATE PROCEDURE [dbo].[TRACE_BY_SCAN_LOC] -- Retrieve every visitor so long as they scanned in the given Bedno
 @pStart_Date DATE,
@@ -2340,29 +2396,14 @@ BEGIN
 
 	BEGIN
 		SET @responseMessage = 1;
-		------------------------------------------------ First retrieve all visits to the location in question
-		------------------------------------------------ which were scanned within the query period
-		WITH DAY_BED_SCANS (nric, visitActualTime, temperature, locationID, locationTime, bedNoList, qa_json, remarks)
-		AS
-		(
-			SELECT DISTINCT m.nric, m.visitActualTime, ci.temperature, m.locationID, m.locationTime, t.tName, qa.QA_JSON, v.remarks
-			FROM MOVEMENT m
-			JOIN TERMINAL t ON m.locationID = t.terminalID
-			JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
-			JOIN VISIT v ON v.visitorNric = m.nric
-			AND v.QaID = ci.qa_id
-			JOIN QUESTIONAIRE_ANS qa ON qa.QA_ID = v.QaID
-			WHERE t.tName LIKE '%' + @pLocation + '%'
-			AND CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
-			AND v.confirm = 1
-		)
-		SELECT DISTINCT v.visitLocation AS 'location',  v.bedNo AS 'bedNo', dbs.visitActualTime AS 'checkin_time', '' AS 'exit_time', dbs.temperature AS 'temperature', dbs.nric AS 'nric', vp.fullName AS 'fullName', vp.gender AS 'gender',vp.dateOfBirth AS 'dob', vp.nationality AS 'nationality', vp.mobileTel AS 'mobileTel', vp.homeAddress AS 'homeadd', vp.postalCode AS 'postalcode', dbs.qa_json AS 'formAnswers', vp.confirm AS 'confirmed', v.remarks AS 'remarks'
-		FROM DAY_BED_SCANS dbs 
-		JOIN VISIT v ON v.visitorNric = dbs.nric AND CAST(v.visitRequestTime AS DATE) = CAST(dbs.visitActualTime AS DATE)
-		JOIN VISITOR_PROFILE vp ON vp.nric = dbs.nric
-		WHERE vp.confirm = 1
+			SELECT DISTINCT t.tName AS 'location',  '' AS 'bedNo', m.locationTime AS 'checkin_time', '' AS 'exit_time', '' AS 'temperature', ci.nric AS 'nric', '' AS 'fullName', '' AS 'gender', '' AS 'dob', '' AS 'nationality', '' AS 'mobileTel', '' as 'homeadd', '' as 'postalcode', '' AS 'formAnswers', '' AS 'confirmed', '' AS 'remarks'
+      FROM MOVEMENT m
+      LEFT JOIN CHECK_IN ci ON ci.nric = m.nric AND ci.visitActualTime = m.visitActualTime
+	  JOIN TERMINAL t ON m.locationID = t.terminalID
+      WHERE CAST(m.locationTime AS DATE) BETWEEN @pStart_Date AND @pEnd_Date
 	END
 END;
+
 
 -------------------------------------------------------------------------------------------------
 GO
