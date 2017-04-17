@@ -1236,11 +1236,13 @@
                                         }
                                     }
                                 });
-                                table.columns([4, 7, 8, 10, 11, 13]).visible(false, false);
-                                $('#uq_resultstable_hidden').prop("style", "width:100%");
-                                $('#uq_resultstable_hidden').removeClass("dataTable");
-                                $('#uq_resultstable_hidden #uq_resultstable_info').removeClass("dataTables_info");
-                                $('#uq_resultstable_hidden #uq_resultstable_length').removeClass("dataTables_length");
+                                table.columns([4, 7, 8, 10, 11, 13, 15, 16]).visible(false, false);
+                                var tableActual = $('#uq_resultstable').DataTable({});
+                                tableActual.columns([4, 7, 8, 10, 11, 13, 15, 16]).visible(false, false);
+                                $('#uq_resultstable').prop("style", "width:100%");
+                                $('#uq_resultstable').removeClass("dataTable");
+                                $('#uq_resultstable #uq_resultstable_info').removeClass("dataTables_info");
+                                $('#uq_resultstable #uq_resultstable_length').removeClass("dataTables_length");
                             });
                         </script>
                     </div>
