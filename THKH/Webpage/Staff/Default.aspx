@@ -1137,6 +1137,33 @@
 
                     </div>
                     <div class="form-group" id="uq_results">
+
+                        <table id="uq_resultstable_hidden" class="table table-responsive table-hover" style="padding-left: 10px; padding-right:10px;display:none">
+                            <thead id="uq_resultstable_head_hidden">
+                                <tr>
+                                    <th>Registration Location</th>
+                                    <th>Registration Bed No.</th>
+                                    <th>Check-in Time</th>
+                                    <th>Exit Time</th>
+                                    <th>Temperature</th>
+                                    <th>Name</th>
+                                    <th>NRIC</th>
+                                    <th>Gender</th>
+                                    <th>Date of Birth</th>
+                                    <th>Contact Number</th>
+                                    <th>Home Address</th>
+                                    <th>Postal Code</th>
+                                    <th>Country (Nationality)</th>
+                                    <th>Form Answers</th>
+                                    <th>Remarks</th>
+                                    <th>Registered</th>
+                                    <th>Scanned</th>
+                                </tr>
+                            </thead>
+                            <tbody id="uq_resultstable_body_hidden">
+                            </tbody>
+                        </table>
+
                         <table id="uq_resultstable" class="table table-responsive table-hover" style="padding-left: 10px; padding-right:10px">
                             <thead id="uq_resultstable_head">
                                 <tr>
@@ -1163,31 +1190,6 @@
                             </tbody>
                         </table>
 
-                              <table id="uq_resultstable_hidden" class="table table-responsive table-hover" style="padding-left: 10px; padding-right:10px;display:none">
-                            <thead id="uq_resultstable_head_hidden">
-                                <tr>
-                                    <th>Registration Location</th>
-                                    <th>Registration Bed No.</th>
-                                    <th>Check-in Time</th>
-                                    <th>Exit Time</th>
-                                    <th>Temperature</th>
-                                    <th>Name</th>
-                                    <th>NRIC</th>
-                                    <th>Gender</th>
-                                    <th>Date of Birth</th>
-                                    <th>Contact Number</th>
-                                    <th>Home Address</th>
-                                    <th>Postal Code</th>
-                                    <th>Country (Nationality)</th>
-                                    <th>Form Answers</th>
-                                    <th>Remarks</th>
-                                    <th>Registered</th>
-                                    <th>Scanned</th>
-                                </tr>
-                            </thead>
-                            <tbody id="uq_resultstable_body_hidden">
-                            </tbody>
-                        </table>
                         <script>
                             $(document).ready(function () {
                                 var datetime_str = new Date().toString();
