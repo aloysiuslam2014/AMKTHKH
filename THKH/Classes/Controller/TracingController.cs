@@ -105,7 +105,10 @@ namespace THKH.Classes.Controller
                         {
                             String entry = item.Value<JObject>().ToString(Formatting.None);
                             String nric = item.Value<JObject>()["nric"].ToString();
-                            dict.Add(nric, nric);
+                            if (!dict.ContainsValue(nric))
+                            {
+                                dict.Add(nric, nric);
+                            }
                             byReg_response_visitors.Add(entry);
                         }
                     }
@@ -144,7 +147,10 @@ namespace THKH.Classes.Controller
                         {
                             String entry = item.Value<JObject>().ToString(Formatting.None);
                             String nric = item.Value<JObject>()["nric"].ToString();
-                            dict.Add(nric, nric);
+                            if (!dict.ContainsValue(nric))
+                            {
+                                dict.Add(nric, nric);
+                            }
                             byReg_response_visitors.Add(entry);
                         }
                     }
@@ -948,7 +954,10 @@ namespace THKH.Classes.Controller
                 }
                 ((IDictionary<string, object>)dwelltime_json)[visitor_dwelltime_bucket] = (int)((IDictionary<string, object>)dwelltime_json)[visitor_dwelltime_bucket] + 1;
                 string visitor_gender = ((string)visitor.gender).Trim();
-                ((IDictionary<string, object>)gender_json)[visitor_gender] = (int)((IDictionary<string, object>)gender_json)[visitor_gender] + 1;
+                if (visitor_gender != "")
+                {
+                    ((IDictionary<string, object>)gender_json)[visitor_gender] = (int)((IDictionary<string, object>)gender_json)[visitor_gender] + 1;
+                }
                 int visitor_age = (int)visitor.age;
                 if (visitor_age % 10 == 0) 
                 {
